@@ -1,0 +1,172 @@
+@import 'common/fonts';
+@import 'common/text';
+@import 'common/transitions';
+
+* {
+  box-sizing: border-box;
+
+  &:after,
+  &:before {
+    box-sizing: border-box;
+  }
+}
+
+html {
+  font-size: 10px;
+
+  @include respond-to(laptop) {
+    font-size: 0.6944444444vw;
+  }
+
+  @include respond-to(tablet) {
+    font-size: 10px;
+  }
+}
+
+body {
+  overflow-y: scroll;
+  font-family: $base-font;
+  font-size: $base-font-size;
+  color: $black;
+  -ms-text-size-adjust: 100%;
+  -webkit-text-size-adjust: 100%;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-font-smoothing: antialiased;
+  -webkit-tap-highlight-color: transparent;
+}
+
+html,
+body,
+#__nuxt,
+#__layout {
+  width: 100%;
+  height: 100%;
+}
+
+#iflat-button {
+  display: none;
+}
+
+.container {
+  width: min(#{$container-width}, calc(100vw - 2 * #{$tablet-padding}));
+  margin-right: auto;
+  margin-left: auto;
+
+  @include respond-to(mobile) {
+    width: min(#{$container-width}, calc(100vw - 2 * #{$mobile-padding}));
+  }
+}
+
+.wide-container {
+  width: min(
+    #{$wide-container-width},
+    calc(100vw - 2 * #{$wide-tablet-padding})
+  );
+  margin-right: auto;
+  margin-left: auto;
+
+  @include respond-to(mobile) {
+    width: min(
+      #{$wide-container-width},
+      calc(100vw - 2 * #{$wide-mobile-padding})
+    );
+  }
+}
+
+.visually-hidden {
+  position: absolute;
+  overflow: hidden;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  border: 0;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+  clip-path: inset(100%);
+}
+
+.container-mix-tab {
+  width: min(#{$container-width}, calc(100vw - 2 * #{$tablet-padding}));
+  margin-right: auto;
+  margin-left: auto;
+
+  @include respond-to(tablet) {
+    width: min(
+      #{$wide-container-width},
+      calc(100vw - 2 * #{$wide-tablet-padding})
+    );
+  }
+
+  @include respond-to(mobile) {
+    width: min(
+      #{$wide-container-width},
+      calc(100vw - 2 * #{$wide-mobile-padding})
+    );
+  }
+}
+
+.container-mix-mob {
+  width: min(#{$container-width}, calc(100vw - 2 * #{$tablet-padding}));
+  margin-right: auto;
+  margin-left: auto;
+
+  @include respond-to(mobile) {
+    width: min(
+      #{$wide-container-width},
+      calc(100vw - 2 * #{$wide-mobile-padding})
+    );
+  }
+}
+
+// .page-with-header {
+//   padding-top: var(--header-h);
+// }
+
+// .frame-icon {
+//   fill: currentColor;
+
+//   &.is-medium {
+//     width: 3.2rem;
+//     height: 3.2rem;
+//   }
+
+//   &.is-default {
+//     width: 2.4rem;
+//     height: 2.4rem;
+//   }
+
+//   &.is-small {
+//     width: 2rem;
+//     height: 2rem;
+//   }
+
+//   &.is-smaller {
+//     width: 1.7rem;
+//     height: 1.7rem;
+//   }
+
+//   &.is-xsmall {
+//     width: 1.6rem;
+//     height: 1.6rem;
+//   }
+
+//   &.is-xxsmall {
+//     width: 1.2rem;
+//     height: 1.2rem;
+//   }
+
+//   &.is-large {
+//     width: 16rem;
+//     height: 16rem;
+//   }
+// }
+
+// .link {
+//   color: $blue;
+//   transition: $default-transition;
+
+//   @include hover() {
+//     color: $black;
+//   }
+// }

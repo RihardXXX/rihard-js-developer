@@ -1,0 +1,100 @@
+/* Text */
+h1,
+.h2SmallCaps,
+h3,
+h5,
+.h7,
+.text {
+  font-weight: 400;
+}
+
+h2,
+h4,
+h6 {
+  font-weight: 600;
+}
+
+h1,
+.h1 {
+  font-size: 11.2rem;
+  line-height: 10.1rem;
+}
+
+h2,
+.h2 {
+  font-weight: 500;
+  font-size: 4rem;
+  line-height: 100%;
+  letter-spacing: -2px;
+
+  @include respond-to(tablet) {
+    font-size: 3.2rem;
+  }
+}
+
+h3,
+.h3 {
+  font-size: 3.2rem;
+  line-height: 3.6rem;
+  letter-spacing: -2px;
+}
+
+h4,
+.h4 {
+  font-size: 3.2rem;
+  line-height: 3.6rem;
+  letter-spacing: -2px;
+}
+
+h5,
+.h5 {
+  font-size: 2.4rem;
+  line-height: 2.7rem;
+  letter-spacing: -1px;
+}
+
+h6,
+.h6 {
+  font-size: 2.4rem;
+  line-height: 2.7rem;
+  letter-spacing: -1px;
+}
+
+.h7 {
+  font-size: 2rem;
+  line-height: 2.4rem;
+
+  @include respond-to(laptop) {
+    font-size: 1.4rem;
+    line-height: 1.8rem;
+  }
+}
+
+.text {
+  font-size: 1.6rem;
+  line-height: 2.3rem;
+}
+
+.h2SmallCaps {
+  font-variant: small-caps;
+}
+
+.l1,
+.l2,
+.l3 {
+  font-size: 1.6rem;
+  line-height: 1.9rem;
+}
+
+.l1 {
+  font-weight: 400;
+}
+
+.l2 {
+  font-weight: 400;
+  // medium
+}
+
+.l3 {
+  font-weight: 600;
+}

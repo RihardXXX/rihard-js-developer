@@ -1,0 +1,57 @@
+/*  Fonts */
+
+$base-font: 'ProximaNova', sans-serif;
+$base-font-size: 1.6rem;
+
+/* Colors */
+
+$black: #1b1b28;
+$black-300: #f0f1f8;
+$black-400: #dadbe4;
+$black-500: #b0b2bd;
+$black-600: #797d90;
+$black-700: #3c3e48;
+$primary-300: #ebeff1;
+$white: #fff;
+$orange: #eb7a35;
+$dark-orange: #d97d48;
+$blue: #1c4c5f;
+$dark-green: #5e864a;
+$reen: #8cbc4d;
+$red: #a42e60;
+$grayish-blue: #f1f4f8;
+$grayish-blue-dark: #d6dfea;
+
+/* Grid */
+$side-padding: 1.2rem;
+$side-padding-mobile: 0.8rem;
+
+/* Transition */
+$default-transition: 0.3s ease-in-out;
+$bezier: cubic-bezier(0.25, 0.74, 0.22, 0.99);
+$bezier-second: cubic-bezier(0.25, 0.1, 0.25, 1);
+$text-bezier: cubic-bezier(0.4, 0, 0, 1);
+$apple-cubic: cubic-bezier(0.165, 0.84, 0.44, 1);
+$popup-out-bezier: cubic-bezier(0.47, 0.04, 0.5, -0.6);
+$popup-in-bezier: cubic-bezier(0.25, 0.74, 0.22, 0.99);
+$black-rgba-8: rgba(0, 0, 0, 0.08);
+
+// /* Spacing */
+$container-width: 135.2rem;
+$full-view: calc(var(--vw, 1vw) * 100);
+$tablet-padding: 2.4rem;
+$mobile-padding: 1.6rem;
+
+$wide-container-width: 141.6rem;
+$wide-tablet-padding: 1.2rem;
+$wide-mobile-padding: 0.8rem;
+
+/* Breakpoints */
+
+$breakpoints: (
+  mobile: 767.5px,
+  tablet: 1023.5px,
+  laptop: 1380.5px,
+  desktop: 1920.5px,
+  large-desktop: 99999px,
+);
