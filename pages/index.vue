@@ -9,6 +9,10 @@ import Vue from 'vue';
 
 export default Vue.extend({
   name: 'IndexPage',
+  // asyncData({ app }) {
+  //   console.log(112);
+  //   console.log(app.$apiPaths);
+  // },
 });
 </script>
 
