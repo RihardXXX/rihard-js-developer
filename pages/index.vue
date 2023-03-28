@@ -1,23 +1,56 @@
 <template>
   <div :class="$style.mainPage">
-    <h3>main page</h3>
+    <Dot
+      v-for="dot in dots"
+      :key="dot.id"
+      :color="dot.color"
+      :size="dot.size"
+      :position="dot.position"
+    />
+    <AboutMe />
   </div>
 </template>
 
 <script lang="ts">
-import Vue from 'vue';
+import { defineComponent } from 'vue';
+import AboutMe from '~/components/main/AboutMe.vue';
+import Dot from '~/components/Dot.vue';
+import { IDots } from '~/components/layouts/TheHeader.vue';
 
-export default Vue.extend({
-  name: 'IndexPage',
-  // asyncData({ app }) {
-  //   console.log(112);
-  //   console.log(app.$apiPaths);
-  // },
+let idx = 1;
+
+export default defineComponent({
+  name: 'MainPage',
+
+  components: {
+    AboutMe,
+    Dot,
+  },
+
+  data() {
+    return {
+      dots: [
+        {
+          id: `x${idx++}`,
+          size: 'medium',
+          color: 'blue',
+          position: { top: '1.6', left: '12.6' },
+        },
+        {
+          id: `x${idx++}`,
+          size: 'medium',
+          color: 'green',
+          position: { top: '1.7', left: '47' },
+        },
+      ] as Array<IDots>,
+    };
+  },
 });
 </script>
 
 <style lang="scss" module>
 .mainPage {
   height: 100%;
+  position: relative;
 }
 </style>

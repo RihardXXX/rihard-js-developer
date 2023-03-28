@@ -42,8 +42,8 @@ interface MenuItem {
   to: string;
 }
 
-interface IDots {
-  id: number;
+export interface IDots {
+  id: number | string;
   size: size;
   color: color;
   position: IPosition;
