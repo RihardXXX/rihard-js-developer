@@ -182,6 +182,7 @@ export default defineComponent({
 
         &:hover {
           color: $green;
+          transform: scale(1.2);
         }
       }
     }

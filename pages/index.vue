@@ -52,5 +52,6 @@ export default defineComponent({
 .mainPage {
   height: 100%;
   position: relative;
+  /* overflow: auto; */
 }
 </style>

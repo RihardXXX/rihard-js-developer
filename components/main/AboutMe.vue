@@ -10,7 +10,13 @@
       <VButton color="green" :class="$style.btnMe"> Связаться со мной </VButton>
     </div>
 
-    <div :class="$style.right" :inline="true">right</div>
+    <div :class="$style.right" :inline="true">
+      <div :class="$style.emptySquare"></div>
+      <div :class="$style.greenSquare"></div>
+      <div :class="$style.imgContainer">
+        <img src="images/rihard.png" alt="" />
+      </div>
+    </div>
   </section>
 </template>
 
@@ -27,18 +33,21 @@ export default defineComponent({
 <style lang="scss" module>
 .aboutMe {
   padding-top: 7.6rem;
-  height: 54.1rem;
+  height: 61.7rem;
   display: flex;
   align-items: center;
   justify-content: space-between;
 
   .left {
     width: 54.5rem;
-    height: 36rem;
+    /* height: 36rem; */
     display: flex;
     align-items: flex-start;
     justify-content: flex-start;
     flex-direction: column;
+    padding: 1.5rem;
+    border-radius: 0.5rem;
+    transition: all 1s;
 
     .welcome {
       /* width: 9.9rem; */
@@ -76,12 +85,77 @@ export default defineComponent({
     .btnMe {
       margin-top: 4rem;
     }
+
+    &:hover {
+      transform: perspective(600px) rotateY(20deg);
+      box-shadow: 0.1rem 0.1rem 0.5rem 0.1rem $gray;
+    }
   }
 
   .right {
+    position: relative;
     width: 46.1rem;
     height: 100%;
-    border: 1px dotted gray;
+    /* border: 1px dotted gray; */
+    border-radius: 0.5rem;
+    transition: all 1s;
+
+    .emptySquare {
+      position: absolute;
+      width: 40.1rem;
+      height: 40.1rem;
+      left: 0;
+      bottom: 0;
+      border: 0.5rem solid $black;
+      border-radius: 0.2rem;
+    }
+
+    .greenSquare {
+      position: absolute;
+      width: 42rem;
+      height: 42rem;
+      right: 0;
+      top: 8rem;
+      background: $green;
+    }
+
+    .imgContainer {
+      position: absolute;
+      width: 42rem;
+      height: 50rem;
+      top: 0;
+      right: 0;
+
+      img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+    }
+
+    &:hover {
+      transform: perspective(600px) rotateY(-20deg);
+      box-shadow: 0.1rem 0.1rem 0.5rem 0.1rem $gray;
+
+      /* .emptySquare {
+        transition: all 1s;
+        width: 100%;
+        height: 100%;
+        z-index: 1;
+      } */
+
+      /* .greenSquare {
+        transition: all 1s;
+        width: 100%;
+        height: 100%;
+        top: 0;
+      }
+
+      .imgContainer {
+        width: 100%;
+        height: 100%;
+      } */
+    }
   }
 }
 </style>

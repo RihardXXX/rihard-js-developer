@@ -37,6 +37,12 @@ export default defineComponent({
   line-height: 150%;
   color: $white;
   cursor: pointer;
+  transition: all 0.7s;
+
+  &:hover {
+    opacity: 0.9;
+    transform: scale(0.9);
+  }
 
   &.big {
     width: 2rem;
