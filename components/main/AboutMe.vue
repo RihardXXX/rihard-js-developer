@@ -17,21 +17,65 @@
         <img src="images/rihard.png" alt="" />
       </div>
     </div>
+
+    <Dot
+      v-for="dot in dots"
+      :key="dot.id"
+      :size="dot.size"
+      :color="dot.color"
+      :position="dot.position"
+    />
   </section>
 </template>
 
 <script lang="ts">
 import { defineComponent } from 'vue';
 import VButton from '@/components/VButton.vue';
+import Dot from '@/components/Dot.vue';
+import { IDots } from '@/components/layouts/TheHeader.vue';
+
+let idx = 0;
 
 export default defineComponent({
   name: 'AboutMe',
-  components: { VButton },
+  components: { VButton, Dot },
+
+  data() {
+    return {
+      dots: [
+        {
+          id: `about${idx++}`,
+          size: 'small',
+          color: 'blue',
+          position: { top: '1.6', left: '30.2' },
+        },
+        {
+          id: `about${idx++}`,
+          size: 'medium',
+          color: 'green',
+          position: { top: '8.6', left: '3' },
+        },
+        {
+          id: `about${idx++}`,
+          size: 'big',
+          color: 'red',
+          position: { top: '20.2', left: '59.6' },
+        },
+        {
+          id: `about${idx++}`,
+          size: 'small',
+          color: 'red',
+          position: { top: '4.9', left: '44.7' },
+        },
+      ] as Array<IDots>,
+    };
+  },
 });
 </script>
 
 <style lang="scss" module>
 .aboutMe {
+  position: relative;
   padding-top: 7.6rem;
   height: 61.7rem;
   display: flex;
