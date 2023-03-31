@@ -40,7 +40,7 @@ export default defineComponent({
       // Optional parameters
       // direction: 'gorizontal',
       loop: true,
-      autoplay: true,
+      // autoplay: true,
       // If we need pagination
       pagination: {
         el: '.swiper-pagination',

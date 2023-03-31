@@ -124,5 +124,16 @@ export default defineComponent({
   &.orange {
     background: $gray;
   }
+
+  &:hover {
+    animation: beat .3s infinite alternate;
+  }
+
+  @keyframes beat{
+    to {
+      transform: scale(1.6);
+      opacity: .8;
+    }
+  }
 }
 </style>
