@@ -36,7 +36,13 @@ export default {
 
     // в билд включаем, чтобы миксины и переменные стилей видны были
     '@nuxtjs/style-resources',
+    // чтобы svg подхватывать с папки
+    '@nuxtjs/svg-sprite',
   ],
+
+  svgSprite: {
+    input: '~/assets/svg/',
+  },
 
   // Modules: https://go.nuxtjs.dev/config-modules
   modules: [

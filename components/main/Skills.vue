@@ -1,14 +1,30 @@
 <template>
   <section :class="['container', $style.skills]">
     <!-- Slider main container -->
+
+    <div :class="$style.leftSection">
+      <VInfo
+        label="Мои навыки"
+        title="<span>Почему вы</span> выберете меня ?"
+        description="Я middle frontend-developer. Моя страсть — разработка интерфейсов развивающих бизнес проекты  компании."
+        button-name="Связаться со мной"
+      />
+    </div>
     <div :class="['swiper', $style.swiperWrap]">
       <!-- Additional required wrapper -->
       <div class="swiper-wrapper">
         <!-- Slides -->
-        <div class="swiper-slide">Slide 1</div>
-        <div class="swiper-slide">Slide 2</div>
-        <div class="swiper-slide">Slide 3</div>
-        ...
+        <div :class="['swiper-slide', $style.sliderItem]">
+          <article :class="$style.card">
+            <div :class="$style.head">
+              <SvgIcon name="js" size="big10" />
+            </div>
+            <div :class="$style.body">description</div>
+          </article>
+          <!-- <article :class="$style.card">card1</article>
+          <article :class="$style.card">card1</article>
+          <article :class="$style.card">card1</article> -->
+        </div>
       </div>
       <!-- If we need pagination -->
       <div class="swiper-pagination"></div>
@@ -25,9 +41,16 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue';
+import SvgIcon from '@/components/ui/VIcon.vue';
+import VInfo from '@/components/VInfo.vue';
 
 export default defineComponent({
   name: 'SkillsPage',
+
+  components: {
+    VInfo,
+    SvgIcon,
+  },
 
   data() {
     return {
@@ -63,12 +86,49 @@ export default defineComponent({
 .skills {
   //
   margin-top: 18.8rem;
-  height: 35rem;
-  border: 1px solid black;
-}
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  /* min-height: 35rem; */
 
-.swiperWrap {
-  width: 100%;
-  height: 100%;
+  .leftSection {
+    width: 50%;
+    height: 100%;
+  }
+
+  .swiperWrap {
+    border: 1px solid black;
+    width: 50%;
+    height: 100%;
+    min-height: 35rem;
+
+    .sliderItem {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 4rem;
+      flex-wrap: wrap;
+
+      .card {
+        width: 25.5rem;
+        height: 16rem;
+        border: 1px solid royalblue;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: space-between;
+
+        .head {
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+
+          /* .test {
+            width: 2rem;
+          } */
+        }
+      }
+    }
+  }
 }
 </style>

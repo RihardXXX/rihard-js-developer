@@ -126,13 +126,13 @@ export default defineComponent({
   }
 
   &:hover {
-    animation: beat .3s infinite alternate;
+    animation: beat 0.3s infinite alternate;
   }
 
-  @keyframes beat{
+  @keyframes beat {
     to {
       transform: scale(1.6);
-      opacity: .8;
+      opacity: 0.8;
     }
   }
 }
