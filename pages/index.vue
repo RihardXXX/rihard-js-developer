@@ -8,13 +8,16 @@
       :position="dot.position"
     />
     <AboutMe />
+    <Results />
     <Skills />
+    sertificates projects reviews contacts
   </div>
 </template>
 
 <script lang="ts">
 import { defineComponent } from 'vue';
 import AboutMe from '~/components/main/AboutMe.vue';
+import Results from '~/components/main/Results.vue';
 import Skills from '~/components/main/Skills.vue';
 import Dot from '~/components/Dot.vue';
 import { IDots } from '~/components/layouts/TheHeader.vue';
@@ -26,6 +29,7 @@ export default defineComponent({
 
   components: {
     AboutMe,
+    Results,
     Dot,
     Skills,
   },

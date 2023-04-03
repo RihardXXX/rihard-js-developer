@@ -69,6 +69,7 @@ export default defineComponent({
   height: 1.4rem;
   background: $black;
   border-radius: 50%;
+  cursor: pointer;
 
   &.extra-small {
     width: 0.8rem;

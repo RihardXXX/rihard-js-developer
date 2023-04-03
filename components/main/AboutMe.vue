@@ -1,6 +1,14 @@
 <template>
   <section :class="['container', $style.aboutMe]">
-    <div :class="$style.left">
+    <div
+      ref="left"
+      :class="[
+        $style.left,
+        {
+          [$style.active]: showLeft,
+        },
+      ]"
+    >
       <VInfo
         label="добро пожаловать"
         title="Я <span>фронтенд</span> разработчик"
@@ -10,7 +18,15 @@
       />
     </div>
 
-    <div :class="$style.right" :inline="true">
+    <div
+      :class="[
+        $style.right,
+        {
+          [$style.active]: showLeft,
+        },
+      ]"
+      :inline="true"
+    >
       <div :class="$style.emptySquare"></div>
       <div :class="$style.greenSquare"></div>
       <div :class="$style.imgContainer">
@@ -30,20 +46,22 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue';
-import VButton from '@/components/VButton.vue';
 import Dot from '@/components/Dot.vue';
 import { IDots } from '@/components/layouts/TheHeader.vue';
 import VInfo from '@/components/VInfo.vue';
+import { intersectionObserver } from '@/assets/utils';
 
 let idx = 0;
 
 export default defineComponent({
   name: 'AboutMe',
 
-  components: { VButton, Dot, VInfo },
+  components: { Dot, VInfo },
 
   data() {
     return {
+      showLeft: false,
+
       dots: [
         {
           id: `about${idx++}`,
@@ -72,6 +90,12 @@ export default defineComponent({
       ] as Array<IDots>,
     };
   },
+
+  mounted() {
+    intersectionObserver(this.$refs?.left as Element, () => {
+      this.showLeft = true;
+    });
+  },
 });
 </script>
 
@@ -85,7 +109,16 @@ export default defineComponent({
   justify-content: space-between;
 
   .left {
+    position: relative;
     width: 54.5rem;
+    left: -30%;
+    opacity: 0;
+    transition: all 2s;
+
+    &.active {
+      left: 0;
+      opacity: 1;
+    }
   }
 
   .right {
@@ -94,7 +127,14 @@ export default defineComponent({
     height: 100%;
     /* border: 1px dotted gray; */
     border-radius: 0.5rem;
-    transition: all 1s;
+    right: -30%;
+    opacity: 0;
+    transition: all 2s;
+
+    &.active {
+      right: 0;
+      opacity: 1;
+    }
 
     .emptySquare {
       position: absolute;
@@ -132,6 +172,7 @@ export default defineComponent({
     &:hover {
       transform: perspective(600px) rotateY(-20deg);
       box-shadow: 0.1rem 0.1rem 0.5rem 0.1rem $gray;
+      transition: all 1s;
 
       /* .emptySquare {
         transition: all 1s;
