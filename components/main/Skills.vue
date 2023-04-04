@@ -1,8 +1,8 @@
 <template>
-  <section :class="['container', $style.skills]">
+  <section ref="skills" :class="['container', $style.skills]">
     <!-- Slider main container -->
 
-    <div :class="$style.leftSection">
+    <div :class="[$style.leftSection, { [$style.active]: show }]">
       <VInfo
         label="Мои навыки"
         title="<span>Почему вы</span> выберете меня ?"
@@ -10,7 +10,7 @@
         button-name="Связаться со мной"
       />
     </div>
-    <div :class="['swiper', $style.swiperWrap]">
+    <div :class="['swiper', $style.swiperWrap, { [$style.active]: show }]">
       <!-- Additional required wrapper -->
       <div v-if="Boolean(slides.length)" class="swiper-wrapper">
         <!-- Slides -->
@@ -46,6 +46,7 @@
 import { defineComponent } from 'vue';
 import VInfo from '@/components/VInfo.vue';
 import VCardSkills from '@/components/skills/VCardSkills.vue';
+import { intersectionObserver } from '@/assets/utils';
 
 let idx = 0;
 
@@ -73,6 +74,8 @@ export default defineComponent({
     return {
       swiper: {},
 
+      show: false,
+
       slides: [
         {
           id: `slideItem${idx++}`,
@@ -85,21 +88,23 @@ export default defineComponent({
             },
             {
               id: `cardItem${idx++}`,
-              svgName: 'js',
-              title: 'Javascript',
-              description: 'Разработка высоко-нагруженных приложений на JS',
+              svgName: 'ts',
+              title: 'TypeScript',
+              description:
+                'Обеспечу строгую типизацию и надежность приложений на TS',
             },
             {
               id: `cardItem${idx++}`,
-              svgName: 'js',
-              title: 'Javascript',
-              description: 'Разработка высоко-нагруженных приложений на JS',
+              svgName: 'npm',
+              title: 'NPM',
+              description:
+                'Использую в работе самый популярный пакетный менеджер',
             },
             {
               id: `cardItem${idx++}`,
-              svgName: 'js',
-              title: 'Javascript',
-              description: 'Разработка высоко-нагруженных приложений на JS',
+              svgName: 'webpack',
+              title: 'Webpack',
+              description: 'Использую один из лучших сборщиков',
             },
           ],
         },
@@ -108,21 +113,21 @@ export default defineComponent({
           cards: [
             {
               id: `cardItem${idx++}`,
-              svgName: 'js',
-              title: 'Javascript',
-              description: 'Разработка высоко-нагруженных приложений на JS',
+              svgName: 'html5',
+              title: 'HTML5',
+              description: 'В верстке применяю тэги из HTML5',
             },
             {
               id: `cardItem${idx++}`,
-              svgName: 'js',
-              title: 'Javascript',
-              description: 'Разработка высоко-нагруженных приложений на JS',
+              svgName: 'css3',
+              title: 'CSS3',
+              description: 'Применяю стили с использованием CSS3',
             },
             {
               id: `cardItem${idx++}`,
-              svgName: 'js',
-              title: 'Javascript',
-              description: 'Разработка высоко-нагруженных приложений на JS',
+              svgName: 'sass-original',
+              title: 'SASS-SCSS',
+              description: 'В работе использую только препроцессоры',
             },
             {
               id: `cardItem${idx++}`,
@@ -166,41 +171,67 @@ export default defineComponent({
   },
 
   mounted() {
-    this.swiper = new this.$Swiper('.swiper', {
-      // Optional parameters
-      // direction: 'gorizontal',
-      loop: true,
-      // autoplay: true,
-      // If we need pagination
-      pagination: {
-        el: '.swiper-pagination',
-      },
-      // Navigation arrows
-      navigation: {
-        nextEl: '.swiper-button-next',
-        prevEl: '.swiper-button-prev',
-      },
-      // And if we need scrollbar
-      scrollbar: {
-        el: '.swiper-scrollbar',
-      },
+    intersectionObserver(this.$refs?.skills as Element, () => {
+      this.show = true;
     });
+
+    this.initSlider();
+  },
+
+  beforeDestroy() {
+    this.swiper = {};
+  },
+
+  methods: {
+    initSlider() {
+      this.swiper = new this.$Swiper('.swiper', {
+        // Optional parameters
+        // direction: 'gorizontal',
+        loop: true,
+        // autoplay: {
+        //   delay: 5000,
+        // },
+        // speed: 2000,
+        // If we need pagination
+        pagination: {
+          el: '.swiper-pagination',
+        },
+        // Navigation arrows
+        navigation: {
+          nextEl: '.swiper-button-next',
+          prevEl: '.swiper-button-prev',
+        },
+        // And if we need scrollbar
+        scrollbar: {
+          el: '.swiper-scrollbar',
+        },
+      });
+    },
   },
 });
 </script>
 
 <style lang="scss" module>
 .skills {
-  //
+  position: relative;
   margin-top: 18.8rem;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  /* min-height: 35rem; */
+  /* overflow: hidden; */
 
   .leftSection {
     width: 50%;
     height: 100%;
+    position: relative;
+    left: -50%;
+    opacity: 0;
+
+    &.active {
+      transition: all 2s;
+      left: 0;
+      opacity: 1;
+    }
   }
 
   .swiperWrap {
@@ -209,6 +240,15 @@ export default defineComponent({
     height: 100%;
     min-height: 35rem;
     transition: all 1s;
+    position: relative;
+    right: -50%;
+    opacity: 0;
+
+    &.active {
+      transition: all 1s;
+      right: 0;
+      opacity: 1;
+    }
 
     .sliderItem {
       width: 30rem;
@@ -220,10 +260,48 @@ export default defineComponent({
       height: 100%;
     }
 
-    /* &:hover {
-      transform: perspective(600px) rotateY(-20deg);
-      box-shadow: 0.1rem 0.1rem 0.5rem 0.1rem $gray;
-    } */
+    :global(.swiper-pagination) {
+      top: 90%;
+      left: 50%;
+    }
+
+    :global(.swiper-pagination-bullet) {
+      width: 5rem;
+      height: 0.8rem;
+      background: $gray-100;
+      border-radius: 0.3rem;
+      margin: 0 1rem;
+      overflow: hidden;
+
+      &:before {
+        position: absolute;
+        content: '';
+        background: $green;
+        width: 0rem;
+        height: 100%;
+        top: 0;
+        left: 0;
+      }
+    }
+
+    :global(.swiper-pagination-bullet-active) {
+      transition: all 0.7s;
+      transform: scale(1.4);
+      opacity: 0.7;
+
+      &:before {
+        animation: progress 7s infinite linear;
+      }
+    }
+
+    @keyframes progress {
+      0% {
+        width: 0%;
+      }
+      100% {
+        width: 100%;
+      }
+    }
   }
 }
 </style>

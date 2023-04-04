@@ -43,13 +43,14 @@ export default defineComponent({
 <style lang="scss" module>
 .card {
   width: 25.5rem;
-  /* height: 16rem; */
+  height: 16rem;
   /* border: 1px solid royalblue; */
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: space-between;
   padding: 2.1rem 1.8rem;
+  overflow: hidden;
 
   .head {
     display: flex;

@@ -60,5 +60,6 @@ export default defineComponent({
   height: 100%;
   position: relative;
   /* overflow: auto; */
+  overflow: hidden;
 }
 </style>
