@@ -10,7 +10,7 @@
     <AboutMe />
     <Results />
     <Skills />
-    sertificates projects reviews contacts
+    sertificates, projects, reviews, contacts
   </div>
 </template>
 

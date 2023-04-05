@@ -131,9 +131,10 @@ export default defineComponent({
             },
             {
               id: `cardItem${idx++}`,
-              svgName: 'js',
-              title: 'Javascript',
-              description: 'Разработка высоко-нагруженных приложений на JS',
+              svgName: 'babel-original',
+              title: 'Babel',
+              description:
+                'Не забываю писать в новом стиле не теряя поддержки старых браузеров',
             },
           ],
         },
@@ -142,27 +143,92 @@ export default defineComponent({
           cards: [
             {
               id: `cardItem${idx++}`,
-              svgName: 'js',
-              title: 'Javascript',
-              description: 'Разработка высоко-нагруженных приложений на JS',
+              svgName: 'github_cat',
+              title: 'Git',
+              description:
+                'Удаленная разработка с использованием системы контроля версий',
             },
             {
               id: `cardItem${idx++}`,
-              svgName: 'js',
-              title: 'Javascript',
-              description: 'Разработка высоко-нагруженных приложений на JS',
+              svgName: 'gulp-plain',
+              title: 'Gulp',
+              description: 'Использую менеджер задаче в старых проектах',
             },
             {
               id: `cardItem${idx++}`,
-              svgName: 'js',
-              title: 'Javascript',
-              description: 'Разработка высоко-нагруженных приложений на JS',
+              svgName: 'gitlab-original-wordmark',
+              title: 'GITHUB-GITLAB',
+              description: 'Использую лучший хостинг для удаленных репо',
             },
             {
               id: `cardItem${idx++}`,
-              svgName: 'js',
-              title: 'Javascript',
-              description: 'Разработка высоко-нагруженных приложений на JS',
+              svgName: 'docker',
+              title: 'Docker',
+              description:
+                'Разворачиваю проект для локальный разработки с использованием Docker',
+            },
+          ],
+        },
+        {
+          id: `slideItem${idx++}`,
+          cards: [
+            {
+              id: `cardItem${idx++}`,
+              svgName: 'vuejs-original-wordmark',
+              title: 'Vue JS',
+              description: 'Работаю на самом скоростном фронтенд фреймворке',
+            },
+            {
+              id: `cardItem${idx++}`,
+              svgName: 'nuxtjs-original',
+              title: 'Nuxt JS',
+              description:
+                'лучший фреймворк с SSR поддержкой проектов для поисковых роботов',
+            },
+            {
+              id: `cardItem${idx++}`,
+              svgName: 'react',
+              title: 'React JS',
+              description: 'Использование мощных возможностей Реакта',
+            },
+            {
+              id: `cardItem${idx++}`,
+              svgName: 'redux',
+              title: 'Redux',
+              description:
+                'Использование глобального менеджера состояния для эффективного управления приложением',
+            },
+          ],
+        },
+        {
+          id: `slideItem${idx++}`,
+          cards: [
+            {
+              id: `cardItem${idx++}`,
+              svgName: 'axios',
+              title: 'Axios',
+              description:
+                'Эффективное использование популярной библиотеки для работы с сервером',
+            },
+            {
+              id: `cardItem${idx++}`,
+              svgName: 'graphql-plain-wordmark',
+              title: 'Graphql',
+              description: 'Современный язык запросов для работы с сервером ',
+            },
+            {
+              id: `cardItem${idx++}`,
+              svgName: 'apollo',
+              title: 'Apollo',
+              description:
+                'Одна из самых лучших библиотек для работы с Graphql',
+            },
+            {
+              id: `cardItem${idx++}`,
+              svgName: 'mongodb-plain-wordmark',
+              title: 'Express JS, Nest JS, Mongo DB',
+              description:
+                'Поддержка бэка с ипользованием Express JS, Nest JS и БД Монги',
             },
           ],
         },
@@ -188,13 +254,14 @@ export default defineComponent({
         // Optional parameters
         // direction: 'gorizontal',
         loop: true,
-        // autoplay: {
-        //   delay: 5000,
-        // },
-        // speed: 2000,
+        autoplay: {
+          delay: 8000,
+        },
+        speed: 2000,
         // If we need pagination
         pagination: {
           el: '.swiper-pagination',
+          clickable: true,
         },
         // Navigation arrows
         navigation: {
@@ -261,8 +328,9 @@ export default defineComponent({
     }
 
     :global(.swiper-pagination) {
-      top: 90%;
-      left: 50%;
+      top: 95%;
+      width: 100%;
+      /* left: 50%; */
     }
 
     :global(.swiper-pagination-bullet) {
@@ -272,6 +340,7 @@ export default defineComponent({
       border-radius: 0.3rem;
       margin: 0 1rem;
       overflow: hidden;
+      cursor: pointer;
 
       &:before {
         position: absolute;
@@ -290,7 +359,7 @@ export default defineComponent({
       opacity: 0.7;
 
       &:before {
-        animation: progress 7s infinite linear;
+        animation: progress 10s infinite linear;
       }
     }
 
