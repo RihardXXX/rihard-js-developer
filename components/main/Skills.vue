@@ -6,7 +6,7 @@
       <VInfo
         label="Мои навыки"
         title="<span>Почему вы</span> выберете меня ?"
-        description="Я middle frontend-developer. Моя страсть — разработка интерфейсов развивающих бизнес проекты  компании."
+        description="Я frontend-developer. Моя страсть — разработка интерфейсов развивающих бизнес проекты  компании."
         button-name="Связаться со мной"
       />
     </div>

@@ -10,6 +10,7 @@
     <AboutMe />
     <Results />
     <Skills />
+    <Certificates />
     sertificates, projects, reviews, contacts
   </div>
 </template>
@@ -19,6 +20,7 @@ import { defineComponent } from 'vue';
 import AboutMe from '~/components/main/AboutMe.vue';
 import Results from '~/components/main/Results.vue';
 import Skills from '~/components/main/Skills.vue';
+import Certificates from '~/components/main/Сertificates.vue';
 import Dot from '~/components/Dot.vue';
 import { IDots } from '~/components/layouts/TheHeader.vue';
 
@@ -32,6 +34,7 @@ export default defineComponent({
     Results,
     Dot,
     Skills,
+    Certificates,
   },
 
   data() {
