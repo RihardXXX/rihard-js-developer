@@ -8,8 +8,12 @@
           v-for="slide in slides"
           :key="`test${slide}`"
           :class="['swiper-slide', $style.sliderItem]"
+          @click.stop="() => showCertificate(slide)"
         >
-          {{ slide }}
+          <VImageLazy
+            src="~/assets/images/certificates/JS_React_Redux_23.png"
+            object-fit="fill"
+          />
         </div>
       </div>
       <div class="swiper-pagination"></div>
@@ -26,9 +30,14 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue';
+import VImageLazy from '@/components/VImageLazy.vue';
 
 export default defineComponent({
   name: 'CertificatesPage',
+
+  components: {
+    VImageLazy,
+  },
 
   data() {
     return {
@@ -50,7 +59,7 @@ export default defineComponent({
   },
 
   methods: {
-    initSlider() {
+    initSlider(): void {
       this.swiper = new this.$Swiper('.certificates', {
         // Optional parameters
         // direction: 'gorizontal',
@@ -60,7 +69,7 @@ export default defineComponent({
         },
         speed: 2000,
 
-        slidesPerView: 4,
+        slidesPerView: 3,
         // If we need pagination
         pagination: {
           el: '.swiper-pagination',
@@ -77,6 +86,10 @@ export default defineComponent({
         },
         spaceBetween: 15,
       });
+    },
+
+    showCertificate(certificate: number): void {
+      console.log('show modal certificate', certificate);
     },
   },
 });
@@ -96,12 +109,20 @@ export default defineComponent({
   }
   .slidesSection {
     margin-top: 1rem;
-    height: 54.7rem;
+    /* height: 54.7rem; */
+    height: 30.7rem;
 
     .sliderItem {
       /* width: 32.5rem; */
       height: 100%;
-      border: 1px solid black;
+      cursor: pointer;
+      /* border: 1px solid black; */
+
+      .imageCertificate {
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+      }
     }
   }
 

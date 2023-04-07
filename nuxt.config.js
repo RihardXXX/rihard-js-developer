@@ -50,6 +50,31 @@ export default {
     '@nuxtjs/axios',
     // https://go.nuxtjs.dev/pwa
     '@nuxtjs/pwa',
+    [
+      'nuxt-lazy-load',
+      {
+        // These are the default values
+        // images: true,
+        // videos: true,
+        // audios: true,
+        // iframes: true,
+        // native: false,
+        // directiveOnly: false,
+        directiveOnly: true,
+
+        // // Default image must be in the static folder
+        // defaultImage: '/images/default-image.jpg',
+
+        // // To remove class set value to false
+        // loadingClass: 'isLoading',
+        // loadedClass: 'isLoaded',
+        // appendClass: 'lazyLoad',
+
+        // observerConfig: {
+        //   // See IntersectionObserver documentation
+        // }
+      },
+    ],
   ],
 
   // Axios module configuration: https://go.nuxtjs.dev/config-axios
