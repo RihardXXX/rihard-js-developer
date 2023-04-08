@@ -1,11 +1,11 @@
 <template>
   <img
     v-lazy-load
-    data-src="~/assets/images/certificates/JS_React_Redux_23.png"
-    alt=""
+    :data-src="src"
+    :alt="alt"
     title=""
     :class="$style.image"
-    :styleValue="{ objectFit: objectFit }"
+    :style="`object-fit: ${objectFit}`"
   />
 </template>
 

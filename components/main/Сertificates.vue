@@ -6,14 +6,11 @@
         <!-- Slides -->
         <div
           v-for="slide in slides"
-          :key="`test${slide}`"
+          :key="slide.id"
           :class="['swiper-slide', $style.sliderItem]"
           @click.stop="() => showCertificate(slide)"
         >
-          <VImageLazy
-            src="~/assets/images/certificates/JS_React_Redux_23.png"
-            object-fit="fill"
-          />
+          <VImageLazy :src="slide.path" object-fit="contain" />
         </div>
       </div>
       <div class="swiper-pagination"></div>
@@ -32,6 +29,16 @@
 import { defineComponent } from 'vue';
 import VImageLazy from '@/components/VImageLazy.vue';
 
+// TODO: внимание когда подключишь бэк сохранишь картинки на сервере
+// TODO: сохранить картинки можно в папке экспресса или ссылка на яндекс диск генерировать
+
+interface ISlide {
+  id: string;
+  path: string;
+}
+
+let idx = 0;
+
 export default defineComponent({
   name: 'CertificatesPage',
 
@@ -41,7 +48,128 @@ export default defineComponent({
 
   data() {
     return {
-      slides: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12] as Array<number>,
+      slides: [
+        {
+          id: `certificates${idx++}`,
+          path: '/images/certificates/git-udemy.png',
+        },
+        {
+          id: `certificates${idx++}`,
+          path: '/images/certificates/js_advantages_ivan.png',
+        },
+        {
+          id: `certificates${idx++}`,
+          path: '/images/certificates/js_mih_nepom.png',
+        },
+        {
+          id: `certificates${idx++}`,
+          path: '/images/certificates/JS_OOP_Itgidinfo.png',
+        },
+        {
+          id: `certificates${idx++}`,
+          path: '/images/certificates/js_react_ivan.png',
+        },
+        {
+          id: `certificates${idx++}`,
+          path: '/images/certificates/JS_React_Redux_23.png',
+        },
+        {
+          id: `certificates${idx++}`,
+          path: '/images/certificates/js_tools.png',
+        },
+        {
+          id: `certificates${idx++}`,
+          path: '/images/certificates/js_vladilen.png',
+        },
+        {
+          id: `certificates${idx++}`,
+          path: '/images/certificates/js_vue_mecheriak.png',
+        },
+        {
+          id: `certificates${idx++}`,
+          path: '/images/certificates/js_mih_nepom.png',
+        },
+        {
+          id: `certificates${idx++}`,
+          path: '/images/certificates/js2itgidinfo.png',
+        },
+        {
+          id: `certificates${idx++}`,
+          path: '/images/certificates/JSYouraAllahverdov.png',
+        },
+        {
+          id: `certificates${idx++}`,
+          path: '/images/certificates/lodash_kochergin.png',
+        },
+        {
+          id: `certificates${idx++}`,
+          path: '/images/certificates/nestJSKochergin.png',
+        },
+        {
+          id: `certificates${idx++}`,
+          path: '/images/certificates/nuxtAcademind.png',
+        },
+        {
+          id: `certificates${idx++}`,
+          path: '/images/certificates/php_intuit.png',
+        },
+        {
+          id: `certificates${idx++}`,
+          path: '/images/certificates/react_hooks_kochergin.png',
+        },
+        {
+          id: `certificates${idx++}`,
+          path: '/images/certificates/react_redux_bura.png',
+        },
+        {
+          id: `certificates${idx++}`,
+          path: '/images/certificates/react_redux_vesel.png',
+        },
+        {
+          id: `certificates${idx++}`,
+          path: '/images/certificates/stepic_ssh.png',
+        },
+        {
+          id: `certificates${idx++}`,
+          path: '/images/certificates/stepik_python_base.png',
+        },
+        {
+          id: `certificates${idx++}`,
+          path: '/images/certificates/stepik_python.png',
+        },
+        {
+          id: `certificates${idx++}`,
+          path: '/images/certificates/vueFirebase_kokorin.png',
+        },
+        {
+          id: `certificates${idx++}`,
+          path: '/images/certificates/vuejs_kochergin.png',
+        },
+        {
+          id: `certificates${idx++}`,
+          path: '/images/certificates/vueMaximilan.png',
+        },
+        {
+          id: `certificates${idx++}`,
+          path: '/images/certificates/webdeveloper2021.png',
+        },
+        {
+          id: `certificates${idx++}`,
+          path: '/images/certificates/docker_kochergin.png',
+        },
+        {
+          id: `certificates${idx++}`,
+          path: '/images/certificates/geek_base_programming.png',
+        },
+        {
+          id: `certificates${idx++}`,
+          path: '/images/certificates/java_intuit.png',
+        },
+        {
+          id: `certificates${idx++}`,
+          path: '/images/certificates/javarush33.png',
+        },
+      ] as Array<ISlide>,
       swiper: {},
     };
   },
@@ -63,13 +191,14 @@ export default defineComponent({
       this.swiper = new this.$Swiper('.certificates', {
         // Optional parameters
         // direction: 'gorizontal',
-        loop: true,
+        loop: false,
         autoplay: {
           delay: 3000,
         },
         speed: 2000,
 
         slidesPerView: 3,
+        slidesOffsetAfter: 0,
         // If we need pagination
         pagination: {
           el: '.swiper-pagination',
@@ -88,7 +217,7 @@ export default defineComponent({
       });
     },
 
-    showCertificate(certificate: number): void {
+    showCertificate(certificate: ISlide): void {
       console.log('show modal certificate', certificate);
     },
   },
@@ -129,8 +258,8 @@ export default defineComponent({
   :global(.swiper-pagination) {
     position: absolute;
     top: 98%;
-    /* width: 100%; */
-    left: 20%;
+    width: 50%;
+    left: 25%;
     /* transform: translate(50%, -50%); */
   }
 
