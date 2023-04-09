@@ -17,7 +17,7 @@
 
       <!-- If we need navigation buttons -->
       <!-- <div class="swiper-button-prev"></div>
-<div class="swiper-button-next"></div> -->
+      <div class="swiper-button-next"></div> -->
 
       <!-- If we need scrollbar -->
       <!-- <div class="swiper-scrollbar"></div> -->
@@ -28,6 +28,7 @@
 <script lang="ts">
 import { defineComponent } from 'vue';
 import VImageLazy from '@/components/VImageLazy.vue';
+import CertificatesModal from '@/components/modals/CertificatesModal.vue';
 
 // TODO: внимание когда подключишь бэк сохранишь картинки на сервере
 // TODO: сохранить картинки можно в папке экспресса или ссылка на яндекс диск генерировать
@@ -48,6 +49,7 @@ export default defineComponent({
 
   data() {
     return {
+      modalOpen: false,
       slides: [
         {
           id: `certificates${idx++}`,
@@ -219,12 +221,22 @@ export default defineComponent({
 
     showCertificate(certificate: ISlide): void {
       console.log('show modal certificate', certificate);
+      this.$modal.open(CertificatesModal, { src: certificate.path });
     },
   },
 });
 </script>
 
 <style lang="scss" module>
+.modal {
+  position: fixed;
+  z-index: 999;
+  top: 20%;
+  left: 50%;
+  width: 300px;
+  margin-left: -150px;
+}
+
 .certificatesWrap {
   margin-top: 18.8rem;
   overflow: hidden;

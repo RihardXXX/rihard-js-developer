@@ -4,18 +4,21 @@
     <main :class="$style.main">
       <Nuxt />
     </main>
+    <TheModal />
   </div>
 </template>
 
 <script lang="ts">
 import { defineComponent } from 'vue';
 import TheHeader from '~/components/layouts/TheHeader.vue';
+import TheModal from '~/components/layouts/TheModal.vue';
 
 export default defineComponent({
   name: 'Default',
 
   components: {
     TheHeader,
+    TheModal,
   },
 });
 </script>
