@@ -200,11 +200,11 @@ export default defineComponent({
         speed: 2000,
 
         slidesPerView: 3,
-        slidesOffsetAfter: 0,
+        // slidesOffsetAfter: 0,
         // If we need pagination
         pagination: {
           el: '.swiper-pagination',
-          clickable: true,
+          // clickable: true,
         },
         // Navigation arrows
         navigation: {
@@ -220,7 +220,6 @@ export default defineComponent({
     },
 
     showCertificate(certificate: ISlide): void {
-      console.log('show modal certificate', certificate);
       this.$modal.open(CertificatesModal, { src: certificate.path });
     },
   },

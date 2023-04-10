@@ -1,5 +1,5 @@
 <template>
-  <header :class="$style.headerWrap">
+  <header ref="header" :class="$style.headerWrap">
     <Dot
       v-for="dot in dots"
       :key="dot.id"
@@ -27,8 +27,6 @@
   </header>
 </template>
 
-// TODO: Сверстать Хедар + // TODO: сделать плагин для путей апи + // TODO:
-сверстать блок обо мне // TODO: внедрить axios // TODO: внедрить axios
 <script lang="ts">
 import { defineComponent } from 'vue';
 import Dot, { size, color, IPosition } from '@/components/Dot.vue';
@@ -126,6 +124,15 @@ export default defineComponent({
   mounted(): void {
     // console.log(112);
     // console.log(this.$apiPaths);
+  },
+
+  methods: {
+    getRefs() {
+      if (!this.$refs.header) {
+        return;
+      }
+      return this.$refs?.header;
+    },
   },
 });
 </script>

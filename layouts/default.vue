@@ -5,6 +5,7 @@
       <Nuxt />
     </main>
     <TheModal />
+    <Robot />
   </div>
 </template>
 
@@ -12,6 +13,7 @@
 import { defineComponent } from 'vue';
 import TheHeader from '~/components/layouts/TheHeader.vue';
 import TheModal from '~/components/layouts/TheModal.vue';
+import Robot from '~/components/Robot.vue';
 
 export default defineComponent({
   name: 'Default',
@@ -19,6 +21,7 @@ export default defineComponent({
   components: {
     TheHeader,
     TheModal,
+    Robot,
   },
 });
 </script>
