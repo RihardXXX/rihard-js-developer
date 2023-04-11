@@ -237,8 +237,10 @@ export default defineComponent({
   },
 
   mounted() {
-    intersectionObserver(this.$refs?.skills as Element, () => {
-      this.show = true;
+    intersectionObserver(this.$refs?.skills as Element, (isIntersecting) => {
+      if (isIntersecting) {
+        this.show = true;
+      }
     });
 
     this.initSlider();

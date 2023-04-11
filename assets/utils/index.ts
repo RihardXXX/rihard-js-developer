@@ -1,4 +1,7 @@
-const intersectionObserver = (element: Element, fn: Function): void => {
+const intersectionObserver = (
+  element: Element,
+  fn: (status?: boolean) => void
+): void => {
   const options: IntersectionObserverInit = {
     // root: document.querySelector('#scrollArea'),
     // root: null,
@@ -10,7 +13,9 @@ const intersectionObserver = (element: Element, fn: Function): void => {
   const callback = function (entries: any[], observer: any) {
     entries.forEach(({ isIntersecting }: { isIntersecting: boolean }): void => {
       if (isIntersecting) {
-        fn();
+        fn(isIntersecting);
+      } else {
+        fn(isIntersecting);
       }
     });
   };

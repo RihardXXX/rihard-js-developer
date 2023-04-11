@@ -30,6 +30,7 @@
 <script lang="ts">
 import { defineComponent } from 'vue';
 import Dot, { size, color, IPosition } from '@/components/Dot.vue';
+import { intersectionObserver } from '@/assets/utils';
 // import { IAPIPaths, apiPaths } from '~/config/apiPaths';
 
 let idx: number = 1;
@@ -122,17 +123,9 @@ export default defineComponent({
   },
 
   mounted(): void {
-    // console.log(112);
-    // console.log(this.$apiPaths);
-  },
-
-  methods: {
-    getRefs() {
-      if (!this.$refs.header) {
-        return;
-      }
-      return this.$refs?.header;
-    },
+    intersectionObserver(this.$refs?.header as Element, (isIntersecting) => {
+      this.$emit('showHeader', isIntersecting);
+    });
   },
 });
 </script>

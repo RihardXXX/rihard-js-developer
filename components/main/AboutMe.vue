@@ -92,8 +92,10 @@ export default defineComponent({
   },
 
   mounted() {
-    intersectionObserver(this.$refs?.left as Element, () => {
-      this.showLeft = true;
+    intersectionObserver(this.$refs?.left as Element, (isIntersecting) => {
+      if (isIntersecting) {
+        this.showLeft = true;
+      }
     });
   },
 });

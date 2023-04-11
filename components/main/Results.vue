@@ -58,8 +58,10 @@ export default defineComponent({
   },
 
   mounted() {
-    intersectionObserver(this.$refs?.result as Element, () => {
-      this.show = true;
+    intersectionObserver(this.$refs?.result as Element, (isIntersecting) => {
+      if (isIntersecting) {
+        this.show = true;
+      }
     });
   },
 });
