@@ -123,9 +123,17 @@ export default defineComponent({
   },
 
   mounted(): void {
-    intersectionObserver(this.$refs?.header as Element, (isIntersecting) => {
+    const refHeader = this.$refs?.header as Element;
+
+    if (!refHeader) {
+      return;
+    }
+
+    intersectionObserver(refHeader, (isIntersecting) => {
       this.$emit('showHeader', isIntersecting);
     });
+
+    this.$emit('setHeaderRef', refHeader);
   },
 });
 </script>

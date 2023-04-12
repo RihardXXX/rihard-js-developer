@@ -32,7 +32,20 @@
     </div>
 
     <div :class="$style.downSection">
-      <!-- <h3 :class="[$style.message, { [$style.active]: showMessage }]">Не трожь меня сука</h3> -->
+      <div :class="$style.arrowWrap">
+        <div :class="$style.arrowSliding">
+          <div :class="$style.arrow"></div>
+        </div>
+        <div :class="$style.arrowSliding">
+          <div :class="$style.arrow"></div>
+        </div>
+        <div :class="$style.arrowSliding">
+          <div :class="$style.arrow"></div>
+        </div>
+        <div :class="$style.arrowSliding">
+          <div :class="$style.arrow"></div>
+        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -213,7 +226,7 @@ export default defineComponent({
 
         .mouthMain {
           position: absolute;
-          height: 0.7rem;
+          height: 0.4rem;
           width: 90%;
           border-radius: 4rem;
           background: $white;
@@ -261,16 +274,29 @@ export default defineComponent({
     align-items: center;
     justify-content: center;
     border-radius: 2rem;
+    padding: 1rem;
 
-    .message {
-      text-align: center;
-      color: $white;
-      opacity: 0;
-      transition: all 2s;
+    .arrowWrap {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      align-items: center;
+      width: 100%;
+      height: 100%;
 
-      &.active {
-        transition: all 2s;
-        opacity: 1;
+      .arrowSliding {
+        animation-name: arrowSlide;
+        animation-duration: 1.2s;
+        animation-iteration-count: infinite;
+        /* animation-direction: linear; */
+
+        .arrow {
+          width: 2rem;
+          height: 2rem;
+          border: 0.3rem solid;
+          border-color: $white transparent transparent $white;
+          transform: rotate(45deg);
+        }
       }
     }
   }
@@ -345,6 +371,25 @@ export default defineComponent({
   }
   100% {
     animation-timing-function: ease-out;
+  }
+}
+
+@keyframes arrowSlide {
+  0% {
+    opacity: 0;
+    transform: translateY(1.5rem);
+  }
+  20% {
+    opacity: 1;
+    transform: translateY(1rem);
+  }
+  80% {
+    opacity: 1;
+    transform: translateY(-1rem);
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(-1.5rem);
   }
 }
 </style>

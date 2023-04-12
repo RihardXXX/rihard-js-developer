@@ -1,6 +1,6 @@
 <template>
   <div :class="$style.default">
-    <TheHeader @showHeader="showHeader" />
+    <TheHeader @setHeaderRef="setHeaderRef" @showHeader="showHeader" />
     <main :class="$style.main">
       <Nuxt />
     </main>
@@ -12,6 +12,7 @@
           [$style.active]: isShowRobot,
         },
       ]"
+      @click.native="upToHeader"
     />
   </div>
 </template>
@@ -34,12 +35,27 @@ export default defineComponent({
   data() {
     return {
       isShowRobot: false,
+      refHeader: undefined as Element | undefined,
     };
   },
 
   methods: {
     showHeader(status: boolean): void {
       this.isShowRobot = Boolean(!status);
+    },
+
+    setHeaderRef(refHeader: Element | undefined) {
+      if (refHeader) {
+        this.refHeader = refHeader;
+      }
+    },
+
+    upToHeader() {
+      if (!this.refHeader) {
+        return;
+      }
+
+      this.refHeader.scrollIntoView({ behavior: 'smooth' });
     },
   },
 });
