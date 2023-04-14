@@ -244,6 +244,12 @@ export default defineComponent({
     });
 
     this.initSlider();
+
+    if (!this.$refs.skills) {
+      return;
+    }
+    // set ref current component in Header
+    this.$nuxt.$emit('setRefSkills', this.$refs.skills);
   },
 
   beforeDestroy() {

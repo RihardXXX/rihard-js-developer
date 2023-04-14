@@ -1,5 +1,5 @@
 <template>
-  <section :class="['container', $style.aboutMe]">
+  <section ref="aboutMe" :class="['container', $style.aboutMe]">
     <div
       ref="left"
       :class="[
@@ -97,6 +97,12 @@ export default defineComponent({
         this.showLeft = true;
       }
     });
+
+    if (!this.$refs.aboutMe) {
+      return;
+    }
+    // set ref current component in Header
+    this.$nuxt.$emit('setRefAboutMe', this.$refs?.aboutMe);
   },
 });
 </script>

@@ -18,8 +18,9 @@
             v-for="menuItem in menu"
             :key="`header${menuItem.id}`"
             :class="$style.navItem"
+            @click="() => selectSection(menuItem)"
           >
-            <nuxt-link :to="menuItem.to">{{ menuItem.name }}</nuxt-link>
+            {{ menuItem.name }}
           </li>
         </ul>
       </nav>
@@ -38,7 +39,7 @@ let idx: number = 1;
 interface MenuItem {
   id: number;
   name: string;
-  to: string;
+  ref: Element | undefined;
 }
 
 export interface IDots {
@@ -65,32 +66,32 @@ export default defineComponent({
         {
           id: idx++,
           name: 'Обо мне',
-          to: 'me',
+          ref: undefined,
         },
         {
           id: idx++,
           name: 'Навыки',
-          to: 'skills',
+          ref: undefined,
+        },
+        {
+          id: idx++,
+          name: 'Сертификаты',
+          ref: undefined,
+        },
+        {
+          id: idx++,
+          name: 'Отзывы',
+          ref: undefined,
         },
         {
           id: idx++,
           name: 'Портфолио',
-          to: 'portfolio',
+          ref: undefined,
         },
         {
           id: idx++,
           name: 'Контакты',
-          to: 'contacts',
-        },
-        {
-          id: idx++,
-          name: 'Блог',
-          to: 'blog',
-        },
-        {
-          id: idx++,
-          name: 'Соц. сети',
-          to: 'social',
+          ref: undefined,
         },
       ] as Array<MenuItem>,
       dots: [
@@ -122,6 +123,18 @@ export default defineComponent({
     };
   },
 
+  created() {
+    this.$nuxt.$on('setRefAboutMe', (aboutMe: Element) => {
+      this.menu = this.menu.map((m: MenuItem) => m.name === 'Обо мне' ? { ...m, ref: aboutMe } : { ...m });
+    });
+    this.$nuxt.$on('setRefSkills', (skills: Element) => {
+      this.menu = this.menu.map((m: MenuItem) => m.name === 'Навыки' ? { ...m, ref: skills } : { ...m });
+    });
+    this.$nuxt.$on('setRefCertificates', (certificates: Element) => {
+      this.menu = this.menu.map((m: MenuItem) => m.name === 'Сертификаты' ? { ...m, ref: certificates } : { ...m });
+    });
+  },
+
   mounted(): void {
     const refHeader = this.$refs?.header as Element;
 
@@ -135,6 +148,13 @@ export default defineComponent({
 
     this.$emit('setHeaderRef', refHeader);
   },
+
+
+  methods: {
+    selectSection(m: MenuItem): void {
+      m.ref?.scrollIntoView({ behavior: 'smooth' });
+    },
+  }
 });
 </script>
 
@@ -183,6 +203,7 @@ export default defineComponent({
         line-height: 145%;
         margin-left: 4rem;
         transition: all 0.5s;
+        cursor: pointer;
 
         &:first-child {
           margin-left: 0;

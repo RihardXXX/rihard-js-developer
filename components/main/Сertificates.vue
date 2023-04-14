@@ -1,5 +1,5 @@
 <template>
-  <section :class="['container', $style.certificatesWrap]">
+  <section ref="certificates" :class="['container', $style.certificatesWrap]">
     <h3 :class="$style.title">Сертификаты обучения</h3>
     <div :class="['certificates', $style.slidesSection]">
       <div v-if="Boolean(slides.length)" class="swiper-wrapper">
@@ -182,6 +182,12 @@ export default defineComponent({
     // });
 
     this.initSlider();
+
+    if (!this.$refs.certificates) {
+      return;
+    }
+    // set ref current component in Header
+    this.$nuxt.$emit('setRefCertificates', this.$refs.certificates);
   },
 
   beforeDestroy() {
