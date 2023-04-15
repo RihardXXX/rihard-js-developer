@@ -49,6 +49,14 @@ export interface IDots {
   position: IPosition;
 }
 
+type eventName = 'setRefAboutMe' | 'setRefSkills' | 'setRefCertificates';
+type menuName = 'Обо мне' | 'Навыки' | 'Сертификаты';
+
+interface IEventItem {
+  eventName: eventName;
+  menuName: menuName;
+}
+
 export default defineComponent({
   name: 'TheHeader',
 
@@ -120,19 +128,40 @@ export default defineComponent({
           position: { top: '4.9', left: '44.7' },
         },
       ] as Array<IDots>,
+      eventRefList: [
+        {
+          eventName: 'setRefAboutMe',
+          menuName: 'Обо мне',
+        },
+        {
+          eventName: 'setRefSkills',
+          menuName: 'Навыки',
+        },
+        {
+          eventName: 'setRefCertificates',
+          menuName: 'Сертификаты',
+        },
+      ] as Array<IEventItem>,
     };
   },
 
   created() {
-    this.$nuxt.$on('setRefAboutMe', (aboutMe: Element) => {
-      this.menu = this.menu.map((m: MenuItem) => m.name === 'Обо мне' ? { ...m, ref: aboutMe } : { ...m });
+    this.eventRefList.forEach(({ eventName, menuName }: IEventItem): void => {
+      this.$nuxt.$on(eventName, (element: Element) => {
+        this.menu = this.menu.map((m: MenuItem) =>
+          m.name === menuName ? { ...m, ref: element } : { ...m }
+        );
+      });
     });
-    this.$nuxt.$on('setRefSkills', (skills: Element) => {
-      this.menu = this.menu.map((m: MenuItem) => m.name === 'Навыки' ? { ...m, ref: skills } : { ...m });
-    });
-    this.$nuxt.$on('setRefCertificates', (certificates: Element) => {
-      this.menu = this.menu.map((m: MenuItem) => m.name === 'Сертификаты' ? { ...m, ref: certificates } : { ...m });
-    });
+    // this.$nuxt.$on('setRefAboutMe', (aboutMe: Element) => {
+    //   this.menu = this.menu.map((m: MenuItem) => m.name === 'Обо мне' ? { ...m, ref: aboutMe } : { ...m });
+    // });
+    // this.$nuxt.$on('setRefSkills', (skills: Element) => {
+    //   this.menu = this.menu.map((m: MenuItem) => m.name === 'Навыки' ? { ...m, ref: skills } : { ...m });
+    // });
+    // this.$nuxt.$on('setRefCertificates', (certificates: Element) => {
+    //   this.menu = this.menu.map((m: MenuItem) => m.name === 'Сертификаты' ? { ...m, ref: certificates } : { ...m });
+    // });
   },
 
   mounted(): void {
@@ -149,12 +178,11 @@ export default defineComponent({
     this.$emit('setHeaderRef', refHeader);
   },
 
-
   methods: {
     selectSection(m: MenuItem): void {
       m.ref?.scrollIntoView({ behavior: 'smooth' });
     },
-  }
+  },
 });
 </script>
 

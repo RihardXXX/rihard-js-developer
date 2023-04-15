@@ -1,8 +1,9 @@
 <template>
   <div :class="$style.info">
-    <div v-show="label" :class="$style.label">{{ label }}</div>
+    <VLabel :label="label" />
 
-    <h2 v-show="title" :class="$style.title" v-html="title" />
+    <VTitle :title="title" />
+
     <div v-show="description" :class="$style.description">
       {{ description }}
     </div>
@@ -12,9 +13,16 @@
 
 <script lang="ts">
 import { defineComponent, PropType } from 'vue';
+import VLabel from '@/components/VLabel.vue';
+import VTitle from '@/components/VTitle.vue';
 
 export default defineComponent({
   name: 'VInfo',
+
+  components: {
+    VLabel,
+    VTitle,
+  },
 
   props: {
     label: {
@@ -53,20 +61,6 @@ export default defineComponent({
   padding: 1.5rem;
   border-radius: 0.5rem;
   transition: all 1s;
-
-  .label {
-    /* width: 9.9rem; */
-    height: 6rem;
-    border: 0.05rem solid $green;
-    border-radius: 100%;
-    color: $green;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-weight: 500;
-    font-size: 2rem;
-    padding: 1rem;
-  }
 
   .title {
     font-weight: 600;

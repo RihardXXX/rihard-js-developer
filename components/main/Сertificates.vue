@@ -257,6 +257,7 @@ export default defineComponent({
     margin-top: 1rem;
     /* height: 54.7rem; */
     height: 30.7rem;
+    position: relative;
 
     .sliderItem {
       /* width: 32.5rem; */
@@ -274,7 +275,7 @@ export default defineComponent({
 
   :global(.swiper-pagination) {
     position: absolute;
-    top: 98%;
+    top: 0;
     width: 50%;
     left: 25%;
     /* transform: translate(50%, -50%); */
