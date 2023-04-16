@@ -12,7 +12,7 @@
     </p>
     <div :class="$style.profile">
       <div v-show="profileImage" :class="$style.imageWrap">
-        <VImageLazy :src="profileImage" />
+        <VImageLazy :src="profileImage" object-fit="cover" />
       </div>
       <div :class="$style.info">
         <h6 v-show="name" :class="$style.name">
@@ -71,7 +71,7 @@ export default defineComponent({
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  justify-content: flex-start;
+  justify-content: space-between;
   background: $white;
   box-shadow: 0px 3rem 11.6rem -1.6rem rgba(211, 211, 211, 0.2);
   border-radius: 0.8rem;
@@ -85,7 +85,7 @@ export default defineComponent({
   }
 
   .description {
-    margin-top: 2rem;
+    /* margin-top: 2rem; */
     font-size: 1.6rem;
     line-height: 120%;
     color: $black-200;
@@ -94,7 +94,7 @@ export default defineComponent({
     display: flex;
     align-items: center;
     justify-content: flex-start;
-    margin-top: 2.4rem;
+    /* margin-top: 2.4rem; */
 
     .imageWrap {
       width: 4rem;
