@@ -51,7 +51,7 @@ export default defineComponent({
 
 <style lang="scss" module>
 .info {
-  width: 54.5rem;
+  max-width: 54.5rem;
   height: 100%;
   /* height: 36rem; */
   display: flex;

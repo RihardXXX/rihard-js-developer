@@ -46,6 +46,7 @@
           <div :class="$style.arrow"></div>
         </div>
       </div>
+      <span :class="$style.message">жмякни</span>
     </div>
   </div>
 </template>
@@ -298,6 +299,14 @@ export default defineComponent({
           transform: rotate(45deg);
         }
       }
+    }
+
+    .message {
+      position: absolute;
+      bottom: 0;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      color: $white;
     }
   }
 }

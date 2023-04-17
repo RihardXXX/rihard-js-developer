@@ -141,6 +141,14 @@ export default defineComponent({
           eventName: 'setRefCertificates',
           menuName: 'Сертификаты',
         },
+        {
+          eventName: 'setRefReviews',
+          menuName: 'Отзывы',
+        },
+        {
+          eventName: 'setRefPortfolio',
+          menuName: 'Портфолио',
+        },
       ] as Array<IEventItem>,
     };
   },
@@ -153,15 +161,6 @@ export default defineComponent({
         );
       });
     });
-    // this.$nuxt.$on('setRefAboutMe', (aboutMe: Element) => {
-    //   this.menu = this.menu.map((m: MenuItem) => m.name === 'Обо мне' ? { ...m, ref: aboutMe } : { ...m });
-    // });
-    // this.$nuxt.$on('setRefSkills', (skills: Element) => {
-    //   this.menu = this.menu.map((m: MenuItem) => m.name === 'Навыки' ? { ...m, ref: skills } : { ...m });
-    // });
-    // this.$nuxt.$on('setRefCertificates', (certificates: Element) => {
-    //   this.menu = this.menu.map((m: MenuItem) => m.name === 'Сертификаты' ? { ...m, ref: certificates } : { ...m });
-    // });
   },
 
   mounted(): void {

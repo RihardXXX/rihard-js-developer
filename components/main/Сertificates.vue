@@ -33,7 +33,7 @@ import CertificatesModal from '@/components/modals/CertificatesModal.vue';
 // TODO: внимание когда подключишь бэк сохранишь картинки на сервере
 // TODO: сохранить картинки можно в папке экспресса или ссылка на яндекс диск генерировать
 
-interface ISlide {
+export interface ISlide {
   id: string;
   path: string;
 }
