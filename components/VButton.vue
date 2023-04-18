@@ -6,7 +6,7 @@
         [$style[`${color}`]]: color,
       },
     ]"
-    @click="$emit('emit')"
+    @click="() => $emit('click')"
   >
     <slot></slot>
   </button>

@@ -7,7 +7,17 @@
     <div v-show="description" :class="$style.description">
       {{ description }}
     </div>
-    <VButton color="green" :class="$style.btnMe"> {{ buttonName }} </VButton>
+    <a
+      v-if="isMail"
+      ref="email"
+      href="mailto:yusupa.akaeva@yandex.ru"
+      :class="$style.link"
+    >
+      yusupa.akaeva@yandex.ru
+    </a>
+    <VButton color="green" :class="$style.btnMe" @click="connect">
+      {{ buttonName }}
+    </VButton>
   </div>
 </template>
 
@@ -44,6 +54,34 @@ export default defineComponent({
       type: String as PropType<String>,
       required: false,
       default: '',
+    },
+    isMail: {
+      type: Boolean as PropType<Boolean>,
+      required: false,
+      default: false,
+    },
+  },
+
+  data() {
+    return {
+      element: undefined as Element | undefined,
+    };
+  },
+
+  created() {
+    this.$nuxt.$on('setRefContact', (element: Element) => {
+      this.element = element;
+    });
+  },
+
+  methods: {
+    connect() {
+      if (this.isMail && this.$refs.email) {
+        const link = this.$refs.email as HTMLElement;
+        link.click();
+      } else {
+        this.element?.scrollIntoView({ behavior: 'smooth' });
+      }
     },
   },
 });
@@ -88,6 +126,12 @@ export default defineComponent({
   &:hover {
     transform: perspective(600px) rotateY(20deg);
     box-shadow: 0.1rem 0.1rem 0.5rem 0.1rem $gray;
+  }
+
+  .link {
+    color: $green;
+    font-weight: 700;
+    margin-top: 1rem;
   }
 }
 </style>

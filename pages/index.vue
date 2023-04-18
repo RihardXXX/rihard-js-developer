@@ -13,6 +13,7 @@
     <Certificates />
     <Reviews />
     <Portfolio />
+    <Contact />
   </div>
 </template>
 
@@ -24,6 +25,7 @@ import Skills from '~/components/main/Skills.vue';
 import Certificates from '~/components/main/Сertificates.vue';
 import Reviews from '~/components/main/Reviews.vue';
 import Portfolio from '~/components/main/Portfolio.vue';
+import Contact from '~/components/main/Contact.vue';
 import Dot from '~/components/Dot.vue';
 import { IDots } from '~/components/layouts/TheHeader.vue';
 
@@ -40,6 +42,7 @@ export default defineComponent({
     Certificates,
     Reviews,
     Portfolio,
+    Contact,
   },
 
   data() {
