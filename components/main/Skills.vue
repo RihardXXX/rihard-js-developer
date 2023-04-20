@@ -43,10 +43,11 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue';
+import { defineComponent, PropType } from 'vue';
 import VInfo from '@/components/VInfo.vue';
 import VCardSkills from '@/components/skills/VCardSkills.vue';
 import { intersectionObserver } from '@/assets/utils';
+import { IDevice } from '~/layouts/default.vue';
 
 let idx = 0;
 
@@ -68,6 +69,13 @@ export default defineComponent({
   components: {
     VInfo,
     VCardSkills,
+  },
+
+  props: {
+    device: {
+      type: Object as PropType<IDevice>,
+      required: true,
+    },
   },
 
   data() {

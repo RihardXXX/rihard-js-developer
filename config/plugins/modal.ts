@@ -12,7 +12,6 @@ interface IModal {
 }
 
 declare module 'vue/types/vue' {
-  // this.$apiPaths inside Vue components
   interface Vue {
     $modal: IModal;
   }

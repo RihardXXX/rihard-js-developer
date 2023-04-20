@@ -52,6 +52,11 @@ body,
   margin-right: auto;
   margin-left: auto;
 
+  @include respond-to(tablet) {
+    margin-right: 0;
+    margin-left: 0;
+  }
+
   @include respond-to(mobile) {
     width: min(#{$container-width}, calc(100vw - 2 * #{$mobile-padding}));
   }

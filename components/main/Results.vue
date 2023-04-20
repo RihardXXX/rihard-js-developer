@@ -20,9 +20,10 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue';
+import { defineComponent, PropType } from 'vue';
 import VResultsCardVue from '@/components/skills/VResultsCard.vue';
 import { intersectionObserver } from '@/assets/utils';
+import { IDevice } from '~/layouts/default.vue';
 
 let idx = 0;
 
@@ -31,6 +32,13 @@ export default defineComponent({
 
   components: {
     VResultsCardVue,
+  },
+
+  props: {
+    device: {
+      type: Object as PropType<IDevice>,
+      required: true,
+    },
   },
 
   data() {

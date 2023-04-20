@@ -26,9 +26,10 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue';
+import { defineComponent, PropType } from 'vue';
 import VImageLazy from '@/components/VImageLazy.vue';
 import CertificatesModal from '@/components/modals/CertificatesModal.vue';
+import { IDevice } from '~/layouts/default.vue';
 
 // TODO: внимание когда подключишь бэк сохранишь картинки на сервере
 // TODO: сохранить картинки можно в папке экспресса или ссылка на яндекс диск генерировать
@@ -45,6 +46,13 @@ export default defineComponent({
 
   components: {
     VImageLazy,
+  },
+
+  props: {
+    device: {
+      type: Object as PropType<IDevice>,
+      required: true,
+    },
   },
 
   data() {

@@ -1,8 +1,12 @@
 <template>
   <div :class="$style.default">
-    <TheHeader @setHeaderRef="setHeaderRef" @showHeader="showHeader" />
+    <TheHeader
+      :device="device"
+      @setHeaderRef="setHeaderRef"
+      @showHeader="showHeader"
+    />
     <main :class="$style.main">
-      <Nuxt />
+      <NuxtChild :device="device" />
     </main>
     <TheModal />
     <robot-help
@@ -14,7 +18,7 @@
       ]"
       @click.native="upToHeader"
     />
-    <TheFooter />
+    <TheFooter :device="device" />
   </div>
 </template>
 
@@ -24,6 +28,13 @@ import TheHeader from '~/components/layouts/TheHeader.vue';
 import TheModal from '~/components/layouts/TheModal.vue';
 import RobotHelp from '~/components/Robot.vue';
 import TheFooter from '~/components/layouts/TheFooter.vue';
+
+export interface IDevice {
+  mobile: boolean;
+  tablet: boolean;
+  laptop: boolean;
+  large: boolean;
+}
 
 export default defineComponent({
   name: 'Default',
@@ -40,6 +51,18 @@ export default defineComponent({
       isShowRobot: false,
       refHeader: undefined as Element | undefined,
     };
+  },
+
+  computed: {
+    device(): IDevice {
+      const mq: string = this.$mq as string;
+      return {
+        mobile: mq === 'mobile',
+        tablet: mq === 'tablet',
+        laptop: mq === 'laptop',
+        large: mq === 'large',
+      };
+    },
   },
 
   methods: {

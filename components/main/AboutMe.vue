@@ -45,11 +45,12 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue';
+import { defineComponent, PropType } from 'vue';
 import Dot from '@/components/Dot.vue';
 import { IDots } from '@/components/layouts/TheHeader.vue';
 import VInfo from '@/components/VInfo.vue';
 import { intersectionObserver } from '@/assets/utils';
+import { IDevice } from '~/layouts/default.vue';
 
 let idx = 0;
 
@@ -57,6 +58,13 @@ export default defineComponent({
   name: 'AboutMe',
 
   components: { Dot, VInfo },
+
+  props: {
+    device: {
+      type: Object as PropType<IDevice>,
+      required: true,
+    },
+  },
 
   data() {
     return {
@@ -115,6 +123,11 @@ export default defineComponent({
   display: flex;
   align-items: center;
   justify-content: space-between;
+
+  @include respond-to(tablet) {
+    width: 100%;
+    flex-direction: column;
+  }
 
   .left {
     position: relative;

@@ -29,9 +29,10 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue';
+import { defineComponent, PropType } from 'vue';
 import Dot, { size, color, IPosition } from '@/components/Dot.vue';
 import { intersectionObserver } from '@/assets/utils';
+import { IDevice } from '~/layouts/default.vue';
 // import { IAPIPaths, apiPaths } from '~/config/apiPaths';
 
 let idx: number = 1;
@@ -62,6 +63,13 @@ export default defineComponent({
 
   components: {
     Dot,
+  },
+
+  props: {
+    device: {
+      type: Object as PropType<IDevice>,
+      required: true,
+    },
   },
   // asyncData (context) {
   //   context.app.$myInjectedFunction('works in asyncData')
@@ -199,9 +207,18 @@ export default defineComponent({
     justify-content: space-between;
     padding-top: 4rem;
 
+    @include respond-to(tablet) {
+      flex-direction: column;
+      width: 100%;
+    }
+
     .logo {
       position: relative;
       color: $green;
+
+      @include respond-to(tablet) {
+        margin-bottom: 2rem;
+      }
 
       .firstChar {
         position: absolute;

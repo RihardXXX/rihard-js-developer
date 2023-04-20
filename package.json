@@ -25,6 +25,7 @@
     "swiper": "^8.4.2",
     "uniqid": "^5.4.0",
     "vue": "^2.7.10",
+    "vue-mq": "^1.0.1",
     "vue-server-renderer": "^2.7.10",
     "vue-template-compiler": "^2.7.10"
   },

@@ -34,10 +34,11 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue';
+import { defineComponent, PropType } from 'vue';
 import VLabel from '@/components/VLabel.vue';
 import VTitle from '@/components/VTitle.vue';
 import ReviewCard from '@/components/ReviewCard.vue';
+import { IDevice } from '~/layouts/default.vue';
 
 let idx = 0;
 
@@ -57,6 +58,13 @@ export default defineComponent({
     VLabel,
     VTitle,
     ReviewCard,
+  },
+
+  props: {
+    device: {
+      type: Object as PropType<IDevice>,
+      required: true,
+    },
   },
 
   data() {

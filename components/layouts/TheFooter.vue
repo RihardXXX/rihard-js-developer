@@ -11,10 +11,18 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue';
+import { defineComponent, PropType } from 'vue';
+import { IDevice } from '~/layouts/default.vue';
 
 export default defineComponent({
   name: 'TheFooter',
+
+  props: {
+    device: {
+      type: Object as PropType<IDevice>,
+      required: true,
+    },
+  },
 });
 </script>
 

@@ -7,18 +7,18 @@
       :size="dot.size"
       :position="dot.position"
     />
-    <AboutMe />
-    <Results />
-    <Skills />
-    <Certificates />
-    <Reviews />
-    <Portfolio />
-    <Contact />
+    <AboutMe :device="device" />
+    <Results :device="device" />
+    <Skills :device="device" />
+    <Certificates :device="device" />
+    <Reviews :device="device" />
+    <Portfolio :device="device" />
+    <Contact :device="device" />
   </div>
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue';
+import { defineComponent, PropType } from 'vue';
 import AboutMe from '~/components/main/AboutMe.vue';
 import Results from '~/components/main/Results.vue';
 import Skills from '~/components/main/Skills.vue';
@@ -28,6 +28,7 @@ import Portfolio from '~/components/main/Portfolio.vue';
 import Contact from '~/components/main/Contact.vue';
 import Dot from '~/components/Dot.vue';
 import { IDots } from '~/components/layouts/TheHeader.vue';
+import { IDevice } from '~/layouts/default.vue';
 
 let idx = 1;
 
@@ -43,6 +44,13 @@ export default defineComponent({
     Reviews,
     Portfolio,
     Contact,
+  },
+
+  props: {
+    device: {
+      type: Object as PropType<IDevice>,
+      required: true,
+    },
   },
 
   data() {

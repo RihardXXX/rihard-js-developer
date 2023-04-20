@@ -28,10 +28,11 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue';
+import { defineComponent, PropType } from 'vue';
 import VInfo from '@/components/VInfo.vue';
 import VImageLazy from '@/components/VImageLazy.vue';
 import { ISlide } from '@/components/main/Сertificates.vue';
+import { IDevice } from '~/layouts/default.vue';
 
 let idx = 0;
 
@@ -41,6 +42,13 @@ export default defineComponent({
   components: {
     VInfo,
     VImageLazy,
+  },
+
+  props: {
+    device: {
+      type: Object as PropType<IDevice>,
+      required: true,
+    },
   },
 
   data() {
