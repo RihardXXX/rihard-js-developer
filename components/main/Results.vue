@@ -12,7 +12,8 @@
       :mod-class="[
         $style.card,
         {
-          [$style[`active_${Number(i + 1)}`]]: show,
+          [$style[`active_${Number(i + 1)}`]]:
+            device.large || device.laptop ? show : undefined,
         },
       ]"
     />
@@ -83,6 +84,11 @@ export default defineComponent({
   align-items: center;
   justify-content: space-between;
 
+  @include respond-to(tablet) {
+    margin-top: 0;
+    flex-direction: column;
+  }
+
   .card {
     position: relative;
     top: 40rem;
@@ -106,6 +112,11 @@ export default defineComponent({
       top: 0;
       opacity: 1;
       transition: all 3s;
+    }
+
+    @include respond-to(tablet) {
+      position: static;
+      opacity: 1;
     }
   }
 }

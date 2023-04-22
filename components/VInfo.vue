@@ -123,9 +123,31 @@ export default defineComponent({
     margin-top: 4rem;
   }
 
-  &:hover {
-    transform: perspective(600px) rotateY(20deg);
+  @include respond-to(large-desktop) {
+    &:hover {
+      transform: perspective(600px) rotateY(20deg);
+      box-shadow: 0.1rem 0.1rem 0.5rem 0.1rem $gray;
+    }
+  }
+
+  @include respond-to(desktop) {
+    &:hover {
+      transform: perspective(600px) rotateY(20deg);
+      box-shadow: 0.1rem 0.1rem 0.5rem 0.1rem $gray;
+    }
+  }
+
+  @include respond-to(laptop) {
+    &:hover {
+      transform: perspective(600px) rotateY(20deg);
+    }
+  }
+
+  @include respond-to(tablet) {
     box-shadow: 0.1rem 0.1rem 0.5rem 0.1rem $gray;
+    &:hover {
+      transform: none;
+    }
   }
 
   .link {

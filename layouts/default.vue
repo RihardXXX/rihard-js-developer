@@ -105,5 +105,9 @@ export default defineComponent({
     opacity: 1;
     pointer-events: all;
   }
+
+  @include respond-to(tablet) {
+    right: 1rem;
+  }
 }
 </style>

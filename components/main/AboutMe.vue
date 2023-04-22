@@ -5,7 +5,7 @@
       :class="[
         $style.left,
         {
-          [$style.active]: showLeft,
+          [$style.active]: device.laptop || device.large ? showLeft : undefined,
         },
       ]"
     >
@@ -22,7 +22,7 @@
       :class="[
         $style.right,
         {
-          [$style.active]: showLeft,
+          [$style.active]: device.laptop || device.large ? showLeft : undefined,
         },
       ]"
       :inline="true"
@@ -127,6 +127,7 @@ export default defineComponent({
   @include respond-to(tablet) {
     width: 100%;
     flex-direction: column;
+    height: 103.7rem;
   }
 
   .left {
@@ -137,6 +138,11 @@ export default defineComponent({
     transition: all 2s;
 
     &.active {
+      left: 0;
+      opacity: 1;
+    }
+
+    @include respond-to(tablet) {
       left: 0;
       opacity: 1;
     }
@@ -152,7 +158,17 @@ export default defineComponent({
     opacity: 0;
     transition: all 2s;
 
+    @include respond-to(tablet) {
+      width: 52rem;
+      pointer-events: none;
+    }
+
     &.active {
+      right: 0;
+      opacity: 1;
+    }
+
+    @include respond-to(tablet) {
       right: 0;
       opacity: 1;
     }
@@ -165,6 +181,10 @@ export default defineComponent({
       bottom: 0;
       border: 0.5rem solid $black;
       border-radius: 0.2rem;
+
+      @include respond-to(tablet) {
+        bottom: 10.5rem;
+      }
     }
 
     .greenSquare {

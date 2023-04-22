@@ -70,6 +70,11 @@ export default defineComponent({
   background: $black;
   border-radius: 50%;
   cursor: pointer;
+  opacity: 0.8;
+
+  /* @include respond-to(tablet) {
+    opacity: .6;
+  } */
 
   &.extra-small {
     width: 0.8rem;

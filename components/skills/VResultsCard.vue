@@ -66,5 +66,18 @@ export default defineComponent({
   &:first-child {
     padding-left: 0;
   }
+
+  @include respond-to(tablet) {
+    width: 75%;
+    border-bottom: 1px solid $green;
+    border-right: none;
+    flex-direction: row;
+    padding: 2rem 0;
+    align-items: center;
+
+    .description {
+      text-align: end;
+    }
+  }
 }
 </style>
