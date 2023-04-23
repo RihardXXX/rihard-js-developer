@@ -8,6 +8,7 @@
         title="<span>Почему вы</span> выберете меня ?"
         description="Я frontend-developer. Моя страсть — разработка интерфейсов развивающих бизнес проекты  компании."
         button-name="Связаться со мной"
+        :class="$style.info"
       />
     </div>
     <div :class="['swiper', $style.swiperWrap, { [$style.active]: show }]">
@@ -347,6 +348,10 @@ export default defineComponent({
       top: 95%;
       width: 100%;
       /* left: 50%; */
+
+      @include respond-to(tablet) {
+        top: 80%;
+      }
     }
 
     :global(.swiper-pagination-bullet) {
@@ -385,6 +390,40 @@ export default defineComponent({
       }
       100% {
         width: 100%;
+      }
+    }
+  }
+
+  @include respond-to(tablet) {
+    margin-top: 3rem;
+    flex-direction: column;
+
+    .leftSection {
+      width: 100%;
+      left: -100%;
+      opacity: 0;
+
+      .info {
+        margin: 0 auto;
+      }
+    }
+
+    .swiperWrap {
+      width: 100%;
+      left: -100%;
+      opacity: 0;
+
+      &.active {
+        transition: all 4s;
+        left: 0;
+        opacity: 1;
+      }
+
+      .sliderItem {
+        gap: 1rem;
+        width: 100%;
+        justify-content: space-evenly;
+        width: 40%;
       }
     }
   }

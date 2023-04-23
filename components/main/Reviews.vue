@@ -118,7 +118,10 @@ export default defineComponent({
   },
 
   mounted() {
-    this.initSlider();
+
+    this.$nextTick(() => {
+      this.initSlider();
+    })
 
     if (!this.$refs.reviews) {
       return;
@@ -133,6 +136,12 @@ export default defineComponent({
 
   methods: {
     initSlider(): void {
+      let slidesPerView: number = 3;
+
+      if(this.device.tablet) {
+        slidesPerView = 2;
+      }
+
       this.swiper = new this.$Swiper('.reviews', {
         loop: false,
         // autoplay: {
@@ -140,7 +149,7 @@ export default defineComponent({
         // },
         // speed: 2000,
 
-        slidesPerView: 3,
+        slidesPerView,
         // slidesOffsetAfter: 0,
         // If we need pagination
         pagination: {
@@ -241,6 +250,20 @@ export default defineComponent({
     :global(.swiper-button-prev) {
       color: $black-200;
       font-weight: 900;
+    }
+  }
+
+  @include respond-to(tablet) {
+    margin-top: 3rem;
+
+    .head {
+      margin: 0 auto;
+      max-width: 90%;
+      text-align: center;
+    }
+
+    .body {
+      margin-top: 1rem;
     }
   }
 }

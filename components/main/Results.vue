@@ -2,7 +2,9 @@
   <section
     v-if="resultList.length"
     ref="result"
-    :class="['container', $style.results]"
+    :class="['container', $style.results, {
+      [$style.activeTablet]: device.tablet && show,
+    }]"
   >
     <v-results-card-vue
       v-for="(result, i) in resultList"
@@ -78,6 +80,7 @@ export default defineComponent({
 
 <style lang="scss" module>
 .results {
+  position: relative;
   margin-top: 18.8rem;
   height: 100%;
   display: flex;
@@ -87,6 +90,14 @@ export default defineComponent({
   @include respond-to(tablet) {
     margin-top: 0;
     flex-direction: column;
+    left: -100%;
+    opacity: 0;
+    transition: all 2s;
+
+    &.activeTablet {
+      left: 0;
+      opacity: 1;
+    }
   }
 
   .card {

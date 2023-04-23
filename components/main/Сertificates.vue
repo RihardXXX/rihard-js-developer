@@ -189,13 +189,15 @@ export default defineComponent({
     //   this.show = true;
     // });
 
-    this.initSlider();
-
     if (!this.$refs.certificates) {
       return;
     }
     // set ref current component in Header
     this.$nuxt.$emit('setRefCertificates', this.$refs.certificates);
+
+    this.$nextTick(() => {
+      this.initSlider();
+    })
   },
 
   beforeDestroy() {
@@ -204,6 +206,12 @@ export default defineComponent({
 
   methods: {
     initSlider(): void {
+      let slidesPerView = 3;
+
+      if (this.device.tablet) {
+        slidesPerView = 2;
+      }
+
       this.swiper = new this.$Swiper('.certificates', {
         // Optional parameters
         // direction: 'gorizontal',
@@ -213,7 +221,7 @@ export default defineComponent({
         },
         speed: 2000,
 
-        slidesPerView: 3,
+        slidesPerView,
         // slidesOffsetAfter: 0,
         // If we need pagination
         pagination: {
@@ -287,6 +295,11 @@ export default defineComponent({
     width: 50%;
     left: 25%;
     /* transform: translate(50%, -50%); */
+
+    @include respond-to(tablet) {
+      width: 100%;
+      left: 0;
+    }
   }
 
   :global(.swiper-pagination-bullet) {
@@ -326,6 +339,10 @@ export default defineComponent({
     100% {
       width: 100%;
     }
+  }
+
+  @include respond-to(tablet) {
+    margin-top: 3rem;
   }
 }
 </style>
