@@ -51,5 +51,10 @@ export default defineComponent({
     align-items: center;
     text-align: center;
   }
+
+  @include respond-to(tablet) {
+    margin-top: 3rem;
+    margin-bottom: 2rem;
+  }
 }
 </style>

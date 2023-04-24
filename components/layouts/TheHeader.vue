@@ -157,6 +157,10 @@ export default defineComponent({
           eventName: 'setRefPortfolio',
           menuName: 'Портфолио',
         },
+        {
+          eventName: 'setRefContact',
+          menuName: 'Контакты',
+        },
       ] as Array<IEventItem>,
     };
   },
@@ -198,6 +202,10 @@ export default defineComponent({
   width: 100%;
   height: 9.6rem;
   position: relative;
+
+  @include respond-to(tablet) {
+    height: auto;
+  }
 
   .main {
     position: relative;

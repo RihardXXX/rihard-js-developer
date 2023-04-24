@@ -309,14 +309,34 @@ export default defineComponent({
       color: $white;
     }
   }
-}
 
-/* .opticMain {
-      animation: blink 2.4s infinite;
-      animation-delay: 8s;
-      top: -50px;
-      border-bottom:15px inset #000;
-    } */
+  @include respond-to(tablet) {
+    height: 18rem;
+
+    .upSection {
+      height: 9rem;
+      width: 85%;
+
+      .head {
+        height: 7rem;
+        padding: 1rem 0.5rem;
+
+        .mouthWrap {
+          height: 1.2rem;
+        }
+      }
+
+      .neck {
+        height: 1rem;
+        width: 60%;
+      }
+    }
+    .downSection {
+      height: 9rem;
+      width: 85%;
+    }
+  }
+}
 
 @keyframes languageMove {
   0% {
@@ -350,12 +370,6 @@ export default defineComponent({
     transform: translateY(-0.7rem);
   }
 }
-
-/* :global(#lid2) {
-      animation: blink2 2.4s infinite;
-      animation-delay: 8s;
-      top: -50px;
-    } */
 
 @keyframes blink {
   90% {

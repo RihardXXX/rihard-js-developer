@@ -2,9 +2,13 @@
   <section
     v-if="resultList.length"
     ref="result"
-    :class="['container', $style.results, {
-      [$style.activeTablet]: device.tablet && show,
-    }]"
+    :class="[
+      'container',
+      $style.results,
+      {
+        [$style.activeTablet]: device.tablet && show,
+      },
+    ]"
   >
     <v-results-card-vue
       v-for="(result, i) in resultList"

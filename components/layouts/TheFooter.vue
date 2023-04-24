@@ -49,5 +49,13 @@ export default defineComponent({
       }
     }
   }
+
+  @include respond-to(tablet) {
+    padding: 3rem 2rem;
+
+    .item {
+      font-size: 1.8rem;
+    }
+  }
 }
 </style>

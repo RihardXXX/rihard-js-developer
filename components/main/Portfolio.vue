@@ -8,6 +8,7 @@
         title="В каких <span>проектах</span> участвовал?"
         description="Я выбрал и упомянул здесь некоторые из моих последних проектов, чтобы поделиться с вами"
         button-name="Связаться со мной"
+        :class="$style.info"
       />
     </div>
     <div :class="['portfolio', $style.swiperWrap]">
@@ -179,6 +180,10 @@ export default defineComponent({
       top: 95%;
       width: 100%;
       /* left: 50%; */
+
+      @include respond-to(tablet) {
+        top: 70%;
+      }
     }
 
     :global(.swiper-pagination-bullet) {
@@ -218,6 +223,23 @@ export default defineComponent({
       100% {
         width: 100%;
       }
+    }
+  }
+
+  @include respond-to(tablet) {
+    margin-top: 3rem;
+    flex-direction: column;
+
+    .leftSection {
+      width: 100%;
+
+      .info {
+        margin: 0 auto;
+      }
+    }
+
+    .swiperWrap {
+      margin-top: 1rem;
     }
   }
 }

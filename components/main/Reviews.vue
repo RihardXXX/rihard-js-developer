@@ -118,10 +118,9 @@ export default defineComponent({
   },
 
   mounted() {
-
     this.$nextTick(() => {
       this.initSlider();
-    })
+    });
 
     if (!this.$refs.reviews) {
       return;
@@ -138,7 +137,7 @@ export default defineComponent({
     initSlider(): void {
       let slidesPerView: number = 3;
 
-      if(this.device.tablet) {
+      if (this.device.tablet) {
         slidesPerView = 2;
       }
 

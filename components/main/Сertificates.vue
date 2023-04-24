@@ -197,7 +197,7 @@ export default defineComponent({
 
     this.$nextTick(() => {
       this.initSlider();
-    })
+    });
   },
 
   beforeDestroy() {
