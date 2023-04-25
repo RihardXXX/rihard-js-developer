@@ -53,5 +53,13 @@ export default defineComponent({
     background: $white;
     border-radius: 0.4rem;
   }
+
+  @include respond-to(mobile) {
+    width: 100%;
+
+    .close {
+      right: 0;
+    }
+  }
 }
 </style>

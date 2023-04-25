@@ -212,6 +212,10 @@ export default defineComponent({
         slidesPerView = 2;
       }
 
+      if (this.device.mobile) {
+        slidesPerView = 1;
+      }
+
       this.swiper = new this.$Swiper('.certificates', {
         // Optional parameters
         // direction: 'gorizontal',
@@ -268,6 +272,10 @@ export default defineComponent({
     line-height: 5.4rem;
     color: $black-100;
     text-align: center;
+
+    @include respond-to(mobile) {
+      font-size: 3rem;
+    }
   }
   .slidesSection {
     margin-top: 1rem;
@@ -299,6 +307,10 @@ export default defineComponent({
     @include respond-to(tablet) {
       width: 100%;
       left: 0;
+    }
+
+    @include respond-to(mobile) {
+      top: 65%;
     }
   }
 

@@ -74,5 +74,12 @@ export default defineComponent({
     line-height: 150%;
     color: $gray-100;
   }
+
+  @include respond-to(mobile) {
+    width: 20.5rem;
+    height: 16rem;
+    padding: 1.8rem 1.4rem;
+    justify-content: flex-start;
+  }
 }
 </style>

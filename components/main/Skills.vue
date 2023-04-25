@@ -352,6 +352,10 @@ export default defineComponent({
       @include respond-to(tablet) {
         top: 80%;
       }
+
+      @include respond-to(mobile) {
+        top: 95%;
+      }
     }
 
     :global(.swiper-pagination-bullet) {
@@ -405,6 +409,10 @@ export default defineComponent({
 
       .info {
         margin: 0 auto;
+
+        @include respond-to(mobile) {
+          margin: 0 1rem;
+        }
       }
     }
 
@@ -424,6 +432,16 @@ export default defineComponent({
         width: 100%;
         justify-content: space-evenly;
         width: 40%;
+      }
+    }
+  }
+
+  @include respond-to(mobile) {
+    .swiperWrap {
+      margin-top: 1rem;
+
+      .sliderItem {
+        gap: 0;
       }
     }
   }

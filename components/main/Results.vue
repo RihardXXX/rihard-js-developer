@@ -6,7 +6,8 @@
       'container',
       $style.results,
       {
-        [$style.activeTablet]: device.tablet && show,
+        [$style.activeTablet]:
+          device.tablet || device.mobile ? show : undefined,
       },
     ]"
   >
@@ -97,11 +98,19 @@ export default defineComponent({
     left: -100%;
     opacity: 0;
     transition: all 2s;
+  }
 
-    &.activeTablet {
-      left: 0;
-      opacity: 1;
-    }
+  @include respond-to(mobile) {
+    margin-top: 0;
+    flex-direction: column;
+    left: -50%;
+    opacity: 0;
+    transition: all 2s;
+  }
+
+  &.activeTablet {
+    left: 0;
+    opacity: 1;
   }
 
   .card {

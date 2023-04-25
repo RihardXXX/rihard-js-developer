@@ -15,6 +15,7 @@
         description="Меня зовут Рихард, я люблю писать код. Уже 3 года я помогаю бизнесу
         решать их проблемы с помощью моего кода."
         button-name="Связаться со мной"
+        :class="$style.info"
       />
     </div>
 
@@ -130,6 +131,11 @@ export default defineComponent({
     height: 103.7rem;
   }
 
+  @include respond-to(mobile) {
+    padding-top: 1.6rem;
+    height: 95.7rem;
+  }
+
   .left {
     position: relative;
     width: 54.5rem;
@@ -145,6 +151,14 @@ export default defineComponent({
     @include respond-to(tablet) {
       left: 0;
       opacity: 1;
+    }
+
+    @include respond-to(mobile) {
+      width: 100%;
+
+      .info {
+        margin: 0 1rem;
+      }
     }
   }
 
@@ -173,6 +187,10 @@ export default defineComponent({
       opacity: 1;
     }
 
+    @include respond-to(mobile) {
+      width: 100%;
+    }
+
     .emptySquare {
       position: absolute;
       width: 40.1rem;
@@ -185,6 +203,11 @@ export default defineComponent({
       @include respond-to(tablet) {
         bottom: 10.5rem;
       }
+
+      @include respond-to(mobile) {
+        bottom: 22.5rem;
+        height: 31.1rem;
+      }
     }
 
     .greenSquare {
@@ -194,6 +217,10 @@ export default defineComponent({
       right: 0;
       top: 8rem;
       background: $green;
+
+      @include respond-to(mobile) {
+        width: 100%;
+      }
     }
 
     .imgContainer {
@@ -207,6 +234,10 @@ export default defineComponent({
         width: 100%;
         height: 100%;
         object-fit: cover;
+      }
+
+      @include respond-to(mobile) {
+        width: 100%;
       }
     }
 

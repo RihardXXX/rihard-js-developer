@@ -12,7 +12,7 @@
         <span :class="$style.firstChar">F</span>
         <span :class="$style.textLogo">rontend developer</span>
       </div>
-      <nav>
+      <nav v-show="!device.mobile">
         <ul v-show="Boolean(menu.length)" :class="$style.navList">
           <li
             v-for="menuItem in menu"
@@ -127,13 +127,13 @@ export default defineComponent({
           id: idx++,
           size: 'medium',
           color: 'blue',
-          position: { top: '2.2', left: '59.6' },
+          position: { top: '2.2', left: '35' },
         },
         {
           id: idx++,
           size: 'small',
           color: 'gray',
-          position: { top: '4.9', left: '44.7' },
+          position: { top: '4.9', left: '30.7' },
         },
       ] as Array<IDots>,
       eventRefList: [

@@ -117,10 +117,18 @@ export default defineComponent({
     line-height: 150%;
     margin-top: 2.4rem;
     color: $gray;
+
+    @include respond-to(mobile) {
+      margin-top: 1.4rem;
+    }
   }
 
   .btnMe {
     margin-top: 4rem;
+
+    @include respond-to(mobile) {
+      margin-top: 2rem;
+    }
   }
 
   @include respond-to(large-desktop) {

@@ -59,7 +59,7 @@ body,
   }
 
   @include respond-to(mobile) {
-    width: min(#{$container-width}, calc(100vw - 2 * #{$mobile-padding}));
+    width: 100%;
   }
 }
 

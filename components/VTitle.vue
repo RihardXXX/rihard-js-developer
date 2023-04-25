@@ -29,5 +29,10 @@ export default defineComponent({
   span {
     color: $black-100;
   }
+
+  @include respond-to(mobile) {
+    font-size: 4rem;
+    line-height: 5rem;
+  }
 }
 </style>
