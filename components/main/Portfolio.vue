@@ -19,6 +19,7 @@
           v-for="slide in slides"
           :key="slide.id"
           :class="['swiper-slide', $style.sliderItem]"
+          @click.stop="() => showCertificate(slide)"
         >
           <VImageLazy :src="slide.path" object-fit="cover" />
         </div>
@@ -34,6 +35,7 @@ import VInfo from '@/components/VInfo.vue';
 import VImageLazy from '@/components/VImageLazy.vue';
 import { ISlide } from '@/components/main/Сertificates.vue';
 import { IDevice } from '~/layouts/default.vue';
+import CertificatesModal from '@/components/modals/CertificatesModal.vue';
 
 let idx = 0;
 
@@ -139,6 +141,9 @@ export default defineComponent({
         spaceBetween: 10,
       });
     },
+    showCertificate(certificate: ISlide): void {
+      this.$modal.open(CertificatesModal, { src: certificate.path });
+    },
   },
 });
 </script>
@@ -240,6 +245,19 @@ export default defineComponent({
 
     .swiperWrap {
       margin-top: 1rem;
+    }
+  }
+
+  @include respond-to(mobile) {
+    .leftSection {
+      .info {
+        margin: 0 1rem;
+      }
+    }
+
+    .swiperWrap {
+      width: 100%;
+      padding: 0 1rem;
     }
   }
 }

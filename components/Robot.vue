@@ -336,6 +336,10 @@ export default defineComponent({
       width: 85%;
     }
   }
+
+  @include respond-to(mobile) {
+    /* right: 0; */
+  }
 }
 
 @keyframes languageMove {

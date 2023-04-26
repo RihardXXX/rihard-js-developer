@@ -141,6 +141,10 @@ export default defineComponent({
         slidesPerView = 2;
       }
 
+      if (this.device.mobile) {
+        slidesPerView = 1;
+      }
+
       this.swiper = new this.$Swiper('.reviews', {
         loop: false,
         // autoplay: {

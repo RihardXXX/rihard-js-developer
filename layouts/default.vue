@@ -109,5 +109,9 @@ export default defineComponent({
   @include respond-to(tablet) {
     right: 1rem;
   }
+
+  @include respond-to(mobile) {
+    right: 0;
+  }
 }
 </style>

@@ -57,5 +57,14 @@ export default defineComponent({
       font-size: 1.8rem;
     }
   }
+
+  @include respond-to(mobile) {
+    padding: 1rem 0;
+    flex-direction: column-reverse;
+
+    .item {
+      font-size: 1.4rem;
+    }
+  }
 }
 </style>

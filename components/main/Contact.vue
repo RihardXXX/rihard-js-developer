@@ -56,5 +56,11 @@ export default defineComponent({
     margin-top: 3rem;
     margin-bottom: 2rem;
   }
+
+  @include respond-to(mobile) {
+    .info {
+      margin: 0 1rem;
+    }
+  }
 }
 </style>
