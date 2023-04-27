@@ -92,11 +92,11 @@ export default {
   // Build Configuration: https://go.nuxtjs.dev/config-build
   build: {},
 
-  mode: 'universal',
+  // mode: 'universal',
 
   target: 'static' /* or 'server' */,
 
   router: {
-    base: '/my-profile-page/'
+    base: '/<repository-name>/'
   }
 };
