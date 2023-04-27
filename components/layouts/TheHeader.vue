@@ -12,7 +12,7 @@
         <span :class="$style.firstChar">F</span>
         <span :class="$style.textLogo">rontend developer</span>
       </div>
-      <nav v-show="!device.mobile">
+      <nav :class="$style.nav">
         <ul v-show="Boolean(menu.length)" :class="$style.navList">
           <li
             v-for="menuItem in menu"
@@ -228,6 +228,10 @@ export default defineComponent({
         margin-bottom: 2rem;
       }
 
+      @include respond-to(mobile) {
+        margin-bottom: 1rem;
+      }
+
       .firstChar {
         position: absolute;
         font-size: 4.4rem;
@@ -264,6 +268,31 @@ export default defineComponent({
         &:hover {
           color: $green;
           transform: scale(1.2);
+        }
+      }
+    }
+
+    .nav {
+      @include respond-to(mobile) {
+        margin: 0 1rem;
+
+        .navList {
+          flex-wrap: wrap;
+          width: 100%;
+          justify-content: space-between;
+
+          .navItem {
+            width: 30%;
+            margin-left: 0;
+            margin: 0.5rem 0;
+            font-weight: 600;
+            font-size: 1.8rem;
+
+            &:hover {
+              color: $black;
+              transform: scale(1);
+            }
+          }
         }
       }
     }

@@ -7,6 +7,9 @@
     <a :class="$style.item" target="_blank" href="https://vk.com/github05"
       >VKontakte</a
     >
+    <a :class="$style.item" target="_blank" href="https://github.com/RihardXXX"
+      >Github</a
+    >
   </footer>
 </template>
 
@@ -48,6 +51,14 @@ export default defineComponent({
         color: $black-200;
       }
     }
+    &:nth-child(4) {
+      color: $green;
+      transition: all 1s;
+
+      &:hover {
+        color: $black-200;
+      }
+    }
   }
 
   @include respond-to(tablet) {
@@ -63,7 +74,8 @@ export default defineComponent({
     flex-direction: column-reverse;
 
     .item {
-      font-size: 1.4rem;
+      font-size: 1.6rem;
+      margin-bottom: 0.5rem;
     }
   }
 }

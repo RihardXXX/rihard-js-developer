@@ -104,6 +104,10 @@ export default defineComponent({
   &.active {
     opacity: 1;
     pointer-events: all;
+
+    @include respond-to(mobile) {
+      opacity: 0.9;
+    }
   }
 
   @include respond-to(tablet) {

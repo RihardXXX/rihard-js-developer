@@ -115,6 +115,10 @@ export default defineComponent({
         left: 50%;
         transform: translate(-50%, 0);
 
+        @include respond-to(mobile) {
+          top: -5.5rem;
+        }
+
         div {
           border: 1px solid $gray;
           width: 100%;
@@ -141,6 +145,28 @@ export default defineComponent({
           &:nth-child(4) {
             width: 2rem;
             height: 2rem;
+          }
+
+          @include respond-to(mobile) {
+            &:nth-child(1) {
+              width: 1rem;
+              height: 1rem;
+              transform: translate(0.4rem);
+            }
+            &:nth-child(2) {
+              width: 1.2rem;
+              height: 1.2rem;
+              transform: translate(0.3rem);
+            }
+            &:nth-child(3) {
+              width: 1.6rem;
+              height: 1.6rem;
+              transform: translate(0.12rem);
+            }
+            &:nth-child(4) {
+              width: 1.8rem;
+              height: 1.8rem;
+            }
           }
         }
       }
@@ -297,6 +323,11 @@ export default defineComponent({
           border: 0.3rem solid;
           border-color: $white transparent transparent $white;
           transform: rotate(45deg);
+
+          @include respond-to(mobile) {
+            width: 1.2rem;
+            height: 1.2rem;
+          }
         }
       }
     }
@@ -307,6 +338,10 @@ export default defineComponent({
       left: 50%;
       transform: translate(-50%, -50%);
       color: $white;
+
+      @include respond-to(mobile) {
+        font-size: 1.4rem;
+      }
     }
   }
 
@@ -338,7 +373,32 @@ export default defineComponent({
   }
 
   @include respond-to(mobile) {
-    /* right: 0; */
+    bottom: 1rem;
+    height: 16rem;
+
+    .upSection {
+      height: 8rem;
+      width: 75%;
+      padding: 1rem 1rem 0 1rem;
+
+      .head {
+        height: 7rem;
+        padding: 1rem 0.5rem;
+
+        .mouthWrap {
+          height: 1.2rem;
+        }
+      }
+
+      .neck {
+        height: 1rem;
+        width: 50%;
+      }
+    }
+    .downSection {
+      height: 8rem;
+      width: 75%;
+    }
   }
 }
 
