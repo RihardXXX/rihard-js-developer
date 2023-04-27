@@ -96,7 +96,7 @@ export default {
 
   target: 'static' /* or 'server' */,
 
-  router: {
-    base: '/<repository-name>/'
-  }
+  // router: {
+  //   base: '/<repository-name>/'
+  // }
 };
