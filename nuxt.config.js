@@ -95,4 +95,8 @@ export default {
   mode: 'universal',
 
   target: 'static' /* or 'server' */,
+
+  router: {
+    base: '/my-profile-page/'
+  }
 };
