@@ -1,1 +1,0 @@
-window.__NUXT__=(function(a){return {staticAssetsBase:"\u002Frihard-js-developer\u002F_nuxt\u002Fstatic\u002F1682695243",layout:"default",error:a,serverRendered:true,routePath:"\u002F",config:{_app:{basePath:"\u002Frihard-js-developer\u002F",assetsPath:"\u002Frihard-js-developer\u002F_nuxt\u002F",cdnURL:a}}}}(null));
