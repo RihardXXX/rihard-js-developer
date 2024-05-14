@@ -63,35 +63,35 @@ export default defineComponent({
       slides: [
         {
           id: `portfolio${idx++}`,
-          path: '/images/portfolio/amenu.png',
+          path: 'images/portfolio/amenu.png',
         },
         {
           id: `portfolio${idx++}`,
-          path: '/images/portfolio/4D.png',
+          path: 'images/portfolio/4D.png',
         },
         {
           id: `portfolio${idx++}`,
-          path: '/images/portfolio/brusnika.png',
+          path: 'images/portfolio/brusnika.png',
         },
         {
           id: `portfolio${idx++}`,
-          path: '/images/portfolio/krost.png',
+          path: 'images/portfolio/krost.png',
         },
         {
           id: `portfolio${idx++}`,
-          path: '/images/portfolio/lesart.png',
+          path: 'images/portfolio/lesart.png',
         },
         {
           id: `portfolio${idx++}`,
-          path: '/images/portfolio/scrile.png',
+          path: 'images/portfolio/scrile.png',
         },
         {
           id: `portfolio${idx++}`,
-          path: '/images/portfolio/vatutinki.png',
+          path: 'images/portfolio/vatutinki.png',
         },
         {
           id: `portfolio${idx++}`,
-          path: '/images/portfolio/zki.png',
+          path: 'images/portfolio/zki.png',
         },
       ] as Array<ISlide>,
     };

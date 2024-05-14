@@ -4,7 +4,7 @@
       <VImageLazy
         v-for="star in rating"
         :key="`star${star}`"
-        src="/icon/star.svg"
+        src="icon/star.svg"
       />
     </div>
     <p v-show="reviewText" :class="$style.description">
