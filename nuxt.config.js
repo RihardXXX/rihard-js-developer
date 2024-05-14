@@ -97,6 +97,7 @@ export default {
   target: 'static' /* or 'server' */,
 
   router: {
-    base: '/rihard-js-developer/'
+    // base: '/rihard-js-developer/'
+    base: '/'
   }
 };
