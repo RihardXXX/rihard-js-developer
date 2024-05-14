@@ -61,115 +61,115 @@ export default defineComponent({
       slides: [
         {
           id: `certificates${idx++}`,
-          path: '/images/certificates/git-udemy.png',
+          path: 'images/certificates/git-udemy.png',
         },
         {
           id: `certificates${idx++}`,
-          path: '/images/certificates/js_advantages_ivan.png',
+          path: 'images/certificates/js_advantages_ivan.png',
         },
         {
           id: `certificates${idx++}`,
-          path: '/images/certificates/js_mih_nepom.png',
+          path: 'images/certificates/js_mih_nepom.png',
         },
         {
           id: `certificates${idx++}`,
-          path: '/images/certificates/JS_OOP_Itgidinfo.png',
+          path: 'images/certificates/JS_OOP_Itgidinfo.png',
         },
         {
           id: `certificates${idx++}`,
-          path: '/images/certificates/js_react_ivan.png',
+          path: 'images/certificates/js_react_ivan.png',
         },
         {
           id: `certificates${idx++}`,
-          path: '/images/certificates/JS_React_Redux_23.png',
+          path: 'images/certificates/JS_React_Redux_23.png',
         },
         {
           id: `certificates${idx++}`,
-          path: '/images/certificates/js_tools.png',
+          path: 'images/certificates/js_tools.png',
         },
         {
           id: `certificates${idx++}`,
-          path: '/images/certificates/js_vladilen.png',
+          path: 'images/certificates/js_vladilen.png',
         },
         {
           id: `certificates${idx++}`,
-          path: '/images/certificates/js_vue_mecheriak.png',
+          path: 'images/certificates/js_vue_mecheriak.png',
         },
         {
           id: `certificates${idx++}`,
-          path: '/images/certificates/js_mih_nepom.png',
+          path: 'images/certificates/js_mih_nepom.png',
         },
         {
           id: `certificates${idx++}`,
-          path: '/images/certificates/js2itgidinfo.png',
+          path: 'images/certificates/js2itgidinfo.png',
         },
         {
           id: `certificates${idx++}`,
-          path: '/images/certificates/JSYouraAllahverdov.png',
+          path: 'images/certificates/JSYouraAllahverdov.png',
         },
         {
           id: `certificates${idx++}`,
-          path: '/images/certificates/lodash_kochergin.png',
+          path: 'images/certificates/lodash_kochergin.png',
         },
         {
           id: `certificates${idx++}`,
-          path: '/images/certificates/nestJSKochergin.png',
+          path: 'images/certificates/nestJSKochergin.png',
         },
         {
           id: `certificates${idx++}`,
-          path: '/images/certificates/nuxtAcademind.png',
+          path: 'images/certificates/nuxtAcademind.png',
         },
         {
           id: `certificates${idx++}`,
-          path: '/images/certificates/php_intuit.png',
+          path: 'images/certificates/php_intuit.png',
         },
         {
           id: `certificates${idx++}`,
-          path: '/images/certificates/react_hooks_kochergin.png',
+          path: 'images/certificates/react_hooks_kochergin.png',
         },
         {
           id: `certificates${idx++}`,
-          path: '/images/certificates/react_redux_bura.png',
+          path: 'images/certificates/react_redux_bura.png',
         },
         {
           id: `certificates${idx++}`,
-          path: '/images/certificates/react_redux_vesel.png',
+          path: 'images/certificates/react_redux_vesel.png',
         },
         {
           id: `certificates${idx++}`,
-          path: '/images/certificates/stepic_ssh.png',
+          path: 'images/certificates/stepic_ssh.png',
         },
         {
           id: `certificates${idx++}`,
-          path: '/images/certificates/stepik_python_base.png',
+          path: 'images/certificates/stepik_python_base.png',
         },
         {
           id: `certificates${idx++}`,
-          path: '/images/certificates/stepik_python.png',
+          path: 'images/certificates/stepik_python.png',
         },
         {
           id: `certificates${idx++}`,
-          path: '/images/certificates/vueFirebase_kokorin.png',
+          path: 'images/certificates/vueFirebase_kokorin.png',
         },
         {
           id: `certificates${idx++}`,
-          path: '/images/certificates/vuejs_kochergin.png',
+          path: 'images/certificates/vuejs_kochergin.png',
         },
         {
           id: `certificates${idx++}`,
-          path: '/images/certificates/vueMaximilan.png',
+          path: 'images/certificates/vueMaximilan.png',
         },
         {
           id: `certificates${idx++}`,
-          path: '/images/certificates/webdeveloper2021.png',
+          path: 'images/certificates/webdeveloper2021.png',
         },
         {
           id: `certificates${idx++}`,
-          path: '/images/certificates/docker_kochergin.png',
+          path: 'images/certificates/docker_kochergin.png',
         },
         {
           id: `certificates${idx++}`,
-          path: '/images/certificates/geek_base_programming.png',
+          path: 'images/certificates/geek_base_programming.png',
         },
         {
           id: `certificates${idx++}`,
