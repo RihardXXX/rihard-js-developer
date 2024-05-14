@@ -85,7 +85,7 @@ export default defineComponent({
             'Проект был написан со строгим соблюдением технического задания. Рекомендую',
           position: 'Зам. директор DoubleBe',
           name: 'Игорь Таранов',
-          profileImage: 'images/reviews/igor_taranov.jpg',
+          profileImage: 'images/reviews/Igor_taranov.jpg',
         },
         {
           id: `cardId${idx++}`,
