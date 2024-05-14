@@ -8,7 +8,7 @@
     "start": "nuxt start",
     "generate": "nuxt generate",
     "predeploy": "nuxt generate",
-    "deploy": "push-dir --dir=dist --branch=main --cleanup",
+    "deploy": "push-dir --dir=dist --branch=gh-pages --cleanup",
     "deploy:app": "npm run generate",
     "lint:js": "eslint --ext \".js,.ts,.vue\" --ignore-path .gitignore .",
     "lint:style": "stylelint \"**/*.{css,scss,sass,html,vue}\" --ignore-path .gitignore",
