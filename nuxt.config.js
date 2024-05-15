@@ -38,7 +38,20 @@ export default {
     // чтобы svg подхватывать с папки
     '@nuxtjs/svg-sprite',
     '@nuxt/image',
+    '@nuxtjs/google-fonts',
   ],
+
+  googleFonts: {
+    families: {
+      // Roboto: true,
+      // Inter: [400, 700],
+      Inter: {
+        wght: [400, 500, 600, 700],
+      },
+    },
+    display: 'swap',
+    download: true,
+  },
 
   svgSprite: {
     input: '~/assets/svg/',
