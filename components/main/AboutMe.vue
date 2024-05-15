@@ -31,7 +31,16 @@
       <div :class="$style.emptySquare"></div>
       <div :class="$style.greenSquare"></div>
       <div :class="$style.imgContainer">
-        <img src="images/rihard.png" alt="" />
+        <nuxt-img
+          :src="
+            device.tablet || device.mobile
+              ? 'images/mobile/rihard-425.webp'
+              : 'images/rihard.webp'
+          "
+          placeholder
+          format="webp"
+          loading="lazy"
+        />
       </div>
     </div>
 

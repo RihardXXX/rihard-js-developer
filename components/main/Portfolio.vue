@@ -13,11 +13,11 @@
     </div>
     <div :class="['portfolio', $style.swiperWrap]">
       <!-- Additional required wrapper -->
-      <div v-if="Boolean(slides.length)" class="swiper-wrapper">
+      <div v-if="Boolean(getSlides.length)" class="swiper-wrapper">
         <!-- Slides -->
         <div
-          v-for="slide in slides"
-          :key="slide.id"
+          v-for="(slide, index) in getSlides"
+          :key="`portfolio${index + 1}`"
           :class="['swiper-slide', $style.sliderItem]"
           @click.stop="() => showCertificate(slide)"
         >
@@ -33,11 +33,8 @@
 import { defineComponent, PropType } from 'vue';
 import VInfo from '@/components/VInfo.vue';
 import VImageLazy from '@/components/VImageLazy.vue';
-import { ISlide } from '@/components/main/Сertificates.vue';
 import { IDevice } from '~/layouts/default.vue';
 import CertificatesModal from '@/components/modals/CertificatesModal.vue';
-
-let idx = 0;
 
 export default defineComponent({
   name: 'PortfolioPage',
@@ -60,41 +57,67 @@ export default defineComponent({
 
       show: false,
 
-      slides: [
+      desktopSlides: [
         {
-          id: `portfolio${idx++}`,
-          path: 'images/portfolio/amenu.png',
+          path: 'images/portfolio/amenu.webp',
         },
         {
-          id: `portfolio${idx++}`,
-          path: 'images/portfolio/4D.png',
+          path: 'images/portfolio/4D.webp',
         },
         {
-          id: `portfolio${idx++}`,
-          path: 'images/portfolio/brusnika.png',
+          path: 'images/portfolio/brusnika.webp',
         },
         {
-          id: `portfolio${idx++}`,
-          path: 'images/portfolio/krost.png',
+          path: 'images/portfolio/krost.webp',
         },
         {
-          id: `portfolio${idx++}`,
-          path: 'images/portfolio/lesart.png',
+          path: 'images/portfolio/lesart.webp',
         },
         {
-          id: `portfolio${idx++}`,
-          path: 'images/portfolio/scrile.png',
+          path: 'images/portfolio/scrile.webp',
         },
         {
-          id: `portfolio${idx++}`,
-          path: 'images/portfolio/vatutinki.png',
+          path: 'images/portfolio/vatutinki.webp',
         },
         {
-          id: `portfolio${idx++}`,
-          path: 'images/portfolio/zki.png',
+          path: 'images/portfolio/zki.webp',
         },
-      ] as Array<ISlide>,
+      ],
+      mobileSlides: [
+        {
+          path: 'images/portfolio/mobile/amenu-425.webp',
+        },
+        {
+          path: 'images/portfolio/mobile/4D-425.webp',
+        },
+        {
+          path: 'images/portfolio/mobile/brusnika-425.webp',
+        },
+        {
+          path: 'images/portfolio/mobile/krost-425.webp',
+        },
+        {
+          path: 'images/portfolio/mobile/lesart-425.webp',
+        },
+        {
+          path: 'images/portfolio/mobile/scrile-425.webp',
+        },
+        {
+          path: 'images/portfolio/mobile/vatutinki-425.webp',
+        },
+        {
+          path: 'images/portfolio/mobile/zki-425.webp',
+        },
+      ],
     };
+  },
+
+  computed: {
+    getSlides(): { path: string }[] {
+      return this.device.tablet || this.device.mobile
+        ? this.mobileSlides
+        : this.desktopSlides;
+    },
   },
 
   mounted() {
@@ -141,7 +164,7 @@ export default defineComponent({
         spaceBetween: 10,
       });
     },
-    showCertificate(certificate: ISlide): void {
+    showCertificate(certificate: { path: string }): void {
       this.$modal.open(CertificatesModal, { src: certificate.path });
     },
   },

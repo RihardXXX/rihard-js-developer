@@ -37,6 +37,7 @@ export default {
     '@nuxtjs/style-resources',
     // чтобы svg подхватывать с папки
     '@nuxtjs/svg-sprite',
+    '@nuxt/image',
   ],
 
   svgSprite: {
@@ -98,6 +99,6 @@ export default {
 
   router: {
     // base: '/rihard-js-developer/'
-    base: '/'
-  }
+    base: '/',
+  },
 };
