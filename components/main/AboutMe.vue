@@ -40,6 +40,7 @@
           placeholder
           format="webp"
           loading="lazy"
+          alt="main-picture-rihard"
         />
       </div>
     </div>

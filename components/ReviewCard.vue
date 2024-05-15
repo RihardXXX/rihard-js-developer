@@ -5,6 +5,7 @@
         v-for="star in rating"
         :key="`star${star}`"
         src="icon/star.svg"
+        :alt="`star-rating`"
       />
     </div>
     <p v-show="reviewText" :class="$style.description">
@@ -12,7 +13,11 @@
     </p>
     <div :class="$style.profile">
       <div v-show="profileImage" :class="$style.imageWrap">
-        <VImageLazy :src="profileImage" object-fit="cover" />
+        <VImageLazy
+          :src="profileImage"
+          object-fit="cover"
+          :alt="`profile: ${profileImage?.split('/')[2].split('.')[0]}`"
+        />
       </div>
       <div :class="$style.info">
         <h6 v-show="name" :class="$style.name">

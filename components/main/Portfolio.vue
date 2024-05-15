@@ -21,7 +21,11 @@
           :class="['swiper-slide', $style.sliderItem]"
           @click.stop="() => showCertificate(slide)"
         >
-          <VImageLazy :src="slide.path" object-fit="cover" />
+          <VImageLazy
+            :src="slide.path"
+            object-fit="cover"
+            :alt="`portfolio: ${slide.path?.split('/')[2].split('.')[0]}`"
+          />
         </div>
       </div>
       <div class="swiper-pagination"></div>

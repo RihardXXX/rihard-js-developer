@@ -8,9 +8,9 @@
     </div>
     <div :class="$style.body">
       <div :class="['reviews', $style.slidesSection]">
-        <div v-if="Boolean(reviewCards.length)" class="swiper-wrapper">
+        <div v-if="Boolean(getSlides.length)" class="swiper-wrapper">
           <ReviewCard
-            v-for="card in reviewCards"
+            v-for="card in getSlides"
             :key="card.id"
             :name="card.name"
             :position="card.position"
@@ -69,14 +69,14 @@ export default defineComponent({
 
   data() {
     return {
-      reviewCards: [
+      reviewCardsDesktop: [
         {
           id: `cardId${idx++}`,
           rating: 5,
           reviewText: 'Работа была выполнена в указанные сроки',
           position: 'Руководитель отдела развития GetMO',
           name: 'Александра Иванова',
-          profileImage: 'images/reviews/Aleksandra_Ivanova.jpg',
+          profileImage: 'images/reviews/Aleksandra_Ivanova.webp',
         },
         {
           id: `cardId${idx++}`,
@@ -85,7 +85,7 @@ export default defineComponent({
             'Проект был написан со строгим соблюдением технического задания. Рекомендую',
           position: 'Зам. директор DoubleBe',
           name: 'Игорь Таранов',
-          profileImage: 'images/reviews/Igor_taranov.jpg',
+          profileImage: 'images/reviews/Igor_taranov.webp',
         },
         {
           id: `cardId${idx++}`,
@@ -93,7 +93,7 @@ export default defineComponent({
           reviewText: 'Архитектура написания кода понравилась',
           position: 'Senior Fronted-developer Avito Tech',
           name: 'Иван Петров',
-          profileImage: 'images/reviews/Ivan_Petrov.jpg',
+          profileImage: 'images/reviews/Ivan_Petrov.webp',
         },
         {
           id: `cardId${idx++}`,
@@ -102,7 +102,7 @@ export default defineComponent({
             'Решила расширить функционал своего текущего веб приложения. Работой довольна, спасибо',
           position: 'ИП Завьялова',
           name: 'Любовь Завьялова',
-          profileImage: 'images/reviews/Luba_Zavialova.jpg',
+          profileImage: 'images/reviews/Luba_Zavialova.webp',
         },
         {
           id: `cardId${idx++}`,
@@ -110,11 +110,63 @@ export default defineComponent({
           reviewText: 'Успешная работа в команде, быстро вошел в проект',
           position: 'Team Lead Tinkoff Business',
           name: 'Валерий Кондрашов',
-          profileImage: 'images/reviews/Murad_Gasanov.jpeg',
+          profileImage: 'images/reviews/Murad_Gasanov.webp',
+        },
+      ] as Array<ICardReview>,
+      reviewCardsMobile: [
+        {
+          id: `cardId${idx++}`,
+          rating: 5,
+          reviewText: 'Работа была выполнена в указанные сроки',
+          position: 'Руководитель отдела развития GetMO',
+          name: 'Александра Иванова',
+          profileImage: 'images/reviews/mobile/Aleksandra_Ivanova-425.webp',
+        },
+        {
+          id: `cardId${idx++}`,
+          rating: 5,
+          reviewText:
+            'Проект был написан со строгим соблюдением технического задания. Рекомендую',
+          position: 'Зам. директор DoubleBe',
+          name: 'Игорь Таранов',
+          profileImage: 'images/reviews/mobile/Igor_taranov-425.webp',
+        },
+        {
+          id: `cardId${idx++}`,
+          rating: 5,
+          reviewText: 'Архитектура написания кода понравилась',
+          position: 'Senior Fronted-developer Avito Tech',
+          name: 'Иван Петров',
+          profileImage: 'images/reviews/mobile/Ivan_Petrov-425.webp',
+        },
+        {
+          id: `cardId${idx++}`,
+          rating: 5,
+          reviewText:
+            'Решила расширить функционал своего текущего веб приложения. Работой довольна, спасибо',
+          position: 'ИП Завьялова',
+          name: 'Любовь Завьялова',
+          profileImage: 'images/reviews/mobile/Luba_Zavialova-425.webp',
+        },
+        {
+          id: `cardId${idx++}`,
+          rating: 5,
+          reviewText: 'Успешная работа в команде, быстро вошел в проект',
+          position: 'Team Lead Tinkoff Business',
+          name: 'Валерий Кондрашов',
+          profileImage: 'images/reviews/mobile/Murad_Gasanov-425.webp',
         },
       ] as Array<ICardReview>,
       swiper: {},
     };
+  },
+
+  computed: {
+    getSlides(): Array<ICardReview> {
+      return this.device.tablet || this.device.mobile
+        ? this.reviewCardsMobile
+        : this.reviewCardsDesktop;
+    },
   },
 
   mounted() {
