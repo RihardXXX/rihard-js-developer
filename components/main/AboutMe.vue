@@ -32,14 +32,17 @@
       <div :class="$style.greenSquare"></div>
       <div :class="$style.imgContainer">
         <nuxt-img
-          :src="
-            device.tablet || device.mobile
-              ? 'images/mobile/rihard-425.webp'
-              : 'images/rihard.webp'
-          "
+          v-if="device.tablet || device.mobile"
+          src="images/mobile/rihard-425.webp"
           placeholder
           format="webp"
-          loading="lazy"
+          alt="main-picture-rihard"
+        />
+        <nuxt-img
+          v-else
+          src="images/rihard.webp"
+          placeholder
+          format="webp"
           alt="main-picture-rihard"
         />
       </div>
