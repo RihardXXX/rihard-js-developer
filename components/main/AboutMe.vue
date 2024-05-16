@@ -36,6 +36,7 @@
           src="images/mobile/rihard-425.webp"
           placeholder
           format="webp"
+          sizes="sm:100vw md:42rem lg:42rem"
           alt="main-picture-rihard"
         />
         <nuxt-img
@@ -43,6 +44,7 @@
           src="images/rihard.webp"
           placeholder
           format="webp"
+          sizes="sm:100vw md:42rem lg:42rem"
           alt="main-picture-rihard"
         />
       </div>
@@ -258,25 +260,6 @@ export default defineComponent({
       transform: perspective(600px) rotateY(-20deg);
       box-shadow: 0.1rem 0.1rem 0.5rem 0.1rem $gray;
       transition: all 1s;
-
-      /* .emptySquare {
-        transition: all 1s;
-        width: 100%;
-        height: 100%;
-        z-index: 1;
-      } */
-
-      /* .greenSquare {
-        transition: all 1s;
-        width: 100%;
-        height: 100%;
-        top: 0;
-      }
-
-      .imgContainer {
-        width: 100%;
-        height: 100%;
-      } */
     }
   }
 }
