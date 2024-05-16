@@ -145,15 +145,15 @@ export default {
     // base: '/rihard-js-developer/'
     base: '/',
     // Установка заголовка Cache-Control для всех маршрутов
-    // headers: {
-    //   'Cache-Control': 'max-age=3600'
-    // }
+    headers: {
+      'Cache-Control': 'max-age=3600'
+    }
   },
 
   // установка кеша от сервера для файлов папки статик
-  render: {
-    static: {
-      maxAge: 3600,
-    },
-  },
+  // render: {
+  //   static: {
+  //     maxAge: 3600,
+  //   },
+  // },
 };
