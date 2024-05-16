@@ -132,9 +132,9 @@ export default {
   build: {
     // analyze: true,
     // or
-    analyze: {
-      analyzerMode: 'static',
-    },
+    // analyze: {
+    //   analyzerMode: 'static',
+    // },
   },
 
   // mode: 'universal',
