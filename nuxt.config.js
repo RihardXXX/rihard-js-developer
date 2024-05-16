@@ -129,7 +129,13 @@ export default {
   },
 
   // Build Configuration: https://go.nuxtjs.dev/config-build
-  build: {},
+  build: {
+    // analyze: true,
+    // or
+    analyze: {
+      analyzerMode: 'static',
+    },
+  },
 
   // mode: 'universal',
 
@@ -138,5 +144,16 @@ export default {
   router: {
     // base: '/rihard-js-developer/'
     base: '/',
+    // Установка заголовка Cache-Control для всех маршрутов
+    // headers: {
+    //   'Cache-Control': 'max-age=3600'
+    // }
+  },
+
+  // установка кеша от сервера для файлов папки статик
+  render: {
+    static: {
+      maxAge: 3600,
+    },
   },
 };

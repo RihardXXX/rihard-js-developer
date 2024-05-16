@@ -4,14 +4,20 @@
       @ {{ new Date().getFullYear() }} г. Все права защищены
     </div>
     <div :class="$style.item">Разработка Рихарда</div>
-    <a :class="$style.item" target="_blank" href="https://vk.com/github05"
+    <a
+      :class="[$style.item, $style._green]"
+      target="_blank"
+      href="https://vk.com/github05"
       >VKontakte</a
     >
-    <a :class="$style.item" target="_blank" href="https://github.com/RihardXXX"
+    <a
+      :class="[$style.item, $style._green]"
+      target="_blank"
+      href="https://github.com/RihardXXX"
       >Github</a
     >
     <a
-      :class="$style.item"
+      :class="[$style.item, $style._green]"
       target="_blank"
       href="https://t.me/FrontendDeveloper05"
       >Telegram</a
@@ -49,23 +55,7 @@ export default defineComponent({
     line-height: 1.6rem;
     color: $black;
 
-    &:nth-child(3) {
-      color: $green;
-      transition: all 1s;
-
-      &:hover {
-        color: $black-200;
-      }
-    }
-    &:nth-child(4) {
-      color: $green;
-      transition: all 1s;
-
-      &:hover {
-        color: $black-200;
-      }
-    }
-    &:nth-child(5) {
+    &._green {
       color: $green;
       transition: all 1s;
 
