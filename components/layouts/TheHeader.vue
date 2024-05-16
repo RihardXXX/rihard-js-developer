@@ -284,7 +284,7 @@ export default defineComponent({
           .navItem {
             width: 30%;
             margin-left: 0;
-            margin: 0.5rem 0;
+            margin: 1.5rem 0;
             font-weight: 600;
             font-size: 1.8rem;
 

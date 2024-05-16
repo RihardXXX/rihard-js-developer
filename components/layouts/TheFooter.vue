@@ -10,6 +10,12 @@
     <a :class="$style.item" target="_blank" href="https://github.com/RihardXXX"
       >Github</a
     >
+    <a
+      :class="$style.item"
+      target="_blank"
+      href="https://t.me/FrontendDeveloper05"
+      >Telegram</a
+    >
   </footer>
 </template>
 
@@ -59,6 +65,14 @@ export default defineComponent({
         color: $black-200;
       }
     }
+    &:nth-child(5) {
+      color: $green;
+      transition: all 1s;
+
+      &:hover {
+        color: $black-200;
+      }
+    }
   }
 
   @include respond-to(tablet) {
@@ -75,7 +89,7 @@ export default defineComponent({
 
     .item {
       font-size: 1.6rem;
-      margin-bottom: 0.5rem;
+      margin-bottom: 2.5rem;
     }
   }
 }
