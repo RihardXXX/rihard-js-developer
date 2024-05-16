@@ -135,6 +135,8 @@ export default {
     // analyze: {
     //   analyzerMode: 'static',
     // },
+    // Установка параметра modern в true для отправки современного кода JavaScript
+    modern: true
   },
 
   // mode: 'universal',
@@ -146,11 +148,11 @@ export default {
     base: '/',
   },
 
-  generate: {
-    fallback: true, // Позволяет Nuxt генерировать 404.html
-    cache: {
-      max: 3600, // Устанавливаем максимальное время кэширования в секундах
-      immutable: true // Устанавливаем immutable заголовок Cache-Control
-    }
-  }
+  // generate: {
+  //   fallback: true, // Позволяет Nuxt генерировать 404.html
+  //   cache: {
+  //     max: 3600, // Устанавливаем максимальное время кэширования в секундах
+  //     immutable: true // Устанавливаем immutable заголовок Cache-Control
+  //   }
+  // }
 };
