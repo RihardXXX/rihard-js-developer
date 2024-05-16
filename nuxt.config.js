@@ -144,16 +144,13 @@ export default {
   router: {
     // base: '/rihard-js-developer/'
     base: '/',
-    // Установка заголовка Cache-Control для всех маршрутов
-    headers: {
-      'Cache-Control': 'max-age=3600'
-    }
   },
 
-  // установка кеша от сервера для файлов папки статик
-  // render: {
-  //   static: {
-  //     maxAge: 3600,
-  //   },
-  // },
+  generate: {
+    fallback: true, // Позволяет Nuxt генерировать 404.html
+    cache: {
+      max: 3600, // Устанавливаем максимальное время кэширования в секундах
+      immutable: true // Устанавливаем immutable заголовок Cache-Control
+    }
+  }
 };
