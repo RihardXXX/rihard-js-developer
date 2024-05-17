@@ -8,8 +8,8 @@
     <main :class="$style.main">
       <NuxtChild :device="device" />
     </main>
-    <TheModal />
-    <robot-help
+    <LazyTheModal />
+    <lazy-robot-help
       :class="[
         $style.robot,
         {
@@ -18,16 +18,13 @@
       ]"
       @click.native="upToHeader"
     />
-    <TheFooter :device="device" />
+    <LazyTheFooter :device="device" />
   </div>
 </template>
 
 <script lang="ts">
 import { defineComponent } from 'vue';
 import TheHeader from '~/components/layouts/TheHeader.vue';
-import TheModal from '~/components/layouts/TheModal.vue';
-import RobotHelp from '~/components/Robot.vue';
-import TheFooter from '~/components/layouts/TheFooter.vue';
 
 export interface IDevice {
   mobile: boolean;
@@ -41,9 +38,9 @@ export default defineComponent({
 
   components: {
     TheHeader,
-    TheModal,
-    RobotHelp,
-    TheFooter,
+    LazyTheModal: () => import('~/components/layouts/TheModal.vue'),
+    LazyRobotHelp: () => import('~/components/Robot.vue'),
+    LazyTheFooter: () => import('~/components/layouts/TheFooter.vue'),
   },
 
   data() {

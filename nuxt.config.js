@@ -136,7 +136,7 @@ export default {
     //   analyzerMode: 'static',
     // },
     // Установка параметра modern в true для отправки современного кода JavaScript
-    modern: true
+    modern: true,
   },
 
   // mode: 'universal',

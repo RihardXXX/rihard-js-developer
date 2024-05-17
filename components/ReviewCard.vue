@@ -1,16 +1,5 @@
 <template>
   <article :class="$style.card">
-    <div v-show="rating" :class="$style.rating">
-      <VImageLazy
-        v-for="star in rating"
-        :key="`star${star}`"
-        src="icon/star.svg"
-        :alt="`star-rating`"
-      />
-    </div>
-    <p v-show="reviewText" :class="$style.description">
-      {{ reviewText }}
-    </p>
     <div :class="$style.profile">
       <div v-show="profileImage" :class="$style.imageWrap">
         <VImageLazy
@@ -28,6 +17,19 @@
         </p>
       </div>
     </div>
+
+    <div v-show="rating" :class="$style.rating">
+      <VImageLazy
+        v-for="star in rating"
+        :key="`star${star}`"
+        src="icon/star.svg"
+        :alt="`star-rating`"
+        :class="$style.star"
+      />
+    </div>
+    <p v-show="reviewText" :class="$style.description">
+      {{ reviewText }}
+    </p>
   </article>
 </template>
 
@@ -76,17 +78,28 @@ export default defineComponent({
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  justify-content: space-between;
+  justify-content: flex-start;
   background: $white;
   box-shadow: 0px 3rem 11.6rem -1.6rem rgba(211, 211, 211, 0.2);
   border-radius: 0.8rem;
   padding: 3.2rem;
+  gap: 1rem;
+
+  @include respond-to(mobile) {
+    width: 100vw;
+  }
 
   .rating {
     /* width: 100%; */
+    position: absolute;
+    bottom: 1rem;
+    left: 2rem;
     display: flex;
     justify-content: flex-start;
     align-items: baseline;
+    .star {
+      width: 3rem;
+    }
   }
 
   .description {
@@ -95,10 +108,13 @@ export default defineComponent({
     line-height: 120%;
     color: $black-200;
   }
+
   .profile {
     display: flex;
     align-items: center;
     justify-content: flex-start;
+    height: 8rem;
+    width: 100%;
     /* margin-top: 2.4rem; */
 
     .imageWrap {
@@ -116,7 +132,7 @@ export default defineComponent({
         font-size: 1.6rem;
         line-height: 120%;
         letter-spacing: 0.005em;
-        color: $black-200;
+        color: $black-100;
       }
 
       .position {
@@ -125,7 +141,7 @@ export default defineComponent({
         font-size: 1.4rem;
         line-height: 130%;
         letter-spacing: 0.008em;
-        color: $gray-100;
+        color: $black-200;
       }
     }
   }

@@ -266,10 +266,10 @@ export default defineComponent({
         /* border: 1px solid black; */
 
         /* .imageCertificate {
-          width: 100%;
-          height: 100%;
-          object-fit: contain;
-        } */
+                  width: 100%;
+                  height: 100%;
+                  object-fit: contain;
+                } */
       }
     }
 
