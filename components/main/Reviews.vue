@@ -39,6 +39,7 @@ import VLabel from '@/components/VLabel.vue';
 import VTitle from '@/components/VTitle.vue';
 import ReviewCard from '@/components/ReviewCard.vue';
 import { IDevice } from '~/layouts/default.vue';
+import { EventPayloadRefInterface } from '~/components/layouts/TheHeader.vue';
 
 let idx = 0;
 
@@ -178,7 +179,10 @@ export default defineComponent({
       return;
     }
     // set ref current component in Header
-    this.$nuxt.$emit('setRefReviews', this.$refs.reviews);
+    this.$nuxt.$emit('addRef', {
+      element: this.$refs.reviews,
+      eventName: 'reviews',
+    } as EventPayloadRefInterface);
   },
 
   beforeDestroy() {

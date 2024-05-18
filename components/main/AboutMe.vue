@@ -63,7 +63,10 @@
 <script lang="ts">
 import { defineComponent, PropType } from 'vue';
 import Dot from '@/components/Dot.vue';
-import { IDots } from '@/components/layouts/TheHeader.vue';
+import {
+  IDots,
+  EventPayloadRefInterface,
+} from '@/components/layouts/TheHeader.vue';
 import VInfo from '@/components/VInfo.vue';
 import { intersectionObserver } from '@/assets/utils';
 import { IDevice } from '~/layouts/default.vue';
@@ -126,7 +129,10 @@ export default defineComponent({
       return;
     }
     // set ref current component in Header
-    this.$nuxt.$emit('setRefAboutMe', this.$refs?.aboutMe);
+    this.$nuxt.$emit('addRef', {
+      element: this.$refs.aboutMe,
+      eventName: 'aboutMe',
+    } as EventPayloadRefInterface);
   },
 });
 </script>

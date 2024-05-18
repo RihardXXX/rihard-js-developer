@@ -49,6 +49,7 @@ import VInfo from '@/components/VInfo.vue';
 import VCardSkills from '@/components/skills/VCardSkills.vue';
 import { intersectionObserver } from '@/assets/utils';
 import { IDevice } from '~/layouts/default.vue';
+import { EventPayloadRefInterface } from '~/components/layouts/TheHeader.vue';
 
 let idx = 0;
 
@@ -258,7 +259,10 @@ export default defineComponent({
       return;
     }
     // set ref current component in Header
-    this.$nuxt.$emit('setRefSkills', this.$refs.skills);
+    this.$nuxt.$emit('addRef', {
+      element: this.$refs.skills,
+      eventName: 'skills',
+    } as EventPayloadRefInterface);
   },
 
   beforeDestroy() {

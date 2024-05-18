@@ -33,13 +33,21 @@ import { defineComponent, PropType } from 'vue';
 import Dot, { size, color, IPosition } from '@/components/Dot.vue';
 import { intersectionObserver } from '@/assets/utils';
 import { IDevice } from '~/layouts/default.vue';
-// import { IAPIPaths, apiPaths } from '~/config/apiPaths';
 
 let idx: number = 1;
+
+export type eventNameRef =
+  | 'aboutMe'
+  | 'skills'
+  | 'certificates'
+  | 'reviews'
+  | 'portfolio'
+  | 'contact';
 
 interface MenuItem {
   id: number;
   name: string;
+  eventName: eventNameRef;
   ref: Element | undefined;
 }
 
@@ -50,12 +58,9 @@ export interface IDots {
   position: IPosition;
 }
 
-type eventName = 'setRefAboutMe' | 'setRefSkills' | 'setRefCertificates';
-type menuName = 'Обо мне' | 'Навыки' | 'Сертификаты';
-
-interface IEventItem {
-  eventName: eventName;
-  menuName: menuName;
+export interface EventPayloadRefInterface {
+  element: Element;
+  eventName: eventNameRef;
 }
 
 export default defineComponent({
@@ -71,42 +76,44 @@ export default defineComponent({
       required: true,
     },
   },
-  // asyncData (context) {
-  //   context.app.$myInjectedFunction('works in asyncData')
-  // },
 
   data() {
-    // '', 'Навыки', 'Портфолио', 'Контакты', 'Блог', 'Соц. сети'
     return {
       menu: [
         {
           id: idx++,
           name: 'Обо мне',
+          eventName: 'aboutMe',
           ref: undefined,
         },
         {
           id: idx++,
           name: 'Навыки',
+          eventName: 'skills',
           ref: undefined,
         },
         {
           id: idx++,
           name: 'Сертификаты',
+          eventName: 'certificates',
           ref: undefined,
         },
         {
           id: idx++,
           name: 'Отзывы',
+          eventName: 'reviews',
           ref: undefined,
         },
         {
           id: idx++,
           name: 'Портфолио',
+          eventName: 'portfolio',
           ref: undefined,
         },
         {
           id: idx++,
           name: 'Контакты',
+          eventName: 'contact',
           ref: undefined,
         },
       ] as Array<MenuItem>,
@@ -136,43 +143,24 @@ export default defineComponent({
           position: { top: '4.9', left: '30.7' },
         },
       ] as Array<IDots>,
-      eventRefList: [
-        {
-          eventName: 'setRefAboutMe',
-          menuName: 'Обо мне',
-        },
-        {
-          eventName: 'setRefSkills',
-          menuName: 'Навыки',
-        },
-        {
-          eventName: 'setRefCertificates',
-          menuName: 'Сертификаты',
-        },
-        {
-          eventName: 'setRefReviews',
-          menuName: 'Отзывы',
-        },
-        {
-          eventName: 'setRefPortfolio',
-          menuName: 'Портфолио',
-        },
-        {
-          eventName: 'setRefContact',
-          menuName: 'Контакты',
-        },
-      ] as Array<IEventItem>,
     };
   },
 
   created() {
-    this.eventRefList.forEach(({ eventName, menuName }: IEventItem): void => {
-      this.$nuxt.$on(eventName, (element: Element) => {
-        this.menu = this.menu.map((m: MenuItem) =>
-          m.name === menuName ? { ...m, ref: element } : { ...m }
-        );
-      });
-    });
+    this.$nuxt.$on(
+      'addRef',
+      ({ element, eventName }: EventPayloadRefInterface) => {
+        this.menu = this.menu.map((menuItem: MenuItem) => {
+          if (menuItem.eventName === eventName) {
+            return {
+              ...menuItem,
+              ref: element,
+            };
+          }
+          return menuItem;
+        });
+      }
+    );
   },
 
   mounted(): void {

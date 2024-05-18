@@ -25,6 +25,7 @@
 import { defineComponent, PropType } from 'vue';
 import VLabel from '@/components/VLabel.vue';
 import VTitle from '@/components/VTitle.vue';
+import { EventPayloadRefInterface } from '~/components/layouts/TheHeader.vue';
 
 export default defineComponent({
   name: 'VInfo',
@@ -69,9 +70,14 @@ export default defineComponent({
   },
 
   created() {
-    this.$nuxt.$on('setRefContact', (element: Element) => {
-      this.element = element;
-    });
+    this.$nuxt.$on(
+      'addRef',
+      ({ element, eventName }: EventPayloadRefInterface) => {
+        if (eventName === 'contact') {
+          this.element = element;
+        }
+      }
+    );
   },
 
   methods: {

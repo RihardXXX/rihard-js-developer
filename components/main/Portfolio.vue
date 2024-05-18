@@ -39,6 +39,7 @@ import VInfo from '@/components/VInfo.vue';
 import VImageLazy from '@/components/VImageLazy.vue';
 import { IDevice } from '~/layouts/default.vue';
 import CertificatesModal from '@/components/modals/CertificatesModal.vue';
+import { EventPayloadRefInterface } from '~/components/layouts/TheHeader.vue';
 
 export default defineComponent({
   name: 'PortfolioPage',
@@ -131,7 +132,10 @@ export default defineComponent({
       return;
     }
     // set ref current component in Header
-    this.$nuxt.$emit('setRefPortfolio', this.$refs.portfolio);
+    this.$nuxt.$emit('addRef', {
+      element: this.$refs.portfolio,
+      eventName: 'portfolio',
+    } as EventPayloadRefInterface);
   },
 
   beforeDestroy() {

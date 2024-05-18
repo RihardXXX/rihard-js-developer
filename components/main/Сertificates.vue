@@ -27,6 +27,7 @@ import { defineComponent, PropType } from 'vue';
 import VImageLazy from '@/components/VImageLazy.vue';
 import CertificatesModal from '@/components/modals/CertificatesModal.vue';
 import { IDevice } from '~/layouts/default.vue';
+import { EventPayloadRefInterface } from '~/components/layouts/TheHeader.vue';
 
 // TODO: внимание когда подключишь бэк сохранишь картинки на сервере
 // TODO: сохранить картинки можно в папке экспресса или ссылка на яндекс диск генерировать
@@ -254,7 +255,10 @@ export default defineComponent({
       return;
     }
     // set ref current component in Header
-    this.$nuxt.$emit('setRefCertificates', this.$refs.certificates);
+    this.$nuxt.$emit('addRef', {
+      element: this.$refs.certificates,
+      eventName: 'certificates',
+    } as EventPayloadRefInterface);
 
     this.$nextTick(() => {
       this.initSlider();

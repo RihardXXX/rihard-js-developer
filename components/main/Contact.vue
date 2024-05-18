@@ -15,6 +15,7 @@
 import { defineComponent, PropType } from 'vue';
 import VInfo from '@/components/VInfo.vue';
 import { IDevice } from '~/layouts/default.vue';
+import { EventPayloadRefInterface } from '~/components/layouts/TheHeader.vue';
 
 export default defineComponent({
   name: 'ContactPage',
@@ -30,12 +31,21 @@ export default defineComponent({
     },
   },
 
+  data() {
+    return {
+      refContact: undefined,
+    };
+  },
+
   mounted() {
     if (!this.$refs.contact) {
       return;
     }
     // set ref current component in Header
-    this.$nuxt.$emit('setRefContact', this.$refs.contact);
+    this.$nuxt.$emit('addRef', {
+      element: this.$refs.contact,
+      eventName: 'contact',
+    } as EventPayloadRefInterface);
   },
 });
 </script>
