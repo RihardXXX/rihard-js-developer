@@ -27,6 +27,7 @@ import { defineComponent, PropType } from 'vue';
 import VImageLazy from '@/components/VImageLazy.vue';
 import { IDevice } from '~/layouts/default.vue';
 import { EventPayloadRefInterface } from '~/components/layouts/TheHeader.vue';
+import CertificatesModal from "~/components/modals/CertificatesModal.vue";
 
 // TODO: внимание когда подключишь бэк сохранишь картинки на сервере
 // TODO: сохранить картинки можно в папке экспресса или ссылка на яндекс диск генерировать
@@ -310,7 +311,6 @@ export default defineComponent({
     },
 
     async showCertificate(certificate: { path: string }) {
-      const { default: CertificatesModal } = await import('@/components/modals/CertificatesModal.vue');
       this.$modal.open(CertificatesModal, { src: certificate.path });
     },
   },
