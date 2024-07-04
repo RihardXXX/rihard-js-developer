@@ -76,6 +76,9 @@ export default {
     },
     display: 'swap',
     download: true,
+    prefetch: true,
+    preload: true,
+    useStylesheet: true,
   },
 
   svgSprite: {
@@ -113,7 +116,25 @@ export default {
         // }
       },
     ],
+    '@nuxtjs/sitemap',
+    '@nuxtjs/robots',
+    '@nuxtjs/component-cache',
   ],
+
+  sitemap: {
+    hostname: 'https://rihard-developer.ru/',
+  },
+
+  robots: {
+    UserAgent: '*',
+    Allow: '/'
+  },
+
+  // Настройки для component-cache
+  componentCache: {
+    maxAge: 1000 * 60 * 60, // Кэшировать на 1 час
+    // можете настроить дополнительные параметры, если нужно
+  },
 
   // Axios module configuration: https://go.nuxtjs.dev/config-axios
   axios: {
@@ -130,13 +151,21 @@ export default {
 
   // Build Configuration: https://go.nuxtjs.dev/config-build
   build: {
-    // analyze: true,
-    // or
-    // analyze: {
-    //   analyzerMode: 'static',
-    // },
-    // Установка параметра modern в true для отправки современного кода JavaScript
     modern: true,
+    extractCSS: true,
+    optimizeCSS: true,
+    optimization: {
+      splitChunks: {
+        chunks: 'all',
+      },
+    },
+    terser: {
+      terserOptions: {
+        compress: {
+          drop_console: true,
+        },
+      },
+    },
   },
 
   // mode: 'universal',
@@ -148,11 +177,19 @@ export default {
     base: '/',
   },
 
-  // generate: {
-  //   fallback: true, // Позволяет Nuxt генерировать 404.html
-  //   cache: {
-  //     max: 3600, // Устанавливаем максимальное время кэширования в секундах
-  //     immutable: true // Устанавливаем immutable заголовок Cache-Control
-  //   }
-  // }
+  render: {
+    resourceHints: false,
+    http2: {
+      push: true,
+      pushAssets: (req, res, publicPath, preloadFiles) =>
+        preloadFiles
+          .filter(f => f.asType === 'script' && f.file === 'runtime.js')
+          .map(f => `<${publicPath}${f.file}>; rel=preload; as=${f.asType}`),
+    },
+  },
+
+  generate: {
+    fallback: '404.html',
+  },
+
 };
