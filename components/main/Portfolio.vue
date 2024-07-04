@@ -38,7 +38,6 @@ import { defineComponent, PropType } from 'vue';
 import VInfo from '@/components/VInfo.vue';
 import VImageLazy from '@/components/VImageLazy.vue';
 import { IDevice } from '~/layouts/default.vue';
-import CertificatesModal from '@/components/modals/CertificatesModal.vue';
 import { EventPayloadRefInterface } from '~/components/layouts/TheHeader.vue';
 
 export default defineComponent({
@@ -172,7 +171,8 @@ export default defineComponent({
         spaceBetween: 10,
       });
     },
-    showCertificate(certificate: { path: string }): void {
+    async showCertificate(certificate: { path: string }) {
+      const { default: CertificatesModal } = await import('@/components/modals/CertificatesModal.vue');
       this.$modal.open(CertificatesModal, { src: certificate.path });
     },
   },
