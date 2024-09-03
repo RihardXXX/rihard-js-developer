@@ -53,7 +53,7 @@ export default defineComponent({
     font-weight: 600;
     font-size: 1.6rem;
     line-height: 1.6rem;
-    color: $black;
+    color: var(--text-color);
 
     &._green {
       color: $green;

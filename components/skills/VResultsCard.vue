@@ -56,7 +56,7 @@ export default defineComponent({
   .description {
     font-size: 2.8rem;
     line-height: 2.8rem;
-    color: $black;
+    color: var(--text-color);
   }
 
   &:last-child {

@@ -248,6 +248,7 @@ export default defineComponent({
         margin-left: 4rem;
         transition: all 0.5s;
         cursor: pointer;
+        color: var(--text-color);
 
         &:first-child {
           margin-left: 0;

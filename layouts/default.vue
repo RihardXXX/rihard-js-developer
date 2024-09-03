@@ -1,14 +1,19 @@
 <template>
   <div :class="$style.default">
+    <TheThemeCheckbox />
+
     <TheHeader
       :device="device"
       @setHeaderRef="setHeaderRef"
       @showHeader="showHeader"
     />
+
     <main :class="$style.main">
       <NuxtChild :device="device" />
     </main>
+
     <LazyTheModal />
+
     <lazy-robot-help
       :class="[
         $style.robot,
@@ -18,13 +23,17 @@
       ]"
       @click.native="upToHeader"
     />
+
     <LazyTheFooter :device="device" />
   </div>
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue';
-import TheHeader from '~/components/layouts/TheHeader.vue';
+import { defineComponent } from 'vue'
+import TheHeader from '~/components/layouts/TheHeader.vue'
+import TheThemeCheckbox from '~/components/TheThemeCheckbox.vue'
+import VIcon from "~/components/ui/VIcon.vue";
+
 
 export interface IDevice {
   mobile: boolean;
@@ -37,10 +46,12 @@ export default defineComponent({
   name: 'Default',
 
   components: {
+    VIcon,
     TheHeader,
     LazyTheModal: () => import('~/components/layouts/TheModal.vue'),
     LazyRobotHelp: () => import('~/components/Robot.vue'),
     LazyTheFooter: () => import('~/components/layouts/TheFooter.vue'),
+    TheThemeCheckbox,
   },
 
   data() {

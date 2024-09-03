@@ -21,6 +21,19 @@ $blue-0: linear-gradient(
   rgba(0, 198, 251, 0.08) 0.33%,
   rgba(0, 91, 234, 0.08) 97.99%
 );
+
+:root {
+  --background-color: #fff;
+  --text-color: #000;
+  --theme-text: 'день';
+}
+
+body.dark-theme {
+  --background-color: #000;
+  --text-color: #d0c4c4;
+  --theme-text: 'ночь';
+}
+
 /* Grid */
 
 /* Transition */

@@ -88,7 +88,7 @@ export default defineComponent({
   .upSection {
     height: 10rem;
     width: 100%;
-    background: $black-100;
+    background: var(--text-color);
     padding: 1.6rem 1.4rem 0 1.4rem;
     display: flex;
     flex-direction: column;

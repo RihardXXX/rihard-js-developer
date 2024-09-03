@@ -27,7 +27,7 @@ export default defineComponent({
   margin-top: 1rem;
 
   span {
-    color: $black-100;
+    color: var(--text-color);
   }
 
   @include respond-to(mobile) {
