@@ -1,31 +1,53 @@
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref, onMounted } from 'vue'
 
 import SvgDay from '~/components/ui/SvgDay.vue'
 import SvgNight from '~/components/ui/SvgNight.vue'
 
-const checked = ref<boolean>(false)
+const themeKey = 'theme'
+type themeName = 'dark-theme' | 'light-theme'
+
+const checked = ref<themeName>('light-theme')
 
 const changeTheme = ():void => {
-  checked.value = !checked.value
 
-  if (checked.value) {
-    document.body.className = 'dark-theme'
-  } else {
-    document.body.className = ''
-  }
+  checked.value = checked.value === 'light-theme'
+    ? 'dark-theme'
+    : 'light-theme'
+
+  document.body.className = checked.value
+  localStorage.setItem(themeKey, checked.value)
 }
+
+
+const setThemeFromStorage = ():void => {
+  const currentTheme = localStorage.getItem(themeKey) as themeName | null
+
+  if (!currentTheme) {
+    return
+  }
+
+  if (['dark-theme', 'light-theme'].includes(currentTheme)) {
+    document.body.className = currentTheme
+    checked.value = currentTheme
+  }
+
+}
+
+onMounted(() => {
+  setThemeFromStorage()
+})
 
 </script>
 
 <template>
   <div class="wrap">
     <div :class="['check', {
-        'checked': checked
+        'checked': checked === 'dark-theme'
       }]"
           @click="changeTheme"
     >
-      <SvgDay v-if="checked"
+      <SvgDay v-if="checked === 'dark-theme'"
               class="day"
       />
       <SvgNight v-else
