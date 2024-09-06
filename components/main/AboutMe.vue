@@ -218,7 +218,7 @@ export default defineComponent({
       height: 40.1rem;
       left: 0;
       bottom: 0;
-      border: 0.5rem solid $black;
+      border: 0.5rem solid var(--text-color);
       border-radius: 0.2rem;
 
       @include respond-to(tablet) {

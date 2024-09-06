@@ -326,7 +326,7 @@ export default defineComponent({
     font-weight: 600;
     font-size: 4rem;
     line-height: 5.4rem;
-    color: $black-100;
+    color: var(--text-color);
     text-align: center;
 
     @include respond-to(mobile) {

@@ -63,7 +63,7 @@ export default defineComponent({
       font-weight: 600;
       font-size: 2rem;
       line-height: 2rem;
-      color: $black;
+      color: var(--text-color);
       margin-left: 1.5rem;
     }
   }
