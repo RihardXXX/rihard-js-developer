@@ -1,5 +1,8 @@
 <template>
   <div :class="$style.default">
+
+    <TheProgressBar />
+
     <TheThemeCheckbox />
 
     <TheHeader
@@ -32,6 +35,7 @@
 import { defineComponent } from 'vue'
 import TheHeader from '~/components/layouts/TheHeader.vue'
 import TheThemeCheckbox from '~/components/TheThemeCheckbox.vue'
+import TheProgressBar from '~/components/TheProgressBar.vue'
 import VIcon from "~/components/ui/VIcon.vue";
 
 
@@ -52,6 +56,7 @@ export default defineComponent({
     LazyRobotHelp: () => import('~/components/Robot.vue'),
     LazyTheFooter: () => import('~/components/layouts/TheFooter.vue'),
     TheThemeCheckbox,
+    TheProgressBar,
   },
 
   data() {
