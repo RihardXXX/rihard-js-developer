@@ -39,7 +39,7 @@ import VInfo from '@/components/VInfo.vue';
 import VImageLazy from '@/components/VImageLazy.vue';
 import { IDevice } from '~/layouts/default.vue';
 import { EventPayloadRefInterface } from '~/components/layouts/TheHeader.vue';
-import CertificatesModal from "~/components/modals/CertificatesModal.vue";
+import CertificatesModal from '~/components/modals/CertificatesModal.vue';
 
 export default defineComponent({
   name: 'PortfolioPage',

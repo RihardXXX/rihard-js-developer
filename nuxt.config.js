@@ -127,7 +127,7 @@ export default {
 
   robots: {
     UserAgent: '*',
-    Allow: '/'
+    Allow: '/',
   },
 
   // Настройки для component-cache
@@ -183,13 +183,12 @@ export default {
       push: true,
       pushAssets: (req, res, publicPath, preloadFiles) =>
         preloadFiles
-          .filter(f => f.asType === 'script' && f.file === 'runtime.js')
-          .map(f => `<${publicPath}${f.file}>; rel=preload; as=${f.asType}`),
+          .filter((f) => f.asType === 'script' && f.file === 'runtime.js')
+          .map((f) => `<${publicPath}${f.file}>; rel=preload; as=${f.asType}`),
     },
   },
 
   generate: {
     fallback: '404.html',
   },
-
 };
