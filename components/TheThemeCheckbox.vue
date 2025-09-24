@@ -1,64 +1,58 @@
 <script setup lang="ts">
-import { ref, onMounted } from 'vue'
+import { ref, onMounted } from 'vue';
 
-import SvgDay from '~/components/ui/SvgDay.vue'
-import SvgNight from '~/components/ui/SvgNight.vue'
+import SvgDay from '~/components/ui/SvgDay.vue';
+import SvgNight from '~/components/ui/SvgNight.vue';
 
-const themeKey = 'theme'
-type themeName = 'dark-theme' | 'light-theme'
+const themeKey = 'theme';
+type themeName = 'dark-theme' | 'light-theme';
 
-const checked = ref<themeName>('light-theme')
+const checked = ref<themeName>('light-theme');
 
-const changeTheme = ():void => {
+const changeTheme = (): void => {
+  checked.value =
+    checked.value === 'light-theme' ? 'dark-theme' : 'light-theme';
 
-  checked.value = checked.value === 'light-theme'
-    ? 'dark-theme'
-    : 'light-theme'
+  document.body.className = checked.value;
+  localStorage.setItem(themeKey, checked.value);
+};
 
-  document.body.className = checked.value
-  localStorage.setItem(themeKey, checked.value)
-}
-
-
-const setThemeFromStorage = ():void => {
-  const currentTheme = localStorage.getItem(themeKey) as themeName | null
+const setThemeFromStorage = (): void => {
+  const currentTheme = localStorage.getItem(themeKey) as themeName | null;
 
   if (!currentTheme) {
-    return
+    return;
   }
 
   if (['dark-theme', 'light-theme'].includes(currentTheme)) {
-    document.body.className = currentTheme
-    checked.value = currentTheme
+    document.body.className = currentTheme;
+    checked.value = currentTheme;
   }
-
-}
+};
 
 onMounted(() => {
-  setThemeFromStorage()
-})
-
+  setThemeFromStorage();
+});
 </script>
 
 <template>
   <div class="wrap">
-    <div :class="['check', {
-        'checked': checked === 'dark-theme'
-      }]"
-          @click="changeTheme"
+    <div
+      :class="[
+        'check',
+        {
+          checked: checked === 'dark-theme',
+        },
+      ]"
+      @click="changeTheme"
     >
-      <SvgDay v-if="checked === 'dark-theme'"
-              class="day"
-      />
-      <SvgNight v-else
-                class="night"
-      />
+      <SvgDay v-if="checked === 'dark-theme'" class="day" />
+      <SvgNight v-else class="night" />
     </div>
   </div>
 </template>
 
 <style scoped>
-
 .wrap {
   position: fixed;
   top: 0;
@@ -84,7 +78,7 @@ onMounted(() => {
   background-color: #272121;
   cursor: pointer;
   border-radius: 5px;
-  transition: all .5s;
+  transition: all 0.5s;
   border: 1px solid black;
 
   &.checked {
@@ -102,7 +96,7 @@ onMounted(() => {
   left: 2px;
   background-color: #fff;
   border-radius: 5px;
-  transition: all .5s;
+  transition: all 0.5s;
   text-align: center;
   display: flex;
   justify-content: center;
@@ -128,5 +122,4 @@ onMounted(() => {
   padding: 2px;
   transform: translateX(60px);
 }
-
 </style>

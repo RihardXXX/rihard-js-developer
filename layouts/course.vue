@@ -1,0 +1,154 @@
+<script lang="ts">
+import { defineComponent } from 'vue';
+import TheThemeCheckbox from '~/components/TheThemeCheckbox.vue';
+import TheProgressBar from '~/components/TheProgressBar.vue';
+import { intersectionObserver } from '@/assets/utils';
+
+export interface IDevice {
+  mobile: boolean;
+  tablet: boolean;
+  laptop: boolean;
+  large: boolean;
+}
+
+export default defineComponent({
+  components: {
+    LazyRobotHelp: () => import('~/components/Robot.vue'),
+    TheThemeCheckbox,
+    TheProgressBar,
+  },
+
+  data() {
+    return {
+      isShowRobot: false,
+      refTitle: undefined as Element | undefined,
+    };
+  },
+
+  computed: {
+    device(): IDevice {
+      const mq: string = this.$mq as string;
+      return {
+        mobile: mq === 'mobile',
+        tablet: mq === 'tablet',
+        laptop: mq === 'laptop',
+        large: mq === 'large',
+      };
+    },
+  },
+
+  mounted(): void {
+    const refTitle = this.$refs?.title as Element;
+
+    if (!refTitle) {
+      return;
+    }
+
+    intersectionObserver(refTitle, (isIntersecting) => {
+      this.setShowRobot(isIntersecting);
+    });
+
+    this.setTitleRef(refTitle);
+  },
+
+  methods: {
+    setShowRobot(status: boolean | undefined): void {
+      this.isShowRobot = Boolean(!status);
+    },
+
+    setTitleRef(refHeader: Element | undefined) {
+      if (refHeader) {
+        this.refTitle = refHeader;
+      }
+    },
+
+    upToTitle() {
+      if (!this.refTitle) {
+        return;
+      }
+
+      this.refTitle.scrollIntoView({ behavior: 'smooth', block: 'end' });
+    },
+  },
+});
+</script>
+
+<template>
+  <div :class="$style.default">
+    <TheProgressBar />
+
+    <TheThemeCheckbox />
+
+    <h1 ref="title" :class="$style.titleMain">Курс по Sanctuary JS</h1>
+
+    <main :class="$style.main">
+      <NuxtChild :device="device" />
+    </main>
+
+    <lazy-robot-help
+      :class="[
+        $style.robot,
+        {
+          [$style.active]: isShowRobot,
+          [$style.mini]: device.mobile,
+        },
+      ]"
+      @click.native="upToTitle"
+    />
+  </div>
+</template>
+
+<style lang="scss" module>
+.default {
+  height: 100%;
+}
+
+.main {
+  min-height: calc(100vh - $header-height);
+}
+
+.robot {
+  opacity: 0;
+  pointer-events: none;
+  transition: all 1s;
+
+  &.active {
+    opacity: 1;
+    pointer-events: all;
+
+    @include respond-to(mobile) {
+      opacity: 0.9;
+    }
+  }
+
+  &.mini {
+    transform: scale(0.5);
+    right: 0;
+    bottom: 0;
+  }
+
+  @include respond-to(tablet) {
+    right: 1rem;
+  }
+
+  @include respond-to(mobile) {
+    right: 0;
+  }
+}
+
+.titleMain {
+  text-align: center;
+  margin-top: 4rem;
+  font-weight: 600;
+  font-size: 2.2rem;
+  line-height: 145%;
+
+  transition: all 0.5s;
+  color: var(--text-color);
+
+  &:hover {
+    color: $green;
+    transform: scale(1.2);
+  }
+}
+</style>

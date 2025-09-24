@@ -1,6 +1,5 @@
 <template>
   <div :class="$style.default">
-
     <TheProgressBar />
 
     <TheThemeCheckbox />
@@ -32,12 +31,11 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue'
-import TheHeader from '~/components/layouts/TheHeader.vue'
-import TheThemeCheckbox from '~/components/TheThemeCheckbox.vue'
-import TheProgressBar from '~/components/TheProgressBar.vue'
-import VIcon from "~/components/ui/VIcon.vue";
-
+import { defineComponent } from 'vue';
+import TheHeader from '~/components/layouts/TheHeader.vue';
+import TheThemeCheckbox from '~/components/TheThemeCheckbox.vue';
+import TheProgressBar from '~/components/TheProgressBar.vue';
+import VIcon from '~/components/ui/VIcon.vue';
 
 export interface IDevice {
   mobile: boolean;
