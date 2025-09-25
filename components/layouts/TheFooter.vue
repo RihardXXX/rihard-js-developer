@@ -8,20 +8,23 @@
       :class="[$style.item, $style._green]"
       target="_blank"
       href="https://vk.com/github05"
-      >VKontakte</a
     >
+      VKontakte
+    </a>
     <a
       :class="[$style.item, $style._green]"
       target="_blank"
       href="https://github.com/RihardXXX"
-      >Github</a
     >
+      Github
+    </a>
     <a
       :class="[$style.item, $style._green]"
       target="_blank"
       href="https://t.me/FrontendDeveloper05"
-      >Telegram</a
     >
+      Telegram
+    </a>
   </footer>
 </template>
 

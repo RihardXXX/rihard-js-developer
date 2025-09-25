@@ -22,15 +22,29 @@ $blue-0: linear-gradient(
   rgba(0, 91, 234, 0.08) 97.99%
 );
 
+// :root {
+//   // --background-color: #fff;
+//   --background-color: #f4f1f1;;
+//   --text-color: #000;
+//   --theme-text: 'день';
+// }
+
+// body.dark-theme {
+//   // --background-color: #000;
+//   --background-color: #1a1b1d;
+//   --text-color: #d0c4c4;
+//   --theme-text: 'ночь';
+// }
+
 :root {
-  --background-color: #fff;
-  --text-color: #000;
+  --background-color: #f4f1f1; /* светлая тема */
+  --text-color: #1a1a1a; /* тёмно-серый, мягче чем #000, глаза меньше устают */
   --theme-text: 'день';
 }
 
 body.dark-theme {
-  --background-color: #000;
-  --text-color: #d0c4c4;
+  --background-color: #1a1b1d; /* тёмная тема */
+  --text-color: #e4e4e4; /* светло-серый, комфортнее чем #fff */
   --theme-text: 'ночь';
 }
 

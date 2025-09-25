@@ -21,6 +21,7 @@
         $style.robot,
         {
           [$style.active]: isShowRobot,
+          [$style.mini]: device.mobile,
         },
       ]"
       @click.native="upToHeader"
@@ -119,6 +120,12 @@ export default defineComponent({
     @include respond-to(mobile) {
       opacity: 0.9;
     }
+  }
+
+  &.mini {
+    transform: scale(0.5);
+    right: 0;
+    bottom: 0;
   }
 
   @include respond-to(tablet) {
