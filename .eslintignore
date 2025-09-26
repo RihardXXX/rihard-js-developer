@@ -1,0 +1,26 @@
+# Build directories
+.nuxt
+dist
+.next
+.cache
+coverage
+
+# Dependencies
+node_modules/
+bower_components/
+
+# Configs & logs
+.env
+*.log
+
+# IDE
+.idea/
+*.swp
+.DS_Store
+
+# Nuxt
+.sw.js
+sw.*
+
+# Your custom
+.pages/course.vue

@@ -40,13 +40,47 @@ $blue-0: linear-gradient(
   --background-color: #f4f1f1; /* светлая тема */
   --text-color: #1a1a1a; /* тёмно-серый, мягче чем #000, глаза меньше устают */
   --theme-text: 'день';
+    --code-bg: #ffffff;
+  --code-text: #24292e;
+  --code-keyword: #d73a49;
+  --code-string: #032f62;
+  --code-number: #005cc5;
+  --code-comment: #6a737d;
+  --code-function: #6f42c1;
+  --code-attr: #24292e;
+  --code-border: #e1e4e8;
 }
 
 body.dark-theme {
   --background-color: #1a1b1d; /* тёмная тема */
   --text-color: #e4e4e4; /* светло-серый, комфортнее чем #fff */
   --theme-text: 'ночь';
+    --code-bg: #1e1e1e;
+  --code-text: #d4d4d4;
+  --code-keyword: #569cd6;
+  --code-string: #ce9178;
+  --code-number: #b5cea8;
+  --code-comment: #6a9955;
+  --code-function: #dcdcaa;
+  --code-attr: #9cdcfe;
+  --code-border: #555;
 }
+
+// :root {
+
+// }
+
+// [data-theme='dark'] {
+//   --code-bg: #1e1e1e;
+//   --code-text: #d4d4d4;
+//   --code-keyword: #569cd6;
+//   --code-string: #ce9178;
+//   --code-number: #b5cea8;
+//   --code-comment: #6a9955;
+//   --code-function: #dcdcaa;
+//   --code-attr: #9cdcfe;
+//   --code-border: #555;
+// }
 
 /* Grid */
 

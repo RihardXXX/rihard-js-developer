@@ -25,44 +25,49 @@ onMounted(async () => {
 
 <style lang="scss" module>
 .codeBlock {
-  background-color: var(--background-color, #1e1e1e);
-  color: var(--text-color, #d4d4d4);
+  background-color: var(--background-color, #ffffff); /* белый фон */
+  color: var(--text-color, #24292e); /* тёмный текст */
   padding: 1rem 1.2rem;
   border-radius: 8px;
   overflow-x: auto;
   font-family: 'Fira Code', 'Consolas', 'Courier New', monospace;
   font-size: 1.8rem;
-  line-height: 1.5;
+  line-height: 1.4;
   margin: 0 1rem 2.4rem 1rem;
-  border: 1px solid var(--text-color);
-  padding: 0.2rem 0.4rem !important;
-  border-radius: 3px;
+  border: 1px solid #e1e4e8; /* светлая граница */
+  border-radius: 6px;
 
   @include respond-to(mobile) {
-    padding: 0.1rem 0.2rem !important;
+    padding: 0.8rem;
     font-size: 1.4rem;
     margin-bottom: 2.2rem;
   }
 }
 
 :global(.hljs-keyword) {
-  color: #569cd6;
+  color: #d73a49; /* if, const, return и т.д. */
 }
+
 :global(.hljs-string) {
-  color: #ce9178;
+  color: #032f62; /* строки */
 }
+
 :global(.hljs-number) {
-  color: #b5cea8;
+  color: #005cc5; /* числа */
 }
+
 :global(.hljs-comment) {
-  color: #6a9955;
+  color: #6a737d;
   font-style: italic;
 }
+
 :global(.hljs-function),
 :global(.hljs-title) {
-  color: #dcdcaa;
+  color: #6f42c1; /* имена функций */
 }
-:global(.hljs-attr) {
-  color: #9cdcfe;
+
+:global(.hljs-attr),
+:global(.hljs-property) {
+  color: #24292e; /* или #005cc5 — на ваш вкус */
 }
 </style>

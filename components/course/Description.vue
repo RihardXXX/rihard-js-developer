@@ -1,5 +1,5 @@
 <template>
-  <p :class="$style.description"><slot></slot></p>
+  <div :class="$style.description"><slot></slot></div>
 </template>
 
 <style lang="scss" module>
@@ -11,6 +11,10 @@
   border: 1px solid var(--text-color);
   padding: 0.6rem 0.8rem;
   border-radius: 3px;
+
+  p {
+    text-indent: 2rem; // или margin-left: 2rem;
+  }
 
   @include respond-to(mobile) {
     padding: 0.4rem 0.6rem;
