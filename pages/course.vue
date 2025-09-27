@@ -26,6 +26,7 @@ export default defineComponent({
       <li><a href="course#not-for-whom">Кому не подойдёт</a></li>
       <li><a href="course#imperative-vs-declarative">Императивность и декларативность</a></li>
       <li><a href="course#functional programming">Функциональное программирование</a></li>
+      <li><a href="course#pure-functions">Чистые функции</a></li>
       <!-- Добавьте остальные пункты по мере наполнения -->
     </ol>
 
@@ -147,7 +148,153 @@ export default defineComponent({
       </Description>
       <CodeBlock>
         <template #default>
-          <code>const greet = (name) => `Hello, ${name}!`</code>
+          <code>
+            // ==== Внимание ===
+            // Эти примеры Вам пока могут казаться крайне запутанными и непонятными
+            // Не пугайтесь и читайте дальше
+
+            // Пример функционального кода
+
+            const allUsers = [
+              {
+                name: 'John',
+                status: 'online',
+                age: 25
+              },
+              {
+                name: 'Alex',
+                status: 'offline',
+                age: 18
+              },
+              {
+                name: 'Angel',
+                status: 'online',
+                age: 18
+              }
+            ]
+
+            // наша цель
+            // 1. Получить пользователей со статусом онлайн
+            // 2. Старше 20 лет
+            // 3. Первого пользователя из списка
+
+            // isStatus :: String -> Object -> Boolean
+            const isStatus = status => pipe([
+              prop('status'), // берем содержимое поля статус у пользователя
+              equals(status), // сравниваем поле юзера со статусом установленным выше
+            ])
+
+            // moreAge :: Number -> Object -> Boolean
+            const moreAge = age => pipe([
+              prop('age'), // берем содержимое поля возраст
+              gt(age), // поле юзера было больше age
+            ])
+
+            // searchOnlineUsers :: Array Object A -> Array Object B
+            const searchOnlineUsers= pipe([
+              filter(isStatus('online')), // получаем только пользователей онлайн
+              filter(moreAge(20)), // получаем пользователей старше 20 лет
+              head, // получаем первого пользователя из списка
+            ])
+
+            // start
+            const onlineUsersByAge = searchOnlineUsers(allUsers)
+          </code>
+        </template>
+      </CodeBlock>
+    </section>
+
+    <section id="pure-functions">
+      <Subtitle>Чистые функции</Subtitle>
+      <Description>
+        <p>
+          Чистые функции крайне важны, они идемпотентны. Если вам нужны сайд эффекты
+          то группируйте их в отдельные функции и разделяйте от чистых функций. Любая программа
+          особенно в вебе нуждается в сайд эффектах (изменение Dom дерева (tree), запросы к серверу (fetch), чтение из файла (readFile) и тп)
+        </p>
+      </Description>
+      <CodeBlock>
+        <template #default>
+          <code>
+
+            // НЕчистая функция
+            // ===============================
+            let user = { name: John, age: 25 }
+
+            const changeAge = () => user.age = 30
+
+            // мы мутируем внешнюю переменную и создаем сайд эффекты
+            // программа будет везти себя непредсказуемо так как с этой
+            // переменной могут работать несколько функций  и отловить ошибку будет сложнее
+            changeAge()
+            console.log(user) // { name: John, age: 30 }
+            // ===============================
+
+
+            // Такой код допустим, если мы создаем независимые модули с собственным замыканием
+            // ===============================
+            // useChangeUser :: Object -> Object
+            const useChangeUser = (user) => {
+
+              const userBase = structuredClone(user) // обязательно клонируем
+
+              const changeAge = (newAge) => userBase.age = newAge
+
+              // для работы снаружи с данными
+              return {
+                userBase,
+                changeAge
+              }
+            }
+
+            // Но даже в этом случае лучше делать так
+            // useChangeUser :: Object -> Object
+            const useChangeUser = (user) => {
+
+              const userBase = structuredClone(user) // обязательно клонируем
+
+              const changeAge = (newAge) => userBase = ({
+                ...userBase, // или structuredClone(userBase)
+                age: newAge
+              })
+
+              // для работы снаружи с данными
+              return {
+                userBase,
+                changeAge
+              }
+            }
+            // ===============================
+
+
+            // А теперь давайте поправим пример выше
+            // ===============================
+            // Чистая функция
+            let user = { name: John, age: 25 }
+
+            // changeAge :: Number -> Object -> Object
+            const changeAge = (newAge, user) => ({
+              ...user,
+              age: newAge
+            })
+
+            //  улучшим
+            // или если требуется глубокое клонирование и отсрочка вызова
+
+            // changeAge :: Number -> Object -> Object
+            const changeAge = (newAge) => (user) => ({
+              ...structuredClone(user),
+              age: newAge
+            })
+
+            // тут мы проверим все
+            const changedUser = changeAge (30) (user)
+
+            console.log(user) // { name: John, age: 25 } сохранил первоначальное состояние
+            console.log(changedUser) // { name: John, age: 30 } получили нового пользователя без сайд эффектов
+            // ===============================
+          </code>
+
         </template>
       </CodeBlock>
     </section>

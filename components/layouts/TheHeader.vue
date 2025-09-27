@@ -49,6 +49,7 @@ interface MenuItem {
   name: string;
   eventName: eventNameRef;
   ref: Element | undefined;
+  newPage?: boolean,
 }
 
 export interface IDots {
@@ -116,6 +117,13 @@ export default defineComponent({
           eventName: 'contact',
           ref: undefined,
         },
+        {
+          id: idx++,
+          name: 'Мой курс',
+          eventName: 'course',
+          ref: undefined,
+          newPage: true,
+        },
       ] as Array<MenuItem>,
       dots: [
         {
@@ -179,6 +187,10 @@ export default defineComponent({
 
   methods: {
     selectSection(m: MenuItem): void {
+      if (m?.newPage) {
+        this.$router.push({ name: m?.eventName })
+        return
+      }
       m.ref?.scrollIntoView({ behavior: 'smooth' });
     },
   },
