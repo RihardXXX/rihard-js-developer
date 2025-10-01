@@ -57,7 +57,7 @@ export default defineComponent({
             // Декларативный код
             // =========
             // isGt3 :: Number -> Boolean
-            const gt3 = number => number > 3
+            const isGt3 = number => number > 3
 
             const result = numbers.filter(isGt3) // мы не вникаем в реализацию а просто читаем название
 
