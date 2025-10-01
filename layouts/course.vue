@@ -111,6 +111,7 @@ export default defineComponent({
   opacity: 0;
   pointer-events: none;
   transition: all 1s;
+  transform: scale(0.7);
 
   &.active {
     opacity: 1;

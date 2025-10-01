@@ -14,6 +14,7 @@
   transition: all 0.5s;
   color: var(--text-color);
   padding: 0 1rem;
+  letter-spacing: 1px;
 
   @include respond-to(mobile) {
     margin-bottom: 1.4rem;
@@ -21,3 +22,4 @@
   }
 }
 </style>
+
