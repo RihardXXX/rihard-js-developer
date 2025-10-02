@@ -79,7 +79,7 @@ export default defineComponent({
 
     <TheThemeCheckbox />
 
-    <h1 ref="title" :class="$style.titleMain">Курс по Sanctuary JS</h1>
+    <h1 ref="title" :class="$style.titleMain">Курс по функциональному программированию на JS</h1>
 
     <main :class="$style.main">
       <NuxtChild :device="device" />

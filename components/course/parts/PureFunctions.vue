@@ -87,9 +87,9 @@ export default defineComponent({
 
             // А теперь давайте поправим пример выше
             // ===============================
-            // Чистая функция
             let user = { name: 'John', age: 25 }
 
+            // Чистая функция
             // changeAge :: Number -> Object -> Object
             const changeAge = (newAge, user) => ({
               ...user,
@@ -97,7 +97,7 @@ export default defineComponent({
             })
 
             //  улучшим
-            // или если требуется глубокое клонирование и отсрочка вызова
+            // или если требуется глубокое клонирование и каррирование
 
             // changeAge :: Number -> Object -> Object
             const changeAge = (newAge) => (user) => ({
