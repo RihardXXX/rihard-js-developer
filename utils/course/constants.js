@@ -9,6 +9,7 @@ const FUNCTIONAL_PROGRAMMING = 'functional-programming'
 const PURE_FUNCTIONS = 'pure-functions'
 const HINDLEY_MILNER_TYPE_NOTATION = 'hindley-milner-type-notation'
 const CATEGORY_THEORY = 'category-theory'
+const FANTASY_LAND = 'fantasy-land'
 
 export {
   COURSE,
@@ -18,5 +19,6 @@ export {
   FUNCTIONAL_PROGRAMMING,
   PURE_FUNCTIONS,
   HINDLEY_MILNER_TYPE_NOTATION,
-  CATEGORY_THEORY
+  CATEGORY_THEORY,
+  FANTASY_LAND
 }

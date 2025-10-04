@@ -34,7 +34,7 @@ onMounted(async () => {
   font-size: 1.8rem;
   line-height: 1.4;
   margin: 0 1rem 2.4rem 1rem;
-  border: 1px solid #e1e4e8; /* светлая граница */
+  border: 1px solid var(--text-color);
   border-radius: 6px;
 
   @include respond-to(mobile) {

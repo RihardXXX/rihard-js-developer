@@ -10,7 +10,7 @@
   margin: 0 1rem 2.4rem 1rem;
   border: 1px solid var(--text-color);
   padding: 0.6rem 0.8rem;
-  border-radius: 3px;
+  border-radius: 6px;
 
   p {
     text-indent: 2rem; // или margin-left: 2rem;
