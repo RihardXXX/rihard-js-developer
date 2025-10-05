@@ -1,9 +1,14 @@
 <template>
-  <pre :class="$style.codeBlock">
-    <code ref="codeEl" class="hljs language-javascript">
-      <slot />
-    </code>
-  </pre>
+  <div style="position: relative;">
+    <button :class="$style.copyBtn" @click="copyCode">
+      {{ copied ? 'Скопировано!' : 'Скопировать' }}
+    </button>
+    <pre :class="$style.codeBlock">
+      <code ref="codeEl" class="hljs language-javascript">
+        <slot />
+      </code>
+    </pre>
+  </div>
 </template>
 
 <script setup>
@@ -14,6 +19,7 @@ import javascript from 'highlight.js/lib/languages/javascript';
 hljs.registerLanguage('javascript', javascript);
 
 const codeEl = ref(null);
+const copied = ref(false)
 
 onMounted(async () => {
   await nextTick();
@@ -21,9 +27,36 @@ onMounted(async () => {
     hljs.highlightElement(codeEl.value);
   }
 });
+
+const copyCode = async () => {
+  const codeText = codeEl.value?.innerText?.trim()
+  if (!codeText) return
+
+  try {
+    await navigator.clipboard.writeText(codeText)
+    copied.value = true
+    setTimeout(() => (copied.value = false), 2000)
+  } catch (err) {
+    console.error('Ошибка копирования:', err)
+  }
+}
 </script>
 
 <style lang="scss" module>
+
+.copyBtn {
+  position: absolute;
+  top: 0;
+  right: 1rem;
+  color: var(--text-color);
+  border: 1px solid var(--text-color);
+  border-radius: 6px;
+  font-size: 1.2rem;
+  padding: 0.3rem 0.8rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
 .codeBlock {
   background-color: var(--background-color, #ffffff); /* белый фон */
   color: var(--text-color, #24292e); /* тёмный текст */

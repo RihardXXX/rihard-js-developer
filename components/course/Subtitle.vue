@@ -13,7 +13,7 @@
   font-size: 2rem;
   transition: all 0.5s;
   color: var(--text-color);
-  padding: 0 1rem;
+  padding: 2rem 1rem 0 1rem;
   letter-spacing: 1px;
 
   @include respond-to(mobile) {

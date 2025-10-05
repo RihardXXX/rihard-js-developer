@@ -9,6 +9,7 @@ import PureFunctions from '~/components/course/parts/PureFunctions.vue';
 import HindleyMilnerTypeNotation from '~/components/course/parts/HindleyMilnerTypeNotation.vue';
 import CategoryTheory from '~/components/course/parts/СategoryTheory.vue'
 import FantasyLand from '~/components/course/parts/FantasyLand.vue';
+import CompositionFunctions from '~/components/course/parts/CompositionFunctions.vue';
 
 import {
   COURSE,
@@ -20,6 +21,7 @@ import {
   HINDLEY_MILNER_TYPE_NOTATION,
   CATEGORY_THEORY,
   FANTASY_LAND,
+  COMPOSITION,
 } from '~/utils/course/constants';
 
 export default defineComponent({
@@ -33,6 +35,7 @@ export default defineComponent({
     HindleyMilnerTypeNotation,
     CategoryTheory,
     FantasyLand,
+    CompositionFunctions,
   },
   layout: 'course',
   data() {
@@ -46,6 +49,7 @@ export default defineComponent({
       HINDLEY_MILNER_TYPE_NOTATION,
       CATEGORY_THEORY,
       FANTASY_LAND,
+      COMPOSITION
     }
   }
 });
@@ -67,6 +71,7 @@ export default defineComponent({
       <li><a :href="`${COURSE}${HINDLEY_MILNER_TYPE_NOTATION}`">Нотация типов Хиндли–Милнера</a></li>
       <li><a :href="`${COURSE}${CATEGORY_THEORY}`">Теория категорий</a></li>
       <li><a :href="`${COURSE}${FANTASY_LAND}`">Fantasy-land (Страна фантазий)</a></li>
+      <li><a :href="`${COURSE}${COMPOSITION}`">Композиция функций</a></li>
     </ol>
 
     <ForWhom />
@@ -77,6 +82,7 @@ export default defineComponent({
     <HindleyMilnerTypeNotation />
     <CategoryTheory />
     <FantasyLand />
+    <CompositionFunctions />
 
   </div>
 </template>

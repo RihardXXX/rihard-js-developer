@@ -25,6 +25,22 @@ export default defineComponent({
     };
   },
 
+  head() {
+      const title = 'Курс по функциональному программированию на JavaScript';
+      const description =
+        'Подробный курс по функциональному программированию на JavaScript. Изучи декларативный стиль, чистые функции, композицию и теорию категорий.';
+
+      return {
+        title,
+        meta: [
+          { hid: 'description', name: 'description', content: description },
+          { hid: 'keywords', name: 'keywords', content: 'функциональное программирование, JavaScript, чистые функции, декларативный стиль, композиция, монады, курсы JS' },
+          { hid: 'og:title', property: 'og:title', content: title },
+          { hid: 'og:description', property: 'og:description', content: description },
+        ],
+      };
+    },
+
   computed: {
     device(): IDevice {
       const mq: string = this.$mq as string;

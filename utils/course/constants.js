@@ -10,6 +10,7 @@ const PURE_FUNCTIONS = 'pure-functions'
 const HINDLEY_MILNER_TYPE_NOTATION = 'hindley-milner-type-notation'
 const CATEGORY_THEORY = 'category-theory'
 const FANTASY_LAND = 'fantasy-land'
+const COMPOSITION = 'composition'
 
 export {
   COURSE,
@@ -20,5 +21,6 @@ export {
   PURE_FUNCTIONS,
   HINDLEY_MILNER_TYPE_NOTATION,
   CATEGORY_THEORY,
-  FANTASY_LAND
+  FANTASY_LAND,
+  COMPOSITION,
 }
