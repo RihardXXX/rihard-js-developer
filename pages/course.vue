@@ -1,5 +1,5 @@
 <script lang="ts">
-import { defineComponent } from 'vue';
+import { defineComponent, PropType } from 'vue';
 
 import ForWhom from '~/components/course/parts/ForWhom.vue';
 import NotForWhom from '~/components/course/parts/NotForWhom.vue';
@@ -10,6 +10,7 @@ import HindleyMilnerTypeNotation from '~/components/course/parts/HindleyMilnerTy
 import CategoryTheory from '~/components/course/parts/СategoryTheory.vue'
 import FantasyLand from '~/components/course/parts/FantasyLand.vue';
 import CompositionFunctions from '~/components/course/parts/CompositionFunctions.vue';
+import { IDevice } from '~/layouts/course.vue';
 
 import {
   COURSE,
@@ -26,6 +27,7 @@ import {
 
 export default defineComponent({
   name: 'Course',
+
   components: {
     ForWhom,
     NotForWhom,
@@ -37,7 +39,16 @@ export default defineComponent({
     FantasyLand,
     CompositionFunctions,
   },
+
   layout: 'course',
+
+  props: {
+    device: {
+      type: Object as PropType<IDevice>,
+      required: true,
+    },
+  },
+
   data() {
     return {
       COURSE,
@@ -74,15 +85,15 @@ export default defineComponent({
       <li><a :href="`${COURSE}${COMPOSITION}`">Композиция функций</a></li>
     </ol>
 
-    <ForWhom />
-    <NotForWhom />
-    <ImperativeVsDeclarative />
-    <FunctionalProgramming />
-    <PureFunctions />
-    <HindleyMilnerTypeNotation />
-    <CategoryTheory />
-    <FantasyLand />
-    <CompositionFunctions />
+    <ForWhom :device="device" />
+    <NotForWhom :device="device" />
+    <ImperativeVsDeclarative :device="device" />
+    <FunctionalProgramming :device="device" />
+    <PureFunctions :device="device" />
+    <HindleyMilnerTypeNotation :device="device" />
+    <CategoryTheory :device="device" />
+    <FantasyLand :device="device" />
+    <CompositionFunctions :device="device" />
 
   </div>
 </template>

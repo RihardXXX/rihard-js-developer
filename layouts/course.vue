@@ -44,6 +44,7 @@ export default defineComponent({
   computed: {
     device(): IDevice {
       const mq: string = this.$mq as string;
+
       return {
         mobile: mq === 'mobile',
         tablet: mq === 'tablet',
