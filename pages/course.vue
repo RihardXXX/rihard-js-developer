@@ -10,6 +10,8 @@ import HindleyMilnerTypeNotation from '~/components/course/parts/HindleyMilnerTy
 import CategoryTheory from '~/components/course/parts/СategoryTheory.vue'
 import FantasyLand from '~/components/course/parts/FantasyLand.vue';
 import CompositionFunctions from '~/components/course/parts/CompositionFunctions.vue';
+import Currying from '~/components/course/parts/Currying.vue';
+
 import { IDevice } from '~/layouts/course.vue';
 
 import {
@@ -23,6 +25,7 @@ import {
   CATEGORY_THEORY,
   FANTASY_LAND,
   COMPOSITION,
+  CURRYING
 } from '~/utils/course/constants';
 
 export default defineComponent({
@@ -38,6 +41,7 @@ export default defineComponent({
     CategoryTheory,
     FantasyLand,
     CompositionFunctions,
+    Currying,
   },
 
   layout: 'course',
@@ -60,7 +64,8 @@ export default defineComponent({
       HINDLEY_MILNER_TYPE_NOTATION,
       CATEGORY_THEORY,
       FANTASY_LAND,
-      COMPOSITION
+      COMPOSITION,
+      CURRYING
     }
   }
 });
@@ -83,6 +88,7 @@ export default defineComponent({
       <li><a :href="`${COURSE}${CATEGORY_THEORY}`">Теория категорий</a></li>
       <li><a :href="`${COURSE}${FANTASY_LAND}`">Fantasy-land (Страна фантазий)</a></li>
       <li><a :href="`${COURSE}${COMPOSITION}`">Композиция функций</a></li>
+      <li><a :href="`${COURSE}${CURRYING}`">Каррирование</a></li>
     </ol>
 
     <ForWhom :device="device" />
@@ -94,6 +100,7 @@ export default defineComponent({
     <CategoryTheory :device="device" />
     <FantasyLand :device="device" />
     <CompositionFunctions :device="device" />
+    <Currying :device="device" />
 
   </div>
 </template>

@@ -11,6 +11,7 @@ const HINDLEY_MILNER_TYPE_NOTATION = 'hindley-milner-type-notation'
 const CATEGORY_THEORY = 'category-theory'
 const FANTASY_LAND = 'fantasy-land'
 const COMPOSITION = 'composition'
+const CURRYING = 'currying'
 
 export {
   COURSE,
@@ -23,4 +24,5 @@ export {
   CATEGORY_THEORY,
   FANTASY_LAND,
   COMPOSITION,
+  CURRYING
 }
