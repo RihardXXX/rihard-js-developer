@@ -37,8 +37,8 @@ export default defineComponent({
           <strong>Каррирование</strong>
           - это один из приемов используемых в функциональном программировании,
           при котором происходит вычислении функции только при полном
-          получении всех аргументов, а при частичном получении аргументов возвращается функция
-           возвращает новую функцию новая функция.
+          получении всех аргументов, а при частичном получении аргументов функция
+           возвращает новую функцию.
         </p>
         <p>
           <strong>Каррирование</strong> может быть использовано
@@ -114,7 +114,7 @@ export default defineComponent({
           значение которых мы не знаем. Например 5 параметров и более у функции.
         </p>
         <p>
-          Можно использовать автоматическое каррирование любой функции и
+          Можно использовать автоматическое <strong>каррирование</strong> любой функции и
           вызывать ее в любом порядке
         </p>
       </Description>
@@ -200,6 +200,194 @@ export default defineComponent({
           console.log( sumCurry (1, 1) (1) ) // 3
           console.log( sumCurry (1) (1, 1) ) // 3
           console.log( sumCurry (1, 1, 1) ) // 3
+          </code>
+        </template>
+      </CodeBlock>
+      <Description>
+        <p>
+          А теперь давайте глянем всю мощь <strong>каррирования</strong>
+           в примерах композиции функции.
+        </p>
+      </Description>
+      <CodeBlock v-if="device.mobile">
+        <template #default>
+          <code>
+
+    // Например в следующей композиции будут
+    // =====================================
+    // использоваться две функции каррированые
+    // одна каррированая уже
+    // а другая автоматически каррируем перед вызовом
+
+    // данные с которыми будем работать
+    // список пользователей
+    // fetchAllUsers :: * -> Promise a
+    const fetchAllUsers = () => new Promise(resolve => resolve([
+      { name: 'John', status: 'online', age: 28 },
+      { name: 'Angel', status: 'online', age: 35 },
+      { name: 'Michel', status: 'offline', age: 18 },
+      { name: 'Anna', status: 'offline', age: 20 },
+    ]))
+
+    // Наша задача
+    // 1. Получить пользователей со статусом онлайн
+    // 2. Возрастом старше 30 лет
+    // 3. их имена
+
+    // filter :: (a -> Boolean) -> [a] -> [a]
+    const filter = (fn) => (arr) => arr.filter(fn)
+
+    // map :: (a -> b) -> [a] -> [b]
+    const map = (fn) => (arr) => arr.map(fn)
+
+    // функция предикат, которая будет проверять статус
+    // isStatus :: String -> String -> a -> Boolean
+    const isStatus = (status) => (prop) => (user) => user[prop] === status
+
+    // isMoreAge :: String -> String -> a -> Boolean
+    const isMoreAge = (age, prop, user) => user[prop] > age
+
+    // давайте используя функцию выше мы автокаррируем её
+    const isMoreAgeCurry = curry(isMoreAge)
+
+    // вызовим дважды и создадим абстракцию с понятным названием
+    // предикат функция которая будет проверять на возраст
+    const isMoreAge30 = isMoreAgeCurry (30) ('age')
+
+    // получение значений по ключу
+    // getByProp :: String -> a -> String
+    const getByProp = (prop) => (user) => user[prop]
+
+    //  в замыкании сохраняем ключ 'name' и ожидаем объект
+    // getName :: a -> String
+    const getName = getByProp('name')
+
+    // готовим композицию и при след вызове в качестве аргумента
+    // ждем массив пользователей
+    // представим что pipe функция уже реализована или готова
+    const pipeline = pipe (
+      filter ( isStatus ('online') ('status') ), // только онлайн пользователей получаем
+      filter ( isMoreAge30 ), // возрастом старше 30 лет
+      map ( getName ), // вернуть имена
+    )
+
+    (async () => {
+
+      // запуск промиса с данными
+      // данные бросаем в композицию и запускаем её
+      const adultsUsers = await fetchAllUsers()
+                                              .then(pipeline)
+
+      console.log(adultsUsers) // ['Angel']
+    })
+
+
+    // =============================
+
+    // в коде выше все круто описано
+    // но если пользователей несколько десятков тысяч
+    // и нам нужна оптимизация мы можем сделать так
+    // чтобы исключить двойной обход массива в рамках filter
+    const pipeline = pipe (
+      filter (
+        (user) => (
+          isStatus ('online') ('status') (user) && isMoreAge30 (user)
+        )
+      ), // разовый проход с проверкой по двум предикатам сразу
+      map ( getName ), // вернуть имена
+    )
+
+          </code>
+        </template>
+      </CodeBlock>
+      <CodeBlock v-else>
+        <template #default>
+          <code>
+
+          // Например в следующей композиции будут
+          // =====================================
+          // использоваться две функции каррированые
+          // одна каррированая уже
+          // а другая автоматически каррируем перед вызовом
+
+          // данные с которыми будем работать
+          // список пользователей
+          // fetchAllUsers :: * -> Promise a
+          const fetchAllUsers = () => new Promise(resolve => resolve([
+            { name: 'John', status: 'online', age: 28 },
+            { name: 'Angel', status: 'online', age: 35 },
+            { name: 'Michel', status: 'offline', age: 18 },
+            { name: 'Anna', status: 'offline', age: 20 },
+          ]))
+
+          // Наша задача
+          // 1. Получить пользователей со статусом онлайн
+          // 2. Возрастом старше 30 лет
+          // 3. их имена
+
+          // filter :: (a -> Boolean) -> [a] -> [a]
+          const filter = (fn) => (arr) => arr.filter(fn)
+
+          // map :: (a -> b) -> [a] -> [b]
+          const map = (fn) => (arr) => arr.map(fn)
+
+          // функция предикат, которая будет проверять статус
+          // isStatus :: String -> String -> a -> Boolean
+          const isStatus = (status) => (prop) => (user) => user[prop] === status
+
+          // isMoreAge :: String -> String -> a -> Boolean
+          const isMoreAge = (age, prop, user) => user[prop] > age
+
+          // давайте используя функцию выше мы автокаррируем её
+          const isMoreAgeCurry = curry(isMoreAge)
+
+          // вызовим дважды и создадим абстракцию с понятным названием
+          // предикат функция которая будет проверять на возраст
+          const isMoreAge30 = isMoreAgeCurry (30) ('age')
+
+          // получение значений по ключу
+          // getByProp :: String -> a -> String
+          const getByProp = (prop) => (user) => user[prop]
+
+          //  в замыкании сохраняем ключ 'name' и ожидаем объект
+          // getName :: a -> String
+          const getName = getByProp('name')
+
+          // готовим композицию и при след вызове в качестве аргумента
+          // ждем массив пользователей
+          // представим что pipe функция уже реализована или готова
+          const pipeline = pipe (
+            filter ( isStatus ('online') ('status') ), // только онлайн пользователей получаем
+            filter ( isMoreAge30 ), // возрастом старше 30 лет
+            map ( getName ), // вернуть имена
+          )
+
+          (async () => {
+
+            // запуск промиса с данными
+            // данные бросаем в композицию и запускаем её
+            const adultsUsers = await fetchAllUsers()
+                                                    .then(pipeline)
+
+            console.log(adultsUsers) // ['Angel']
+          })
+
+
+          // =============================
+
+          // в коде выше все круто описано
+          // но если пользователей несколько десятков тысяч
+          // и нам нужна оптимизация мы можем сделать так
+          // чтобы исключить двойной обход массива в рамках filter
+          const pipeline = pipe (
+            filter (
+              (user) => (
+                isStatus ('online') ('status') (user) && isMoreAge30 (user)
+              )
+            ), // разовый проход с проверкой по двум предикатам сразу
+            map ( getName ), // вернуть имена
+          )
+
           </code>
         </template>
       </CodeBlock>
