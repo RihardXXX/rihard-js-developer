@@ -82,25 +82,25 @@ const copyCode = async () => {
 }
 
 :global(.hljs-string) {
-  color: #032f62; /* строки */
+  color: var(--code-string); /* строки */
 }
 
 :global(.hljs-number) {
-  color: #005cc5; /* числа */
+  color: var(--code-number); /* числа */
 }
 
 :global(.hljs-comment) {
-  color: #6a737d;
+  color: var(--code-comment);
   font-style: italic;
 }
 
 :global(.hljs-function),
 :global(.hljs-title) {
-  color: #6f42c1; /* имена функций */
+  color: var(--code-function); /* имена функций */
 }
 
 :global(.hljs-attr),
 :global(.hljs-property) {
-  color: #24292e; /* или #005cc5 — на ваш вкус */
+  color: var(--code-attr); /* или #005cc5 — на ваш вкус */
 }
 </style>

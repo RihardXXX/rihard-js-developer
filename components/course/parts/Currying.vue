@@ -391,5 +391,163 @@ export default defineComponent({
           </code>
         </template>
       </CodeBlock>
+      <Description>
+        <p>
+          Мы также можем создавать специализированные функции
+          при помощи <strong>каррирования</strong>.
+          Это нечто подобное "наследованию" в ООП.
+        </p>
+        <p>
+          Берется базовая <strong>каррированная</strong> функция,
+          а дальше при помощи вызовов создаются другие функции.
+          Ну хватит болтать)) давайте к примерам сразу приступим.
+        </p>
+      </Description>
+      <CodeBlock v-if="device.mobile">
+        <template #default>
+          <code>
+    // Давайте возьмем каррированную функцию
+    // и начнем создавать другие специализированные функции
+
+    // Базовая функция сравнения значения по определенному ключу
+    // equalBy :: String -> * -> a -> Boolean
+    const equalBy = (prop) => (value) => (obj) => obj[prop] === value
+
+    // данные с которыми мы будем работать
+    const user = { name: 'John', status: 'online', married: true }
+
+    // мы бы могли вызвать функцию разом
+    const onlineStatusUser = equalBy ('status') ('online') (user)
+
+    // проверяем онлайн ли статус у пользователя
+    console.log(onlineStatusUser) // true
+
+    // теперь давайте начнем создавать
+    // специализированные функции из equalBy
+
+    // сравнение по ключу статусу
+    const equalByStatus = equalBy ('status')
+    // сравнение по ключу женат
+    const equalByMarried = equalBy ('married')
+
+    // создадим еще один слой абстракции
+    // проверка онлайн
+    const isOnline = equalByStatus ('online')
+    // проверка оффлайн
+    const isOffline = equalByStatus ('offline')
+
+    // проверка женат ли
+    const isMarried = equalByMarried (true)
+    // проверка не женат
+    const isNotMarried = equalByMarried (false)
+
+    // мы можем написать хелпер отрицания
+    // для последних функций
+    // not :: (a -> Boolean) -> a -> Boolean
+    const not = (fn) => (...args) => !fn(...args)
+
+    // человеко читаемое выражение не онлайн
+    const offlineUserCheck = not (isOnline)
+    const notMarriedCheck = not (isMarried)
+
+    // а теперь давайте запустим наши спец функции
+    // и проверим онлайн ли пользователь и женат ли он
+
+    // получим статус юзера
+    const isOnlineUser = isOnline (user)
+    //  получим его статус женат ли
+    const isMarriedUser = isMarried (user)
+
+    // теперь давайте допускать в наше приложение
+    // пользователей женатых и которые онлайн
+
+    // напишем хелпер
+    // and :: Boolean -> Boolean -> Boolean
+    const and = (valueFirst) => (valueSecond) => valueFirst && valueSecond
+
+    // обратите внимание код стал человекочитаемым
+    // и очень абстрактным
+    // каждая функция делает одну логическую операцию
+    // код говорит что делает а не как
+    if (and (isOnlineUser) (isMarriedUser) ) {
+      // что то там делам ...
+    }
+          </code>
+        </template>
+      </CodeBlock>
+      <CodeBlock v-else>
+        <template #default>
+          <code>
+
+          // Давайте возьмем каррированную функцию
+          // и начнем создавать другие специализированные функции
+
+          // Базовая функция сравнения значения по определенному ключу
+          // equalBy :: String -> * -> a -> Boolean
+          const equalBy = (prop) => (value) => (obj) => obj[prop] === value
+
+          // данные с которыми мы будем работать
+          const user = { name: 'John', status: 'online', married: true }
+
+          // мы бы могли вызвать функцию разом
+          const onlineStatusUser = equalBy ('status') ('online') (user)
+
+          // проверяем онлайн ли статус у пользователя
+          console.log(onlineStatusUser) // true
+
+          // теперь давайте начнем создавать
+          // специализированные функции из equalBy
+
+          // сравнение по ключу статусу
+          const equalByStatus = equalBy ('status')
+          // сравнение по ключу женат
+          const equalByMarried = equalBy ('married')
+
+          // создадим еще один слой абстракции
+          // проверка онлайн
+          const isOnline = equalByStatus ('online')
+          // проверка оффлайн
+          const isOffline = equalByStatus ('offline')
+
+          // проверка женат ли
+          const isMarried = equalByMarried (true)
+          // проверка не женат
+          const isNotMarried = equalByMarried (false)
+
+          // мы можем написать хелпер отрицания
+          // для последних функций
+          // not :: (a -> Boolean) -> a -> Boolean
+          const not = (fn) => (...args) => !fn(...args)
+
+          // человеко читаемое выражение не онлайн
+          const offlineUserCheck = not (isOnline)
+          const notMarriedCheck = not (isMarried)
+
+          // а теперь давайте запустим наши спец функции
+          // и проверим онлайн ли пользователь и женат ли он
+
+          // получим статус юзера
+          const isOnlineUser = isOnline (user)
+          //  получим его статус женат ли
+          const isMarriedUser = isMarried (user)
+
+          // теперь давайте допускать в наше приложение
+          // пользователей женатых и которые онлайн
+
+          // напишем хелпер
+          // and :: Boolean -> Boolean -> Boolean
+          const and = (valueFirst) => (valueSecond) => valueFirst && valueSecond
+
+          // обратите внимание код стал человекочитаемым
+          // и очень абстрактным
+          // каждая функция делает одну логическую операцию
+          // код говорит что делает а не как
+          if (and (isOnlineUser) (isMarriedUser) ) {
+            // что то там делам ...
+          }
+
+          </code>
+        </template>
+      </CodeBlock>
     </section>
 </template>
