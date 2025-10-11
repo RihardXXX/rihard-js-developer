@@ -11,6 +11,7 @@ import CategoryTheory from '~/components/course/parts/СategoryTheory.vue'
 import FantasyLand from '~/components/course/parts/FantasyLand.vue';
 import CompositionFunctions from '~/components/course/parts/CompositionFunctions.vue';
 import Currying from '~/components/course/parts/Currying.vue';
+import CurryingAndAsynchrony from '~/components/course/parts/CurryingAndAsynchrony.vue';
 
 import { IDevice } from '~/layouts/course.vue';
 
@@ -25,7 +26,8 @@ import {
   CATEGORY_THEORY,
   FANTASY_LAND,
   COMPOSITION,
-  CURRYING
+  CURRYING,
+  CURRYING_AND_ASYNCHRONY
 } from '~/utils/course/constants';
 
 export default defineComponent({
@@ -42,6 +44,7 @@ export default defineComponent({
     FantasyLand,
     CompositionFunctions,
     Currying,
+    CurryingAndAsynchrony,
   },
 
   layout: 'course',
@@ -65,7 +68,8 @@ export default defineComponent({
       CATEGORY_THEORY,
       FANTASY_LAND,
       COMPOSITION,
-      CURRYING
+      CURRYING,
+      CURRYING_AND_ASYNCHRONY
     }
   }
 });
@@ -89,6 +93,7 @@ export default defineComponent({
       <li><a :href="`${COURSE}${FANTASY_LAND}`">Fantasy-land (Страна фантазий)</a></li>
       <li><a :href="`${COURSE}${COMPOSITION}`">Композиция функций</a></li>
       <li><a :href="`${COURSE}${CURRYING}`">Каррирование</a></li>
+      <li><a :href="`${COURSE}${CURRYING_AND_ASYNCHRONY}`">Каррирование и Асинхронность (Эволюция)</a></li>
     </ol>
 
     <ForWhom :device="device" />
@@ -101,6 +106,7 @@ export default defineComponent({
     <FantasyLand :device="device" />
     <CompositionFunctions :device="device" />
     <Currying :device="device" />
+    <CurryingAndAsynchrony :device="device" />
 
   </div>
 </template>

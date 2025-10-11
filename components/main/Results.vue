@@ -56,7 +56,7 @@ export default defineComponent({
       resultList: [
         {
           id: `resultCard${idx++}`,
-          title: '25+',
+          title: '55+',
           description: 'довольных клиентов',
         },
         {

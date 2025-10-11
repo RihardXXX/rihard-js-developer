@@ -12,6 +12,7 @@ const CATEGORY_THEORY = 'category-theory'
 const FANTASY_LAND = 'fantasy-land'
 const COMPOSITION = 'composition'
 const CURRYING = 'currying'
+const CURRYING_AND_ASYNCHRONY = 'currying-and-asynchrony'
 
 export {
   COURSE,
@@ -24,5 +25,6 @@ export {
   CATEGORY_THEORY,
   FANTASY_LAND,
   COMPOSITION,
-  CURRYING
+  CURRYING,
+  CURRYING_AND_ASYNCHRONY
 }
