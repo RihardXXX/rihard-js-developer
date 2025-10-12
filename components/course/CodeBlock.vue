@@ -46,8 +46,8 @@ const copyCode = async () => {
 
 .copyBtn {
   position: absolute;
-  top: 0;
-  right: 1rem;
+  top: 1rem;
+  right: 2rem;
   color: var(--text-color);
   border: 1px solid var(--text-color);
   border-radius: 6px;

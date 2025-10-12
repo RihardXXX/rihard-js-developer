@@ -13,6 +13,7 @@ const FANTASY_LAND = 'fantasy-land'
 const COMPOSITION = 'composition'
 const CURRYING = 'currying'
 const CURRYING_AND_ASYNCHRONY = 'currying-and-asynchrony'
+const PARTIAL_APPLICATION = 'partial-application'
 
 export {
   COURSE,
@@ -26,5 +27,6 @@ export {
   FANTASY_LAND,
   COMPOSITION,
   CURRYING,
-  CURRYING_AND_ASYNCHRONY
+  CURRYING_AND_ASYNCHRONY,
+  PARTIAL_APPLICATION
 }

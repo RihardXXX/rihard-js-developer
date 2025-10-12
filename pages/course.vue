@@ -12,6 +12,7 @@ import FantasyLand from '~/components/course/parts/FantasyLand.vue';
 import CompositionFunctions from '~/components/course/parts/CompositionFunctions.vue';
 import Currying from '~/components/course/parts/Currying.vue';
 import CurryingAndAsynchrony from '~/components/course/parts/CurryingAndAsynchrony.vue';
+import PartialApplication from '~/components/course/parts/PartialApplication.vue';
 
 import { IDevice } from '~/layouts/course.vue';
 
@@ -27,7 +28,8 @@ import {
   FANTASY_LAND,
   COMPOSITION,
   CURRYING,
-  CURRYING_AND_ASYNCHRONY
+  CURRYING_AND_ASYNCHRONY,
+  PARTIAL_APPLICATION,
 } from '~/utils/course/constants';
 
 export default defineComponent({
@@ -45,6 +47,7 @@ export default defineComponent({
     CompositionFunctions,
     Currying,
     CurryingAndAsynchrony,
+    PartialApplication,
   },
 
   layout: 'course',
@@ -69,7 +72,8 @@ export default defineComponent({
       FANTASY_LAND,
       COMPOSITION,
       CURRYING,
-      CURRYING_AND_ASYNCHRONY
+      CURRYING_AND_ASYNCHRONY,
+      PARTIAL_APPLICATION,
     }
   }
 });
@@ -94,6 +98,7 @@ export default defineComponent({
       <li><a :href="`${COURSE}${COMPOSITION}`">Композиция функций</a></li>
       <li><a :href="`${COURSE}${CURRYING}`">Каррирование</a></li>
       <li><a :href="`${COURSE}${CURRYING_AND_ASYNCHRONY}`">Каррирование и Асинхронность (Эволюция)</a></li>
+      <li><a :href="`${COURSE}${PARTIAL_APPLICATION}`">Частичное применение</a></li>
     </ol>
 
     <ForWhom :device="device" />
@@ -107,6 +112,7 @@ export default defineComponent({
     <CompositionFunctions :device="device" />
     <Currying :device="device" />
     <CurryingAndAsynchrony :device="device" />
+    <PartialApplication :device="device" />
 
   </div>
 </template>
