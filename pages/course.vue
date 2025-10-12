@@ -87,18 +87,18 @@ export default defineComponent({
 
     <!-- Оглавление с якорными ссылками -->
     <ol :class="$style.contentList">
-      <li><a :href="`${COURSE}${FOR_WHOM}`">Для кого этот курс</a></li>
-      <li><a :href="`${COURSE}${NOT_FOR_WHOM}`">Кому не подойдёт</a></li>
-      <li><a :href="`${COURSE}${IMPERATIVE_VS_DECLARATIVE}`">Императивность и декларативность</a></li>
-      <li><a :href="`${COURSE}${FUNCTIONAL_PROGRAMMING}`">Функциональное программирование</a></li>
-      <li><a :href="`${COURSE}${PURE_FUNCTIONS}`">Чистые функции</a></li>
-      <li><a :href="`${COURSE}${HINDLEY_MILNER_TYPE_NOTATION}`">Нотация типов Хиндли–Милнера</a></li>
-      <li><a :href="`${COURSE}${CATEGORY_THEORY}`">Теория категорий</a></li>
-      <li><a :href="`${COURSE}${FANTASY_LAND}`">Fantasy-land (Страна фантазий)</a></li>
-      <li><a :href="`${COURSE}${COMPOSITION}`">Композиция функций</a></li>
-      <li><a :href="`${COURSE}${CURRYING}`">Каррирование</a></li>
-      <li><a :href="`${COURSE}${CURRYING_AND_ASYNCHRONY}`">Каррирование и Асинхронность (Эволюция)</a></li>
-      <li><a :href="`${COURSE}${PARTIAL_APPLICATION}`">Частичное применение</a></li>
+      <li><nuxt-link :to="`${COURSE}${FOR_WHOM}`">Для кого этот курс</nuxt-link></li>
+      <li><nuxt-link :to="`${COURSE}${NOT_FOR_WHOM}`">Кому не подойдёт</nuxt-link></li>
+      <li><nuxt-link :to="`${COURSE}${IMPERATIVE_VS_DECLARATIVE}`">Императивность и декларативность</nuxt-link></li>
+      <li><nuxt-link :to="`${COURSE}${FUNCTIONAL_PROGRAMMING}`">Функциональное программирование</nuxt-link></li>
+      <li><nuxt-link :to="`${COURSE}${PURE_FUNCTIONS}`">Чистые функции</nuxt-link></li>
+      <li><nuxt-link :to="`${COURSE}${HINDLEY_MILNER_TYPE_NOTATION}`">Нотация типов Хиндли–Милнера</nuxt-link></li>
+      <li><nuxt-link :to="`${COURSE}${CATEGORY_THEORY}`">Теория категорий</nuxt-link></li>
+      <li><nuxt-link :to="`${COURSE}${FANTASY_LAND}`">Fantasy-land (Страна фантазий)</nuxt-link></li>
+      <li><nuxt-link :to="`${COURSE}${COMPOSITION}`">Композиция функций</nuxt-link></li>
+      <li><nuxt-link :to="`${COURSE}${CURRYING}`">Каррирование</nuxt-link></li>
+      <li><nuxt-link :to="`${COURSE}${CURRYING_AND_ASYNCHRONY}`">Каррирование и Асинхронность (Эволюция)</nuxt-link></li>
+      <li><nuxt-link :to="`${COURSE}${PARTIAL_APPLICATION}`">Частичное применение</nuxt-link></li>
     </ol>
 
     <ForWhom :device="device" />

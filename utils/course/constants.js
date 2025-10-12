@@ -1,6 +1,6 @@
 
 
-const COURSE = 'course#'
+const COURSE = '/course/#'
 
 const FOR_WHOM = 'for-whom'
 const NOT_FOR_WHOM = 'not-for-whom'
