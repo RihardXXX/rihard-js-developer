@@ -86,7 +86,8 @@ export default defineComponent({
 
       this.refTitle.scrollIntoView({ behavior: 'smooth', block: 'end' });
       // если есть якоры то сносим их
-      if (this.$route) {
+      if (this.$route.hash) {
+
         const newPath = this.$route.fullPath?.split('#')?.[0]
         this.$router.replace({ path: newPath })
       }
