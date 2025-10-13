@@ -13,6 +13,7 @@ import CompositionFunctions from '~/components/course/parts/CompositionFunctions
 import Currying from '~/components/course/parts/Currying.vue';
 import CurryingAndAsynchrony from '~/components/course/parts/CurryingAndAsynchrony.vue';
 import PartialApplication from '~/components/course/parts/PartialApplication.vue';
+import RecursionFP from '~/components/course/parts/RecursionFP.vue';
 
 import { IDevice } from '~/layouts/course.vue';
 
@@ -30,6 +31,7 @@ import {
   CURRYING,
   CURRYING_AND_ASYNCHRONY,
   PARTIAL_APPLICATION,
+  RECURSION,
 } from '~/utils/course/constants';
 
 export default defineComponent({
@@ -48,6 +50,7 @@ export default defineComponent({
     Currying,
     CurryingAndAsynchrony,
     PartialApplication,
+    RecursionFP,
   },
 
   layout: 'course',
@@ -74,6 +77,7 @@ export default defineComponent({
       CURRYING,
       CURRYING_AND_ASYNCHRONY,
       PARTIAL_APPLICATION,
+      RECURSION,
     }
   }
 });
@@ -99,6 +103,7 @@ export default defineComponent({
       <li><nuxt-link :to="`${COURSE}${CURRYING}`">Каррирование</nuxt-link></li>
       <li><nuxt-link :to="`${COURSE}${CURRYING_AND_ASYNCHRONY}`">Каррирование и Асинхронность (Эволюция)</nuxt-link></li>
       <li><nuxt-link :to="`${COURSE}${PARTIAL_APPLICATION}`">Частичное применение</nuxt-link></li>
+      <li><nuxt-link :to="`${COURSE}${RECURSION}`">Рекурсия</nuxt-link></li>
     </ol>
 
     <ForWhom :device="device" />
@@ -113,6 +118,7 @@ export default defineComponent({
     <Currying :device="device" />
     <CurryingAndAsynchrony :device="device" />
     <PartialApplication :device="device" />
+    <RecursionFP :device="device" />
 
   </div>
 </template>
