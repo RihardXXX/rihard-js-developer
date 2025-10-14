@@ -221,6 +221,115 @@ export default defineComponent({
           </code>
         </template>
       </CodeBlock>
+      <Description>
+        <p>
+          Пример выше с <strong>рекурсия</strong> возможно для некоторых не простой.
+          Поэтому мы напишем пример проще и визуализируем вызова. Главное не волнуйтесь,
+          если сразу вам что-то непонятно.
+        </p>
+      </Description>
+      <CodeBlock v-if="device.mobile">
+        <template #default>
+          <code>
+
+    // Наша цель собрать общий рейтинг пользователей
+    // То есть сумму  рейтингов
+
+    const users = [
+      { name: 'John', rating: 4.5 },
+      { name: 'Angel', rating: 4 },
+      { name: 'Michel', rating: 3 },
+      { name: 'Anna', rating: 5 },
+    ]
+
+    // sumRating : [a] -> Number
+    const sumRating = (users) => {
+      // базовый случай, условие выхода когда массив пуст
+      if (!users.length) {
+        return 0
+      }
+
+      // рекурсивный случай
+      // рейтинг первого элемента складывается
+      // с вызовом самой же функции с вырезанным эти элементом
+      return users[0].rating + sumRating (users.slice(1))
+    }
+
+    // давайте сократим синтасис
+    const rateSum = (users) =>
+                          !users.length
+                            ? 0
+                            :  users[0] + rateSum (users.slice(1))
+
+    // визуализируем вызовы
+    // и для понимания представим массив числе вместо ключа rating
+    rateSum ([4.5, 4, 3, 5]) // возвращает 4.5 + rateSum ([4, 3, 5])
+    rateSum ([4, 3, 5]) // возвращает 4 + rateSum ([3, 5])
+    rateSum ([3, 5]) // возвращает 3 + rateSum ([5])
+    rateSum ([5]) // возвращает 5 + rateSum ([])
+    rateSum ([]) // возвращает 0 достигли базового случая
+
+    // и тут самое главное идут возвраты от вызовов в стэке
+    rateSum ([5]) // возвращает 5 + 0
+    rateSum ([3, 5]) // возвращает 3 + 5
+    rateSum ([4, 3, 5]) // возвращает 4 + 8
+    rateSum ([4.5, 4, 3, 5]) // возвращает 4.5 + 12
+    // итоговый результат 16.5
+
+          </code>
+        </template>
+      </CodeBlock>
+      <CodeBlock v-else>
+        <template #default>
+          <code>
+
+            // Наша цель собрать общий рейтинг пользователей
+            // То есть сумму  рейтингов
+
+            const users = [
+              { name: 'John', rating: 4.5 },
+              { name: 'Angel', rating: 4 },
+              { name: 'Michel', rating: 3 },
+              { name: 'Anna', rating: 5 },
+            ]
+
+            // sumRating : [a] -> Number
+            const sumRating = (users) => {
+              // базовый случай, условие выхода когда массив пуст
+              if (!users.length) {
+                return 0
+              }
+
+              // рекурсивный случай
+              // рейтинг первого элемента складывается
+              // с вызовом самой же функции с вырезанным эти элементом
+              return users[0].rating + sumRating (users.slice(1))
+            }
+
+            // давайте сократим синтасис
+            const rateSum = (users) =>
+                                  !users.length
+                                    ? 0
+                                    :  users[0] + rateSum (users.slice(1))
+
+            // визуализируем вызовы
+            // и для понимания представим массив числе вместо ключа rating
+            rateSum ([4.5, 4, 3, 5]) // возвращает 4.5 + rateSum ([4, 3, 5])
+            rateSum ([4, 3, 5]) // возвращает 4 + rateSum ([3, 5])
+            rateSum ([3, 5]) // возвращает 3 + rateSum ([5])
+            rateSum ([5]) // возвращает 5 + rateSum ([])
+            rateSum ([]) // возвращает 0 достигли базового случая
+
+            // и тут самое главное идут возвраты от вызовов в стэке
+            rateSum ([5]) // возвращает 5 + 0
+            rateSum ([3, 5]) // возвращает 3 + 5
+            rateSum ([4, 3, 5]) // возвращает 4 + 8
+            rateSum ([4.5, 4, 3, 5]) // возвращает 4.5 + 12
+            // итоговый результат 16.5
+
+          </code>
+        </template>
+      </CodeBlock>
 
     </section>
 </template>
