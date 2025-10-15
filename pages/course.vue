@@ -15,6 +15,8 @@ import CurryingAndAsynchrony from '~/components/course/parts/CurryingAndAsynchro
 import PartialApplication from '~/components/course/parts/PartialApplication.vue';
 import RecursionFP from '~/components/course/parts/RecursionFP.vue';
 
+import VCourseDone from '~/components/VCourseDone.vue';
+
 import { IDevice } from '~/layouts/course.vue';
 
 import {
@@ -51,6 +53,7 @@ export default defineComponent({
     CurryingAndAsynchrony,
     PartialApplication,
     RecursionFP,
+    VCourseDone,
   },
 
   layout: 'course',
@@ -91,19 +94,57 @@ export default defineComponent({
 
     <!-- Оглавление с якорными ссылками -->
     <ol :class="$style.contentList">
-      <li><nuxt-link :to="`${COURSE}${FOR_WHOM}`">Для кого этот курс</nuxt-link></li>
-      <li><nuxt-link :to="`${COURSE}${NOT_FOR_WHOM}`">Кому не подойдёт</nuxt-link></li>
-      <li><nuxt-link :to="`${COURSE}${IMPERATIVE_VS_DECLARATIVE}`">Императивность и декларативность</nuxt-link></li>
-      <li><nuxt-link :to="`${COURSE}${FUNCTIONAL_PROGRAMMING}`">Функциональное программирование</nuxt-link></li>
-      <li><nuxt-link :to="`${COURSE}${PURE_FUNCTIONS}`">Чистые функции</nuxt-link></li>
-      <li><nuxt-link :to="`${COURSE}${HINDLEY_MILNER_TYPE_NOTATION}`">Нотация типов Хиндли–Милнера</nuxt-link></li>
-      <li><nuxt-link :to="`${COURSE}${CATEGORY_THEORY}`">Теория категорий</nuxt-link></li>
-      <li><nuxt-link :to="`${COURSE}${FANTASY_LAND}`">Fantasy-land (Страна фантазий)</nuxt-link></li>
-      <li><nuxt-link :to="`${COURSE}${COMPOSITION}`">Композиция функций</nuxt-link></li>
-      <li><nuxt-link :to="`${COURSE}${CURRYING}`">Каррирование</nuxt-link></li>
-      <li><nuxt-link :to="`${COURSE}${CURRYING_AND_ASYNCHRONY}`">Каррирование и Асинхронность (Эволюция)</nuxt-link></li>
-      <li><nuxt-link :to="`${COURSE}${PARTIAL_APPLICATION}`">Частичное применение</nuxt-link></li>
-      <li><nuxt-link :to="`${COURSE}${RECURSION}`">Рекурсия</nuxt-link></li>
+      <li>
+        <nuxt-link :to="`${COURSE}${FOR_WHOM}`">Для кого этот курс</nuxt-link>
+        <VCourseDone />
+      </li>
+      <li>
+        <nuxt-link :to="`${COURSE}${NOT_FOR_WHOM}`">Кому не подойдёт</nuxt-link>
+        <VCourseDone />
+      </li>
+      <li>
+        <nuxt-link :to="`${COURSE}${IMPERATIVE_VS_DECLARATIVE}`">Императивность и декларативность</nuxt-link>
+        <VCourseDone />
+      </li>
+      <li>
+        <nuxt-link :to="`${COURSE}${FUNCTIONAL_PROGRAMMING}`">Функциональное программирование</nuxt-link>
+        <VCourseDone />
+      </li>
+      <li>
+        <nuxt-link :to="`${COURSE}${PURE_FUNCTIONS}`">Чистые функции</nuxt-link>
+        <VCourseDone />
+      </li>
+      <li>
+        <nuxt-link :to="`${COURSE}${HINDLEY_MILNER_TYPE_NOTATION}`">Нотация типов Хиндли–Милнера</nuxt-link>
+        <VCourseDone />
+      </li>
+      <li>
+        <nuxt-link :to="`${COURSE}${CATEGORY_THEORY}`">Теория категорий</nuxt-link>
+        <VCourseDone />
+      </li>
+      <li>
+        <nuxt-link :to="`${COURSE}${FANTASY_LAND}`">Fantasy-land (Страна фантазий)</nuxt-link>
+
+      </li>
+      <li>
+        <nuxt-link :to="`${COURSE}${COMPOSITION}`">Композиция функций</nuxt-link>
+        <VCourseDone />
+      </li>
+      <li>
+        <nuxt-link :to="`${COURSE}${CURRYING}`">Каррирование</nuxt-link>
+        <VCourseDone />
+      </li>
+      <li>
+        <nuxt-link :to="`${COURSE}${CURRYING_AND_ASYNCHRONY}`">Каррирование и Асинхронность (Эволюция)</nuxt-link>
+      </li>
+      <li>
+        <nuxt-link :to="`${COURSE}${PARTIAL_APPLICATION}`">Частичное применение</nuxt-link>
+        <VCourseDone />
+      </li>
+      <li>
+        <nuxt-link :to="`${COURSE}${RECURSION}`">Рекурсия</nuxt-link>
+        <VCourseDone />
+      </li>
     </ol>
 
     <ForWhom :device="device" />
@@ -136,6 +177,9 @@ export default defineComponent({
   li {
     margin: 1rem 0;
     list-style-type: circle;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
   }
 
   a {
@@ -153,5 +197,9 @@ export default defineComponent({
     margin-bottom: 1.4rem;
     font-size: 1.8rem;
   }
+}
+
+.checkBox {
+
 }
 </style>
