@@ -1,11 +1,19 @@
 <script setup lang="ts">
-import { ref, onMounted } from 'vue';
+import { ref, watch } from 'vue';
 
 import SvgAtWork from '~/components/ui/SvgAtWork.vue';
 import SvgPassed from '~/components/ui/SvgPassed.vue';
 
 const AT_WORK = 'at-work'
 const PASSED = 'passed'
+
+const props = defineProps<{
+  statusOuter: 'at-work' | 'passed'
+}>()
+
+const emit = defineEmits<{
+  (e: 'change', payload: 'at-work' | 'passed'): void
+}>()
 
 type statusType = 'at-work' | 'passed';
 
@@ -15,26 +23,13 @@ const changeStatus = (): void => {
   status.value =
     status.value === AT_WORK ? PASSED : AT_WORK;
 
-  // document.body.className = checked.value;
-  // localStorage.setItem(themeKey, checked.value);
+  emit('change', status.value)
 };
 
-// const setThemeFromStorage = (): void => {
-//   const currentTheme = localStorage.getItem(themeKey) as themeName | null;
-
-//   if (!currentTheme) {
-//     return;
-//   }
-
-//   if (['dark-theme', 'light-theme'].includes(currentTheme)) {
-//     document.body.className = currentTheme;
-//     checked.value = currentTheme;
-//   }
-// };
-
-onMounted(() => {
-  // setThemeFromStorage();
+watch(() => props.statusOuter, () => {
+  status.value = props.statusOuter
 });
+
 </script>
 
 <template>

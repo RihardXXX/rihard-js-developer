@@ -36,6 +36,18 @@ import {
   RECURSION,
 } from '~/utils/course/constants';
 
+interface ListItem {
+  id: number;
+  name: string;
+  route: string;
+  status: 'at-work' | 'passed';
+}
+
+const listKey = 'list-key'
+
+
+let id = 1
+
 export default defineComponent({
   name: 'Course',
 
@@ -67,22 +79,118 @@ export default defineComponent({
 
   data() {
     return {
-      COURSE,
-      FOR_WHOM,
-      NOT_FOR_WHOM,
-      IMPERATIVE_VS_DECLARATIVE,
-      FUNCTIONAL_PROGRAMMING,
-      PURE_FUNCTIONS,
-      HINDLEY_MILNER_TYPE_NOTATION,
-      CATEGORY_THEORY,
-      FANTASY_LAND,
-      COMPOSITION,
-      CURRYING,
-      CURRYING_AND_ASYNCHRONY,
-      PARTIAL_APPLICATION,
-      RECURSION,
+      list: [
+        {
+          id: id++,
+          name: 'Для кого этот курс',
+          route: `${COURSE}${FOR_WHOM}`,
+          status: 'at-work',
+        },
+        {
+          id: id++,
+          name: 'Кому не подойдёт',
+          route: `${COURSE}${NOT_FOR_WHOM}`,
+          status: 'at-work',
+        },
+        {
+          id: id++,
+          name: 'Императивность и декларативность',
+          route: `${COURSE}${IMPERATIVE_VS_DECLARATIVE}`,
+          status: 'at-work',
+        },
+        {
+          id: id++,
+          name: 'Функциональное программирование',
+          route: `${COURSE}${FUNCTIONAL_PROGRAMMING}`,
+          status: 'at-work',
+        },
+        {
+          id: id++,
+          name: 'Чистые функции',
+          route: `${COURSE}${PURE_FUNCTIONS}`,
+          status: 'at-work',
+        },
+        {
+          id: id++,
+          name: 'Нотация типов Хиндли–Милнера',
+          route: `${COURSE}${HINDLEY_MILNER_TYPE_NOTATION}`,
+          status: 'at-work',
+        },
+        {
+          id: id++,
+          name: 'Теория категорий',
+          route: `${COURSE}${CATEGORY_THEORY}`,
+          status: 'at-work',
+        },
+        {
+          id: id++,
+          name: 'Fantasy-land (Страна фантазий)',
+          route: `${COURSE}${FANTASY_LAND}`,
+          status: 'at-work',
+        },
+        {
+          id: id++,
+          name: 'Композиция функций',
+          route: `${COURSE}${COMPOSITION}`,
+          status: 'at-work',
+        },
+        {
+          id: id++,
+          name: 'Каррирование',
+          route: `${COURSE}${CURRYING}`,
+          status: 'at-work',
+        },
+        {
+          id: id++,
+          name: 'Каррирование и Асинхронность (Эволюция)',
+          route: `${COURSE}${CURRYING_AND_ASYNCHRONY}`,
+          status: 'at-work',
+        },
+        {
+          id: id++,
+          name: 'Частичное применение',
+          route: `${COURSE}${PARTIAL_APPLICATION}`,
+          status: 'at-work',
+        },
+        {
+          id: id++,
+          name: 'Рекурсия',
+          route: `${COURSE}${RECURSION}`,
+          status: 'at-work',
+        },
+      ] as Array<ListItem>
     }
-  }
+  },
+
+  mounted() {
+    this.initialStatus()
+  },
+
+  methods: {
+    changeStatus(newStatus: 'at-work' | 'passed', item: ListItem) {
+      this.list = this.list
+        .map((itemList: ListItem) => itemList.id === item.id
+          ? {
+            ...itemList,
+            status: newStatus
+          }
+          : itemList
+        )
+
+      localStorage.setItem(listKey, JSON.stringify(this.list))
+    },
+    initialStatus() {
+      const list = localStorage.getItem(listKey)
+
+      if (!list) {
+        return
+      }
+
+      // console.log(JSON.parse(list))
+
+      this.list = JSON.parse(list)
+    },
+  },
 });
 
 </script>
@@ -94,57 +202,19 @@ export default defineComponent({
 
     <!-- Оглавление с якорными ссылками -->
     <ol :class="$style.contentList">
-      <li>
-        <nuxt-link :to="`${COURSE}${FOR_WHOM}`">Для кого этот курс</nuxt-link>
-        <VCourseDone />
-      </li>
-      <li>
-        <nuxt-link :to="`${COURSE}${NOT_FOR_WHOM}`">Кому не подойдёт</nuxt-link>
-        <VCourseDone />
-      </li>
-      <li>
-        <nuxt-link :to="`${COURSE}${IMPERATIVE_VS_DECLARATIVE}`">Императивность и декларативность</nuxt-link>
-        <VCourseDone />
-      </li>
-      <li>
-        <nuxt-link :to="`${COURSE}${FUNCTIONAL_PROGRAMMING}`">Функциональное программирование</nuxt-link>
-        <VCourseDone />
-      </li>
-      <li>
-        <nuxt-link :to="`${COURSE}${PURE_FUNCTIONS}`">Чистые функции</nuxt-link>
-        <VCourseDone />
-      </li>
-      <li>
-        <nuxt-link :to="`${COURSE}${HINDLEY_MILNER_TYPE_NOTATION}`">Нотация типов Хиндли–Милнера</nuxt-link>
-        <VCourseDone />
-      </li>
-      <li>
-        <nuxt-link :to="`${COURSE}${CATEGORY_THEORY}`">Теория категорий</nuxt-link>
-        <VCourseDone />
-      </li>
-      <li>
-        <nuxt-link :to="`${COURSE}${FANTASY_LAND}`">Fantasy-land (Страна фантазий)</nuxt-link>
-
-      </li>
-      <li>
-        <nuxt-link :to="`${COURSE}${COMPOSITION}`">Композиция функций</nuxt-link>
-        <VCourseDone />
-      </li>
-      <li>
-        <nuxt-link :to="`${COURSE}${CURRYING}`">Каррирование</nuxt-link>
-        <VCourseDone />
-      </li>
-      <li>
-        <nuxt-link :to="`${COURSE}${CURRYING_AND_ASYNCHRONY}`">Каррирование и Асинхронность (Эволюция)</nuxt-link>
-      </li>
-      <li>
-        <nuxt-link :to="`${COURSE}${PARTIAL_APPLICATION}`">Частичное применение</nuxt-link>
-        <VCourseDone />
-      </li>
-      <li>
-        <nuxt-link :to="`${COURSE}${RECURSION}`">Рекурсия</nuxt-link>
-        <VCourseDone />
-      </li>
+        <li
+          v-for="listItem in list"
+          :key="listItem.id"
+          >
+            <nuxt-link :to="listItem.route">
+              {{ listItem.name }}
+            </nuxt-link>
+            <VCourseDone
+                :status-outer="listItem.status"
+                @change="(status) => changeStatus(status, listItem)"
+                />
+          <hr :class="$style.hrItem" />
+        </li>
     </ol>
 
     <ForWhom :device="device" />
@@ -175,16 +245,29 @@ export default defineComponent({
   padding: 0 1rem;
 
   li {
+    position: relative;
     margin: 1rem 0;
     list-style-type: circle;
     display: flex;
     justify-content: space-between;
     align-items: center;
+    padding-bottom: 10px;
+
+    .hrItem {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 3px;
+      background: $gray-100;
+      border: none;
+    }
   }
 
   a {
     color: inherit;
-    /* text-decoration: none; */
+    /* text-decoration: underline;
+    text-underline-offset: 5px; */
     transition: color 0.2s;
 
     &:hover {
