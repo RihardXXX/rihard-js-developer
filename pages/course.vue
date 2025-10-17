@@ -186,8 +186,6 @@ export default defineComponent({
         return
       }
 
-      // console.log(JSON.parse(list))
-
       this.list = JSON.parse(list)
     },
   },
@@ -205,6 +203,7 @@ export default defineComponent({
         <li
           v-for="listItem in list"
           :key="listItem.id"
+          :title="listItem.name"
           >
             <nuxt-link :to="listItem.route">
               {{ listItem.name }}
@@ -266,13 +265,12 @@ export default defineComponent({
 
   a {
     color: inherit;
-    /* text-decoration: underline;
-    text-underline-offset: 5px; */
-    transition: color 0.2s;
+    transition: all 0.2s;
 
     &:hover {
       color: var(--accent-color, #007acc);
       text-decoration: underline;
+      text-underline-offset: 5px;
     }
   }
 
