@@ -68,7 +68,11 @@ export default {
 
   googleFonts: {
     families: {
-      // Roboto: true,
+      Roboto: true,
+      Sansation: true,
+      // Nosifer: true,
+      // Yomogi: true,
+      // Cormorant: true,
       // Inter: [400, 700],
       Inter: {
         wght: [400, 500, 600, 700],

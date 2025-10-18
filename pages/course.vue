@@ -1,5 +1,6 @@
 <script lang="ts">
 import { defineComponent, PropType } from 'vue';
+import { romanize } from 'romans'
 
 import ForWhom from '~/components/course/parts/ForWhom.vue';
 import NotForWhom from '~/components/course/parts/NotForWhom.vue';
@@ -188,6 +189,9 @@ export default defineComponent({
 
       this.list = JSON.parse(list)
     },
+    getRomeNumber(n: number) {
+      return romanize(n)
+    }
   },
 });
 
@@ -201,12 +205,15 @@ export default defineComponent({
     <!-- Оглавление с якорными ссылками -->
     <ol :class="$style.contentList">
         <li
-          v-for="listItem in list"
+          v-for="(listItem, i) in list"
           :key="listItem.id"
           :title="listItem.name"
           >
+            <div :class="$style.number">
+              {{ getRomeNumber(i + 1) }}
+            </div>
             <nuxt-link :to="listItem.route">
-              {{ listItem.name }}
+              -> {{ listItem.name }}
             </nuxt-link>
             <VCourseDone
                 :status-outer="listItem.status"
@@ -236,12 +243,13 @@ export default defineComponent({
 <style lang="scss" module>
 .contentList {
   text-align: left;
-  margin: 0 0 2rem 1rem;
+  /* margin: 0 0 2rem 2rem; */
   font-weight: 500;
   font-size: 2rem;
   transition: all 0.5s;
   color: var(--text-color);
-  padding: 0 1rem;
+  padding: 0 1rem 0 4rem;
+  font-family: 'Sansation';
 
   li {
     position: relative;
@@ -260,6 +268,16 @@ export default defineComponent({
       height: 3px;
       background: $gray-100;
       border: none;
+    }
+
+    .number {
+      position: absolute;
+      left: -2rem;
+      top: 50%;
+      transform: translate(-50%, -70%);
+      font-family: 'Sansation';
+      border: 1px solid var(--text-color);
+      padding: 3px;
     }
   }
 
