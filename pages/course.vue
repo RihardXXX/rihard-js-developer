@@ -15,6 +15,7 @@ import Currying from '~/components/course/parts/Currying.vue';
 import CurryingAndAsynchrony from '~/components/course/parts/CurryingAndAsynchrony.vue';
 import PartialApplication from '~/components/course/parts/PartialApplication.vue';
 import RecursionFP from '~/components/course/parts/RecursionFP.vue';
+import PerformanceFP from '~/components/course/parts/PerformanceFP.vue';
 
 import VCourseDone from '~/components/VCourseDone.vue';
 
@@ -35,6 +36,7 @@ import {
   CURRYING_AND_ASYNCHRONY,
   PARTIAL_APPLICATION,
   RECURSION,
+  PERFORMANCE,
 } from '~/utils/course/constants';
 
 interface ListItem {
@@ -67,6 +69,7 @@ export default defineComponent({
     PartialApplication,
     RecursionFP,
     VCourseDone,
+    PerformanceFP,
   },
 
   layout: 'course',
@@ -159,6 +162,12 @@ export default defineComponent({
           route: `${COURSE}${RECURSION}`,
           status: 'at-work',
         },
+        {
+          id: id++,
+          name: 'Производительность (Performance - Перфоманс)',
+          route: `${COURSE}${PERFORMANCE}`,
+          status: 'at-work',
+        },
       ] as Array<ListItem>
     }
   },
@@ -169,14 +178,12 @@ export default defineComponent({
 
   methods: {
     changeStatus(newStatus: 'at-work' | 'passed', item: ListItem) {
+
       this.list = this.list
-        .map((itemList: ListItem) => itemList.id === item.id
-          ? {
-            ...itemList,
-            status: newStatus
-          }
-          : itemList
-        )
+        .map((itemList: ListItem) => itemList.id === item.id ? {
+          ...itemList,
+          status: newStatus
+        } : itemList)
 
       localStorage.setItem(listKey, JSON.stringify(this.list))
     },
@@ -187,7 +194,20 @@ export default defineComponent({
         return
       }
 
-      this.list = JSON.parse(list)
+      const lsSave = JSON.parse(list)
+
+      this.list = this.list.map((item: ListItem) => {
+
+        const isFindItem = lsSave.find((l: ListItem) => l.id === item.id)
+
+        if (isFindItem) {
+          return {
+            ...item,
+            status: isFindItem.status
+          }
+        }
+        return item
+      })
     },
     getRomeNumber(n: number) {
       return romanize(n)
@@ -203,14 +223,16 @@ export default defineComponent({
     <br />
 
     <!-- Оглавление с якорными ссылками -->
-    <ol :class="$style.contentList">
+    <ol
+        :class="$style.contentList"
+        >
         <li
           v-for="(listItem, i) in list"
           :key="listItem.id"
           :title="listItem.name"
           >
             <div :class="$style.number">
-              {{ getRomeNumber(i + 1) }}
+              {{ getRomeNumber(Number(i) + 1) }}
             </div>
             <nuxt-link :to="listItem.route">
               -> {{ listItem.name }}
@@ -236,6 +258,7 @@ export default defineComponent({
     <CurryingAndAsynchrony :device="device" />
     <PartialApplication :device="device" />
     <RecursionFP :device="device" />
+    <PerformanceFP :device="device" />
 
   </div>
 </template>
@@ -259,6 +282,7 @@ export default defineComponent({
     justify-content: space-between;
     align-items: center;
     padding-bottom: 10px;
+    padding-left: 5px;
 
     .hrItem {
       position: absolute;

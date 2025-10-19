@@ -15,6 +15,7 @@ const CURRYING = 'currying'
 const CURRYING_AND_ASYNCHRONY = 'currying-and-asynchrony'
 const PARTIAL_APPLICATION = 'partial-application'
 const RECURSION = 'recursion'
+const PERFORMANCE = 'performance'
 
 export {
   COURSE,
@@ -30,5 +31,6 @@ export {
   CURRYING,
   CURRYING_AND_ASYNCHRONY,
   PARTIAL_APPLICATION,
-  RECURSION
+  RECURSION,
+  PERFORMANCE,
 }
