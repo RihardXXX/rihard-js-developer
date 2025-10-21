@@ -15,6 +15,7 @@
   color: var(--text-color);
   padding: 2rem 1rem 0 1rem;
   letter-spacing: 1px;
+  font-family: 'Sansation';
 
   @include respond-to(mobile) {
     margin-bottom: 1.4rem;

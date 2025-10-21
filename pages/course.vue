@@ -16,6 +16,7 @@ import CurryingAndAsynchrony from '~/components/course/parts/CurryingAndAsynchro
 import PartialApplication from '~/components/course/parts/PartialApplication.vue';
 import RecursionFP from '~/components/course/parts/RecursionFP.vue';
 import PerformanceFP from '~/components/course/parts/PerformanceFP.vue';
+import NeuralNetworks from '~/components/course/parts/NeuralNetworks.vue';
 
 import VCourseDone from '~/components/VCourseDone.vue';
 
@@ -37,6 +38,7 @@ import {
   PARTIAL_APPLICATION,
   RECURSION,
   PERFORMANCE,
+  NEURAL_NETWORKS,
 } from '~/utils/course/constants';
 
 interface ListItem {
@@ -70,6 +72,7 @@ export default defineComponent({
     RecursionFP,
     VCourseDone,
     PerformanceFP,
+    NeuralNetworks,
   },
 
   layout: 'course',
@@ -168,6 +171,12 @@ export default defineComponent({
           route: `${COURSE}${PERFORMANCE}`,
           status: 'at-work',
         },
+        {
+          id: id++,
+          name: 'Нейронные сети и теория категорий',
+          route: `${COURSE}${NEURAL_NETWORKS}`,
+          status: 'at-work',
+        },
       ] as Array<ListItem>
     }
   },
@@ -259,6 +268,7 @@ export default defineComponent({
     <PartialApplication :device="device" />
     <RecursionFP :device="device" />
     <PerformanceFP :device="device" />
+    <NeuralNetworks :device="device" />
 
   </div>
 </template>

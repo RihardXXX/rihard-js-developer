@@ -16,6 +16,7 @@ const CURRYING_AND_ASYNCHRONY = 'currying-and-asynchrony'
 const PARTIAL_APPLICATION = 'partial-application'
 const RECURSION = 'recursion'
 const PERFORMANCE = 'performance'
+const NEURAL_NETWORKS = 'neural-networks'
 
 export {
   COURSE,
@@ -33,4 +34,5 @@ export {
   PARTIAL_APPLICATION,
   RECURSION,
   PERFORMANCE,
+  NEURAL_NETWORKS
 }
