@@ -17,6 +17,7 @@ const PARTIAL_APPLICATION = 'partial-application'
 const RECURSION = 'recursion'
 const PERFORMANCE = 'performance'
 const NEURAL_NETWORKS = 'neural-networks'
+const FUNCTION_MAP_FILTER_REDUCE = 'function-map-filter-reduce'
 
 export {
   COURSE,
@@ -34,5 +35,6 @@ export {
   PARTIAL_APPLICATION,
   RECURSION,
   PERFORMANCE,
-  NEURAL_NETWORKS
+  NEURAL_NETWORKS,
+  FUNCTION_MAP_FILTER_REDUCE
 }

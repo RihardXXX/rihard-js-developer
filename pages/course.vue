@@ -17,6 +17,7 @@ import PartialApplication from '~/components/course/parts/PartialApplication.vue
 import RecursionFP from '~/components/course/parts/RecursionFP.vue';
 import PerformanceFP from '~/components/course/parts/PerformanceFP.vue';
 import NeuralNetworks from '~/components/course/parts/NeuralNetworks.vue';
+import FunctionMapFilterReduce from '~/components/course/parts/FunctionMapFilterReduce.vue';
 
 import VCourseDone from '~/components/VCourseDone.vue';
 
@@ -39,6 +40,7 @@ import {
   RECURSION,
   PERFORMANCE,
   NEURAL_NETWORKS,
+  FUNCTION_MAP_FILTER_REDUCE,
 } from '~/utils/course/constants';
 
 interface ListItem {
@@ -73,6 +75,7 @@ export default defineComponent({
     VCourseDone,
     PerformanceFP,
     NeuralNetworks,
+    FunctionMapFilterReduce,
   },
 
   layout: 'course',
@@ -177,6 +180,12 @@ export default defineComponent({
           route: `${COURSE}${NEURAL_NETWORKS}`,
           status: 'at-work',
         },
+        {
+          id: id++,
+          name: 'Функции map, filter, reduce',
+          route: `${COURSE}${FUNCTION_MAP_FILTER_REDUCE}`,
+          status: 'at-work',
+        },
       ] as Array<ListItem>
     }
   },
@@ -269,6 +278,7 @@ export default defineComponent({
     <RecursionFP :device="device" />
     <PerformanceFP :device="device" />
     <NeuralNetworks :device="device" />
+    <FunctionMapFilterReduce :device="device" />
 
   </div>
 </template>
