@@ -54,7 +54,7 @@ export default defineComponent({
           просто содержимое с данными пропускается через функцию.
         </p>
         <p>
-          Давайте реализуем функцию map различными способами.
+          Давайте реализуем функцию <strong>map</strong> различными способами.
         </p>
       </Description>
       <CodeBlock v-if="device.mobile">
@@ -119,7 +119,11 @@ export default defineComponent({
       // возвращаем функцию для трапмплина
       // вырезаем первый элемент массива
       // в аккумулятор кладем результат который пропустили через функцию
-      return () => mapR (fn) (arr.slice(1), acc = [...acc, fn (arr[0]) ])
+      return () => mapR (fn)
+                        (
+                          arr.slice(1),
+                          acc = [...acc, fn (arr[0]) ]
+                        )
     }
 
     const mapTrampoline = trampoline(mapR)
@@ -198,7 +202,11 @@ export default defineComponent({
               // возвращаем функцию для трапмплина
               // вырезаем первый элемент массива
               // в аккумулятор кладем результат который пропустили через функцию
-              return () => mapR (fn) (arr.slice(1), acc = [...acc, fn (arr[0]) ])
+              return () => mapR (fn)
+                                (
+                                  arr.slice(1),
+                                  acc = [...acc, fn (arr[0])]
+                                )
             }
 
             const mapTrampoline = trampoline(mapR)
@@ -210,6 +218,225 @@ export default defineComponent({
             const result = mapD (v => v * 2) (data)
 
             console.log (result) // [2, 4, 6, 8, 10]
+            // ===================================
+
+
+          </code>
+        </template>
+      </CodeBlock>
+      <Description>
+        <p>
+          <strong>filter</strong>
+          <br>
+          --------------------
+        </p>
+        <p>
+          Функция <strong>filter</strong> возвращает новый объект того же типа данных,
+          пропуская каждый элемент через функцию предикат, которая вернет элемент в объект,
+          если предикат вернет true (тип итерируемый).
+        </p>
+        <p>
+          Функция предикат - это функция, которая возвращает true или false.
+          Она обычно используется как функция первого класса, то есть кладется
+          в другую функцию высшего порядка как <strong>filter</strong>.
+        </p>
+        <p>
+          Давайте реализуем функцию <strong>filter</strong> различными способами.
+        </p>
+      </Description>
+      <CodeBlock v-if="device.mobile">
+        <template #default>
+          <code>
+
+    // каррирование используется, чтобы
+    // нам было удобно вызывать и в композиции
+    // также же используется классический
+    // бесточечный стиль
+
+    // ==== реализация декларативная ====
+    // filterD :: (a -> Boolean) -> [a] -> [a]
+    const filterD = (fn) => (arr) => arr.filter(fn)
+    // ===================================
+
+    // ==== реализация императивная ====
+    // без индекса итерации и контекста
+    // filterI :: (a -> Boolean) -> [a] -> [a]
+    const filterI = (fn) => (arr) => {
+      // массив результирующий
+      // который будем возвращать
+      let result = []
+
+      for (const item of arr) {
+        // каждый элемент пропускаем через
+        // функцию предикат
+        // если она вернет true кладем ее
+        // в результирующий массив
+        if (fn(item)) {
+          result.push(item) // или result = [ ...result, item ]
+        }
+      }
+
+      return result
+    }
+      // ===================================
+
+    // ==== реализация императивная ====
+    // с индексом итерации и контекстом
+    // filterIq :: (a -> Boolean) -> [a] -> [a]
+    const filterIq = (fn) => (arr) => {
+      let result = []
+
+      for (let i = 0; i < arr.length; i++ ) {
+        const value = arr[i]
+
+        if (fn(value, i, arr)) {
+          result.push(value) // или result = [ ...result, value ]
+        }
+
+      }
+
+      return result
+    }
+    // ===================================
+
+    // ==== реализация рекурсивная ====
+    // с трамплина чтобы стэк не переполнился
+    // надеюсь вы прочитали раздел про рекурсию
+    // filterR :: (a -> Boolean) -> [a] -> [a]
+    const filterR = (fn) => (arr, acc = []) => {
+
+      // базовый случай
+      // когда массив пуст возвращаем аккумулятор
+      if (!arr.length) {
+        return acc
+      }
+
+      // рекурсивный случай
+      // возвращаем функцию для трапмплина
+      return () => {
+          // первый элемент и остальные
+          const [head, ...tail] = arr
+
+          // в аккумулятор кладем элемент
+          // если функцию предикат вернула true
+          // иначе возвращаем текущий аккумулятор
+          // без добавления значения
+          const nextAcc = fn (head)
+                                ? [...acc, head]
+                                : [...acc]
+
+          return filterR (fn)(tail, nextAcc)
+      }
+    }
+
+    const filterTrampoline = trampoline(filterR)
+    // ===================================
+
+    // ==== запуск ====
+    const data = [1, 2, 3, 4, 5]
+
+    const result = filterD (v => v > 3) (data)
+
+    console.log (result) // [4, 5]
+    // ===================================
+
+          </code>
+        </template>
+      </CodeBlock>
+      <CodeBlock v-else>
+        <template #default>
+          <code>
+
+            // каррирование используется, чтобы
+            // нам было удобно вызывать и в композиции
+            // также же используется классический
+            // бесточечный стиль
+
+            // ==== реализация декларативная ====
+            // filterD :: (a -> Boolean) -> [a] -> [a]
+            const filterD = (fn) => (arr) => arr.filter(fn)
+            // ===================================
+
+            // ==== реализация императивная ====
+            // без индекса итерации и контекста
+            // filterI :: (a -> Boolean) -> [a] -> [a]
+            const filterI = (fn) => (arr) => {
+              // массив результирующий
+              // который будем возвращать
+              let result = []
+
+              for (const item of arr) {
+                // каждый элемент пропускаем через
+                // функцию предикат
+                // если она вернет true кладем ее
+                // в результирующий массив
+                if (fn(item)) {
+                  result.push(item) // или result = [ ...result, item ]
+                }
+              }
+
+              return result
+            }
+             // ===================================
+
+            // ==== реализация императивная ====
+            // с индексом итерации и контекстом
+            // filterIq :: (a -> Boolean) -> [a] -> [a]
+            const filterIq = (fn) => (arr) => {
+              let result = []
+
+              for (let i = 0; i < arr.length; i++ ) {
+                const value = arr[i]
+
+                if (fn(value, i, arr)) {
+                  result.push(value) // или result = [ ...result, value ]
+                }
+
+              }
+
+              return result
+            }
+            // ===================================
+
+            // ==== реализация рекурсивная ====
+            // с трамплина чтобы стэк не переполнился
+            // надеюсь вы прочитали раздел про рекурсию
+            // filterR :: (a -> Boolean) -> [a] -> [a]
+            const filterR = (fn) => (arr, acc = []) => {
+
+              // базовый случай
+              // когда массив пуст возвращаем аккумулятор
+              if (!arr.length) {
+                return acc
+              }
+
+              // рекурсивный случай
+              // возвращаем функцию для трапмплина
+              return () => {
+                 // первый элемент и остальные
+                 const [head, ...tail] = arr
+
+                 // в аккумулятор кладем элемент
+                 // если функцию предикат вернула true
+                 // иначе возвращаем текущий аккумулятор
+                 // без добавления значения
+                 const nextAcc = fn (head)
+                                        ? [...acc, head]
+                                        : [...acc]
+
+                 return filterR (fn)(tail, nextAcc)
+              }
+            }
+
+            const filterTrampoline = trampoline(filterR)
+            // ===================================
+
+            // ==== запуск ====
+            const data = [1, 2, 3, 4, 5]
+
+            const result = filterD (v => v > 3) (data)
+
+            console.log (result) // [4, 5]
             // ===================================
 
 

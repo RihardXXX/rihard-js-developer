@@ -83,6 +83,13 @@ export default defineComponent({
       menu: [
         {
           id: idx++,
+          name: 'Мой курс',
+          eventName: 'course',
+          ref: undefined,
+          newPage: true,
+        },
+        {
+          id: idx++,
           name: 'Обо мне',
           eventName: 'aboutMe',
           ref: undefined,
@@ -116,13 +123,6 @@ export default defineComponent({
           name: 'Контакты',
           eventName: 'contact',
           ref: undefined,
-        },
-        {
-          id: idx++,
-          name: 'Мой курс',
-          eventName: 'course',
-          ref: undefined,
-          newPage: true,
         },
       ] as Array<MenuItem>,
       dots: [
