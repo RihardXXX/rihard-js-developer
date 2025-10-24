@@ -16,6 +16,7 @@
   padding: 2rem 1rem 0 1rem;
   letter-spacing: 1px;
   font-family: 'Sansation';
+  font-weight: 600;
 
   @include respond-to(mobile) {
     margin-bottom: 1.4rem;

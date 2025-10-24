@@ -303,6 +303,7 @@ export default defineComponent({
     align-items: center;
     padding-bottom: 10px;
     padding-left: 5px;
+    font-weight: 600;
 
     .hrItem {
       position: absolute;
