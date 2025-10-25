@@ -18,6 +18,7 @@ const RECURSION = 'recursion'
 const PERFORMANCE = 'performance'
 const NEURAL_NETWORKS = 'neural-networks'
 const FUNCTION_MAP_FILTER_REDUCE = 'function-map-filter-reduce'
+const HOF_AND_FC = 'first-class-and-higher-order-functions'
 
 export {
   COURSE,
@@ -36,5 +37,6 @@ export {
   RECURSION,
   PERFORMANCE,
   NEURAL_NETWORKS,
-  FUNCTION_MAP_FILTER_REDUCE
+  FUNCTION_MAP_FILTER_REDUCE,
+  HOF_AND_FC,
 }

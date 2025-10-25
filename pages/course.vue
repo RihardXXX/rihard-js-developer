@@ -18,6 +18,7 @@ import RecursionFP from '~/components/course/parts/RecursionFP.vue';
 import PerformanceFP from '~/components/course/parts/PerformanceFP.vue';
 import NeuralNetworks from '~/components/course/parts/NeuralNetworks.vue';
 import FunctionMapFilterReduce from '~/components/course/parts/FunctionMapFilterReduce.vue';
+import HigherOrderFunctions from '~/components/course/parts/HigherOrderFunctions.vue';
 
 import VCourseDone from '~/components/VCourseDone.vue';
 
@@ -41,6 +42,7 @@ import {
   PERFORMANCE,
   NEURAL_NETWORKS,
   FUNCTION_MAP_FILTER_REDUCE,
+  HOF_AND_FC,
 } from '~/utils/course/constants';
 
 interface ListItem {
@@ -76,6 +78,7 @@ export default defineComponent({
     PerformanceFP,
     NeuralNetworks,
     FunctionMapFilterReduce,
+    HigherOrderFunctions,
   },
 
   layout: 'course',
@@ -186,6 +189,12 @@ export default defineComponent({
           route: `${COURSE}${FUNCTION_MAP_FILTER_REDUCE}`,
           status: 'at-work',
         },
+        {
+          id: id++,
+          name: 'Функции первого класса и высшего порядка',
+          route: `${COURSE}${HOF_AND_FC}`,
+          status: 'at-work',
+        },
       ] as Array<ListItem>
     }
   },
@@ -279,6 +288,7 @@ export default defineComponent({
     <PerformanceFP :device="device" />
     <NeuralNetworks :device="device" />
     <FunctionMapFilterReduce :device="device" />
+    <HigherOrderFunctions :device="device" />
 
   </div>
 </template>
@@ -291,8 +301,9 @@ export default defineComponent({
   font-size: 2rem;
   transition: all 0.5s;
   color: var(--text-color);
-  padding: 0 1rem 0 4rem;
+  padding: 0 0rem 0 4.7rem;
   font-family: 'Sansation';
+  overflow: hidden;
 
   li {
     position: relative;
@@ -309,7 +320,8 @@ export default defineComponent({
       position: absolute;
       bottom: 0;
       left: 0;
-      width: 100%;
+      width: 120%;
+      transform: translateX(-10%);
       height: 3px;
       background: $gray-100;
       border: none;
@@ -322,7 +334,7 @@ export default defineComponent({
       transform: translate(-50%, -70%);
       font-family: 'Sansation';
       border: 1px solid var(--text-color);
-      padding: 3px;
+      padding: 5px;
     }
   }
 
