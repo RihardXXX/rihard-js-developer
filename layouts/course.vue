@@ -3,6 +3,7 @@ import { defineComponent } from 'vue';
 import TheThemeCheckbox from '~/components/TheThemeCheckbox.vue';
 import TheProgressBar from '~/components/TheProgressBar.vue';
 import { intersectionObserver } from '@/assets/utils';
+import VONInterpreter from '~/components/VONInterpreter.vue';
 
 export interface IDevice {
   mobile: boolean;
@@ -16,12 +17,14 @@ export default defineComponent({
     LazyRobotHelp: () => import('~/components/Robot.vue'),
     TheThemeCheckbox,
     TheProgressBar,
+    VONInterpreter,
   },
 
   data() {
     return {
       isShowRobot: false,
       refTitle: undefined as Element | undefined,
+      statusRunCodeModal: 'stop',
     };
   },
 
@@ -92,6 +95,9 @@ export default defineComponent({
         this.$router.replace({ path: newPath })
       }
     },
+    changeRunCodeModal(status: 'start' | 'stop') {
+      this.statusRunCodeModal = status
+    }
   },
 });
 </script>
@@ -99,6 +105,11 @@ export default defineComponent({
 <template>
   <div :class="$style.default">
     <TheProgressBar />
+
+    <VONInterpreter
+      :device="device"
+      @change="changeRunCodeModal"
+      />
 
     <TheThemeCheckbox />
 
@@ -175,4 +186,5 @@ export default defineComponent({
     transform: scale(1.2);
   }
 }
+
 </style>
