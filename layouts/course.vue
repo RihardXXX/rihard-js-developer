@@ -4,6 +4,7 @@ import TheThemeCheckbox from '~/components/TheThemeCheckbox.vue';
 import TheProgressBar from '~/components/TheProgressBar.vue';
 import { intersectionObserver } from '@/assets/utils';
 import VONInterpreter from '~/components/VONInterpreter.vue';
+import VInterpreter from '~/components/VInterpreter.vue';
 
 export interface IDevice {
   mobile: boolean;
@@ -18,6 +19,7 @@ export default defineComponent({
     TheThemeCheckbox,
     TheProgressBar,
     VONInterpreter,
+    VInterpreter,
   },
 
   data() {
@@ -110,6 +112,13 @@ export default defineComponent({
       :device="device"
       @change="changeRunCodeModal"
       />
+
+    <transition name="fade">
+      <ClientOnly>
+        <VInterpreter v-if="statusRunCodeModal === 'start'" :device="device" />
+      </ClientOnly>
+    </transition>
+
 
     <TheThemeCheckbox />
 

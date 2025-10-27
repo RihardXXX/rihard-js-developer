@@ -18,6 +18,7 @@
     "analize": "npx nuxt build --analyze"
   },
   "dependencies": {
+    "@monaco-editor/loader": "^1.6.1",
     "@nuxtjs/axios": "^5.13.6",
     "@nuxtjs/component-cache": "^1.1.6",
     "@nuxtjs/pwa": "^3.3.5",
