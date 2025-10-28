@@ -54,9 +54,9 @@ const changeStatus = (): void => {
     content: 'code run';
     display: block;
     position: absolute;
-    top: -8px;
-    left: 20px;
-    color: var(--text-color);
+    bottom: -16px;
+    left: 10px;
+    color: #2049b4;
   }
 }
 

@@ -110,6 +110,7 @@ export default defineComponent({
 
     <VONInterpreter
       :device="device"
+      :class="$style.onInterpreter"
       @change="changeRunCodeModal"
       />
 
@@ -120,7 +121,7 @@ export default defineComponent({
     </transition>
 
 
-    <TheThemeCheckbox />
+    <TheThemeCheckbox :class="$style.theme" />
 
     <h1 ref="title" :class="$style.titleMain">Курс по функциональному программированию на JS</h1>
 
@@ -150,11 +151,23 @@ export default defineComponent({
   min-height: calc(100vh - $header-height);
 }
 
+.theme {
+  padding: 0 !important;
+  top: 20px !important;
+  right: 10px !important;
+}
+
+.onInterpreter {
+  padding: 0 !important;
+  top: 20px !important;
+  left: 10px !important;
+}
+
 .robot {
   opacity: 0;
   pointer-events: none;
   transition: all 1s;
-  transform: scale(0.7);
+  transform: scale(0.5);
 
   &.active {
     opacity: 1;

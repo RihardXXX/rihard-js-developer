@@ -1,32 +1,69 @@
 <script setup>
 import { ref, onMounted, onBeforeUnmount } from 'vue';
 import loader from '@monaco-editor/loader';
+import { R } from '~/utils/course/ramda-config';
+import { S } from '~/utils/course/sanctuary-config';
 
-const INITIAL_CODE = '// начините писать код'
+const props = defineProps(['device'])
 
+const INITIAL_CODE = `// === Подключена библиотека Ramda JS и Sanctuary JS ===
+// обращаться R.add(1, 2) или S.add (1) (2)
+// начните писать код
+// console.log(S.add (1) (2)) // 3
+`
 const code = ref(INITIAL_CODE);
-
 const output = ref('');
 const editor = ref(null)
-
 const editorInstance = ref(null); // сюда сохраним экземпляр редактора
+const isDarkTheme = ref(true);
+const monacoRef = ref(null)
+
+// настройка ide для мобилки и десктопа
+const ideConfigBase = {
+  value: code.value,
+  language: 'javascript',
+  fontSize: 18,
+  minimap: { enabled: false },
+  automaticLayout: true,
+  glyphMargin: false,       // ❌ убирает margin слева
+  lineDecorationsWidth: 0,  // ❌ убирает любые отступы
+}
+
+const mobileConfig = {
+  lineNumbersMinChars: 1,
+  fontSize: 16,
+};
+
+const initialThemeIde = () => {
+  const currentTheme = localStorage.getItem('theme');
+
+  if (!currentTheme) {
+    return;
+  }
+
+  if (['dark-theme'].includes(currentTheme)) {
+    isDarkTheme.value = true
+  } else {
+    isDarkTheme.value = false
+  }
+}
 
 // Загружаем Monaco Editor только на клиенте
 onMounted(() => {
+  // инициализация сохраненный темы
+  initialThemeIde()
+
+  const editorConfig = {
+    ...ideConfigBase,
+    ...(props.device.mobile ? mobileConfig : {}),
+    theme: isDarkTheme.value ? 'vs-dark' : 'vs-light',
+  }
+
   loader.init()
-    .then(monaco => {
-        editorInstance.value = monaco.editor.create(editor.value, {
-          value: code.value,
-          language: 'javascript',
-          theme: 'vs-dark',
-          fontSize: 18,
-          minimap: { enabled: false },
-          // automaticLayout: true,
-          // lineNumbers: 'off',       // ❌ убирает номера строк
-          glyphMargin: false,       // ❌ убирает margin слева
-          // folding: false,           // ❌ убирает стрелки сворачивания
-          lineDecorationsWidth: 0,  // ❌ убирает любые отступы
-        });
+    .then(monaco => {        // чтобы тему менять
+        monacoRef.value = monaco.editor
+        // после инициализации ide устаналиваем в него конфиг
+        editorInstance.value = monaco.editor.create(editor.value, editorConfig);
 
         editorInstance.value.onDidChangeModelContent(() => {
           code.value = editorInstance.value.getValue();
@@ -62,25 +99,42 @@ const runCode = () => {
     warn: (...args) => logs.push('WARN: ' + args.join(' ')),
   };
 
+
+
   try {
     // создаем функцию конструктор
     // в качестве первого аргумента выступает console
     // его мы подменяем на наш кастомный объект
     // которые будет результаты собирать
     // eslint-disable-next-line no-new-func
-    new Function('console', code.value)(customConsole);
+    new Function(
+      'console', // аргумент функции
+      'R', // аргумент функции
+      'S', // аргумент функции
+      code.value // тело функции
+    )(
+      customConsole, // запуск функции с 3 аргументами
+      R,
+      S,
+    );
 
-    console.log(112, logs)
+    // console.log(112, logs)
     output.value = logs.join('\n').trim();
   } catch (e) {
     output.value = 'Error: ' + e.message;
   }
 };
 
-// clearInput :: * -> *
-const clearInput = () => {
+// resetInput :: * -> *
+const resetInput = () => {
   code.value = INITIAL_CODE
   editorInstance.value.setValue(INITIAL_CODE)
+}
+
+// clearInput :: * -> *
+const clearInput = () => {
+  code.value = ''
+  editorInstance.value.setValue('')
 }
 
 // clearOutput :: * -> *
@@ -88,9 +142,11 @@ const clearOutput = () => {
   output.value = ''
 }
 
-const changeContent = (code) => {
-  console.log(112, code)
-}
+// toggleTheme :: * -> *
+const toggleTheme = () => {
+  isDarkTheme.value = !isDarkTheme.value;
+  monacoRef.value?.setTheme(isDarkTheme.value ? 'vs-dark' : 'vs-light');
+};
 
 </script>
 
@@ -103,18 +159,20 @@ const changeContent = (code) => {
 
     <div :class="$style.wrapperBtn">
       <button :class="$style.btnStart" @click="clearInput">clear input</button>
+      <button :class="$style.btnStart" @click="resetInput">reset input</button>
+        <button :class="$style.btnStart" @click="toggleTheme">
+          {{ isDarkTheme ? '🌙 Dark' : '☀️ Light' }}
+        </button>
     </div>
     <hr>
     <!-- <textarea v-model="code" :class="$style.input"></textarea> -->
-    <div ref="editor" :class="$style.input" @change="changeContent"></div>
+    <div ref="editor" :class="$style.input"></div>
     <hr>
     <div :class="$style.wrapperBtn">
       <button :class="$style.btnStart" @click="runCode">Run</button>
       <button :class="$style.btnStart" @click="clearOutput">clear output</button>
     </div>
-    <pre :class="$style.output">
-        {{ output }}
-    </pre>
+    <pre :class="$style.output">{{ output }}</pre>
 </div>
 
 </template>
@@ -152,8 +210,8 @@ const changeContent = (code) => {
 }
 
 .input {
-  overflow: hidden;
-  padding: 10px;
+  /* overflow: hidden; */
+  /* padding: 10px; */
   width: 100%;
   height: 50vh;
   /* height: auto; */
@@ -163,6 +221,7 @@ const changeContent = (code) => {
 
 .output {
   padding: 10px;
+  min-height: 40px;
   width: 100%;
   max-height: 10vh;
   border: 1px solid var(--text-color);
