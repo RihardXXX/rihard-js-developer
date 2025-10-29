@@ -19,6 +19,7 @@ import PerformanceFP from '~/components/course/parts/PerformanceFP.vue';
 import NeuralNetworks from '~/components/course/parts/NeuralNetworks.vue';
 import FunctionMapFilterReduce from '~/components/course/parts/FunctionMapFilterReduce.vue';
 import HigherOrderFunctions from '~/components/course/parts/HigherOrderFunctions.vue';
+import LensesFP from '~/components/course/parts/LensesFP.vue';
 
 import VCourseDone from '~/components/VCourseDone.vue';
 
@@ -43,6 +44,7 @@ import {
   NEURAL_NETWORKS,
   FUNCTION_MAP_FILTER_REDUCE,
   HOF_AND_FC,
+  LENSES,
 } from '~/utils/course/constants';
 
 interface ListItem {
@@ -79,6 +81,7 @@ export default defineComponent({
     NeuralNetworks,
     FunctionMapFilterReduce,
     HigherOrderFunctions,
+    LensesFP,
   },
 
   layout: 'course',
@@ -195,6 +198,12 @@ export default defineComponent({
           route: `${COURSE}${HOF_AND_FC}`,
           status: 'at-work',
         },
+        {
+          id: id++,
+          name: 'Линзы',
+          route: `${COURSE}${LENSES}`,
+          status: 'at-work',
+        },
       ] as Array<ListItem>
     }
   },
@@ -289,6 +298,7 @@ export default defineComponent({
     <NeuralNetworks :device="device" />
     <FunctionMapFilterReduce :device="device" />
     <HigherOrderFunctions :device="device" />
+    <LensesFP :device="device" />
 
   </div>
 </template>
@@ -301,7 +311,7 @@ export default defineComponent({
   font-size: 2rem;
   transition: all 0.5s;
   color: var(--text-color);
-  padding: 0 0rem 0 4.7rem;
+  padding: 0 0rem 0 5rem;
   font-family: 'Sansation';
   overflow: hidden;
 

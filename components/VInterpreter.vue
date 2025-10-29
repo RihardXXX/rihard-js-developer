@@ -80,6 +80,18 @@ onBeforeUnmount(() => {
   }
 });
 
+// toNormalizeOutput :: * -> *
+const toNormalizeOutput = (item) => {
+  if (typeof item === 'string') {
+    return item;
+  }
+
+  try {
+    return JSON.stringify(item, null, 2);
+  } catch {
+    return String(item);
+  }
+}
 
 // runCode :: * -> *
 const runCode = () => {
@@ -94,7 +106,7 @@ const runCode = () => {
   const customConsole = {
     // то есть внутри функций подменяем
     // console.log
-    log: (...args) => logs.push(args.join(' ')),
+    log: (...args) => logs.push(...args),
     error: (...args) => logs.push('ERROR: ' + args.join(' ')),
     warn: (...args) => logs.push('WARN: ' + args.join(' ')),
   };
@@ -118,8 +130,11 @@ const runCode = () => {
       S,
     );
 
-    // console.log(112, logs)
-    output.value = logs.join('\n').trim();
+    // Форматируем каждый элемент вывода
+    const formattedLogs = logs.map(toNormalizeOutput);
+
+    // Объединяем вывод строкой, без []
+    output.value = formattedLogs.join('\n');
   } catch (e) {
     output.value = 'Error: ' + e.message;
   }
