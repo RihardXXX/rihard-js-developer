@@ -83,7 +83,7 @@ export default defineComponent({
       menu: [
         {
           id: idx++,
-          name: 'Мой курс',
+          name: 'Курс по функциональному программированию на JS',
           eventName: 'course',
           ref: undefined,
           newPage: true,
@@ -252,15 +252,17 @@ export default defineComponent({
       display: flex;
       justify-content: flex-end;
       align-items: center;
+      gap: 0 1.8rem;
 
       .navItem {
         font-weight: 600;
         font-size: 1.8rem;
         line-height: 145%;
-        margin-left: 4rem;
+        /* margin-left: 4rem; */
         transition: all 0.5s;
         cursor: pointer;
         color: var(--text-color);
+        text-align: center;
 
         &:first-child {
           margin-left: 0;
@@ -281,13 +283,16 @@ export default defineComponent({
           flex-wrap: wrap;
           width: 100%;
           justify-content: space-between;
+          gap: 5px 0;
 
           .navItem {
-            width: 30%;
+            width: 33.3%;
             margin-left: 0;
             margin: 1.5rem 0;
             font-weight: 600;
             font-size: 1.8rem;
+            word-break: break-all;
+            text-align: center;
 
             &:hover {
               color: $black;

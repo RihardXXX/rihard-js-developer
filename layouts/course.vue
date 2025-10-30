@@ -207,6 +207,10 @@ export default defineComponent({
     color: $green;
     transform: scale(1.2);
   }
+
+  @include respond-to(mobile) {
+    margin-top: 8rem;
+  }
 }
 
 </style>
