@@ -20,6 +20,7 @@ const NEURAL_NETWORKS = 'neural-networks'
 const FUNCTION_MAP_FILTER_REDUCE = 'function-map-filter-reduce'
 const HOF_AND_FC = 'first-class-and-higher-order-functions'
 const LENSES = 'lenses'
+const S_E_IN_COMPOSITION_FUNCTIONS = 'side-effects-in-composition-functions'
 
 export {
   COURSE,
@@ -41,4 +42,5 @@ export {
   FUNCTION_MAP_FILTER_REDUCE,
   HOF_AND_FC,
   LENSES,
+  S_E_IN_COMPOSITION_FUNCTIONS,
 }

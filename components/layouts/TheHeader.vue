@@ -188,7 +188,7 @@ export default defineComponent({
   methods: {
     selectSection(m: MenuItem): void {
       if (m?.newPage) {
-        this.$router.push({ name: m?.eventName })
+        this.$router.push(`/${m.eventName}/`)
         return
       }
       m.ref?.scrollIntoView({ behavior: 'smooth' });

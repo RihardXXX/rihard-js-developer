@@ -20,6 +20,7 @@ import NeuralNetworks from '~/components/course/parts/NeuralNetworks.vue';
 import FunctionMapFilterReduce from '~/components/course/parts/FunctionMapFilterReduce.vue';
 import HigherOrderFunctions from '~/components/course/parts/HigherOrderFunctions.vue';
 import LensesFP from '~/components/course/parts/LensesFP.vue';
+import SEInCompositionFunctions from '~/components/course/parts/SEInCompositionFunctions.vue';
 
 import VCourseDone from '~/components/VCourseDone.vue';
 
@@ -45,6 +46,7 @@ import {
   FUNCTION_MAP_FILTER_REDUCE,
   HOF_AND_FC,
   LENSES,
+  S_E_IN_COMPOSITION_FUNCTIONS,
 } from '~/utils/course/constants';
 
 interface ListItem {
@@ -82,6 +84,7 @@ export default defineComponent({
     FunctionMapFilterReduce,
     HigherOrderFunctions,
     LensesFP,
+    SEInCompositionFunctions
   },
 
   layout: 'course',
@@ -204,6 +207,12 @@ export default defineComponent({
           route: `${COURSE}${LENSES}`,
           status: 'at-work',
         },
+        {
+          id: id++,
+          name: 'Side effects (сайд-побочные эффекты)  в композиции функций',
+          route: `${COURSE}${S_E_IN_COMPOSITION_FUNCTIONS}`,
+          status: 'at-work',
+        },
       ] as Array<ListItem>
     }
   },
@@ -299,6 +308,7 @@ export default defineComponent({
     <FunctionMapFilterReduce :device="device" />
     <HigherOrderFunctions :device="device" />
     <LensesFP :device="device" />
+    <SEInCompositionFunctions :device="device" />
 
   </div>
 </template>
