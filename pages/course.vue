@@ -21,6 +21,7 @@ import FunctionMapFilterReduce from '~/components/course/parts/FunctionMapFilter
 import HigherOrderFunctions from '~/components/course/parts/HigherOrderFunctions.vue';
 import LensesFP from '~/components/course/parts/LensesFP.vue';
 import SEInCompositionFunctions from '~/components/course/parts/SEInCompositionFunctions.vue';
+import SelectingLibrary from '~/components/course/parts/SelectingLibrary.vue';
 
 import VCourseDone from '~/components/VCourseDone.vue';
 
@@ -47,6 +48,7 @@ import {
   HOF_AND_FC,
   LENSES,
   S_E_IN_COMPOSITION_FUNCTIONS,
+  SELECTING_LIBRARY,
 } from '~/utils/course/constants';
 
 interface ListItem {
@@ -84,7 +86,8 @@ export default defineComponent({
     FunctionMapFilterReduce,
     HigherOrderFunctions,
     LensesFP,
-    SEInCompositionFunctions
+    SEInCompositionFunctions,
+    SelectingLibrary,
   },
 
   layout: 'course',
@@ -213,6 +216,18 @@ export default defineComponent({
           route: `${COURSE}${S_E_IN_COMPOSITION_FUNCTIONS}`,
           status: 'at-work',
         },
+        {
+          id: id++,
+          name: 'Side effects (сайд-побочные эффекты)  в композиции функций',
+          route: `${COURSE}${S_E_IN_COMPOSITION_FUNCTIONS}`,
+          status: 'at-work',
+        },
+        {
+          id: id++,
+          name: 'Vanilla JS, Lodash, Ramda, Sanctuary -> что выбрать',
+          route: `${COURSE}${SELECTING_LIBRARY}`,
+          status: 'at-work',
+        },
       ] as Array<ListItem>
     }
   },
@@ -309,6 +324,7 @@ export default defineComponent({
     <HigherOrderFunctions :device="device" />
     <LensesFP :device="device" />
     <SEInCompositionFunctions :device="device" />
+    <SelectingLibrary :device="device" />
 
   </div>
 </template>
