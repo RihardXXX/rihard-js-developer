@@ -319,7 +319,9 @@ export default defineComponent({
           Vanilla JS (присутствует)  -> Lodash (не полноценное) -> Ramda (полноценное) ->
           Sanctuary (полноценное и строгое)
         </p>
-          <table border="1" cellpadding="8" style="margin: 20px auto;">
+        <div :class="$style.tableSelect">
+          <table border="1" cellpadding="8"
+          >
             <thead>
               <tr>
                 <th>Критерий</th>
@@ -340,6 +342,21 @@ export default defineComponent({
               <tr><td>Философия</td><td>Свобода выбора</td><td>Утилитарность</td><td>Практичное ФП</td><td>Академичное ФП</td></tr>
             </tbody>
           </table>
+        </div>
       </Description>
     </section>
 </template>
+
+<style lang="scss" module>
+.tableSelect {
+  margin: 20px auto;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+
+  @include respond-to(mobile) {
+    overflow-x: auto;
+    justify-content: flex-start;
+  }
+}
+</style>
