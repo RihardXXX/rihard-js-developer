@@ -230,6 +230,7 @@ export default defineComponent({
 
       @include respond-to(mobile) {
         margin-bottom: 1rem;
+        transform: translateX(20px);
       }
 
       .firstChar {
@@ -273,32 +274,27 @@ export default defineComponent({
           transform: scale(1.2);
         }
       }
-    }
 
-    .nav {
+      @include respond-to(tablet) {
+        /* margin: 0 1rem; */
+        gap: 0 1rem;
+        padding: 0 1rem;
+
+        .navItem {
+          font-size: 1.6rem;
+        }
+      }
+
       @include respond-to(mobile) {
-        margin: 0 1rem;
+        flex-direction: column;
+        gap: 2rem 0;
+        padding: 1rem 0;
 
-        .navList {
-          flex-wrap: wrap;
-          width: 100%;
-          justify-content: space-between;
-          gap: 5px 0;
-
-          .navItem {
-            width: 33.3%;
-            margin-left: 0;
-            margin: 1.5rem 0;
-            font-weight: 600;
-            font-size: 1.8rem;
-            word-break: break-all;
-            text-align: center;
-
+        .navItem {
             &:hover {
               color: $black;
               transform: scale(1);
             }
-          }
         }
       }
     }
