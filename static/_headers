@@ -1,0 +1,10 @@
+User-Agent: *
+Allow: /
+Disallow: /.nuxt/
+Disallow: /dist/
+
+# Кэширование статических ассетов
+Cache-Control: public, max-age=31536000, immutable
+
+# Динамический контент - кэш на 1 час
+Cache-Control: public, max-age=3600

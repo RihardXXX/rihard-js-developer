@@ -68,21 +68,16 @@ export default {
 
   googleFonts: {
     families: {
-      Roboto: true,
-      Sansation: true,
-      // Nosifer: true,
-      // Yomogi: true,
-      // Cormorant: true,
-      // Inter: [400, 700],
-      Inter: {
-        wght: [400, 500, 600, 700],
+      Roboto: {
+        wght: [400, 500, 700],
       },
     },
     display: 'swap',
     download: true,
-    prefetch: true,
-    preload: true,
+    prefetch: false,
+    preload: false,
     useStylesheet: true,
+    subset: ['cyrillic', 'latin-ext'],
   },
 
   svgSprite: {
@@ -158,18 +153,44 @@ export default {
     modern: true,
     extractCSS: true,
     optimizeCSS: true,
+
+    // Улучшенная оптимизация чанков
     optimization: {
       splitChunks: {
         chunks: 'all',
+        cacheGroups: {
+          // Отделить vendor код
+          vendor: {
+            test: /[\\/]node_modules[\\/]/,
+            name: 'vendors',
+            priority: 10,
+            enforce: true,
+          },
+          // Отделить общий код компонентов
+          common: {
+            minChunks: 2,
+            priority: 5,
+            reuseExistingChunk: true,
+          },
+        },
       },
     },
+
     terser: {
       terserOptions: {
         compress: {
           drop_console: true,
+          drop_debugger: true,
+          pure_funcs: ['console.log'],
+        },
+        output: {
+          comments: false,
         },
       },
     },
+
+    // Отключить source maps для production (экономим размер)
+    productionSourceMap: false,
   },
 
   // mode: 'universal',
