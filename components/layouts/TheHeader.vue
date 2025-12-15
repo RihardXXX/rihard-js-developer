@@ -291,6 +291,7 @@ export default defineComponent({
         padding: 1rem 0;
 
         .navItem {
+          font-size: 2rem;
             &:hover {
               color: $black;
               transform: scale(1);
