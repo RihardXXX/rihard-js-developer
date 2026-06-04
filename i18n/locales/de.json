@@ -1,0 +1,183 @@
+{
+  "seo": {
+    "title": "Rihard Alikhanov — Fullstack JavaScript Engineer (Vue, Nuxt, React, Node)",
+    "description": "Fullstack JavaScript Engineer, 5+ Jahre: Vue 3, Nuxt 3, React, Node.js, TypeScript. Erfahrung in Immobilien, Banking und SaaS. Remote."
+  },
+  "brand": {
+    "name": "Rihard Alikhanov"
+  },
+  "nav": {
+    "label": "Hauptnavigation",
+    "about": "Über mich",
+    "skills": "Skills",
+    "experience": "Erfahrung",
+    "projects": "Projekte",
+    "certificates": "Zertifikate",
+    "course": "Kurs",
+    "contact": "Kontakt"
+  },
+  "a11y": {
+    "toggleTheme": "Theme wechseln",
+    "toggleMenu": "Menü öffnen",
+    "close": "Schließen"
+  },
+  "hero": {
+    "welcome": "Willkommen",
+    "roleAccent": "Fullstack",
+    "roleRest": "JavaScript Engineer",
+    "tagline": "Ich baue schnelle, typsichere Web-Apps — von SSR-Frontends in Vue/Nuxt bis zu Node.js-Backends. Banking, Immobilien, SaaS.",
+    "facts": {
+      "experience": "5+ Jahre",
+      "format": "Remote / hybrid",
+      "stack": "Vue · Nuxt · React · Node · Effect-TS"
+    },
+    "ctaContact": "Kontakt aufnehmen",
+    "ctaProjects": "Projekte ansehen"
+  },
+  "about": {
+    "eyebrow": "Über mich",
+    "title": "Ich bringe Produkte von der Idee in die Produktion",
+    "lead": "Ich bin Rihard Alikhanov, ein Fullstack JavaScript Engineer mit 5+ Jahren kommerzieller Erfahrung. Ich bin auf das Vue 3 / Nuxt 3 Ökosystem und TypeScript spezialisiert und arbeite souverän mit React und Node.js. Ich habe Produkte in den Bereichen Immobilien, Banking und SaaS ausgeliefert — von Greenfield-Launches bis zur Wartung und Optimierung von High-Load-Interfaces. Mein besonderes Spezialgebiet ist Effect-TS — ein typsicherer, funktionaler Ansatz für Backends in TypeScript.",
+    "strengths": {
+      "effect": "Effect-TS — typsicheres funktionales Backend",
+      "frontend": "Vue 2/3, Nuxt, React + TypeScript in Produktion",
+      "fullstack": "Node.js-Backends: Express, Fastify, NestJS",
+      "migrate": "Migrationen von Vue 2 → 3 und Nuxt 2 → 3",
+      "perf": "SSR/SSG, Performance- und Bundle-Optimierung"
+    },
+    "stats": {
+      "years": "Jahre Erfahrung",
+      "companies": "Unternehmen",
+      "projects": "Projekte"
+    }
+  },
+  "skills": {
+    "eyebrow": "Stack",
+    "title": "Technologien, mit denen ich arbeite",
+    "subtitle": "Von Vue/React-Interfaces bis zu Node.js-APIs — der gesamte Zyklus in TypeScript.",
+    "specialty": "Spezialgebiet",
+    "effectPitch": "— meine zentrale Superkraft: ein typsicheres funktionales Backend in TypeScript. Effect-Management, typisierte Fehler, Nebenläufigkeit und vorhersehbarer Code.",
+    "groups": {
+      "frontend": "Frontend",
+      "backend": "Backend",
+      "tooling": "Tooling"
+    }
+  },
+  "experience": {
+    "eyebrow": "Erfahrung",
+    "title": "Wo ich gearbeitet habe",
+    "jobs": {
+      "redlab": {
+        "role": "Frontend Engineer",
+        "points": [
+          "Banking-HR-Web-App, entwickelt mit Vue 3 + TypeScript + Pinia.",
+          "Schichtmodul über mehrere Zeitzonen; Auth mit Refresh-Tokens überarbeitet.",
+          "Berechnungslogik auf die Client-Seite verlagert — UI-Latenz reduziert.",
+          "Code-Review, Agile/Scrum, enge Zusammenarbeit mit dem Backend-Team."
+        ]
+      },
+      "rosbank": {
+        "role": "Frontend Engineer",
+        "points": [
+          "Dashboards für Firmenkunden der Bank (React + TS, Vue 3).",
+          "Legacy-Module refactored: Render-Performance, Bundle-Optimierung.",
+          "REST- und GraphQL-APIs integriert, mit SSR gearbeitet.",
+          "Sprint-Planung, Schätzung, Code-Review."
+        ]
+      },
+      "idaproject": {
+        "role": "Frontend Engineer",
+        "points": [
+          "Greenfield-Web-Apps und Betreuung bestehender Projekte (KROST, Brusnika, Samolet, LesART usw.).",
+          "Nuxt (SSR/SSG), responsive und cross-browser Layouts, Animationen.",
+          "REST/GraphQL-Integration, CI/CD-Setup.",
+          "Legacy-Refactoring, Schätzung, Code-Review."
+        ]
+      }
+    }
+  },
+  "projects": {
+    "eyebrow": "Portfolio",
+    "title": "Projekte, an denen ich gearbeitet habe",
+    "subtitle": "Kommerzielle Produkte in den Bereichen Immobilien, Fintech und SaaS.",
+    "viewLive": "Website besuchen",
+    "reposTitle": "Open Source & Pet-Projekte",
+    "sectors": {
+      "realEstate": "Immobilien",
+      "automotive": "Automotive",
+      "saas": "SaaS",
+      "ecommerce": "E-Commerce"
+    },
+    "items": {
+      "krost": "Website des Moskauer Bauträgers KROST: Katalog und Verkauf von Immobilien in eigenen Wohnkomplexen.",
+      "brusnika": "Moskauer Website des überregionalen Bauträgers Brusnika, der Wohnungen in seinen Quartieren verkauft.",
+      "vatutinki": "Website des großen Wohnquartiers Novye Vatutinki im Neuen Moskau.",
+      "lesart": "Website des Familienkomplexes LesART nahe Sankt Petersburg mit Smart-Home-System.",
+      "fourd": "Website des Tjumener Bauträgers 4D Development: Neubauten und Gewerbeimmobilien.",
+      "amenu": "SaaS für Autohändler: Verkauf von Finanz- und Versicherungsprodukten über einen KI-Fragebogen.",
+      "scrile": "White-Label-Plattformen für Content-Monetarisierung, Videoberatung und Streaming.",
+      "zki": "Katalog-Website einer Fabrik für Keramikfliesen und Feinsteinzeug (Uralceramica)."
+    },
+    "repos": {
+      "superset": "Production-Image von Apache Superset mit eigenem Branding, ClickHouse-Treiber und Dashboard-Landingpage.",
+      "pixi": "Rendering von PIXI.Container über Skia (CanvasKit-WASM) mit Vektor-PDF-Export.",
+      "envy": "Feedback-App: Laravel 11 API + Vue 3 SPA (Vuex, Router)."
+    }
+  },
+  "course": {
+    "eyebrow": "Persönliches Projekt",
+    "title": "Interaktiver Kurs zur funktionalen Programmierung in JS",
+    "desc": "Ein Kurs mit Code-Editor direkt im Browser: Schreibe und führe Beispiele in reinem JS mit den Bibliotheken ramda und sanctuary aus. FP in der Praxis erklärt.",
+    "b1": "Monaco-Editor und ein Live-Interpreter im Browser",
+    "b2": "Reine Funktionen, Komposition, Currying, partielle Anwendung",
+    "b3": "Hindley-Milner-Notation, Kategorientheorie, Fantasy Land",
+    "b4": "Linsen, Rekursion, map / filter / reduce, Seiteneffekte",
+    "cta": "Kurs öffnen",
+    "back": "Zurück zur Startseite",
+    "playgroundTitle": "Playground",
+    "playgroundDesc": "Schreibe und führe JavaScript direkt hier aus — Ramda (R) und Sanctuary (S) stehen zur Verfügung.",
+    "tocTitle": "Inhalt",
+    "lessonsTitle": "Lektionen",
+    "run": "Ausführen",
+    "reset": "Zurücksetzen",
+    "clear": "Leeren",
+    "output": "Ausgabe",
+    "copy": "Kopieren",
+    "copied": "Kopiert!",
+    "libraries": "Verbunden:",
+    "addLib": "Bibliothek",
+    "alias": "Alias (R)",
+    "package": "npm-Paket (ramda)",
+    "add": "Hinzufügen",
+    "loading": "Wird geladen…",
+    "cdnHint": "Auf deine Anfrage von esm.sh geladen. Der Code läuft in deinem eigenen Browser — füge nur Pakete hinzu, denen du vertraust.",
+    "libExists": "Alias „{alias}“ ist bereits vergeben",
+    "libFailed": "„{pkg}“ konnte nicht geladen werden",
+    "removeLib": "{alias} entfernen",
+    "docs": "Docs"
+  },
+  "certificates": {
+    "eyebrow": "Weiterbildung",
+    "title": "Zertifikate",
+    "subtitle": "{count} abgeschlossene Kurse: JavaScript, Vue, React, Node, Backend und mehr.",
+    "alt": "Kurszertifikat"
+  },
+  "contact": {
+    "eyebrow": "Kontakt",
+    "title": "Lass uns etwas Nützliches bauen",
+    "text": "Offen für Remote-Arbeit, Projekte und Freelance. Schreib mir — ich antworte schnell.",
+    "engageTitle": "Wie wir zusammenarbeiten können",
+    "engage": {
+      "fulltime": "Festanstellung — remote oder mit Relocation",
+      "contract": "Contract / Teilzeit",
+      "freelance": "Freelance-Projekte"
+    },
+    "payment": "Bequeme Bezahlung für internationale Kunden — Bankkarte oder USDT.",
+    "writeMe": "Schreib mir"
+  },
+  "footer": {
+    "tagline": "Fullstack JavaScript Engineer. Offen für Remote-Arbeit und Projekte.",
+    "socials": "Social Media",
+    "built": "erstellt mit Nuxt"
+  }
+}

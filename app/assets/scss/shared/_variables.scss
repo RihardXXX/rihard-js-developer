@@ -1,0 +1,34 @@
+// ── Colors (SCSS, theme-independent) ─────────────────────────────
+$green: #088d48;
+$green-bright: #0db760;
+$black: #000;
+$black-100: #0b0c0c;
+$black-200: #11142d;
+$gray: #4d4d4d;
+$gray-100: #92929d;
+$red: #ff3b3b;
+$white: #fff;
+$orange: #fe8b75;
+$blue: #0047ff;
+
+// ── Fonts ────────────────────────────────────────────────────────
+$base-font: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+$mono-font: 'Fira Code', ui-monospace, 'SFMono-Regular', Menlo, monospace;
+
+// ── Layout ───────────────────────────────────────────────────────
+$container: 111rem;
+$container-wide: 141.6rem;
+$header-height: 8rem;
+
+// ── Motion ───────────────────────────────────────────────────────
+$transition: 0.3s ease-in-out;
+$bezier: cubic-bezier(0.25, 0.74, 0.22, 0.99);
+$apple-cubic: cubic-bezier(0.165, 0.84, 0.44, 1);
+
+// ── Breakpoints (max-width, used by respond-to mixin) ────────────
+$breakpoints: (
+  mobile: 767.5px,
+  tablet: 1023.5px,
+  laptop: 1380.5px,
+  desktop: 1920.5px,
+);

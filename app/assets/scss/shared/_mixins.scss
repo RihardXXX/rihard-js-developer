@@ -1,0 +1,40 @@
+@use 'sass:map';
+@use 'variables' as *;
+
+/// Mobile-first-ish max-width media query by named breakpoint.
+/// Usage: @include respond-to(tablet) { ... }
+@mixin respond-to($name) {
+  $max: map.get($breakpoints, $name);
+  @if $max {
+    @media (max-width: $max) {
+      @content;
+    }
+  } @else {
+    @content;
+  }
+}
+
+/// Constrain + center a section's inner content.
+@mixin container($width: $container) {
+  width: 100%;
+  max-width: $width;
+  margin-inline: auto;
+  padding-inline: 2.4rem;
+
+  @include respond-to(mobile) {
+    padding-inline: 1.6rem;
+  }
+}
+
+/// Visually hidden but accessible to screen readers.
+@mixin visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+  border: 0;
+}

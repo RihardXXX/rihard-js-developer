@@ -1,0 +1,183 @@
+{
+  "seo": {
+    "title": "Rihard Alikhanov — Ingénieur Fullstack JavaScript (Vue, Nuxt, React, Node)",
+    "description": "Ingénieur Fullstack JavaScript, 5+ ans : Vue 3, Nuxt 3, React, Node.js, TypeScript. Expérience dans l'immobilier, la banque et le SaaS. À distance."
+  },
+  "brand": {
+    "name": "Rihard Alikhanov"
+  },
+  "nav": {
+    "label": "Navigation principale",
+    "about": "À propos",
+    "skills": "Compétences",
+    "experience": "Expérience",
+    "projects": "Projets",
+    "certificates": "Certificats",
+    "course": "Cours",
+    "contact": "Contact"
+  },
+  "a11y": {
+    "toggleTheme": "Changer de thème",
+    "toggleMenu": "Ouvrir le menu",
+    "close": "Fermer"
+  },
+  "hero": {
+    "welcome": "bienvenue",
+    "roleAccent": "Fullstack",
+    "roleRest": "Ingénieur JavaScript",
+    "tagline": "Je conçois des applications web rapides et type-safe — des frontends SSR en Vue/Nuxt aux backends Node.js. Banque, immobilier, SaaS.",
+    "facts": {
+      "experience": "5+ ans",
+      "format": "À distance / hybride",
+      "stack": "Vue · Nuxt · React · Node · Effect-TS"
+    },
+    "ctaContact": "Prendre contact",
+    "ctaProjects": "Voir les projets"
+  },
+  "about": {
+    "eyebrow": "À propos de moi",
+    "title": "Je mène les produits de l'idée à la production",
+    "lead": "Je suis Rihard Alikhanov, ingénieur Fullstack JavaScript avec plus de 5 ans d'expérience commerciale. Je suis spécialisé dans l'écosystème Vue 3 / Nuxt 3 et TypeScript, et je travaille en toute confiance avec React et Node.js. J'ai livré des produits dans l'immobilier, la banque et le SaaS — des lancements greenfield à la maintenance et l'optimisation d'interfaces à forte charge. Ma spécialité de prédilection est Effect-TS — une approche fonctionnelle et type-safe des backends en TypeScript.",
+    "strengths": {
+      "effect": "Effect-TS — backend fonctionnel et type-safe",
+      "frontend": "Vue 2/3, Nuxt, React + TypeScript en production",
+      "fullstack": "Backends Node.js : Express, Fastify, NestJS",
+      "migrate": "Migrations Vue 2 → 3 et Nuxt 2 → 3",
+      "perf": "SSR/SSG, optimisation des performances et du bundle"
+    },
+    "stats": {
+      "years": "ans d'expérience",
+      "companies": "entreprises",
+      "projects": "projets"
+    }
+  },
+  "skills": {
+    "eyebrow": "Stack",
+    "title": "Technologies avec lesquelles je travaille",
+    "subtitle": "Des interfaces Vue/React aux API Node.js — tout le cycle en TypeScript.",
+    "specialty": "Spécialité",
+    "effectPitch": "— mon super-pouvoir principal : un backend fonctionnel et type-safe en TypeScript. Gestion des effets, erreurs typées, concurrence et code prévisible.",
+    "groups": {
+      "frontend": "Frontend",
+      "backend": "Backend",
+      "tooling": "Outillage"
+    }
+  },
+  "experience": {
+    "eyebrow": "Expérience",
+    "title": "Où j'ai travaillé",
+    "jobs": {
+      "redlab": {
+        "role": "Ingénieur Frontend",
+        "points": [
+          "Application web RH bancaire conçue avec Vue 3 + TypeScript + Pinia.",
+          "Module d'équipes multi-fuseaux horaires ; refonte de l'authentification avec refresh tokens.",
+          "Déplacement de la logique de calcul côté client — réduction de la latence de l'interface.",
+          "Code review, Agile/Scrum, collaboration étroite avec l'équipe backend."
+        ]
+      },
+      "rosbank": {
+        "role": "Ingénieur Frontend",
+        "points": [
+          "Tableaux de bord pour les clients entreprises de la banque (React + TS, Vue 3).",
+          "Refactorisation de modules legacy : performance de rendu, optimisation du bundle.",
+          "Intégration d'API REST et GraphQL, travail avec le SSR.",
+          "Planification des sprints, estimation, code review."
+        ]
+      },
+      "idaproject": {
+        "role": "Ingénieur Frontend",
+        "points": [
+          "Applications web greenfield et maintenance de projets existants (KROST, Brusnika, Samolet, LesART, etc.).",
+          "Nuxt (SSR/SSG), intégrations responsives et cross-browser, animations.",
+          "Intégration REST/GraphQL, mise en place du CI/CD.",
+          "Refactorisation de legacy, estimation, code review."
+        ]
+      }
+    }
+  },
+  "projects": {
+    "eyebrow": "Portfolio",
+    "title": "Projets sur lesquels j'ai travaillé",
+    "subtitle": "Produits commerciaux dans l'immobilier, la fintech et le SaaS.",
+    "viewLive": "Visiter le site",
+    "reposTitle": "Open source & projets perso",
+    "sectors": {
+      "realEstate": "Immobilier",
+      "automotive": "Automobile",
+      "saas": "SaaS",
+      "ecommerce": "E-commerce"
+    },
+    "items": {
+      "krost": "Site du promoteur moscovite KROST : catalogue et vente de biens dans ses propres complexes.",
+      "brusnika": "Site moscovite du promoteur fédéral Brusnika, vente d'appartements dans ses quartiers.",
+      "vatutinki": "Site du grand quartier résidentiel Novye Vatutinki dans le Nouveau Moscou.",
+      "lesart": "Site du complexe familial LesART près de Saint-Pétersbourg, doté d'un système de maison connectée.",
+      "fourd": "Site du promoteur de Tioumen 4D Development : logements neufs et biens commerciaux.",
+      "amenu": "SaaS pour concessionnaires automobiles : vente de produits de financement et d'assurance via un questionnaire IA.",
+      "scrile": "Plateformes en marque blanche pour la monétisation de contenu, les consultations vidéo et le streaming.",
+      "zki": "Site catalogue d'une usine de carrelage céramique et de grès cérame (Uralceramica)."
+    },
+    "repos": {
+      "superset": "Image Apache Superset de production avec branding personnalisé, driver ClickHouse et landing de tableaux de bord.",
+      "pixi": "Rendu d'un PIXI.Container via Skia (CanvasKit-WASM) avec export PDF vectoriel.",
+      "envy": "Application de feedback : API Laravel 11 + SPA Vue 3 (Vuex, Router)."
+    }
+  },
+  "course": {
+    "eyebrow": "Projet personnel",
+    "title": "Cours interactif sur la programmation fonctionnelle en JS",
+    "desc": "Un cours avec un éditeur de code directement dans le navigateur : écrivez et exécutez des exemples en JS pur avec les bibliothèques ramda et sanctuary. La PF expliquée par la pratique.",
+    "b1": "Éditeur Monaco et interpréteur en direct dans le navigateur",
+    "b2": "Fonctions pures, composition, curryfication, application partielle",
+    "b3": "Notation Hindley-Milner, théorie des catégories, Fantasy Land",
+    "b4": "Lentilles, récursion, map / filter / reduce, effets de bord",
+    "cta": "Ouvrir le cours",
+    "back": "Retour à l'accueil",
+    "playgroundTitle": "Playground",
+    "playgroundDesc": "Écrivez et exécutez du JavaScript ici même — Ramda (R) et Sanctuary (S) sont disponibles.",
+    "tocTitle": "Sommaire",
+    "lessonsTitle": "Leçons",
+    "run": "Exécuter",
+    "reset": "Réinitialiser",
+    "clear": "Effacer",
+    "output": "Sortie",
+    "copy": "Copier",
+    "copied": "Copié !",
+    "libraries": "Connectées :",
+    "addLib": "bibliothèque",
+    "alias": "alias (R)",
+    "package": "paquet npm (ramda)",
+    "add": "Ajouter",
+    "loading": "Chargement…",
+    "cdnHint": "Chargé depuis esm.sh à votre demande. Le code s'exécute dans votre propre navigateur — n'ajoutez que des paquets de confiance.",
+    "libExists": "L'alias « {alias} » est déjà pris",
+    "libFailed": "Impossible de charger « {pkg} »",
+    "removeLib": "Supprimer {alias}",
+    "docs": "docs"
+  },
+  "certificates": {
+    "eyebrow": "Apprentissage",
+    "title": "Certificats",
+    "subtitle": "{count} cours terminés : JavaScript, Vue, React, Node, backend et plus encore.",
+    "alt": "Certificat de cours"
+  },
+  "contact": {
+    "eyebrow": "Contact",
+    "title": "Construisons quelque chose d'utile",
+    "text": "Ouvert au télétravail, aux projets et au freelance. Écrivez-moi — je réponds vite.",
+    "engageTitle": "Comment nous pouvons collaborer",
+    "engage": {
+      "fulltime": "Temps plein — à distance ou relocalisation",
+      "contract": "Mission / temps partiel",
+      "freelance": "Projets en freelance"
+    },
+    "payment": "Paiement pratique pour les clients internationaux — carte bancaire ou USDT.",
+    "writeMe": "Écrivez-moi"
+  },
+  "footer": {
+    "tagline": "Ingénieur Fullstack JavaScript. Ouvert au télétravail et aux projets.",
+    "socials": "Réseaux",
+    "built": "réalisé avec Nuxt"
+  }
+}

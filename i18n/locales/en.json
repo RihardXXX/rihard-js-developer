@@ -1,0 +1,183 @@
+{
+  "seo": {
+    "title": "Rihard Alikhanov — Fullstack JavaScript Engineer (Vue, Nuxt, React, Node)",
+    "description": "Fullstack JavaScript engineer, 5+ years: Vue 3, Nuxt 3, React, Node.js, TypeScript. Real estate, banking and SaaS experience. Remote."
+  },
+  "brand": {
+    "name": "Rihard Alikhanov"
+  },
+  "nav": {
+    "label": "Main navigation",
+    "about": "About",
+    "skills": "Skills",
+    "experience": "Experience",
+    "projects": "Projects",
+    "certificates": "Certificates",
+    "course": "Course",
+    "contact": "Contact"
+  },
+  "a11y": {
+    "toggleTheme": "Toggle theme",
+    "toggleMenu": "Open menu",
+    "close": "Close"
+  },
+  "hero": {
+    "welcome": "welcome",
+    "roleAccent": "Fullstack",
+    "roleRest": "JavaScript Engineer",
+    "tagline": "I build fast, type-safe web apps — from SSR frontends in Vue/Nuxt to Node.js backends. Banking, real estate, SaaS.",
+    "facts": {
+      "experience": "5+ years",
+      "format": "Remote / hybrid",
+      "stack": "Vue · Nuxt · React · Node · Effect-TS"
+    },
+    "ctaContact": "Get in touch",
+    "ctaProjects": "View projects"
+  },
+  "about": {
+    "eyebrow": "About me",
+    "title": "I take products from idea to production",
+    "lead": "I'm Rihard Alikhanov, a Fullstack JavaScript engineer with 5+ years of commercial experience. I specialize in the Vue 3 / Nuxt 3 ecosystem and TypeScript, and work confidently with React and Node.js. I've shipped products in real estate, banking and SaaS — from greenfield launches to maintaining and optimizing high-load interfaces. My dedicated specialty is Effect-TS — a type-safe, functional approach to backends in TypeScript.",
+    "strengths": {
+      "effect": "Effect-TS — type-safe functional backend",
+      "frontend": "Vue 2/3, Nuxt, React + TypeScript in production",
+      "fullstack": "Node.js backends: Express, Fastify, NestJS",
+      "migrate": "Vue 2 → 3 and Nuxt 2 → 3 migrations",
+      "perf": "SSR/SSG, performance and bundle optimization"
+    },
+    "stats": {
+      "years": "years of experience",
+      "companies": "companies",
+      "projects": "projects"
+    }
+  },
+  "skills": {
+    "eyebrow": "Stack",
+    "title": "Technologies I work with",
+    "subtitle": "From Vue/React interfaces to Node.js APIs — the whole cycle in TypeScript.",
+    "specialty": "Specialty",
+    "effectPitch": "— my core superpower: a type-safe functional backend in TypeScript. Effect management, typed errors, concurrency and predictable code.",
+    "groups": {
+      "frontend": "Frontend",
+      "backend": "Backend",
+      "tooling": "Tooling"
+    }
+  },
+  "experience": {
+    "eyebrow": "Experience",
+    "title": "Where I worked",
+    "jobs": {
+      "redlab": {
+        "role": "Frontend Engineer",
+        "points": [
+          "Banking HR web app built with Vue 3 + TypeScript + Pinia.",
+          "Multi-timezone shift module; reworked auth with refresh tokens.",
+          "Moved calculation logic client-side — cut UI latency.",
+          "Code review, Agile/Scrum, close work with the backend team."
+        ]
+      },
+      "rosbank": {
+        "role": "Frontend Engineer",
+        "points": [
+          "Corporate-client dashboards for the bank (React + TS, Vue 3).",
+          "Refactored legacy modules: render performance, bundle optimization.",
+          "Integrated REST and GraphQL APIs, worked with SSR.",
+          "Sprint planning, estimation, code review."
+        ]
+      },
+      "idaproject": {
+        "role": "Frontend Engineer",
+        "points": [
+          "Greenfield web apps and support of existing projects (KROST, Brusnika, Samolet, LesART, etc.).",
+          "Nuxt (SSR/SSG), responsive and cross-browser layouts, animations.",
+          "REST/GraphQL integration, CI/CD setup.",
+          "Legacy refactoring, estimation, code review."
+        ]
+      }
+    }
+  },
+  "projects": {
+    "eyebrow": "Portfolio",
+    "title": "Projects I worked on",
+    "subtitle": "Commercial products across real estate, fintech and SaaS.",
+    "viewLive": "Visit site",
+    "reposTitle": "Open source & pet projects",
+    "sectors": {
+      "realEstate": "Real estate",
+      "automotive": "Automotive",
+      "saas": "SaaS",
+      "ecommerce": "E-commerce"
+    },
+    "items": {
+      "krost": "Website of Moscow developer KROST: catalog and sales of property in its own complexes.",
+      "brusnika": "Moscow site of federal developer Brusnika, selling apartments across its districts.",
+      "vatutinki": "Website of the large residential district Novye Vatutinki in New Moscow.",
+      "lesart": "Website of the family complex LesART near Saint Petersburg with a smart-home system.",
+      "fourd": "Website of Tyumen developer 4D Development: new builds and commercial property.",
+      "amenu": "SaaS for car dealers: selling finance & insurance products via an AI questionnaire.",
+      "scrile": "White-label platforms for content monetization, video consultations and streaming.",
+      "zki": "Catalog website of a ceramic tile and porcelain factory (Uralceramica)."
+    },
+    "repos": {
+      "superset": "Production Apache Superset image with custom branding, ClickHouse driver and dashboard landing.",
+      "pixi": "Rendering PIXI.Container via Skia (CanvasKit-WASM) with vector PDF export.",
+      "envy": "Feedback app: Laravel 11 API + Vue 3 SPA (Vuex, Router)."
+    }
+  },
+  "course": {
+    "eyebrow": "Personal project",
+    "title": "Interactive course on functional programming in JS",
+    "desc": "A course with a code editor right in the browser: write and run examples in plain JS with the ramda and sanctuary libraries. FP explained in practice.",
+    "b1": "Monaco editor and a live interpreter in the browser",
+    "b2": "Pure functions, composition, currying, partial application",
+    "b3": "Hindley-Milner notation, category theory, Fantasy Land",
+    "b4": "Lenses, recursion, map / filter / reduce, side effects",
+    "cta": "Open the course",
+    "back": "Back home",
+    "playgroundTitle": "Playground",
+    "playgroundDesc": "Write and run JavaScript right here — Ramda (R) and Sanctuary (S) are available.",
+    "tocTitle": "Contents",
+    "lessonsTitle": "Lessons",
+    "run": "Run",
+    "reset": "Reset",
+    "clear": "Clear",
+    "output": "Output",
+    "copy": "Copy",
+    "copied": "Copied!",
+    "libraries": "Connected:",
+    "addLib": "library",
+    "alias": "alias (R)",
+    "package": "npm package (ramda)",
+    "add": "Add",
+    "loading": "Loading…",
+    "cdnHint": "Loaded from esm.sh on your request. Code runs in your own browser — only add packages you trust.",
+    "libExists": "Alias “{alias}” is taken",
+    "libFailed": "Couldn’t load “{pkg}”",
+    "removeLib": "Remove {alias}",
+    "docs": "docs"
+  },
+  "certificates": {
+    "eyebrow": "Learning",
+    "title": "Certificates",
+    "subtitle": "{count} completed courses: JavaScript, Vue, React, Node, backend and more.",
+    "alt": "Course certificate"
+  },
+  "contact": {
+    "eyebrow": "Contact",
+    "title": "Let's build something useful",
+    "text": "Open to remote work, projects and freelance. Drop me a line — I reply fast.",
+    "engageTitle": "How we can work together",
+    "engage": {
+      "fulltime": "Full-time — remote or relocation",
+      "contract": "Contract / part-time",
+      "freelance": "Freelance projects"
+    },
+    "payment": "Convenient payment for international clients — bank card or USDT.",
+    "writeMe": "Write to me"
+  },
+  "footer": {
+    "tagline": "Fullstack JavaScript engineer. Open to remote work and projects.",
+    "socials": "Socials",
+    "built": "built with Nuxt"
+  }
+}

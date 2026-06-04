@@ -1,0 +1,4 @@
+// Side-effect-free entrypoint injected into every component style block
+// via Vite `additionalData`. Only forwards variables + mixins (no CSS output).
+@forward 'variables';
+@forward 'mixins';
