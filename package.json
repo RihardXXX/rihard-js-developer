@@ -12,7 +12,7 @@
     "lint": "eslint .",
     "typecheck": "nuxt typecheck",
     "predeploy": "nuxt generate",
-    "deploy": "push-dir --dir=.output/public --branch=gh-pages --cleanup",
+    "deploy": "sh scripts/deploy.sh",
     "deploy:app": "npm-run-all predeploy deploy"
   },
   "dependencies": {
