@@ -38,6 +38,10 @@ export default defineNuxtConfig({
     url: 'https://rihard-developer.ru',
     name: 'Rihard Alikhanov — Fullstack JavaScript Engineer',
     defaultLocale: 'en',
+    // GitHub Pages serves every page as directory/index.html and 301-redirects
+    // the slashless URL, so all generated URLs (sitemap, canonical, hreflang)
+    // must carry the trailing slash to avoid redirect chains for crawlers.
+    trailingSlash: true,
   },
 
   // Static OG image instead of dynamic rendering (avoids native deps, lighter build).
@@ -47,6 +51,7 @@ export default defineNuxtConfig({
     baseUrl: 'https://rihard-developer.ru',
     defaultLocale: 'en',
     strategy: 'prefix_except_default',
+    trailingSlash: true,
     locales: [
       { code: 'en', language: 'en-US', name: 'English', file: 'en.json' },
       { code: 'ru', language: 'ru-RU', name: 'Русский', file: 'ru.json' },
