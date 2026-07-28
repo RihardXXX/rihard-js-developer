@@ -1,6 +1,13 @@
 <script setup lang="ts">
-const { t } = useI18n()
+import type { LocaleObject } from '@nuxtjs/i18n'
+
+const { t, locale, locales } = useI18n()
+const switchLocalePath = useSwitchLocalePath()
 const year = 2026
+
+// A plain, always-rendered link per locale. The header's LangSwitch hides its
+// list behind a toggle, which left every localised URL without an inbound link.
+const localeLinks = computed(() => locales.value as LocaleObject[])
 
 const socials = [
   { label: 'GitHub', href: 'https://github.com/RihardXXX' },
@@ -28,6 +35,19 @@ const socials = [
         >
           {{ s.label }}
         </a>
+      </nav>
+
+      <nav class="footer__langs" :aria-label="t('footer.language')">
+        <NuxtLink
+          v-for="l in localeLinks"
+          :key="l.code"
+          :to="switchLocalePath(l.code)"
+          class="footer__lang"
+          :class="{ 'footer__lang--active': l.code === locale }"
+          :hreflang="l.code"
+        >
+          {{ l.name }}
+        </NuxtLink>
       </nav>
 
       <div class="footer__meta">
@@ -91,6 +111,26 @@ const socials = [
 
     &:hover {
       color: var(--accent);
+    }
+  }
+
+  &__langs {
+    display: flex;
+    gap: 1.6rem;
+  }
+
+  &__lang {
+    font-size: 1.5rem;
+    font-weight: 500;
+    color: var(--text-muted);
+    transition: color $transition;
+
+    &:hover {
+      color: var(--accent);
+    }
+
+    &--active {
+      color: var(--text-color);
     }
   }
 

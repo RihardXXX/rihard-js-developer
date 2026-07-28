@@ -178,6 +178,7 @@
   "footer": {
     "tagline": "Fullstack JavaScript engineer. Open to remote work and projects.",
     "socials": "Socials",
+    "language": "Language",
     "built": "built with Nuxt"
   }
 }

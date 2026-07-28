@@ -1,16 +1,21 @@
 <script setup lang="ts">
-defineProps<{
-  eyebrow?: string
-  title: string
-  subtitle?: string
-  center?: boolean
-}>()
+withDefaults(
+  defineProps<{
+    eyebrow?: string
+    title: string
+    subtitle?: string
+    center?: boolean
+    // Sections are h2 by default; a page whose header IS the page title passes h1.
+    as?: 'h1' | 'h2'
+  }>(),
+  { as: 'h2' },
+)
 </script>
 
 <template>
   <header class="section-header" :class="{ 'section-header--center': center }">
     <p v-if="eyebrow" class="section-header__eyebrow">{{ eyebrow }}</p>
-    <h2 class="section-header__title">{{ title }}</h2>
+    <component :is="as" class="section-header__title">{{ title }}</component>
     <p v-if="subtitle" class="section-header__subtitle">{{ subtitle }}</p>
   </header>
 </template>

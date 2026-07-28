@@ -47,19 +47,36 @@ export default defineNuxtConfig({
   // Static OG image instead of dynamic rendering (avoids native deps, lighter build).
   ogImage: { enabled: false },
 
+  sitemap: {
+    // Googlebot was spending 48% of its crawl budget fetching the ~60
+    // <image:image> entries this added per locale, while HTML got 6%. The
+    // images stay discoverable from the pages themselves.
+    discoverImages: false,
+  },
+
+  // Redirects for the dropped locales live in `public/` as plain HTML: routes
+  // fed to the prerenderer get localised by i18n, which produced /ru/de/ and
+  // friends instead. GitHub Pages can't do 301s, so meta-refresh + canonical
+  // is the available signal.
+  nitro: {
+    prerender: {
+      // The sitemap module registers /sitemap.xml, and i18n mirrors it under
+      // /ru/ — rendering an indexable ~250-character page nothing links to.
+      ignore: ['/ru/sitemap.xml'],
+    },
+  },
+
   i18n: {
     baseUrl: 'https://rihard-developer.ru',
     defaultLocale: 'en',
     strategy: 'prefix_except_default',
     trailingSlash: true,
+    // Only locales whose content is genuinely translated. The course lessons
+    // exist in RU/EN only, so de/fr/kk/ka/hy served a 94% English duplicate of
+    // /course/ — Google never indexed them and the crawl budget went to waste.
     locales: [
       { code: 'en', language: 'en-US', name: 'English', file: 'en.json' },
       { code: 'ru', language: 'ru-RU', name: 'Русский', file: 'ru.json' },
-      { code: 'de', language: 'de-DE', name: 'Deutsch', file: 'de.json' },
-      { code: 'fr', language: 'fr-FR', name: 'Français', file: 'fr.json' },
-      { code: 'kk', language: 'kk-KZ', name: 'Қазақша', file: 'kk.json' },
-      { code: 'ka', language: 'ka-GE', name: 'ქართული', file: 'ka.json' },
-      { code: 'hy', language: 'hy-AM', name: 'Հայերեն', file: 'hy.json' },
     ],
     bundle: { optimizeTranslationDirective: false },
     detectBrowserLanguage: {

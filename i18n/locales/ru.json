@@ -178,6 +178,7 @@
   "footer": {
     "tagline": "Fullstack JavaScript разработчик. Открыт к удалённой работе и проектам.",
     "socials": "Соцсети",
+    "language": "Язык",
     "built": "сделано на Nuxt"
   }
 }

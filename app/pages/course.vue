@@ -17,6 +17,7 @@ useSeoMeta({
     <NuxtLink :to="localePath('/')" class="back">← {{ t('course.back') }}</NuxtLink>
 
     <SectionHeader
+      as="h1"
       :eyebrow="t('course.eyebrow')"
       :title="t('course.title')"
       :subtitle="t('course.desc')"

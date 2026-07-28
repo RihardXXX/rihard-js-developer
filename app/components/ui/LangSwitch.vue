@@ -36,7 +36,10 @@ onClickOutside(root, close)
     </button>
 
     <Transition name="lang-pop">
-      <ul v-if="open" class="lang__menu" role="listbox">
+      <!-- v-show, not v-if: the alternate-locale links must exist in the
+           prerendered HTML, otherwise every localised page is an orphan that
+           Googlebot never crawls. -->
+      <ul v-show="open" class="lang__menu" role="listbox">
         <li v-for="l in options" :key="l.code" role="option" :aria-selected="l.code === locale">
           <NuxtLink
             :to="switchLocalePath(l.code)"
