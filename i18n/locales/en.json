@@ -1,7 +1,7 @@
 {
   "seo": {
     "title": "Rihard Alikhanov — Fullstack JavaScript Engineer (Vue, Nuxt, React, Node)",
-    "description": "Fullstack JavaScript engineer, 5+ years: Vue 3, Nuxt 3, React, Node.js, TypeScript. Real estate, banking and SaaS experience. Remote."
+    "description": "Fullstack JavaScript engineer, 10+ years. Core focus: Effect-TS and functional backends in TypeScript; Vue 3, Nuxt, React, Node.js. Real estate, banking and SaaS experience. Remote."
   },
   "brand": {
     "name": "Rihard Alikhanov"
@@ -27,7 +27,7 @@
     "roleRest": "JavaScript Engineer",
     "tagline": "I build fast, type-safe web apps — from SSR frontends in Vue/Nuxt to Node.js backends. Banking, real estate, SaaS.",
     "facts": {
-      "experience": "5+ years",
+      "experience": "10+ years",
       "format": "Remote / hybrid",
       "stack": "Vue · Nuxt · React · Node · Effect-TS"
     },
@@ -37,7 +37,7 @@
   "about": {
     "eyebrow": "About me",
     "title": "I take products from idea to production",
-    "lead": "I'm Rihard Alikhanov, a Fullstack JavaScript engineer with 5+ years of commercial experience. I specialize in the Vue 3 / Nuxt 3 ecosystem and TypeScript, and work confidently with React and Node.js. I've shipped products in real estate, banking and SaaS — from greenfield launches to maintaining and optimizing high-load interfaces. My dedicated specialty is Effect-TS — a type-safe, functional approach to backends in TypeScript.",
+    "lead": "I'm Rihard Alikhanov, a Fullstack JavaScript engineer with 10+ years of commercial experience. My core focus is Effect-TS and functional backends in TypeScript: services where errors, dependencies and concurrency are expressed in types and checked by the compiler instead of surfacing in production. I also work with Vue 3 / Nuxt, React and Node.js. I've built products for real estate, banking and SaaS — launching projects from scratch, then evolving and optimizing high-load interfaces.",
     "strengths": {
       "effect": "Effect-TS — type-safe functional backend",
       "frontend": "Vue 2/3, Nuxt, React + TypeScript in production",

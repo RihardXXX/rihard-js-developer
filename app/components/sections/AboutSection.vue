@@ -2,7 +2,7 @@
 const { t } = useI18n()
 
 const stats = [
-  { value: '5+', key: 'about.stats.years' },
+  { value: '10+', key: 'about.stats.years' },
   { value: '3', key: 'about.stats.companies' },
   { value: '8+', key: 'about.stats.projects' },
 ] as const
