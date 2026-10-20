@@ -60,7 +60,8 @@
     "groups": {
       "frontend": "Frontend",
       "backend": "Backend",
-      "tooling": "Инструменты"
+      "tooling": "Инструменты",
+      "ai": "ИИ-инструменты"
     }
   },
   "experience": {
