@@ -88,7 +88,10 @@ for (const locale of ['en', 'ru']) {
     const g = aiGroup(locale)
     assert.ok(g.title.length > 0, 'У ИИ-группы пустой заголовок')
     assert.ok(!g.title.startsWith('skills.'), `Вместо заголовка показан сырой ключ: ${g.title}`)
-    const others = groups(locale).filter((x) => x !== g).map((x) => x.title)
+    // groups() builds fresh objects on every call, so compare by content, not identity.
+    const others = groups(locale)
+      .filter((x) => !x.items.some((i) => i.label === 'Claude Code'))
+      .map((x) => x.title)
     assert.ok(!others.includes(g.title), 'Заголовок ИИ-группы совпадает с заголовком другой группы')
   })
 
