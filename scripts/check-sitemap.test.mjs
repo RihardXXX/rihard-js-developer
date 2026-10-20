@@ -116,6 +116,46 @@ fails(
   'sitemap.xml без XML-декларации должен останавливать деплой (код 1)',
 )
 
+passes('BOM и xml-stylesheet после декларации допустимы (вывод модуля sitemap)', {
+  'sitemap.xml': `﻿${IDX.replace('?>\n', '?>\n<?xml-stylesheet type="text/xsl" href="/__sitemap__/style.xsl"?>\n')}`,
+  'sitemap_index.xml': IDX,
+})
+
+fails(
+  'пробелы перед <?xml: код 1',
+  { 'sitemap.xml': `\n  ${IDX}`, 'sitemap_index.xml': IDX },
+  /sitemap\.xml/,
+  'XML-декларация допустима только в самом начале файла (код 1)',
+)
+
+fails(
+  'xml-stylesheet без декларации и HTML внутри: код 1',
+  { 'sitemap.xml': `<?xml-stylesheet type="text/xsl" href="/s.xsl"?><html><body>urlset</body></html>`, 'sitemap_index.xml': IDX },
+  /sitemap\.xml/,
+  '<?xml-stylesheet не XML-декларация, HTML вместо sitemap должен останавливать деплой (код 1)',
+)
+
+fails(
+  'пустой urlset без <loc>: код 1',
+  { 'sitemap.xml': `<?xml version="1.0" encoding="UTF-8"?>\n<urlset/>`, 'sitemap_index.xml': IDX },
+  /sitemap\.xml/,
+  'sitemap без единого <loc> бесполезен и должен останавливать деплой (код 1)',
+)
+
+fails(
+  'пустой sitemapindex без <loc>: код 1',
+  { 'sitemap.xml': IDX, 'sitemap_index.xml': `<?xml version="1.0" encoding="UTF-8"?>\n<sitemapindex></sitemapindex>` },
+  /sitemap_index\.xml/,
+  'индекс без единого <loc> должен останавливать деплой (код 1)',
+)
+
+fails(
+  'sitemap_index.xml это каталог: код 1',
+  { 'sitemap.xml': IDX, 'sitemap_index.xml/index.html': STUB },
+  /sitemap_index\.xml/,
+  'каталог вместо sitemap_index.xml сломает GSC (код 1)',
+)
+
 test('каталога нет: код 1 с сообщением, а не ложный OK', async () => {
   const dir = join(tmpdir(), 'check-sitemap-missing-dir-does-not-exist')
   const { code, out } = await run(dir)
