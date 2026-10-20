@@ -55,9 +55,9 @@ export const skillGroups: SkillGroup[] = [
       { label: 'Claude Code', icon: 'claude.svg', featured: true },
       { label: 'Multi-agent orchestration', icon: 'ai-agent.svg', featured: true },
       { label: 'MCP (context7 · Playwright · Figma · Chrome)', icon: 'mcp.svg' },
-      { label: 'Agent Skills', icon: 'ai-agent.svg' },
+      { label: 'Agent Skills', icon: 'ai-skills.svg' },
       { label: 'Claude API', icon: 'anthropic.svg' },
-      { label: 'OpenAI Codex', icon: 'ai-agent.svg' },
+      { label: 'OpenAI Codex', icon: 'ai-terminal.svg' },
     ],
   },
 ]
