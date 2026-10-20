@@ -1,0 +1,23 @@
+{
+  "version": 1,
+  "base": "nuxt4",
+  "delivery": "pr",
+  "checks": [
+    {
+      "name": "root:build",
+      "cmd": [
+        "npm",
+        "run",
+        "build"
+      ],
+      "cwd": ".",
+      "kind": "build"
+    }
+  ],
+  "zones": [],
+  "worktree": {
+    "link": [
+      "node_modules"
+    ]
+  }
+}
