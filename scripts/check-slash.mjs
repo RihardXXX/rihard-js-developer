@@ -17,7 +17,7 @@ if (!entries) {
   process.exit(1)
 }
 
-// Files only: prerender emits a sitemap.xml/ directory for the sitemap redirect.
+// Files only: readdir lists directories too, and one may carry a file-like name.
 const pages = entries
   .filter((entry) => entry.isFile() && /\.(html|xml)$/.test(entry.name))
   .map((entry) => relative(DIR, join(entry.parentPath, entry.name)))
