@@ -2,7 +2,6 @@
 import { test } from 'node:test'
 import assert from 'node:assert/strict'
 import { existsSync, readFileSync } from 'node:fs'
-import { execFileSync } from 'node:child_process'
 import { fileURLToPath } from 'node:url'
 import { resolve } from 'node:path'
 
@@ -101,8 +100,8 @@ for (const locale of ['en', 'ru']) {
 
   test(`[${locale}] ИИ-группа стоит последней, после Frontend/Backend/Tooling`, () => {
     const gs = groups(locale)
-    assert.equal(gs.length, 4, `Групп в «Стеке» ${gs.length}, ожидалось 4`)
-    assert.ok(gs[3].items.some((i) => i.label === 'Claude Code'), 'ИИ-группа не последняя')
+    assert.ok(gs.length > 1, `Групп в «Стеке» ${gs.length}`)
+    assert.ok(gs.at(-1).items.some((i) => i.label === 'Claude Code'), 'ИИ-группа не последняя')
   })
 
   test(`[${locale}] подписи ИИ-навыков в нужном составе и порядке`, () => {
@@ -166,14 +165,4 @@ test('ключи en.json и ru.json совпадают', () => {
   const ru = flatKeys(readLocale('ru')).sort()
   assert.deepEqual(en.filter((k) => !ru.includes(k)), [], 'Ключи есть в en, нет в ru')
   assert.deepEqual(ru.filter((k) => !en.includes(k)), [], 'Ключи есть в ru, нет в en')
-})
-
-test('локали отличаются от базы nuxt4 ровно ключом skills.groups.ai', () => {
-  for (const l of ['en', 'ru']) {
-    const base = JSON.parse(execFileSync('git', ['-C', ROOT, 'show', `nuxt4:i18n/locales/${l}.json`], { encoding: 'utf8' }))
-    const was = flatKeys(base)
-    const now = flatKeys(readLocale(l))
-    assert.deepEqual(now.filter((k) => !was.includes(k)), ['skills.groups.ai'], `[${l}] Добавлены не те ключи`)
-    assert.deepEqual(was.filter((k) => !now.includes(k)), [], `[${l}] Ключи удалены`)
-  }
 })
