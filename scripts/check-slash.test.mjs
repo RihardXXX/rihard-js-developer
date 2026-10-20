@@ -108,6 +108,11 @@ passes('meta-refresh заглушки без слеша допустим', {
   'de/index.html': page(`<meta http-equiv="refresh" content="0; url=${HOST}/ru">`),
 })
 
+passes('каталог с именем sitemap.xml/ (prerender-редирект) не ломает проверку', {
+  'index.html': page(''),
+  'sitemap.xml/index.html': page(`<meta http-equiv="refresh" content="0; url=${HOST}/sitemap_index.xml">`),
+})
+
 passes('чужие домены без слеша допустимы', {
   'index.html': page(`<a href="https://github.com/RihardXXX">gh</a><a href="http://example.com/page">e</a>`),
 })
