@@ -77,6 +77,32 @@ test('loc без слеша в xml: код 1 и адрес /ru в выводе',
     assert.match(out, /\/ru(?![\w/])/, 'в выводе должен быть перечислен адрес /ru')
   }))
 
+test('относительные ссылки без слеша (/ru, /ru#skills): код 1', () =>
+  withSite({ 'index.html': page(`<a href="/ru">ru</a><a href="/ru#skills">s</a>`) }, async (dir) => {
+    const { code, out } = await run(dir)
+    notMissingScript(out)
+    assert.equal(code, 1, 'относительная ссылка без слеша должна останавливать деплой (код 1)')
+    assert.match(out, /\/ru(?![\w/])/, 'в выводе должен быть перечислен адрес /ru')
+  }))
+
+test('ссылка на каталог с точкой в имени (sitemap.xml/): код 1', () =>
+  withSite(
+    {
+      'index.html': page(`<a href="${HOST}/sitemap.xml">s</a>`),
+      'sitemap.xml/index.html': page(`<meta http-equiv="refresh" content="0; url=${HOST}/sitemap_index.xml">`),
+    },
+    async (dir) => {
+      const { code, out } = await run(dir)
+      notMissingScript(out)
+      assert.equal(code, 1, 'каталог отдаётся с 301 на адрес со слешем, даже если в имени есть точка')
+      assert.match(out, /\/sitemap\.xml(?![\w/])/, 'в выводе должен быть перечислен адрес /sitemap.xml')
+    },
+  ))
+
+passes('якоря и query на адресах со слешем и у ассетов допустимы', {
+  'index.html': page(`<a href="/#skills">a</a><a href="/ru/?q=1">b</a><a href="${HOST}/_payload.json?x">c</a>`),
+})
+
 test('ссылка http:// на свой домен: код 1', () =>
   withSite({ 'index.html': page(`<a href="http://rihard-developer.ru/ru/">x</a>`) }, async (dir) => {
     const { code, out } = await run(dir)
