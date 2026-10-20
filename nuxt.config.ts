@@ -1,3 +1,5 @@
+import { writeFile } from 'node:fs/promises'
+import { join } from 'node:path'
 import { fileURLToPath } from 'node:url'
 
 // Absolute path so Sass `additionalData` resolves reliably across entries.
@@ -8,6 +10,9 @@ const sharedScss = fileURLToPath(
 // Browser shim so Sanctuary (used in the FP-course playground) can initialise
 // without Node's `util` (Vite externalises it for the browser).
 const utilShim = fileURLToPath(new URL('./app/shims/util.ts', import.meta.url))
+
+// Where `nuxt generate` writes the static site; set by the nitro:init hook below.
+let publicDir = ''
 
 export default defineNuxtConfig({
   compatibilityDate: '2026-06-01',
@@ -60,9 +65,26 @@ export default defineNuxtConfig({
   // is the available signal.
   nitro: {
     prerender: {
-      // The sitemap module registers /sitemap.xml, and i18n mirrors it under
-      // /ru/ — rendering an indexable ~250-character page nothing links to.
-      ignore: ['/ru/sitemap.xml'],
+      // The sitemap module turns /sitemap.xml into a redirect page to
+      // /sitemap_index.xml and i18n mirrors it under /ru/; GitHub Pages would
+      // serve that directory with a 301 and HTML. The real XML is written below.
+      ignore: ['/sitemap.xml', '/ru/sitemap.xml'],
+    },
+  },
+
+  // Yandex Webmaster reads /sitemap.xml, Search Console /sitemap_index.xml:
+  // serve the same sitemap index at both.
+  hooks: {
+    'nitro:init'(nitro) {
+      publicDir = nitro.options.output.publicDir
+    },
+    async 'sitemap:prerender:done'({ sitemaps }) {
+      const index = sitemaps.find((sitemap) => sitemap.name === '/sitemap_index.xml')
+      if (!index) {
+        throw new Error('@nuxtjs/sitemap did not prerender /sitemap_index.xml — multi-sitemap mode (one sitemap per locale) expected')
+      }
+      if (!publicDir) throw new Error('nitro:init did not run, so the output directory for sitemap.xml is unknown')
+      await writeFile(join(publicDir, 'sitemap.xml'), index.content)
     },
   },
 

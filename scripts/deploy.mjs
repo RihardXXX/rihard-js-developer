@@ -12,6 +12,7 @@ const REPO = 'git@github.com:RihardXXX/rihard-js-developer.git'
 const BRANCH = 'gh-pages'
 const GIT_DIR = join(DIR, '.git')
 const CHECK = fileURLToPath(new URL('./check-slash.mjs', import.meta.url))
+const CHECK_SITEMAP = fileURLToPath(new URL('./check-sitemap.mjs', import.meta.url))
 
 const git = (...args) => execFileSync('git', ['-C', DIR, ...args], { stdio: 'inherit' })
 
@@ -22,6 +23,9 @@ if (!existsSync(join(DIR, 'index.html'))) {
 
 // Don't publish links that GitHub Pages would answer with a redirect.
 if (spawnSync(process.execPath, [CHECK, DIR], { stdio: 'inherit' }).status !== 0) process.exit(1)
+
+// Don't publish a /sitemap.xml that isn't an XML file (Yandex reads it).
+if (spawnSync(process.execPath, [CHECK_SITEMAP, DIR], { stdio: 'inherit' }).status !== 0) process.exit(1)
 
 // Fresh throwaway repo inside the build output, force-pushed to gh-pages.
 await rm(GIT_DIR, { recursive: true, force: true })
