@@ -17,13 +17,17 @@ const checkXml = async (name, tags) => {
   if (!target.isFile()) {
     return errors.push(`${name} is a directory — GitHub Pages would 301 /${name} to /${name}/`)
   }
-  const text = (await readFile(file, 'utf8')).trimStart()
-  if (!text.startsWith('<?xml')) errors.push(`${name} does not start with <?xml`)
-  if (!tags.some((tag) => text.includes(tag))) errors.push(`${name} has none of ${tags.join(', ')}`)
+  // Only a BOM may precede the XML declaration; <?xml-stylesheet is not one.
+  const text = (await readFile(file, 'utf8')).replace(/^﻿/, '')
+  if (!/^<\?xml\s/.test(text)) errors.push(`${name} does not start with an <?xml declaration`)
+  if (!tags.some((tag) => new RegExp(`<${tag}[\\s/>]`).test(text))) {
+    errors.push(`${name} has no ${tags.map((tag) => `<${tag}>`).join(' or ')}`)
+  }
+  if (!text.includes('<loc>')) errors.push(`${name} lists no <loc>`)
 }
 
-await checkXml('sitemap.xml', ['<sitemapindex', '<urlset'])
-await checkXml('sitemap_index.xml', ['<sitemapindex'])
+await checkXml('sitemap.xml', ['sitemapindex', 'urlset'])
+await checkXml('sitemap_index.xml', ['sitemapindex'])
 
 if (errors.length) {
   for (const error of errors) console.error(`✗ ${error}`)

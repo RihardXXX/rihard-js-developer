@@ -80,7 +80,10 @@ export default defineNuxtConfig({
     },
     async 'sitemap:prerender:done'({ sitemaps }) {
       const index = sitemaps.find((sitemap) => sitemap.name === '/sitemap_index.xml')
-      if (!index) throw new Error('@nuxtjs/sitemap did not prerender /sitemap_index.xml')
+      if (!index) {
+        throw new Error('@nuxtjs/sitemap did not prerender /sitemap_index.xml — multi-sitemap mode (one sitemap per locale) expected')
+      }
+      if (!publicDir) throw new Error('nitro:init did not run, so the output directory for sitemap.xml is unknown')
       await writeFile(join(publicDir, 'sitemap.xml'), index.content)
     },
   },
