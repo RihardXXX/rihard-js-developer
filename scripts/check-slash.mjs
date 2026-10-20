@@ -2,7 +2,7 @@
 // Fail if the prerendered site links to its own pages without a trailing slash
 // or over http:// — GitHub Pages answers those with a 301 and Search Console
 // reports them as "Page with redirect". Run after `nuxt generate`.
-import { readdir, readFile } from 'node:fs/promises'
+import { readdir, readFile, stat } from 'node:fs/promises'
 import { join, relative } from 'node:path'
 import { fileURLToPath } from 'node:url'
 
@@ -39,8 +39,12 @@ for (const file of pages) {
     // Own pages only: absolute on HOST or root-relative; the bare HOST is the root.
     const path = url.startsWith(HOST) ? url.slice(HOST.length) : url
     if (!path.startsWith('/') || path.startsWith('//')) continue
-    // Directories end with "/", files have an extension, /_nuxt/ and /__sitemap__/ are assets.
-    if (path.endsWith('/') || /\.\w+$/.test(path) || path.startsWith('/_')) continue
+    // /_nuxt/ and /__sitemap__/ are assets; directories must end with "/".
+    if (path.endsWith('/') || path.startsWith('/_')) continue
+    // A built file is fine; a built directory redirects even with a dot in its name
+    // (sitemap.xml/). Paths outside the build fall back to "has an extension".
+    const target = await stat(join(DIR, path)).catch(() => null)
+    if (target ? target.isFile() : /\.\w+$/.test(path)) continue
     if (!bad.has(url)) bad.set(url, file)
   }
 }
