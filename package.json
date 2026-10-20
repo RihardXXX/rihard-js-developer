@@ -12,7 +12,7 @@
     "lint": "eslint .",
     "typecheck": "nuxt typecheck",
     "predeploy": "nuxt generate",
-    "deploy": "sh scripts/deploy.sh",
+    "deploy": "node scripts/deploy.mjs",
     "deploy:app": "npm-run-all predeploy deploy"
   },
   "dependencies": {
