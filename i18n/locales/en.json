@@ -1,7 +1,7 @@
 {
   "seo": {
     "title": "Rihard Alikhanov — Fullstack JavaScript Engineer (Vue, Nuxt, React, Node)",
-    "description": "Fullstack JavaScript engineer, 10+ years. Core focus: Effect-TS and functional backends in TypeScript; Vue 3, Nuxt, React, Node.js. Real estate, banking and SaaS experience. Remote."
+    "description": "Fullstack JavaScript engineer, 10+ years. Focus: Effect-TS and functional backends in TypeScript. AI-agent development (Claude Code, MCP). Vue, Nuxt."
   },
   "brand": {
     "name": "Rihard Alikhanov"
@@ -60,7 +60,8 @@
     "groups": {
       "frontend": "Frontend",
       "backend": "Backend",
-      "tooling": "Tooling"
+      "tooling": "Tooling",
+      "ai": "AI tooling"
     }
   },
   "experience": {
