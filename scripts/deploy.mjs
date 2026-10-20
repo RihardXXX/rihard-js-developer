@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 // Publish the prerendered site (.output/public) to the gh-pages branch that
 // GitHub Pages serves for rihard-developer.ru. Run after `nuxt generate`.
-import { execFileSync } from 'node:child_process'
+import { execFileSync, spawnSync } from 'node:child_process'
 import { existsSync } from 'node:fs'
 import { rm } from 'node:fs/promises'
 import { join } from 'node:path'
@@ -11,6 +11,7 @@ const DIR = fileURLToPath(new URL('../.output/public', import.meta.url))
 const REPO = 'git@github.com:RihardXXX/rihard-js-developer.git'
 const BRANCH = 'gh-pages'
 const GIT_DIR = join(DIR, '.git')
+const CHECK = fileURLToPath(new URL('./check-slash.mjs', import.meta.url))
 
 const git = (...args) => execFileSync('git', ['-C', DIR, ...args], { stdio: 'inherit' })
 
@@ -18,6 +19,9 @@ if (!existsSync(join(DIR, 'index.html'))) {
   console.error('✗ .output/public/index.html not found — run `npm run generate` first.')
   process.exit(1)
 }
+
+// Don't publish links that GitHub Pages would answer with a redirect.
+if (spawnSync(process.execPath, [CHECK, DIR], { stdio: 'inherit' }).status !== 0) process.exit(1)
 
 // Fresh throwaway repo inside the build output, force-pushed to gh-pages.
 await rm(GIT_DIR, { recursive: true, force: true })
