@@ -57,7 +57,7 @@ export const skillGroups: SkillGroup[] = [
       { label: 'MCP (context7 · Playwright · Figma · Chrome)', icon: 'mcp.svg' },
       { label: 'Agent Skills', icon: 'ai-agent.svg' },
       { label: 'Claude API', icon: 'anthropic.svg' },
-      { label: 'OpenAI Codex', icon: 'openai.svg' },
+      { label: 'OpenAI Codex', icon: 'ai-agent.svg' },
     ],
   },
 ]
