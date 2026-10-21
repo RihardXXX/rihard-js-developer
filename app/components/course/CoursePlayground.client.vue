@@ -9,6 +9,7 @@ interface MonacoEditorInstance {
   getValue(): string
   setValue(value: string): void
   onDidChangeModelContent(cb: () => void): void
+  focus(): void
   dispose(): void
 }
 interface MonacoEditorApi {
@@ -98,9 +99,12 @@ const inc = R.add(1)
 console.log(R.map(inc, [1, 2, 3]))  // [2, 3, 4]
 `
 
+const rootEl = ref<HTMLElement | null>(null)
 const editorEl = ref<HTMLElement | null>(null)
 const output = ref('')
 const code = ref(INITIAL_CODE)
+// id of the lesson block the current code was opened from: "Back to the example"
+const backId = ref<string | null>(null)
 const runner = createPlaygroundRunner((text) => {
   output.value = text
 })
@@ -115,7 +119,7 @@ onMounted(() => {
     monacoEditorApi = monaco.editor as unknown as MonacoEditorApi
     if (!editorEl.value) return
     editorInstance = monacoEditorApi.create(editorEl.value, {
-      value: INITIAL_CODE,
+      value: code.value,
       language: 'javascript',
       theme: monacoTheme(),
       fontSize: 15,
@@ -141,18 +145,36 @@ onBeforeUnmount(() => {
 
 const run = () => runner.run(code.value, libs.value)
 
+const setCode = (value: string) => {
+  code.value = value
+  editorInstance?.setValue(value)
+}
+
+// "Open in playground" from a lesson block: the code goes into the editor, the page
+// scrolls up here and the reader can type at once; a link leads back to the block.
+const { request } = usePlaygroundBridge()
+watch(request, (opened) => {
+  if (!opened) return
+  setCode(opened.code)
+  backId.value = opened.fromId
+  editorInstance?.focus()
+  rootEl.value?.scrollIntoView({ block: 'start' })
+})
+
 const reset = () => {
-  editorInstance?.setValue(INITIAL_CODE)
+  setCode(INITIAL_CODE)
+  backId.value = null
   runner.clear()
 }
 const clearAll = () => {
-  editorInstance?.setValue('')
+  setCode('')
+  backId.value = null
   runner.clear()
 }
 </script>
 
 <template>
-  <div class="playground">
+  <div ref="rootEl" class="playground">
     <div class="libs">
       <span class="libs__label">{{ t('course.libraries') }}</span>
       <ul class="libs__list">
@@ -232,6 +254,8 @@ const clearAll = () => {
 
     <div ref="editorEl" class="playground__editor" />
 
+    <a v-if="backId" class="playground__back" :href="`#${backId}`">← {{ t('course.backToExample') }}</a>
+
     <div class="playground__output">
       <span class="playground__output-label">{{ t('course.output') }}</span>
       <pre class="playground__pre">{{ output || '—' }}</pre>
@@ -241,6 +265,8 @@ const clearAll = () => {
 
 <style scoped lang="scss">
 .playground {
+  // "Open in playground" scrolls here: the top stays below the fixed header
+  scroll-margin-top: $header-height;
   border: 1px solid var(--code-border);
   border-radius: 1.4rem;
   overflow: hidden;
@@ -458,6 +484,16 @@ const clearAll = () => {
   &__editor {
     height: clamp(28rem, 42vh, 52rem);
     width: 100%;
+  }
+
+  &__back {
+    display: block;
+    padding: 1rem 1.4rem;
+    border-top: 1px solid var(--code-border);
+    background-color: var(--surface);
+    font-size: 1.4rem;
+    font-weight: 600;
+    color: var(--accent);
   }
 
   &__output {

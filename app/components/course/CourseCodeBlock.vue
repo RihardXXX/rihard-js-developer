@@ -14,9 +14,11 @@ const props = defineProps<{
   pseudo?: boolean
 }>()
 const { t } = useI18n()
+const { open } = usePlaygroundBridge()
 
-const highlighted = computed(
-  () => hljs.highlight(props.code, { language: 'javascript' }).value,
+// Pseudocode is a scheme, not JavaScript: it is shown as plain text.
+const highlighted = computed(() =>
+  props.pseudo ? '' : hljs.highlight(props.code, { language: 'javascript' }).value,
 )
 
 const copied = ref(false)
@@ -33,10 +35,33 @@ const copy = async () => {
 
 <template>
   <div :id="id" class="cb">
-    <button class="cb__copy" type="button" @click="copy">
-      {{ copied ? t('course.copied') : t('course.copy') }}
-    </button>
-    <pre class="cb__pre"><code class="hljs language-javascript" v-html="highlighted" /></pre>
+    <!-- Names start with the visible text and end with the example's label: 44 "Copy" buttons stay distinct. -->
+    <div class="cb__bar">
+      <button
+        v-if="playground"
+        class="cb__open"
+        type="button"
+        :aria-label="`${t('course.openInPlayground')}: ${label}`"
+        @click="open(code, id)"
+      >
+        {{ t('course.openInPlayground') }}
+      </button>
+      <button
+        class="cb__copy"
+        type="button"
+        :aria-label="`${copied ? t('course.copied') : t('course.copy')}: ${label}`"
+        @click="copy"
+      >
+        {{ copied ? t('course.copied') : t('course.copy') }}
+      </button>
+    </div>
+    <pre
+      class="cb__pre"
+      tabindex="0"
+      role="group"
+      :aria-label="label"
+    ><code v-if="pseudo">{{ code }}</code><code v-else class="hljs language-javascript" v-html="highlighted" /></pre>
+    <span class="cb__status" role="status" aria-live="polite">{{ copied ? t('course.copied') : '' }}</span>
   </div>
 </template>
 
@@ -45,12 +70,19 @@ const copy = async () => {
   position: relative;
   min-width: 0;
   margin: 2rem 0;
+  // "Back to the example" lands below the fixed header
+  scroll-margin-top: $header-height;
 
+  &__bar {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+    gap: 0.8rem;
+    margin-bottom: 0.8rem;
+  }
+
+  &__open,
   &__copy {
-    position: absolute;
-    top: 1rem;
-    right: 1rem;
-    z-index: 1;
     padding: 0.4rem 0.9rem;
     border-radius: 0.6rem;
     border: 1px solid var(--code-border);
@@ -75,6 +107,10 @@ const copy = async () => {
     font-size: 1.4rem;
     line-height: 1.6;
     color: var(--code-text);
+  }
+
+  &__status {
+    @include visually-hidden;
   }
 }
 
