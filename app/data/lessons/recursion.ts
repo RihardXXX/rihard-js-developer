@@ -15,14 +15,18 @@ const lesson: Lesson = {
       en: "Recursion must meet two basic requirements in order to work correctly.",
     },
     {
-      type: 'text',
-      ru: "1. Базовый случай. Это логика, при которой рекурсия должна прекращаться. Базовое условие, которое прекращает вызов функцией самой себя.",
-      en: "1. The base case. This is the logic at which the recursion must stop — the base condition that stops the function from calling itself.",
-    },
-    {
-      type: 'text',
-      ru: "2. Рекурсивный случай. Это логика, при которой функция вызывает саму себя, обычно с небольшими изменениями в аргументах.",
-      en: "2. The recursive case. This is the logic in which the function calls itself, usually with small changes to the arguments.",
+      type: 'list',
+      ordered: true,
+      items: [
+        {
+          ru: "Базовый случай. Это логика, при которой рекурсия должна прекращаться. Базовое условие, которое прекращает вызов функцией самой себя.",
+          en: "The base case. This is the logic at which the recursion must stop — the base condition that stops the function from calling itself.",
+        },
+        {
+          ru: "Рекурсивный случай. Это логика, при которой функция вызывает саму себя, обычно с небольшими изменениями в аргументах.",
+          en: "The recursive case. This is the logic in which the function calls itself, usually with small changes to the arguments.",
+        },
+      ],
     },
     {
       type: 'text',
@@ -395,14 +399,18 @@ sum ([], 16.5) // returns result 16.5
       en: "So how do we free up the call stack without overflowing it in production code?",
     },
     {
-      type: 'text',
-      ru: "1. Сделать код асинхронным, не блокировать поток и освобождать стек",
-      en: "1. Make the code asynchronous, avoid blocking the thread, and free up the stack",
-    },
-    {
-      type: 'text',
-      ru: "2. Использовать трамплин. Thunk («санка») — функция без аргументов, которая откладывает вычисление; трамплин — цикл, который вызывает thunk'и, пока результат — функция. Рекурсивные вызовы превращаются в цикл, и стек не растёт.",
-      en: "2. Use a trampoline. A thunk is a function with no arguments that defers a computation; a trampoline is a loop that keeps calling thunks while the result is a function. The recursive calls turn into a loop, so the stack does not grow.",
+      type: 'list',
+      ordered: true,
+      items: [
+        {
+          ru: "Сделать код асинхронным, не блокировать поток и освобождать стек",
+          en: "Make the code asynchronous, avoid blocking the thread, and free up the stack",
+        },
+        {
+          ru: "Использовать трамплин. Thunk («санка») — функция без аргументов, которая откладывает вычисление; трамплин — цикл, который вызывает thunk'и, пока результат — функция. Рекурсивные вызовы превращаются в цикл, и стек не растёт.",
+          en: "Use a trampoline. A thunk is a function with no arguments that defers a computation; a trampoline is a loop that keeps calling thunks while the result is a function. The recursive calls turn into a loop, so the stack does not grow.",
+        },
+      ],
     },
     {
       type: 'code',
@@ -534,34 +542,34 @@ sum ([], 16.5, (total) => console.log(total)) // calls callback with result
       en: "Let's look at the main principles of the trampoline.",
     },
     {
-      type: 'text',
-      ru: "1. Трамплин — это функция-обёртка, которая придаёт нашей основной функции особенное поведение.",
-      en: "1. A trampoline is a wrapper function that gives our main function special behavior.",
-    },
-    {
-      type: 'text',
-      ru: "2. Функция-трамплин возвращает другую функцию, которая принимает аргументы.",
-      en: "2. The trampoline function returns another function that accepts arguments.",
-    },
-    {
-      type: 'text',
-      ru: "3. Внутри она один раз вызывает основную функцию с этими аргументами.",
-      en: "3. Inside, it calls the main function once with these arguments.",
-    },
-    {
-      type: 'text',
-      ru: "4. Пока возвращаемое значение — функция, трамплин в цикле вызывает её. Как только результат не функция, цикл останавливается и трамплин возвращает результат.",
-      en: "4. While the returned value is a function, the trampoline calls it in a loop. As soon as the result is not a function, the loop stops and the trampoline returns the result.",
-    },
-    {
-      type: 'text',
-      ru: "5. Основная функция в базовом случае должна возвращать результат.",
-      en: "5. In the base case the main function must return a result.",
-    },
-    {
-      type: 'text',
-      ru: "6. Основная функция в рекурсивном случае должна обязательно возвращать функцию без аргументов (thunk), которая делает следующий шаг.",
-      en: "6. In the recursive case the main function must return a function with no arguments (a thunk) that performs the next step.",
+      type: 'list',
+      ordered: true,
+      items: [
+        {
+          ru: "Трамплин — это функция-обёртка, которая придаёт нашей основной функции особенное поведение.",
+          en: "A trampoline is a wrapper function that gives our main function special behavior.",
+        },
+        {
+          ru: "Функция-трамплин возвращает другую функцию, которая принимает аргументы.",
+          en: "The trampoline function returns another function that accepts arguments.",
+        },
+        {
+          ru: "Внутри она один раз вызывает основную функцию с этими аргументами.",
+          en: "Inside, it calls the main function once with these arguments.",
+        },
+        {
+          ru: "Пока возвращаемое значение — функция, трамплин в цикле вызывает её. Как только результат не функция, цикл останавливается и трамплин возвращает результат.",
+          en: "While the returned value is a function, the trampoline calls it in a loop. As soon as the result is not a function, the loop stops and the trampoline returns the result.",
+        },
+        {
+          ru: "Основная функция в базовом случае должна возвращать результат.",
+          en: "In the base case the main function must return a result.",
+        },
+        {
+          ru: "Основная функция в рекурсивном случае должна обязательно возвращать функцию без аргументов (thunk), которая делает следующий шаг.",
+          en: "In the recursive case the main function must return a function with no arguments (a thunk) that performs the next step.",
+        },
+      ],
     },
     {
       type: 'code',
