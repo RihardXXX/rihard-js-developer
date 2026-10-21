@@ -38,6 +38,10 @@ const onJump = () => {
   scrolledByReader.value = false
 }
 useEventListener('hashchange', onJump)
+// Following the same #anchor again fires no hashchange, so a click on an in-page link is a jump too.
+useEventListener('click', (e: MouseEvent) => {
+  if (e.target instanceof Element && e.target.closest('a[href^="#"]')) onJump()
+})
 watch(usePlaygroundBridge().request, onJump)
 const { start, stop } = useTimeoutFn(
   () => {
