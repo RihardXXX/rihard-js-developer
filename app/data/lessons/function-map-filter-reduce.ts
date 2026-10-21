@@ -18,9 +18,9 @@ const lesson: Lesson = {
       en: "These functions provide powerful capabilities for working with data.",
     },
     {
-      type: 'text',
-      ru: "map --------------------",
-      en: "map --------------------",
+      type: 'heading',
+      ru: "map",
+      en: "map",
     },
     {
       type: 'text',
@@ -226,9 +226,9 @@ console.log (result) // [2, 4, 6, 8, 10]
       },
     },
     {
-      type: 'text',
-      ru: "filter --------------------",
-      en: "filter --------------------",
+      type: 'heading',
+      ru: "filter",
+      en: "filter",
     },
     {
       type: 'text',
@@ -471,9 +471,9 @@ console.log (result) // [4, 5]
       },
     },
     {
-      type: 'text',
-      ru: "reduce --------------------",
-      en: "reduce --------------------",
+      type: 'heading',
+      ru: "reduce",
+      en: "reduce",
     },
     {
       type: 'text',
