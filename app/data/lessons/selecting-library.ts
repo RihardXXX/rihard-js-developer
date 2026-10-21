@@ -92,8 +92,8 @@ const lesson: Lesson = {
           en: "How far along the project is, percentage-wise, or whether it is just at the beginning. When the project was already started earlier in JS and has passed the horizon and the home stretch.",
         },
         {
-          ru: "Кто работает с тобой в команде и сколько вас человек. Для малых команд с глубокими знаниями в JS. Порой это будет эффективнее, чем большие команды с поверхностными знаниями в JS, которые рассчитывают, что TypeScript сам защитит их от ошибок.",
-          en: "Who works with you on the team and how many of you there are. For small teams with deep knowledge of JS. At times this will be more effective than large teams with shallow knowledge of JS who count on TypeScript alone to protect them from errors.",
+          ru: "Кто работает с тобой в команде и сколько вас человек. Для малых команд с глубокими знаниями JS. Порой такая команда работает эффективнее большой, где язык знают поверхностно. Глубокое знание JS нужно и в проектах на TypeScript: типы проверяются при компиляции и сами по себе не защищают от ошибок в данных, которые приходят во время выполнения.",
+          en: "Who works with you on the team and how many of you there are. For small teams with deep knowledge of JS. At times such a team works more effectively than a large one where the language is known only superficially. Deep knowledge of JS matters in TypeScript projects too: types are checked at compile time and on their own do not protect against errors in data that arrives at runtime.",
         },
         {
           ru: "Качество продукта. Зависит от команды, сроков и бюджета, зачастую невысокое.",
