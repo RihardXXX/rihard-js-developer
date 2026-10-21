@@ -31,7 +31,8 @@ const INTRO_SLUGS = ['for-whom', 'not-for-whom']
 // нумерованные уроки: всё, что не вводные разделы (порядок и число уроков здесь не закрепляем)
 const numbered = lessons.filter((lesson) => !INTRO_SLUGS.includes(lesson.slug))
 const BLOCK_TYPES = ['text', 'heading', 'list', 'table', 'code']
-// ключи course.* в ru.json и en.json, которые нужны навигации, упражнениям и кнопке «Открыть в песочнице»
+// ключи course.* в ru.json и en.json, которые нужны навигации, упражнениям, кнопке «Открыть в песочнице»,
+// страницам уроков и прогрессу чтения
 const NEW_KEYS = [
   'goal',
   'summary',
@@ -48,6 +49,19 @@ const NEW_KEYS = [
   'starterLabel',
   'solutionLabel',
   'editorLabel',
+  'home',
+  'breadcrumbs',
+  'lessonNav',
+  'prevLesson',
+  'read',
+  'markRead',
+  'unmarkRead',
+  'progressCount',
+  'progressContinue',
+  'progressStart',
+  'progressReset',
+  'progressResetConfirm',
+  'progressNote',
 ]
 // Блоки, которые нельзя запустить в песочнице как есть: чего им не хватает.
 // needle — подстрока ru-варианта кода, по ней блок находится однозначно.
@@ -214,7 +228,7 @@ const findBlock = (slug, needle) => {
   return found[0]
 }
 
-// Тексты раздела, которые читает человек: заголовок, цель, «главное», абзацы, подзаголовки,
+// Тексты раздела, которые читает человек: заголовок, описание, цель, «главное», абзацы, подзаголовки,
 // пункты списков, подпись и ячейки таблиц, условия и ожидаемый вывод упражнений, оба языка.
 // kind 'output' — вывод песочницы: в нём вполне может быть «1. » или «---», на имитации он не проверяется.
 const textFields = (section) => {
@@ -243,6 +257,7 @@ const textFields = (section) => {
   })
   return [
     ...at(' заголовок', section.title),
+    ...(section.description ? at(' описание', section.description) : []),
     ...(section.goal ? at(' цель', section.goal) : []),
     ...(Array.isArray(section.summary) ? section.summary : []).flatMap((item, k) => at(` главное ${k + 1}`, item)),
     ...blocks,
@@ -385,12 +400,39 @@ for (const section of sections) {
   })
 }
 
-test('selecting-library: сравнительная таблица — блок table из 5 столбцов и 8 строк', () => {
+test('selecting-library: сравнительная таблица — блок table из 7 столбцов и 8 строк', () => {
   const lesson = sections.find((s) => s.slug === 'selecting-library')
   const tables = lesson.blocks.filter((b) => b.type === 'table')
   assert.equal(tables.length, 1, `в уроке должна быть одна таблица, найдено ${tables.length}`)
-  assert.equal(tables[0].columns?.length, 5, 'столбцы: «Критерий», Vanilla JS, Lodash, Ramda, Sanctuary')
+  assert.equal(tables[0].columns?.length, 7, 'в таблице выбора должно быть 7 столбцов: «Критерий», Vanilla JS, Lodash, Ramda, Sanctuary, fp-ts, Effect')
   assert.equal(tables[0].rows?.length, 8, 'строки: от «Бюджет» до «Философия»')
+})
+
+test('selecting-library: последние три столбца таблицы — Sanctuary, fp-ts, Effect', () => {
+  const lesson = sections.find((s) => s.slug === 'selecting-library')
+  const table = lesson.blocks.find((b) => b.type === 'table')
+  for (const v of VARIANTS) {
+    assert.deepEqual(
+      (table.columns ?? []).slice(-3).map((column) => column[v]),
+      ['Sanctuary', 'fp-ts', 'Effect'],
+      `читатель /${v === 'ru' ? 'ru/' : ''}course/ не найдёт fp-ts и Effect рядом с остальными библиотеками в таблице выбора`,
+    )
+  }
+})
+
+test('selecting-library: у fp-ts и Effect есть свои подзаголовки', () => {
+  const lesson = sections.find((s) => s.slug === 'selecting-library')
+  const headings = lesson.blocks.filter((b) => b.type === 'heading')
+  const missing = ['fp-ts', 'Effect'].filter((name) => !headings.some((h) => VARIANTS.every((v) => h[v].includes(name))))
+  assert.deepEqual(missing, [], 'разбора по критериям нет: владелец решил добавить fp-ts и Effect в «Что выбрать» наравне с остальными')
+})
+
+test('selecting-library: нет реплики, что «TypeScript сам защитит» команду от ошибок', () => {
+  const lesson = sections.find((s) => s.slug === 'selecting-library')
+  const found = textFields(lesson)
+    .filter(({ text }) => /TypeScript\s+сам(?:\s+по\s+себе)?\s+защит|TypeScript\s+alone/i.test(text))
+    .map(({ where }) => where)
+  assert.deepEqual(found, [], 'в уроке осталась реплика против TypeScript: владелец решил переписать её нейтрально')
 })
 
 test('selecting-library: сравнение библиотек не осталось абзацем', () => {
@@ -478,6 +520,18 @@ test('тон: нет эмодзи в текстах и комментариях'
     .filter(({ text }) => /\p{Extended_Pictographic}/u.test(text))
     .map(({ where }) => where)
   assert.deepEqual(bad, [], 'в курсе остались эмодзи')
+})
+
+// ---------- ссылки на уроки: по названию, не по номеру ----------
+
+// «урок 4», «урока 25», «lesson 12»: номер сдвигается, когда в программу вставляют новый урок.
+const LESSON_NUMBER = /(урок[а-я]*|lessons?)\s+\d{1,2}\b/i
+
+test('тексты не ссылаются на уроки по номеру', () => {
+  const bad = prose()
+    .filter(({ text }) => LESSON_NUMBER.test(text))
+    .map(({ where, text }) => `${where}: ${around(text, text.search(LESSON_NUMBER))}`)
+  assert.deepEqual(bad, [], 'ссылка «урок N» устареет, как только в программу вставят новый урок: называйте урок по названию')
 })
 
 // ---------- цель, «главное» и упражнения у каждого урока ----------
@@ -998,7 +1052,7 @@ test('ключи i18n: ru.json и en.json совпадают на всех ур�
   )
 })
 
-test('ключи i18n: ключи course.* для навигации, упражнений и песочницы есть в ru.json и en.json', () => {
+test('ключи i18n: ключи course.* для навигации, упражнений, песочницы, страниц уроков и прогресса есть в ru.json и en.json', () => {
   const missing = VARIANTS.flatMap((v) =>
     NEW_KEYS.filter((key) => typeof locales[v].course?.[key] !== 'string').map((key) => `${v}: course.${key}`),
   )
@@ -1015,3 +1069,48 @@ test('ключи i18n: новые строки course.* не пустые и б�
   )
   assert.deepEqual(bad, [], 'vue-i18n разберёт «|» как множественное число, а «@» как ссылку на другой ключ')
 })
+
+// ---------- описание и название урока: строка под названием в оглавлении и meta description страницы ----------
+
+const DESCRIPTION_MAX = 160
+
+for (const lesson of numbered) {
+  test(`урок ${lesson.slug}: описание`, () => {
+    const problems = VARIANTS.flatMap((v) => {
+      const value = lesson.description?.[v]
+      if (typeof value !== 'string' || !value.trim()) return [`описание (${v}) пусто`]
+      return [
+        ...(value.length > DESCRIPTION_MAX ? [`описание (${v}) длиннее ${DESCRIPTION_MAX} знаков: ${value.length}`] : []),
+        ...(/[\r\n]/.test(value) ? [`в описании (${v}) есть перевод строки`] : []),
+      ]
+    })
+    assert.deepEqual(
+      problems,
+      [],
+      'под названием урока в оглавлении пусто, а у страницы урока нет своего meta description, который поисковик не обрежет',
+    )
+  })
+}
+
+// Совпадения в списке { who, text }: текст -> кто его повторяет. Пустой текст тоже повтор: «нет описания».
+const repeats = (items) => {
+  const byText = new Map()
+  for (const { who, text } of items) byText.set(text, [...(byText.get(text) ?? []), who])
+  return [...byText].filter(([, whos]) => whos.length > 1).map(([text, whos]) => `${whos.join(', ')}: «${text.slice(0, 50) || 'нет описания'}»`)
+}
+
+for (const v of VARIANTS) {
+  test(`описания уроков не повторяются и не совпадают с тизером курса на главной (${v})`, () => {
+    const teaser = locales[v].course?.desc
+    const found = repeats([
+      ...numbered.map((lesson) => ({ who: lesson.slug, text: String(lesson.description?.[v] ?? '').trim() })),
+      ...(typeof teaser === 'string' ? [{ who: 'course.desc', text: teaser.trim() }] : []),
+    ])
+    assert.deepEqual(found, [], 'у разных страниц одинаковое описание: в поиске и в оглавлении они неотличимы, а поисковик склеит их')
+  })
+
+  test(`названия уроков не повторяются (${v})`, () => {
+    const found = repeats(numbered.map((lesson) => ({ who: lesson.slug, text: String(lesson.title?.[v] ?? '').trim().toLowerCase() })))
+    assert.deepEqual(found, [], 'два урока с одним названием: читатель не отличит их в оглавлении, а у страниц будет один title')
+  })
+}
