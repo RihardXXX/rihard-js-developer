@@ -209,6 +209,7 @@ const exampleLabel = (i: number) =>
   &__table {
     margin: 2rem 0;
     overflow-x: auto;
+    scrollbar-color: var(--border) var(--surface);
     border: 1px solid var(--border);
     border-radius: 1rem;
     background-color: var(--surface);
@@ -273,6 +274,12 @@ const exampleLabel = (i: number) =>
     &--next {
       color: var(--accent);
     }
+
+    // a finger-sized target on touch screens
+    @media (pointer: coarse) {
+      display: inline-block;
+      padding: 1rem 0;
+    }
   }
 }
 
@@ -335,6 +342,10 @@ const exampleLabel = (i: number) =>
       font-weight: 600;
       color: var(--accent);
       cursor: pointer;
+
+      @media (pointer: coarse) {
+        padding: 1rem 0;
+      }
     }
 
     .cb {
