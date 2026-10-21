@@ -70,7 +70,7 @@ onMounted(async () => {
       :subtitle="t('course.desc')"
     />
 
-    <div id="course-playground" class="playground-wrap">
+    <div class="playground-wrap">
       <h2 class="block-title">{{ t('course.playgroundTitle') }}</h2>
       <p class="block-desc">{{ t('course.playgroundDesc') }}</p>
       <CoursePlayground />
@@ -133,7 +133,6 @@ onMounted(async () => {
 }
 
 .playground-wrap {
-  scroll-margin-top: $header-height;
   margin-bottom: 6.4rem;
 }
 
