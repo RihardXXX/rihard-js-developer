@@ -42,20 +42,20 @@ const multiply = (v) => v * 2
 const result = data.map(multiply)
 
 console.log (result) // [2, 4, 6, 8]`,
-        en: `// Простой пример
+        en: `// A simple example
 // ===============================
 const data = [1, 2, 3, 4]
 
-// multiply можно передать аргументом в другую функцию,
-// потому что функции в JavaScript первого класса:
-// это такие же значения, как числа или строки
+// multiply can be passed as an argument to another function,
+// because functions in JavaScript are first-class:
+// they are values just like numbers or strings
 // multiply :: Number -> Number
 const multiply = (v) => v * 2
 
-// функция map — это функция
-// высшего порядка,
-// потому что принимает другую функцию
-// в качестве аргумента
+// map is a
+// higher-order function,
+// because it takes another function
+// as an argument
 const result = data.map(multiply)
 
 console.log (result) // [2, 4, 6, 8]`,
@@ -116,23 +116,23 @@ const templateDefault = MyComponent({
 
 console.log(templateMain)    // <div>main - XXXhelloXXX</div>
 console.log(templateDefault) // default - hello`,
-        en: `// Простой пример
+        en: `// A simple example
 // ===============================
 
 // hof :: (* -> *) -> * -> *
 const hof = (fc) => (...args) => fc (...args)
 
-// функция hof — это функция высшего порядка:
-// она принимает функцию fc и возвращает новую функцию
+// hof is a higher-order function:
+// it takes the function fc and returns a new function
 
-// fc можно передать в hof, потому что функции
-// в JavaScript первого класса
+// fc can be passed to hof because functions
+// in JavaScript are first-class
 
-// Пример в духе слотов Vue (и render props в React)
-// MyComponent — функция высшего порядка: она принимает функции-слоты
-// и вызывает их, передавая им данные, как scoped slot
-// Это не компонент высшего порядка (HOC): HOC принимает компонент и возвращает новый компонент
-// Упрощенная модель: настоящий Vue возвращает не строки, а виртуальные узлы
+// An example in the spirit of Vue slots (and render props in React)
+// MyComponent is a higher-order function: it takes slot functions
+// and calls them, passing data to them, like a scoped slot
+// This is not a higher-order component (HOC): a HOC takes a component and returns a new component
+// A simplified model: real Vue returns virtual nodes, not strings
 function MyComponent({ main, default: def } = {}) {
   const greetingMessage = 'hello'
 
@@ -144,10 +144,10 @@ function MyComponent({ main, default: def } = {}) {
     return \`default - \${def(greetingMessage)}\`
   }
 
-  return 'нет компонентов'
+  return 'no components'
 }
 
-// вызов функции высшего порядка: передаем ей функции-слоты
+// calling the higher-order function: we pass slot functions to it
 const templateMain = MyComponent({
   main: (text) => \`XXX\${text}XXX\`
 })
