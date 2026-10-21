@@ -258,7 +258,6 @@ const exampleLabel = (i: number) =>
       color: var(--text-muted);
     }
   }
-
 }
 
 .exercise {
