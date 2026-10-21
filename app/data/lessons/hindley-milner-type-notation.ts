@@ -206,8 +206,8 @@ console.log(typeof isWorkingAge)`,
     },
     {
       task: {
-        ru: "Сигнатура safeDivide :: Number -> Number -> Maybe Number говорит, что результата может не быть. Напишите safeDivide: она делит a на b и возвращает S.Just(частное), а если b равно нулю — S.Nothing. Затем достаньте значение с запасным 0 через S.fromMaybe, как в уроке «Функциональное программирование».",
-        en: "The signature safeDivide :: Number -> Number -> Maybe Number says that there may be no result. Write safeDivide: it divides a by b and returns S.Just(quotient), or S.Nothing if b is zero. Then take the value out with a fallback of 0 using S.fromMaybe, as in the \"Functional programming\" lesson.",
+        ru: "Сигнатура safeDivide :: Number -> Number -> Maybe Number говорит, что результата может не быть. Напишите safeDivide: она делит a на b и возвращает S.Just(частное), а если b равно нулю — S.Nothing. Последняя строка заготовки достаёт число из Maybe через S.fromMaybe с запасным значением 0, как в уроке «Функциональное программирование».",
+        en: "The signature safeDivide :: Number -> Number -> Maybe Number says that there may be no result. Write safeDivide: it divides a by b and returns S.Just(quotient), or S.Nothing if b is zero. The last line of the starter takes the number out of the Maybe with S.fromMaybe and a fallback of 0, as in the \"Functional programming\" lesson.",
       },
       starter: {
         ru: `// safeDivide :: Number -> Number -> Maybe Number
