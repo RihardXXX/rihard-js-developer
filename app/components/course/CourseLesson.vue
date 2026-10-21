@@ -1,10 +1,15 @@
 <script setup lang="ts">
-import type { Lesson } from '~/data/course-types'
+import type { CourseSection, Lesson } from '~/data/course-types'
 
-defineProps<{ lesson: Lesson; index: number }>()
-const { locale } = useI18n()
+const props = defineProps<{ lesson: Lesson | CourseSection; index?: number; next?: CourseSection }>()
+const { t, locale } = useI18n()
 // Lesson content exists in RU and EN only; every non-Russian locale shows English.
 const isEn = computed(() => locale.value !== 'ru')
+
+// Code blocks are numbered within the lesson from 1, pseudo ones included: id "<slug>-code-<n>", "Example n".
+const codeNumber = (i: number) => props.lesson.blocks.slice(0, i + 1).filter((b) => b.type === 'code').length
+const exampleLabel = (i: number) =>
+  t('course.exampleLabel', { n: codeNumber(i), lesson: isEn.value ? props.lesson.title.en : props.lesson.title.ru })
 </script>
 
 <template>
@@ -15,7 +20,14 @@ const isEn = computed(() => locale.value !== 'ru')
     </h3>
 
     <template v-for="(block, i) in lesson.blocks" :key="i">
-      <CourseCodeBlock v-if="block.type === 'code'" :code="isEn ? block.code.en : block.code.ru" />
+      <CourseCodeBlock
+        v-if="block.type === 'code'"
+        :id="`${lesson.slug}-code-${codeNumber(i)}`"
+        :code="isEn ? block.code.en : block.code.ru"
+        :label="exampleLabel(i)"
+        :playground="!block.pseudo && !block.noRun"
+        :pseudo="block.pseudo"
+      />
       <p v-else class="lesson__text">{{ isEn ? block.en : block.ru }}</p>
     </template>
   </section>

@@ -4,7 +4,15 @@ import javascript from 'highlight.js/lib/languages/javascript'
 
 hljs.registerLanguage('javascript', javascript)
 
-const props = defineProps<{ code: string }>()
+const props = defineProps<{
+  code: string
+  id: string
+  /** accessible name of the example, also the suffix of its button names */
+  label: string
+  /** show "Open in playground" */
+  playground: boolean
+  pseudo?: boolean
+}>()
 const { t } = useI18n()
 
 const highlighted = computed(
@@ -24,7 +32,7 @@ const copy = async () => {
 </script>
 
 <template>
-  <div class="cb">
+  <div :id="id" class="cb">
     <button class="cb__copy" type="button" @click="copy">
       {{ copied ? t('course.copied') : t('course.copy') }}
     </button>
