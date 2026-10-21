@@ -70,15 +70,15 @@ fetchAllUsers() // имитируем запрос
     )
 
 // ===============================`,
-        en: `// === композиция из 3 функций ===
+        en: `// === composing 3 functions ===
 // compose :: ((c -> z), (b -> c), (a -> b)) -> a -> z
 const compose = (f3, f2, f1) => (...args) => f3(f2(f1(...args)))
 
-// использование функции
-// наша цель
-// 1. Получить пользователей со статусом онлайн
-// 2. Их имена
-// 3. Вывести список имён в лог
+// using the function
+// our goal
+// 1. Get the users whose status is online
+// 2. Take their names
+// 3. Log the list of names
 
 // fetchAllUsers :: * -> Promise a
 const fetchAllUsers = () => new Promise(resolve => resolve([
@@ -99,19 +99,19 @@ const fetchAllUsers = () => new Promise(resolve => resolve([
   }
 ]))
 
-fetchAllUsers() // имитируем запрос
-  .then( // дожидаемся ответа
-    compose( // результат бросаем в композицию функций
-        console.log, // логируем результаты
-        (usersActive) => usersActive.map(user => user.name), // собираем имена
-        (data) => data.filter(user => user.status === 'online'), // фильтруем по статусу
+fetchAllUsers() // simulate a request
+  .then( // wait for the response
+    compose( // pass the result into the composed function
+        console.log, // log the results
+        (usersActive) => usersActive.map(user => user.name), // collect the names
+        (data) => data.filter(user => user.status === 'online'), // filter by status
       )
     )
 
-// та же самая композиция, только в рамках типа Array
-// не совсем классический функциональный подход
-fetchAllUsers() // имитируем запрос
-  .then( // дожидаемся ответа
+// the same composition, but within the Array type
+// not quite the classic functional approach
+fetchAllUsers() // simulate a request
+  .then( // wait for the response
       (data) => console.log(
           data
             .filter(user => user.status === 'online')
@@ -160,25 +160,25 @@ fetchAllUsers() // имитируем запрос
 // 1 -> 2 -> 3
 
 // ===============================`,
-        en: `// === композиция из 3 функций в человекочитаемом формате ===
-// порядок сменился: слева направо
+        en: `// === composing 3 functions in a human-readable order ===
+// the order is now left to right
 // pipe :: ((a -> b), (b -> c), (c -> z)) -> a -> z
 const pipe = (f1, f2, f3) => (...args) => f3(f2(f1(...args)))
 
-// Теперь композицию удобнее читать слева направо
+// Now the composition is easier to read, left to right
 
-fetchAllUsers() // имитируем запрос
-  .then( // дожидаемся ответа
-    pipe( // результат бросаем в композицию функций
-        (data) => data.filter(user => user.status === 'online'), // фильтруем по статусу
-        (usersActive) => usersActive.map(user => user.name), // собираем имена
-        console.log, // логируем результаты
+fetchAllUsers() // simulate a request
+  .then( // wait for the response
+    pipe( // pass the result into the composed function
+        (data) => data.filter(user => user.status === 'online'), // filter by status
+        (usersActive) => usersActive.map(user => user.name), // collect the names
+        console.log, // log the results
       )
     )
 
-// Внимание
+// Note
 
-// compose порядок выполнения функций
+// compose: order in which the functions run
 // 3 <- 2 <- 1
 
 // pipe
@@ -225,27 +225,27 @@ const pipe = (...fns) => (...args) => {
 }
 
 // ===============================`,
-        en: `// === композиция функций в нестрого заданном количестве функций ===
+        en: `// === composing an arbitrary number of functions ===
 
-// === Способ императивный ===
-// порядок сменился: слева направо
+// === Imperative approach ===
+// the order is now left to right
 // pipe :: ((a -> b), (b -> c), ..., (y -> z)) -> a -> z
 const pipe = (...fns) => (...args) => {
 
-  // дробим массив функций на голову и хвост
+  // split the array of functions into head and tail
   const [ head, ...tail ] = fns
 
-  // переменная с результатом выполнения
-  // первой и остальных функций и результата
+  // variable holding the result of the first function
+  // and then of each of the remaining ones
   let result = head(...args)
 
-  // в цикле вызываем остальные функции и перезаписываем результат
-  // в переменную
+  // call the remaining functions in a loop and overwrite
+  // the variable with each result
   for (const fn of tail) {
     result = fn(result)
   }
 
-  // возвращаем итоговый результат
+  // return the final result
   return result
 }
 
@@ -279,22 +279,22 @@ const pipeMultiArgs = (...fns) => (...args) => fns.reduce(
 )
 
 // ===============================`,
-        en: `// === композиция функций в нестрого заданном количестве функций ===
+        en: `// === composing an arbitrary number of functions ===
 
-// === Способ декларативный ===
-// порядок сменился: слева направо
+// === Declarative approach ===
+// the order is now left to right
 // pipe :: ((a -> b), (b -> c), ..., (y -> z)) -> a -> z
 const pipe = (...fns) => (arg) => fns.reduce(
-    (init, fn) => fn(init), // накопленное значение (на первом шаге — arg) передаём в функцию
-    arg // аргумент первого вызова
+    (init, fn) => fn(init), // pass the accumulated value (arg on the first step) to the function
+    arg // argument of the first call
   )
 
-// на первый взгляд с этой функцией всё в порядке
-// и с точки зрения функционального подхода аргумент лучше и правильнее когда один
-// но может быть ситуация когда при первом запуске аргументов 2 и более
+// at first glance this function is fine,
+// and from a functional point of view a single argument is better and more correct,
+// but the first call may need 2 or more arguments
 const pipeMultiArgs = (...fns) => (...args) => fns.reduce(
-    (init, fn, i) => i === 0 ? fn(...init) : fn(init) , // проверка первый вызов или остальные
-    args // аргументы первого вызова
+    (init, fn, i) => i === 0 ? fn(...init) : fn(init) , // first call or a later one?
+    args // arguments of the first call
 )
 
 // ===============================`,
@@ -330,24 +330,24 @@ const pipe = (...fns) => (arg) => {
 }
 
 // ===============================`,
-        en: `// === композиция функций в нестрого заданном количестве функций ===
+        en: `// === composing an arbitrary number of functions ===
 
-// === Способ рекурсивный ===
-// порядок сменился: слева направо
+// === Recursive approach ===
+// the order is now left to right
 // pipe :: ((a -> b), (b -> c), ..., (y -> z)) -> a -> z
 const pipe = (...fns) => (arg) => {
 
-  // базовый случай — одна функция осталась
+  // base case: only one function is left
   if (fns.length === 1) {
     return fns[0](arg)
   }
 
-  // разбиваем голову и хвост
-  // первая функция и остальные
+  // split into head and tail:
+  // the first function and the rest
   const [head, ...tail] = fns
 
-  // рекурсивно вызываем pipe для хвоста
-  // а первую функцию вызываем с аргументом текущим
+  // call pipe recursively for the tail,
+  // and call the first function with the current argument
   return pipe(...tail)(head(arg))
 }
 
