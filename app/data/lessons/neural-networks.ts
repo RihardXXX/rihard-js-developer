@@ -81,29 +81,29 @@ const lesson: Lesson = {
 
 веса и смещения — обучаемые параметры
 сеть — композиция слоёв: y = output(hidden(x))`,
-        en: `// ==== Схема сети из примера ниже ====
+        en: `// ==== Diagram of the network from the example below ====
 
-           вход x: 2 числа
+           input x: 2 numbers
                  |
                  v
 +-------------------------------------+
-| скрытый слой: 2 нейрона             |
-| нейрон = relu(сумма(вес * вход)     |
-|               + смещение)           |
+| hidden layer: 2 neurons             |
+| neuron = relu(sum(weight * input)   |
+|               + bias)               |
 +-------------------------------------+
-                 |  2 числа
+                 |  2 numbers
                  v
 +-------------------------------------+
-| выходной слой: 1 нейрон             |
-| нейрон = сумма(вес * вход)          |
-|          + смещение                 |
+| output layer: 1 neuron              |
+| neuron = sum(weight * input)        |
+|          + bias                     |
 +-------------------------------------+
                  |
                  v
-           выход y: 1 число
+           output y: 1 number
 
-веса и смещения — обучаемые параметры
-сеть — композиция слоёв: y = output(hidden(x))`,
+weights and biases are trainable parameters
+the network is a composition of layers: y = output(hidden(x))`,
       },
     },
     {
@@ -169,56 +169,56 @@ for (const x of [[0, 0], [0, 1], [1, 0], [1, 1]]) {
 // 0 XOR 1 = 1
 // 1 XOR 0 = 1
 // 1 XOR 1 = 0`,
-        en: `// ==== Та же сеть в коде ====
-// параметры уже подобраны: это решение задачи XOR из учебника
-// Goodfellow, Bengio, Courville «Deep Learning», раздел 6.1
-// там их задали вручную, в реальной сети их находит обучение
+        en: `// ==== The same network in code ====
+// the parameters are already chosen: this is the XOR solution from the textbook
+// Goodfellow, Bengio, Courville "Deep Learning", section 6.1
+// there they are set by hand; in a real network training finds them
 
 // pipe :: ((a -> b), (b -> c), ..., (y -> z)) -> a -> z
 const pipe = (...fns) => (x) => fns.reduce((acc, fn) => fn(acc), x)
 
-// функции активации
+// activation functions
 // relu :: Number -> Number
 const relu = (z) => Math.max(0, z)
 // identity :: a -> a
 const identity = (z) => z
 
-// взвешенная сумма: каждый вход умножаем на свой вес и складываем
+// weighted sum: multiply each input by its weight and add them up
 // weightedSum :: ([Number], [Number]) -> Number
 const weightedSum = (weights, inputs) =>
   inputs.reduce((sum, x, i) => sum + x * weights[i], 0)
 
-// нейрон: взвешенная сумма входов плюс смещение,
-// результат проходит через функцию активации
-// веса, смещение и активация задаются при создании нейрона,
-// при вызове он получает только входы
+// neuron: the weighted sum of the inputs plus a bias,
+// passed through the activation function
+// weights, bias and activation are set when the neuron is created;
+// when called, it receives only the inputs
 // neuron :: ([Number], Number, (Number -> Number)) -> [Number] -> Number
 const neuron = (weights, bias, activation) => (inputs) =>
   activation(weightedSum(weights, inputs) + bias)
 
-// слой: несколько нейронов получают одни и те же входы,
-// на выходе по числу от каждого нейрона
+// layer: several neurons receive the same inputs,
+// and the output has one number per neuron
 // layer :: [[Number] -> Number] -> [Number] -> [Number]
 const layer = (neurons) => (inputs) => neurons.map((n) => n(inputs))
 
-// скрытый слой: 2 числа -> 2 числа, активация relu
+// hidden layer: 2 numbers -> 2 numbers, relu activation
 // hidden :: [Number] -> [Number]
 const hidden = layer([
   neuron([1, 1], 0, relu),
   neuron([1, 1], -1, relu),
 ])
 
-// выходной слой: 2 числа -> 1 число, без нелинейности, как в учебнике
+// output layer: 2 numbers -> 1 number, no nonlinearity, as in the textbook
 // output :: [Number] -> [Number]
 const output = layer([
   neuron([1, -2], 0, identity),
 ])
 
-// сеть — композиция слоёв
+// the network is a composition of layers
 // network :: [Number] -> [Number]
 const network = pipe(hidden, output)
 
-// ответ сети одним числом
+// the network's answer as a single number
 // getAnswer :: [Number] -> Number
 const getAnswer = pipe(network, ([y]) => y)
 
