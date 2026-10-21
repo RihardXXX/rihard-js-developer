@@ -17,8 +17,8 @@ const lesson: Lesson = {
   blocks: [
     {
       type: 'text',
-      ru: "Когда перед вами стоит выбор, что выбрать из выше описанных библиотек или ванильного решения, не стоит опираться на следующие принципы, которые я часто встречал в своей практике при коммерческой разработке. Не стоит придерживаться следующего:",
-      en: "When you face the choice of which of the libraries described above, or a vanilla solution, to pick, you should not rely on the following principles, which I have often encountered in my own commercial development practice. You should not stick to the following:",
+      ru: "Когда перед вами стоит выбор, что выбрать из библиотек, описанных в курсе и ниже, или ванильного решения, не стоит опираться на следующие принципы, которые я часто встречал в своей практике при коммерческой разработке. Не стоит придерживаться следующего:",
+      en: "When you face the choice of which of the libraries described in the course and below, or a vanilla solution, to pick, you should not rely on the following principles, which I have often encountered in my own commercial development practice. You should not stick to the following:",
     },
     {
       type: 'list',
@@ -288,8 +288,8 @@ const lesson: Lesson = {
           en: "Performance. It will be lower than vanilla given equivalent code: programs are run by Effect's own fiber-based runtime. Unused modules are dropped at build time (tree shaking), and version 4 rewrote the runtime and noticeably reduced the bundle size.",
         },
         {
-          ru: "Парадигма функционального программирования. Полноценное типизированное функциональное программирование, нацеленное на продакшен: эффекты как значения, ошибки и зависимости в типах, конкурентность на файберах, Schema для проверки данных во время выполнения. Высокий порог входа, но другого рода, чем у fp-ts: осваивать нужно не классы типов, а модель эффектов и большой API. По README fp-ts, Effect можно считать преемником fp-ts v2. Текущая мажорная версия — 4: Effect 4.0.0 вышел 1 октября 2026 года, последний релиз, 4.0.5, — 15 октября 2026 года, а ветка 3.x ещё получает исправления (по данным реестра npm на октябрь 2026 года).",
-          en: "The functional programming paradigm. Full-fledged typed functional programming aimed at production: effects as values, errors and dependencies in the types, fiber-based concurrency, and Schema for validating data at runtime. A high barrier to entry, but of a different kind than with fp-ts: you learn the effect model and a large API rather than type classes. According to the fp-ts README, Effect can be regarded as the successor to fp-ts v2. The current major version is 4: Effect 4.0.0 came out on October 1, 2026, the latest release, 4.0.5, on October 15, 2026, and the 3.x line still receives fixes (according to the npm registry as of October 2026).",
+          ru: "Парадигма функционального программирования. Полноценное типизированное функциональное программирование, нацеленное на продакшен: эффекты как значения, ошибки и зависимости в типах, конкурентность на файберах, Schema для проверки данных во время выполнения. Высокий порог входа, но другого рода, чем у fp-ts: осваивать нужно не классы типов, а модель эффектов и большой API. По README fp-ts, Effect можно считать преемником fp-ts v2. Текущая мажорная версия — 4: Effect 4.0.0 вышел 1 октября 2026 года, а ветка 3.x ещё получает исправления (по данным реестра npm на октябрь 2026 года).",
+          en: "The functional programming paradigm. Full-fledged typed functional programming aimed at production: effects as values, errors and dependencies in the types, fiber-based concurrency, and Schema for validating data at runtime. A high barrier to entry, but of a different kind than with fp-ts: you learn the effect model and a large API rather than type classes. According to the fp-ts README, Effect can be regarded as the successor to fp-ts v2. The current major version is 4: Effect 4.0.0 came out on October 1, 2026, and the 3.x line still receives fixes (according to the npm registry as of October 2026).",
         },
       ],
     },
