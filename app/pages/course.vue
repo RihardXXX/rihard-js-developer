@@ -1,11 +1,20 @@
 <script setup lang="ts">
-import { introSections, lessons as numberedLessons } from '~/data/course'
-const lessons = [...introSections, ...numberedLessons]
+import { pickLocale } from '~/utils/course-locale'
 
 const { t, locale } = useI18n()
 const localePath = useLocalePath()
 // Lesson content exists in RU and EN only; every non-Russian locale shows English.
 const isEn = computed(() => locale.value !== 'ru')
+
+// Lessons come in the page payload (/ru/course/_payload.json) with texts of its locale only;
+// the client imports the lesson module just when there is no payload (dev, network failure).
+// The key is fixed: switching the language mounts the other locale's page with its own payload.
+const lang = isEn.value ? 'en' : 'ru'
+const { data: course } = await useAsyncData(`course-${lang}`, async () => {
+  const { introSections, lessons } = await import('~/data/course')
+  return pickLocale({ introSections, lessons }, lang)
+})
+const lessons = computed(() => (course.value ? [...course.value.introSections, ...course.value.lessons] : []))
 
 useSeoMeta({
   title: () => t('course.title'),
