@@ -777,7 +777,7 @@ return result // 16.5
       en: "Until a call finishes, its frame stays on the call stack. The stack size is limited, so on a large array synchronous recursion fails with a stack overflow.",
     },
     {
-      ru: "Хвостовой вызов не уменьшает число вызовов. Не хранить кадр вызывающей функции стандарт ES2015 требует только в строгом режиме (proper tail calls), а из браузерных движков это реализовано только в JavaScriptCore (Safari). Поэтому в продакшен-коде на хвостовую рекурсию не рассчитывают, если не знают точно, сколько будет вызовов.",
+      ru: "Хвостовой вызов не уменьшает число вызовов. Стандарт ES2015 требует, чтобы движок не хранил кадр вызывающей функции, только в строгом режиме (proper tail calls), а из браузерных движков это реализовано только в JavaScriptCore (Safari). Поэтому в продакшен-коде на хвостовую рекурсию не рассчитывают, если не знают точно, сколько будет вызовов.",
       en: "A tail call does not reduce the number of calls. ES2015 requires the engine to drop the caller's stack frame only in strict mode (proper tail calls), and among browser engines only JavaScriptCore (Safari) implements it. So production code should not rely on tail recursion unless you know exactly how many calls there will be.",
     },
     {
