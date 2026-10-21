@@ -14,7 +14,8 @@ const { data: course } = await useAsyncData(`course-${lang}`, async () => {
   const { introSections, lessons } = await import('~/data/course')
   return pickLocale({ introSections, lessons }, lang)
 })
-const lessons = computed(() => (course.value ? [...course.value.introSections, ...course.value.lessons] : []))
+const introSections = computed(() => course.value?.introSections ?? [])
+const lessons = computed(() => course.value?.lessons ?? [])
 
 useSeoMeta({
   title: () => t('course.title'),
@@ -33,18 +34,17 @@ useSeoMeta({
       :subtitle="t('course.desc')"
     />
 
-    <div class="playground-wrap">
+    <div id="course-playground" class="playground-wrap">
       <h2 class="block-title">{{ t('course.playgroundTitle') }}</h2>
       <p class="block-desc">{{ t('course.playgroundDesc') }}</p>
-      <ClientOnly>
-        <CoursePlayground />
-        <template #fallback>
-          <div class="playground-skeleton" />
-        </template>
-      </ClientOnly>
+      <CoursePlayground />
     </div>
 
-    <nav class="toc" :aria-label="t('course.tocTitle')">
+    <div class="intro">
+      <CourseLesson v-for="section in introSections" :key="section.slug" :lesson="section" />
+    </div>
+
+    <nav id="course-toc" class="toc" :aria-label="t('course.tocTitle')">
       <h2 class="block-title">{{ t('course.tocTitle') }}</h2>
       <ol class="toc__list">
         <li v-for="(lesson, i) in lessons" :key="lesson.slug" class="toc__item">
@@ -56,12 +56,14 @@ useSeoMeta({
       </ol>
     </nav>
 
+    <h2 class="block-title">{{ t('course.lessonsTitle') }}</h2>
     <div class="lessons">
       <CourseLesson
         v-for="(lesson, i) in lessons"
         :key="lesson.slug"
         :lesson="lesson"
         :index="i + 1"
+        :next="lessons[i + 1]"
       />
     </div>
   </AppSection>
@@ -95,18 +97,12 @@ useSeoMeta({
 }
 
 .playground-wrap {
+  scroll-margin-top: $header-height;
   margin-bottom: 6.4rem;
 }
 
-.playground-skeleton {
-  height: 42vh;
-  min-height: 32rem;
-  border: 1px solid var(--code-border);
-  border-radius: 1.4rem;
-  background-color: var(--surface);
-}
-
 .toc {
+  scroll-margin-top: $header-height;
   margin-bottom: 6.4rem;
   padding: 3.2rem;
   border: 1px solid var(--border);
@@ -145,9 +141,14 @@ useSeoMeta({
   }
 }
 
+.intro,
 .lessons {
   display: grid;
   grid-template-columns: minmax(0, 1fr);
   gap: 4rem;
+}
+
+.intro {
+  margin-bottom: 6.4rem;
 }
 </style>
