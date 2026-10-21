@@ -447,8 +447,8 @@ for (const [name, net] of [['OR', or], ['AND', and]]) {
     },
     {
       task: {
-        ru: "Проверьте в коде, что без нелинейности два слоя сводятся к одному. Сеть deep состоит из двух слоёв с активацией identity. В скрытом слое два нейрона: с весами [1, 2] и смещением 1 и с весами [3, -1] и смещением 0. В выходном слое один нейрон с весами [2, 1] и смещением -4. Найдите веса и смещение одного нейрона single, который даёт тот же ответ, и сравните обе сети на входах [0, 0], [1, 0], [0, 1] и [2, 3]. Затем поставьте в скрытый слой relu вместо identity и сравните сети ещё раз на входе [0, 1].",
-        en: "Check in code that without nonlinearity two layers collapse into one. The deep network consists of two layers with identity activation. The hidden layer has two neurons: one with weights [1, 2] and bias 1, and one with weights [3, -1] and bias 0. The output layer has one neuron with weights [2, 1] and bias -4. Find the weights and bias of a single neuron that gives the same answer, and compare both networks on the inputs [0, 0], [1, 0], [0, 1] and [2, 3]. Then put relu instead of identity into the hidden layer and compare the networks again on the input [0, 1].",
+        ru: "Проверьте в коде, что без нелинейности два слоя сводятся к одному. Сеть deep состоит из двух слоёв с активацией identity. В скрытом слое два нейрона: с весами [1, 2] и смещением 1 и с весами [3, -1] и смещением 0. В выходном слое один нейрон с весами [2, 1] и смещением -4. Соберите эти слои функцией deepWith, которая получает активацию скрытого слоя аргументом, и найдите веса и смещение одного нейрона single, который даёт тот же ответ. Заготовка сравнивает обе сети на входах [0, 0], [1, 0], [0, 1] и [2, 3], а затем ставит в скрытый слой relu вместо identity и сравнивает сети ещё раз на входе [0, 1].",
+        en: "Check in code that without nonlinearity two layers collapse into one. The deep network consists of two layers with identity activation. The hidden layer has two neurons: one with weights [1, 2] and bias 1, and one with weights [3, -1] and bias 0. The output layer has one neuron with weights [2, 1] and bias -4. Build these layers with a deepWith function that takes the hidden layer's activation as an argument, and find the weights and bias of a single neuron that gives the same answer. The starter compares both networks on the inputs [0, 0], [1, 0], [0, 1] and [2, 3], then puts relu instead of identity into the hidden layer and compares the networks again on the input [0, 1].",
       },
       starter: {
         ru: `// pipe :: ((a -> b), (b -> c), ..., (y -> z)) -> a -> z
@@ -470,7 +470,23 @@ const neuron = (weights, bias, activation) => (inputs) =>
 // layer :: [[Number] -> Number] -> [Number] -> [Number]
 const layer = (neurons) => (inputs) => neurons.map((n) => n(inputs))
 
-// ваш код: сети deep и single и их сравнение`,
+// два слоя; активацию скрытого слоя передаём параметром
+// deepWith :: (Number -> Number) -> [Number] -> Number
+// ваш код
+
+// deep :: [Number] -> Number
+const deep = deepWith(identity)
+
+// один нейрон с тем же ответом, что у deep
+// single :: [Number] -> Number
+// ваш код
+
+for (const x of [[0, 0], [1, 0], [0, 1], [2, 3]]) {
+  console.log(\`[\${x}]: deep = \${deep(x)}, single = \${single(x)}\`)
+}
+
+// relu в скрытом слое вместо identity
+console.log(\`с relu, [0,1]: deep = \${deepWith(relu)([0, 1])}, single = \${single([0, 1])}\`)`,
         en: `// pipe :: ((a -> b), (b -> c), ..., (y -> z)) -> a -> z
 const pipe = (...fns) => (x) => fns.reduce((acc, fn) => fn(acc), x)
 
@@ -490,7 +506,23 @@ const neuron = (weights, bias, activation) => (inputs) =>
 // layer :: [[Number] -> Number] -> [Number] -> [Number]
 const layer = (neurons) => (inputs) => neurons.map((n) => n(inputs))
 
-// your code: the deep and single networks and their comparison`,
+// two layers; the hidden layer's activation is a parameter
+// deepWith :: (Number -> Number) -> [Number] -> Number
+// your code
+
+// deep :: [Number] -> Number
+const deep = deepWith(identity)
+
+// one neuron with the same answer as deep
+// single :: [Number] -> Number
+// your code
+
+for (const x of [[0, 0], [1, 0], [0, 1], [2, 3]]) {
+  console.log(\`[\${x}]: deep = \${deep(x)}, single = \${single(x)}\`)
+}
+
+// relu instead of identity in the hidden layer
+console.log(\`with relu, [0,1]: deep = \${deepWith(relu)([0, 1])}, single = \${single([0, 1])}\`)`,
       },
       solution: {
         ru: `// pipe :: ((a -> b), (b -> c), ..., (y -> z)) -> a -> z
