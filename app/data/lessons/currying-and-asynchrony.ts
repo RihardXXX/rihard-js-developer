@@ -10,14 +10,18 @@ const lesson: Lesson = {
       en: "Currying can be used effectively in asynchronous programming.",
     },
     {
-      type: 'text',
-      ru: "1. Создание специализированных функций",
-      en: "1. Creating specialized functions",
-    },
-    {
-      type: 'text',
-      ru: "2. Победим \"ад колбеков\" без промисов",
-      en: "2. We will defeat \"callback hell\" without promises",
+      type: 'list',
+      ordered: true,
+      items: [
+        {
+          ru: "Создание специализированных функций",
+          en: "Creating specialized functions",
+        },
+        {
+          ru: "Победим \"ад колбеков\" без промисов",
+          en: "We will defeat \"callback hell\" without promises",
+        },
+      ],
     },
     {
       type: 'code',
