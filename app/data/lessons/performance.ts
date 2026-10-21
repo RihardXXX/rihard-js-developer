@@ -3,6 +3,10 @@ import type { Lesson } from '~/data/course-types'
 const lesson: Lesson = {
   slug: 'performance',
   title: { ru: "Производительность (Performance — Перфоманс)", en: "Performance" },
+  description: {
+    ru: "Откуда разница в производительности между функциональным JavaScript и циклом for, почему один замер ничего не доказывает и когда нужен императивный код.",
+    en: "Where the performance gap between functional JavaScript and a for loop comes from, why one measurement proves nothing, and when imperative code is worth it.",
+  },
   goal: {
     ru: "Понять, откуда берётся разница в скорости между функциональным и императивным кодом, почему один замер ничего не доказывает и когда стоит переходить на низкоуровневые императивные инструменты.",
     en: "Understand where the speed difference between functional and imperative code comes from, why a single measurement proves nothing, and when it is worth switching to low-level imperative tools.",

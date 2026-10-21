@@ -6,6 +6,10 @@ const lesson: Lesson = {
     ru: "Side effects (побочные эффекты) в композиции функций",
     en: "Side effects in function composition",
   },
+  description: {
+    ru: "Как добавить побочный эффект в композицию функций JavaScript, не ломая цепочку: tap для логирования шагов pipe и для действий по логике программы.",
+    en: "How to add a side effect to a JavaScript function composition without breaking the chain: tap for logging pipe steps and for actions the program needs.",
+  },
   goal: {
     ru: "Научиться добавлять в композицию функций побочные эффекты — логирование для отладки и действия по логике программы — так, чтобы данные шли дальше по цепочке без изменений.",
     en: "Learn to add side effects to a function composition, such as logging for debugging or actions the program logic requires, so that the data keeps flowing down the chain unchanged.",

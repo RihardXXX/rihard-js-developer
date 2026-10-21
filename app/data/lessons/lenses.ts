@@ -6,6 +6,10 @@ const lesson: Lesson = {
     ru: "Линзы",
     en: "Lenses",
   },
+  description: {
+    ru: "Как линзы в JavaScript читают и меняют вложенные данные без мутации: view, set и over из Ramda и своя линза из пары функций getter и setter.",
+    en: "How JavaScript lenses read and update nested data without mutation: view, set and over from Ramda, and your own lens built from a getter and a setter.",
+  },
   goal: {
     ru: "Научиться читать и менять вложенные данные через линзы (view, set, over), не изменяя исходный объект, и понять, как устроена простая линза из пары функций getter и setter.",
     en: "Learn to read and update nested data with lenses (view, set, over) without changing the original object, and understand how a simple lens built from a getter and a setter works.",

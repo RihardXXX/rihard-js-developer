@@ -6,6 +6,10 @@ const lesson: Lesson = {
     ru: "Функции map, filter, reduce",
     en: "The map, filter, and reduce functions",
   },
+  description: {
+    ru: "Что делают map, filter и reduce в JavaScript, как через reduce выразить map и filter и как написать все три самому: циклом, декларативно и через трамплин.",
+    en: "What map, filter and reduce do in JavaScript, how reduce emulates the other two, and how to write all three with a loop, declaratively and via a trampoline.",
+  },
   goal: {
     ru: "Понять, что делают map, filter и reduce, и научиться реализовывать их самостоятельно: декларативно, императивно и рекурсивно через трамплин.",
     en: "Understand what map, filter and reduce do, and learn to implement them yourself: declaratively, imperatively and recursively with a trampoline.",

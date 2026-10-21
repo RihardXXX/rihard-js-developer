@@ -3,6 +3,10 @@ import type { Lesson } from '~/data/course-types'
 const lesson: Lesson = {
   slug: 'neural-networks',
   title: { ru: "Нейронные сети и теория категорий", en: "Neural networks and category theory" },
+  description: {
+    ru: "Нейросеть прямого распространения как композиция функций на JavaScript: нейрон, слой, ReLU, зачем нелинейность и что здесь описывает теория категорий.",
+    en: "A feedforward neural network as JavaScript function composition: neurons, layers, ReLU, why nonlinearity matters, and what category theory describes here.",
+  },
   goal: {
     ru: "Понять, как нейросеть прямого распространения складывается из функций — нейрон, слой и сеть как композиция слоёв, — и какую часть этой картины описывает теория категорий.",
     en: "Understand how a feedforward neural network is built from functions, with neurons, layers and the network as a composition of layers, and which part of this picture category theory describes.",
