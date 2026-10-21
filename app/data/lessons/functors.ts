@@ -194,13 +194,13 @@ console.log(greet(7)) // User not found`,
     },
     {
       type: 'text',
-      ru: "Одного метода map мало, чтобы контейнер стал функтором: map должен выполнять два закона. Тождество: u.map(x => x) эквивалентно u — если функция ничего не меняет, то и map ничего не меняет. Композиция: u.map(x => f(g(x))) эквивалентно u.map(g).map(f) — один проход с композицией даёт то же, что два прохода подряд. В нотации Хиндли–Милнера их записывают короче: map(id) = id и map(f . g) = map(f) . map(g).",
-      en: "A map method alone is not enough to make a container a functor: map must obey two laws. Identity: u.map(x => x) is equivalent to u, so if the function changes nothing, map changes nothing either. Composition: u.map(x => f(g(x))) is equivalent to u.map(g).map(f), so one pass with the composition gives the same as two passes in a row. In Hindley–Milner notation they are written more briefly: map(id) = id and map(f . g) = map(f) . map(g).",
+      ru: "Одного метода map мало, чтобы контейнер стал функтором: map должен выполнять два закона. Тождество: u.map(x => x) эквивалентно u — если функция ничего не меняет, то и map ничего не меняет. Композиция: u.map(x => f(g(x))) эквивалентно u.map(g).map(f) — один проход с композицией даёт то же, что два прохода подряд. В записи из урока «Теория категорий», где точка означает композицию, их пишут короче: map(id) = id и map(f . g) = map(f) . map(g).",
+      en: "A map method alone is not enough to make a container a functor: map must obey two laws. Identity: u.map(x => x) is equivalent to u, so if the function changes nothing, map changes nothing either. Composition: u.map(x => f(g(x))) is equivalent to u.map(g).map(f), so one pass with the composition gives the same as two passes in a row. In the notation from the \"Category theory\" lesson, where the dot means composition, they are written more briefly: map(id) = id and map(f . g) = map(f) . map(g).",
     },
     {
       type: 'code',
       code: {
-        ru: `// Законы функтора на массиве
+        ru: `// Законы функтора на массиве и на Box
 // тождество:  u.map(x => x) эквивалентно u
 // композиция: u.map(x => f(g(x))) эквивалентно u.map(g).map(f)
 
@@ -220,6 +220,17 @@ console.log(u.map(id) === u) // false: map вернул новый массив
 console.log(same(u.map(id), u)) // true: тождество выполняется
 console.log(same(u.map(compose(tenTimes, inc)), u.map(inc).map(tenTimes))) // true: композиция тоже
 
+// Box из первого примера
+// Box :: a -> Box a
+const Box = (value) => ({
+  value,
+  map: (fn) => Box(fn(value)),
+})
+
+// у Box законы тоже выполняются: сравниваем значения внутри
+console.log(Box(5).map(id).value === Box(5).value) // true: тождество
+console.log(Box(5).map(compose(tenTimes, inc)).value === Box(5).map(inc).map(tenTimes).value) // true: композиция
+
 // «Удобный» map, который заодно выбрасывает пустые результаты
 // compactMap :: (a -> b) -> [a] -> [b]
 const compactMap = (fn) => (arr) => arr.map(fn).filter((x) => x != null)
@@ -235,7 +246,7 @@ const orZero = (x) => (x == null ? 0 : x) // пустое заменяем ну�
 const values = [10, 30]
 console.log(JSON.stringify(compactMap(compose(orZero, hideBig))(values))) // [10,0]
 console.log(JSON.stringify(compactMap(orZero)(compactMap(hideBig)(values)))) // [10]`,
-        en: `// The functor laws on an array
+        en: `// The functor laws on an array and on Box
 // identity:    u.map(x => x) is equivalent to u
 // composition: u.map(x => f(g(x))) is equivalent to u.map(g).map(f)
 
@@ -254,6 +265,17 @@ const u = [1, 2, 3]
 console.log(u.map(id) === u) // false: map returned a new array
 console.log(same(u.map(id), u)) // true: identity holds
 console.log(same(u.map(compose(tenTimes, inc)), u.map(inc).map(tenTimes))) // true: so does composition
+
+// Box from the first example
+// Box :: a -> Box a
+const Box = (value) => ({
+  value,
+  map: (fn) => Box(fn(value)),
+})
+
+// the laws hold for Box too: we compare the values inside
+console.log(Box(5).map(id).value === Box(5).value) // true: identity
+console.log(Box(5).map(compose(tenTimes, inc)).value === Box(5).map(inc).map(tenTimes).value) // true: composition
 
 // A "convenient" map that also throws away empty results
 // compactMap :: (a -> b) -> [a] -> [b]
