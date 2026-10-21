@@ -33,7 +33,7 @@ const SLUGS = [
 const MENU_IDS = ['about', 'skills', 'experience', 'projects', 'certificates', 'course', 'contact']
 const CYRILLIC = /[А-Яа-яЁё]/
 
-// Эталоны сняты со сборки коммита 0a43999 (до правок курса): страница курса не должна их потерять.
+// Эталоны сняты со сборки до правок курса: страница курса не должна их потерять.
 const COURSE = {
   en: {
     file: 'course/index.html',
@@ -155,6 +155,13 @@ for (const [locale, page] of Object.entries(COURSE)) {
     const html = read(page.file)
     const missing = SLUGS.filter((slug) => !html.includes(`href="#${slug}"`))
     assert.deepEqual(missing, [], `оглавление ${where} не ведёт к урокам: ${missing.join(', ')}`)
+  })
+
+  // Этап A не переставляет уроки (критерий 4); порядок меняет задача 6.
+  test(`${where}: уроки идут в прежнем порядке`, () => {
+    const html = read(page.file)
+    const order = SLUGS.map((slug) => html.indexOf(`id="${slug}"`))
+    assert.deepEqual(order, [...order].sort((a, b) => a - b), `порядок уроков на ${where} изменился`)
   })
 }
 
