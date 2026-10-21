@@ -24,9 +24,9 @@ const lesson: Lesson = {
       code: {
         ru: `//  Давайте создадим базовую функцию для запросов
 // baseFetch :: String -> String -> a -> Promise
-const baseFetch = (baseUrl)
-                    => (params)
-                    => (config = {}) =>
+const baseFetch = (baseUrl) =>
+                    (params) =>
+                    (config = {}) =>
                       fetch(\`\${baseUrl}/\${params}\`, config)
 
 
@@ -41,16 +41,16 @@ const getAllUser = useFetch ('all-users')
 const getAllBooks = useFetch ('all-books')
 
 // дальше можем вызывать функции и получать данные
-( async () => console.log( await getAllUser () )) ()
-( async () => console.log( await getAllBooks () )) ()
+getAllUser ().then(console.log)
+getAllBooks ().then(console.log)
 
 // вы можете добавить авторизационные токены
 // в отдельном замыкании если это необходимо
 // xFetch :: String -> b -> String -> a -> Promise
-const xFetch = (baseUrl)
-          => (headers)
-          => (params)
-          => (config = {}) =>
+const xFetch = (baseUrl) =>
+          (headers) =>
+          (params) =>
+          (config = {}) =>
             fetch(\`\${baseUrl}/\${params}\`, {
               ...headers,
               ...config,
@@ -72,9 +72,9 @@ const getAllUserX = useXFetch ('all-users')
 const getAllBooksX = useXFetch ('all-books')`,
         en: `//  Давайте создадим базовую функцию для запросов
 // baseFetch :: String -> String -> a -> Promise
-const baseFetch = (baseUrl)
-                    => (params)
-                    => (config = {}) =>
+const baseFetch = (baseUrl) =>
+                    (params) =>
+                    (config = {}) =>
                       fetch(\`\${baseUrl}/\${params}\`, config)
 
 
@@ -89,16 +89,16 @@ const getAllUser = useFetch ('all-users')
 const getAllBooks = useFetch ('all-books')
 
 // дальше можем вызывать функции и получать данные
-( async () => console.log( await getAllUser () )) ()
-( async () => console.log( await getAllBooks () )) ()
+getAllUser ().then(console.log)
+getAllBooks ().then(console.log)
 
 // вы можете добавить авторизационные токены
 // в отдельном замыкании если это необходимо
 // xFetch :: String -> b -> String -> a -> Promise
-const xFetch = (baseUrl)
-          => (headers)
-          => (params)
-          => (config = {}) =>
+const xFetch = (baseUrl) =>
+          (headers) =>
+          (params) =>
+          (config = {}) =>
             fetch(\`\${baseUrl}/\${params}\`, {
               ...headers,
               ...config,
