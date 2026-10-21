@@ -96,17 +96,17 @@ console.log('Время выполнения императивного кода
 // В одиночном замере движок ещё не успел прогреться и оптимизировать код,
 // а на время влияют сборщик мусора и фоновые задачи
 // Поэтому по одному замеру выводы делать нельзя: нужны повторы`,
-        en: `// Произведем небольшие замеры
+        en: `// Let's take a few small measurements
 // ===============================
-// функция, которая генерирует массив чисел от 1 до числа n включительно
+// a function that generates an array of numbers from 1 to n inclusive
 // createNumberArray :: Number -> [Number]
 const createNumberArray = (n) => new Array(n).fill(1).map((_, i) => i + 1)
 
-// функция которая декларативно складывает числа в массиве
+// a function that sums the numbers in an array declaratively
 // sumD :: [Number] -> Number
 const sumD = (arr) => arr.reduce((acc, curr) => acc + curr)
 
-// функция которая императивно складывает числа в массиве
+// a function that sums the numbers in an array imperatively
 const sumN = (arr) => {
   let result = 0
   const length = arr.length
@@ -119,47 +119,47 @@ const sumN = (arr) => {
 }
 // ===============================
 
-// начнем тестировать
+// let's start testing
 // ===============================
-// создаем данные массив из 100 000 чисел
+// create the data: an array of 100,000 numbers
 const dataNumber = createNumberArray (100000)
 
-// замер времени декларативного кода
+// timing the declarative code
 // ===============================
-const startT = performance.now() // стартовое время
-const resultD = sumD (dataNumber) // выполняемый код
-const endT = performance.now() // конечное время
+const startT = performance.now() // start time
+const resultD = sumD (dataNumber) // the code being measured
+const endT = performance.now() // end time
 
-// вычисление дельты и логирование
-console.log('Время выполнения декларативного кода ' + (endT - startT) + ' миллисекунд. Результат: ' + resultD)
-// время выполнения конечно же зависит от вашего устройства и прогрева железа
-// это тестирование не особо точное
-// тут главное нам уловить разницу в императивном и декларативном коде
-// 2.4274640000000005миллисекунд. Результат: 5000050000
-// ===============================
-
-// второй замер лучше запускать отдельно, а не сразу после первого
-
-// замер времени императивного кода
-// ===============================
-const startI = performance.now() // стартовое время
-const resultI = sumN (dataNumber) // выполняемый код
-const endI = performance.now() // конечное время
-
-// вычисление дельты и логирование
-console.log('Время выполнения императивного кода ' + (endI - startI) + ' миллисекунд. Результат: ' + resultI)
-// время выполнения конечно же зависит от вашего устройства и прогрева железа
-// тут главное нам уловить разницу в императивном и декларативном коде
-// 2.2674640000000005миллисекунд. Результат: 5000050000
-// 2.380783000000008миллисекунд. Результат: 5000050000
-// 2.600783000000008миллисекунд. Результат: 5000050000
+// compute the delta and log it
+console.log('Declarative code run time: ' + (endT - startT) + ' milliseconds. Result: ' + resultD)
+// the run time of course depends on your device and on how warmed up the hardware is
+// this test is not very precise
+// the main thing here is to catch the difference between imperative and declarative code
+// 2.4274640000000005 milliseconds. Result: 5000050000
 // ===============================
 
-// Времена получились близкими, и от запуска к запуску
-// впереди может оказаться любой из вариантов
-// В одиночном замере движок ещё не успел прогреться и оптимизировать код,
-// а на время влияют сборщик мусора и фоновые задачи
-// Поэтому по одному замеру выводы делать нельзя: нужны повторы`,
+// it's better to run the second measurement separately, not right after the first one
+
+// timing the imperative code
+// ===============================
+const startI = performance.now() // start time
+const resultI = sumN (dataNumber) // the code being measured
+const endI = performance.now() // end time
+
+// compute the delta and log it
+console.log('Imperative code run time: ' + (endI - startI) + ' milliseconds. Result: ' + resultI)
+// the run time of course depends on your device and on how warmed up the hardware is
+// the main thing here is to catch the difference between imperative and declarative code
+// 2.2674640000000005 milliseconds. Result: 5000050000
+// 2.380783000000008 milliseconds. Result: 5000050000
+// 2.600783000000008 milliseconds. Result: 5000050000
+// ===============================
+
+// The times came out close, and from run to run
+// either version may come out ahead
+// In a single measurement the engine hasn't warmed up and optimized the code yet,
+// and the garbage collector and background tasks affect the time
+// So you can't draw conclusions from one measurement: you need repetitions`,
       },
     },
     {
@@ -238,69 +238,69 @@ console.log (resultDeclarative) // 1.2971963320000012
 // от движка, его версии и данных: микробенчмарк — ориентир, а не закон
 // в абсолютных числах в замере выше это около миллисекунды на 100 000 элементов:
 // заметно в горячем коде, который выполняется много раз, а в остальном обычно нет`,
-        en: `// Утилита замера скорости
-// createNumberArray, sumN и sumD — из предыдущего блока,
-// поэтому запускайте этот блок вместе с ним
+        en: `// Speed measurement utility
+// createNumberArray, sumN and sumD come from the previous block,
+// so run this block together with it
 // ===============================
 const benchmark = (fn) => (n = 100) => (msg = '') => {
-  // итоговый средний результат
+  // running total of the measured time
   let total = 0
 
-  // количество итераций вызова нашей функции
+  // number of times we call our function
   for (let i = 0; i < n; i++) {
-    // стартовый замер перед началом вызова функции
+    // take the start time before the call
     const start = performance.now()
 
-    // вызов функции
+    // call the function
     fn()
 
-    // аккумулируем результат дельты конечного и стартового результата
+    // add the difference between the end and start times
     total += performance.now() - start
   }
 
-  console.log(msg) // текст лога
+  console.log(msg) // log message
 
-  // далее итоговое время делим на количество вызовов
-  // функции и выводим среднее арифметическое
+  // then divide the total time by the number of calls
+  // and return the arithmetic mean
   return total / n
 }
 
-// создаем две функции
-// для работы с массивом чисел
-// подготовка данных
+// let's create two functions
+// for working with an array of numbers
+// preparing the data
 // ======================
-// массив чисел 1 - 100 000
+// array of numbers 1 - 100,000
 const dataNumbers = createNumberArray (100000)
 
-// обертка для императивной функции
-// и декларативной функции
+// a wrapper for the imperative function
+// and the declarative function
 // sumWrap :: ([Number] -> Number) -> [Number] -> (* -> Number)
 const sumWrap = (fn) => (arr) => () => fn(arr)
 
-// императивная функция складывания
+// imperative summing function
 const sumImperative = sumWrap (sumN) (dataNumbers)
 
-// декларативная функция складывания
+// declarative summing function
 const sumDeclarative = sumWrap (sumD) (dataNumbers)
 
-// Внимание одновременно обе функции сразу не прогоняйте
-// в начале запустите одну, а потом через какое-то время вторую
+// Note: don't run both functions at the same time
+// run one first, and then the second one some time later
 
-// замер императивной функции
-const resultImperative = benchmark (sumImperative) (1000) ('замер завершён')
+// measuring the imperative function
+const resultImperative = benchmark (sumImperative) (1000) ('measurement finished')
 console.log (resultImperative) // 0.15482687300000053
-// замер декларативной функции
-const resultDeclarative = benchmark (sumDeclarative) (1000) ('замер завершён')
+// measuring the declarative function
+const resultDeclarative = benchmark (sumDeclarative) (1000) ('measurement finished')
 console.log (resultDeclarative) // 1.2971963320000012
 
-// в этом замере императивный цикл оказался в несколько раз быстрее reduce
-// причина в накладных расходах: reduce на каждом элементе вызывает функцию-колбэк,
-// а в цикле for на каждом шаге только сравнение и сложение,
-// которые движок превращает в компактный машинный код
-// движки умеют частично убирать такие расходы, поэтому разница зависит
-// от движка, его версии и данных: микробенчмарк — ориентир, а не закон
-// в абсолютных числах в замере выше это около миллисекунды на 100 000 элементов:
-// заметно в горячем коде, который выполняется много раз, а в остальном обычно нет`,
+// in this measurement the imperative loop turned out several times faster than reduce
+// the reason is overhead: reduce calls a callback function for every element,
+// while each step of the for loop is just a comparison and an addition,
+// which the engine turns into compact machine code
+// engines can partly remove this overhead, so the difference depends
+// on the engine, its version and the data: a microbenchmark is a guide, not a law
+// in absolute terms, in the measurement above it's about a millisecond per 100,000 elements:
+// noticeable in hot code that runs many times, but usually not elsewhere`,
       },
     },
   ],
