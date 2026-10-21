@@ -2,6 +2,7 @@
 import loader from '@monaco-editor/loader'
 import * as R from 'ramda'
 import { create, env } from 'sanctuary'
+import { createPlaygroundRunner } from '~/utils/playground-runner'
 
 // Minimal structural types (monaco-editor itself is loaded at runtime via CDN).
 interface MonacoEditorInstance {
@@ -100,6 +101,9 @@ console.log(R.map(inc, [1, 2, 3]))  // [2, 3, 4]
 const editorEl = ref<HTMLElement | null>(null)
 const output = ref('')
 const code = ref(INITIAL_CODE)
+const runner = createPlaygroundRunner((text) => {
+  output.value = text
+})
 
 let editorInstance: MonacoEditorInstance | null = null
 let monacoEditorApi: MonacoEditorApi | null = null
@@ -130,45 +134,20 @@ onMounted(() => {
 watch(theme, () => monacoEditorApi?.setTheme(monacoTheme()))
 
 onBeforeUnmount(() => {
+  runner.clear()
   editorInstance?.dispose()
   editorInstance = null
 })
 
-const normalize = (item: unknown): string => {
-  if (typeof item === 'string') return item
-  try {
-    return JSON.stringify(item, null, 2)
-  } catch {
-    return String(item)
-  }
-}
-
-const run = () => {
-  const logs: unknown[] = []
-  const sandboxConsole = {
-    log: (...a: unknown[]) => logs.push(...a),
-    error: (...a: unknown[]) => logs.push('ERROR: ' + a.join(' ')),
-    warn: (...a: unknown[]) => logs.push('WARN: ' + a.join(' ')),
-  }
-  try {
-    const aliases = libs.value.map((l) => l.alias)
-    const mods = libs.value.map((l) => l.mod)
-    // Runs the user's own code in the page context with the chosen libs injected.
-    // eslint-disable-next-line no-new-func
-    new Function('console', ...aliases, code.value)(sandboxConsole, ...mods)
-    output.value = logs.map(normalize).join('\n')
-  } catch (e) {
-    output.value = 'Error: ' + (e instanceof Error ? e.message : String(e))
-  }
-}
+const run = () => runner.run(code.value, libs.value)
 
 const reset = () => {
   editorInstance?.setValue(INITIAL_CODE)
-  output.value = ''
+  runner.clear()
 }
 const clearAll = () => {
   editorInstance?.setValue('')
-  output.value = ''
+  runner.clear()
 }
 </script>
 
