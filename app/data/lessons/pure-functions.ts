@@ -151,8 +151,8 @@ const changeAgeCurried = (newAge) => (user) => ({
 // тут мы проверим все
 const changedUser = changeAgeCurried (30) (user)
 
-console.log(user) // { name: John, age: 25 } сохранил первоначальное состояние
-console.log(changedUser) // { name: John, age: 30 } получили нового пользователя без сайд эффектов
+console.log(user) // { name: 'John', age: 25 } сохранил первоначальное состояние
+console.log(changedUser) // { name: 'John', age: 30 } получили нового пользователя без побочных эффектов
 // ===============================`,
         en: `// Now let's fix the example above
 // ===============================
@@ -177,8 +177,8 @@ const changeAgeCurried = (newAge) => (user) => ({
 // let's check everything here
 const changedUser = changeAgeCurried (30) (user)
 
-console.log(user) // { name: John, age: 25 } kept its original state
-console.log(changedUser) // { name: John, age: 30 } we got a new user without side effects
+console.log(user) // { name: 'John', age: 25 } kept its original state
+console.log(changedUser) // { name: 'John', age: 30 } we got a new user without side effects
 // ===============================`,
       },
     },

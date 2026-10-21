@@ -467,7 +467,7 @@ const getReviews = fetchClassic (BASE_URL) (REVIEWS)
 const getReviewInfo = fetchClassic (BASE_URL) (REVIEW_INFO)
 
 
-// У нас будет супер пайп, который под капотом
+// У нас будет pipe, который под капотом
 // сам дожидается промисов: если шаг вернул промис,
 // следующие шаги идут через then, и на выходе тоже промис
 // pipeAsync :: ((a -> b), (b -> c), ..., (y -> z)) -> a -> z
