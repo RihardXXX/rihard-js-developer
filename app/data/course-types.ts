@@ -71,6 +71,8 @@ export interface CourseSection {
 }
 
 export interface Lesson extends CourseSection {
+  /** meta description and the line under the title in the contents: up to 160 chars, unique */
+  description: LocalizedText
   /** 1–2 sentences */
   goal: LocalizedText
   /** key points, 2–5 items */
@@ -78,3 +80,9 @@ export interface Lesson extends CourseSection {
   /** 1–2 exercises */
   exercises: CourseExercise[]
 }
+
+/** a lesson in the contents: no blocks, so the payload of the list stays small */
+export type LessonEntry = Pick<Lesson, 'slug' | 'title' | 'description'>
+
+/** a neighbour on the lesson page */
+export type LessonLink = Pick<Lesson, 'slug' | 'title'>
