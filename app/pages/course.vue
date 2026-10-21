@@ -1,5 +1,6 @@
 <script setup lang="ts">
-import { lessons } from '~/data/course'
+import { introSections, lessons as numberedLessons } from '~/data/course'
+const lessons = [...introSections, ...numberedLessons]
 
 const { t, locale } = useI18n()
 const localePath = useLocalePath()

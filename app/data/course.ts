@@ -1,4 +1,4 @@
-import type { Lesson } from './course-types'
+import type { CourseSection, Lesson } from './course-types'
 import forWhom from './lessons/for-whom'
 import notForWhom from './lessons/not-for-whom'
 import imperativeVsDeclarative from './lessons/imperative-vs-declarative'
@@ -20,25 +20,25 @@ import lenses from './lessons/lenses'
 import sideEffects from './lessons/side-effects-in-composition-functions'
 import selectingLibrary from './lessons/selecting-library'
 
+export const introSections: CourseSection[] = [forWhom, notForWhom]
+
 export const lessons: Lesson[] = [
-  forWhom,
-  notForWhom,
   imperativeVsDeclarative,
   functionalProgramming,
+  higherOrderFunctions,
   pureFunctions,
   hindleyMilner,
-  categoryTheory,
-  fantasyLand,
   composition,
   currying,
-  curryingAndAsynchrony,
   partialApplication,
+  curryingAndAsynchrony,
   recursion,
-  performance,
-  neuralNetworks,
   functionMapFilterReduce,
-  higherOrderFunctions,
+  performance,
   lenses,
   sideEffects,
+  categoryTheory,
+  fantasyLand,
+  neuralNetworks,
   selectingLibrary,
 ]
