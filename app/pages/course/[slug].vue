@@ -18,7 +18,8 @@ const tr = (text: LocalizedText) => (isEn.value ? text.en : text.ru)
 
 // One lesson and the titles of its neighbours come in the page payload, in the page's locale only:
 // the texts of other lessons stay out of this page. The key is fixed: another lesson or locale
-// mounts its own page with its own payload.
+// mounts its own page (the page key is the path) with its own payload.
+definePageMeta({ key: (route) => route.path })
 const lang = isEn.value ? 'en' : 'ru'
 const slug = String(route.params.slug)
 const { data: page, error } = await useAsyncData(`course-${lang}-${slug}`, async (): Promise<LessonPage | null> => {
