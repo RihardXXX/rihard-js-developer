@@ -2,6 +2,7 @@ import { test } from 'node:test'
 import assert from 'node:assert/strict'
 import module, { createRequire } from 'node:module'
 import vm from 'node:vm'
+import { SANDBOX_GLOBALS } from '../app/utils/playground-runner.ts'
 
 // Уроки лежат в app/data/lessons/*.ts, в course.ts импорты без расширения: дописываем .ts.
 // Типы Node стирает сам.
@@ -188,8 +189,8 @@ for (const { id, block } of codeBlocks) {
         `блок ${id} (${v}) не разбирается как скрипт: его нельзя скопировать и запустить`,
       )
       assert.doesNotThrow(
-        () => new Function('console', 'R', 'S', block.code[v]),
-        `блок ${id} (${v}) не разбирается в песочнице: имя конфликтует с console, R или S`,
+        () => new Function(...SANDBOX_GLOBALS, 'R', 'S', block.code[v]),
+        `блок ${id} (${v}) не разбирается в песочнице: имя конфликтует с ${[...SANDBOX_GLOBALS, 'R', 'S'].join(', ')}`,
       )
     })
   }
@@ -506,10 +507,12 @@ for (const v of VARIANTS) {
     }))
 }
 
-probe('neural-networks: ответ не NaN', 'neural-networks', 'getAnswer', (s) => {
-  const logs = s.logs().map(String)
-  assert.ok(logs.length > 0, 'блок ничего не напечатал')
-  assert.ok(!logs.some((line) => line.includes('NaN')), `в ответе NaN: ${JSON.stringify(logs)}`)
+probe('neural-networks: сеть решает XOR', 'neural-networks', 'getAnswer', (s) => {
+  assert.deepEqual(
+    s.logs().map(String),
+    ['0 XOR 0 = 0', '0 XOR 1 = 1', '1 XOR 0 = 1', '1 XOR 1 = 0'],
+    'сеть из урока должна печатать таблицу XOR, как обещает комментарий',
+  )
 })
 
 probe('currying-and-asynchrony: блок исполняется и делает 2 запроса', 'currying-and-asynchrony', 'getAllBooks', (s) => {

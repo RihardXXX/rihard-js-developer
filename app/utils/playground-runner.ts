@@ -11,9 +11,14 @@ export interface PlaygroundRunner {
   clear(): void
 }
 
-// Values JSON can't show: functions, and Sanctuary types (Maybe, Either, ...)
-// which print themselves via `@@show` as `Just (1)` / `Nothing`.
+// Names the user's code gets besides the libs; scripts/course.test.mjs compiles
+// lesson blocks with the same parameters.
+export const SANDBOX_GLOBALS = ['console', 'setTimeout', 'setInterval'] as const
+
+// Values JSON can't show: NaN and Infinity, functions, and Sanctuary types
+// (Maybe, Either, ...) which print themselves via `@@show` as `Just (1)` / `Nothing`.
 const describe = (value: unknown): string | undefined => {
+  if (typeof value === 'number' && !Number.isFinite(value)) return String(value)
   if (typeof value === 'function') {
     return value.name ? `[Function: ${value.name}]` : '[Function (anonymous)]'
   }
@@ -59,10 +64,20 @@ export const createPlaygroundRunner = (onOutput: (text: string) => void): Playgr
       intervals.forEach((id) => clearInterval(id))
     }
 
+    // Sync output goes out once after the run; later writes are batched per microtask,
+    // so a loop of console.log doesn't rebuild the whole text on every line.
+    let running = true
+    let flushQueued = false
+    const flush = () => {
+      flushQueued = false
+      if (alive) onOutput(lines.join('\n'))
+    }
     const write = (items: string[]) => {
       if (!alive) return
       lines.push(...items)
-      onOutput(lines.join('\n'))
+      if (running || flushQueued) return
+      flushQueued = true
+      queueMicrotask(flush)
     }
     const sandboxConsole = {
       log: (...a: unknown[]) => write(a.map(formatValue)),
@@ -78,7 +93,9 @@ export const createPlaygroundRunner = (onOutput: (text: string) => void): Playgr
         write([errorLine(e)])
       }
     }
+    // A closed run's leftover promise can't start timers nobody would clear.
     const sandboxSetTimeout = (handler: TimerCallback, ms?: number, ...args: unknown[]) => {
+      if (!alive) return undefined
       const id = setTimeout(() => {
         timeouts.delete(id)
         call(handler, args)
@@ -87,6 +104,7 @@ export const createPlaygroundRunner = (onOutput: (text: string) => void): Playgr
       return id
     }
     const sandboxSetInterval = (handler: TimerCallback, ms?: number, ...args: unknown[]) => {
+      if (!alive) return undefined
       const id = setInterval(() => call(handler, args), ms)
       intervals.add(id)
       return id
@@ -97,12 +115,13 @@ export const createPlaygroundRunner = (onOutput: (text: string) => void): Playgr
       const mods = libs.map((l) => l.mod)
       // Runs the user's own code in the page context with the chosen libs injected.
       // eslint-disable-next-line no-new-func
-      new Function('console', 'setTimeout', 'setInterval', ...aliases, code)(
+      new Function(...SANDBOX_GLOBALS, ...aliases, code)(
         sandboxConsole,
         sandboxSetTimeout,
         sandboxSetInterval,
         ...mods,
       )
+      running = false
       onOutput(lines.join('\n'))
     } catch (e) {
       close()

@@ -140,7 +140,46 @@ test('setInterval останавливается после clear()', async () =
   }
 })
 
+test('таймер, заведённый из .then прошлого запуска после clear(), не запускается', async () => {
+  const p = start()
+  const probe = { hits: 0, id: undefined }
+  try {
+    p.run('Promise.resolve().then(() => { probe.id = setInterval(() => probe.hits++, 5) })', [
+      ...LIBS,
+      { alias: 'probe', mod: probe },
+    ])
+    p.runner.clear()
+    await wait(30)
+    assert.equal(probe.hits, 0, 'интервал из закрытого запуска работает после clear()')
+  } finally {
+    clearInterval(probe.id)
+  }
+})
+
+// ---------- производительность вывода ----------
+
+test('синхронный вывод отдаётся наружу один раз, а не на каждую строку', () => {
+  const p = start()
+  p.run('for (let i = 0; i < 1000; i++) console.log(i)')
+  assert.equal(p.outputs.length, 1, `onOutput вызван ${p.outputs.length} раз`)
+  assert.equal(p.last().split('\n').length, 1000)
+})
+
+test('асинхронные строки одной микрозадачи сводятся в один вывод', async () => {
+  const p = start()
+  p.run("setTimeout(() => { for (let i = 0; i < 100; i++) console.log(i) }, 0)")
+  await wait(30)
+  assert.equal(p.outputs.length, 2, `ожидали синхронный вывод и один асинхронный, было ${p.outputs.length}`)
+  assert.equal(p.last().split('\n').length, 100)
+})
+
 // ---------- форматирование значений (находка 25) ----------
+
+test('NaN и Infinity печатаются как есть, а не null', () => {
+  const p = start()
+  p.run('console.log(0 / 0, [NaN, -Infinity])')
+  assert.equal(p.last(), 'NaN\n[\n  "NaN",\n  "-Infinity"\n]')
+})
 
 test('console.log(функция) даёт непустую строку', () => {
   const p = start()
