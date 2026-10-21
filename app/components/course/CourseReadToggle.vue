@@ -18,10 +18,12 @@ const toggle = () => {
 }
 
 // The toggle stands at the end of the lesson: the lesson counts as read once the reader has
-// scrolled down to it. scrollY > 0 keeps a short lesson on a tall screen unmarked on arrival. The
+// scrolled down to it and it has stayed on screen for a second; a smooth scroll of the page
+// passes it faster. scrollY > 0 keeps a short lesson on a tall screen unmarked on arrival. The
 // reader's own wheel, touch, key or pointer on this page keeps "Next lesson" from marking the new
 // lesson: it mounts at the previous page's scroll position, often with its end on screen, and only
-// then scrolls smoothly to the top.
+// then scrolls smoothly to the top. A jump the page makes itself ("Open in playground", "Back to
+// example" and other #anchors) takes that back: what comes on screen after it is not the reader's.
 const button = useTemplateRef<HTMLButtonElement>('button')
 const onScreen = shallowRef(false)
 const scrolledByReader = shallowRef(false)
@@ -32,11 +34,21 @@ const onReader = () => {
   if (mounted.value) scrolledByReader.value = true
 }
 useEventListener(['wheel', 'touchmove', 'keydown', 'pointerdown'], onReader, { passive: true })
+const onJump = () => {
+  scrolledByReader.value = false
+}
+useEventListener('hashchange', onJump)
+watch(usePlaygroundBridge().request, onJump)
+const { start, stop } = useTimeoutFn(
+  () => {
+    if (window.scrollY > 0 && !unmarkedByHand && !read.value) setRead(props.slug, true)
+  },
+  1000,
+  { immediate: false },
+)
 watch(
   () => onScreen.value && scrolledByReader.value,
-  (reached) => {
-    if (reached && window.scrollY > 0 && !unmarkedByHand && !read.value) setRead(props.slug, true)
-  },
+  (reached) => (reached ? start() : stop()),
 )
 </script>
 
