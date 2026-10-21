@@ -74,22 +74,22 @@ const pipeline = pipe(
 const resultMsg = pipeline (dataUser)
 
 console.log(resultMsg) // the product can be purchased`,
-        en: `// Программа, которая берет деньги
-// пользователя и сравнивает с ценой товара
-// сообщает хватает ли ему денег на покупку товара
+        en: `// A program that takes the user's money,
+// compares it with the product price
+// and reports whether the user can afford the product
 // ===============================
 // pipe :: ((a -> b), (b -> c), ..., (y -> z)) -> a -> z
 const pipe = (...fns) => (data) =>
                               fns
                                 .reduce((init, fn) => fn(init), data)
 
-// пользователь тестовый с 10 000$
+// a test user with $10,000
 const dataUser = {
   name: 'John',
   money: 10000,
 }
 
-// товар с ценой 8 000$
+// a product priced at $8,000
 const product = {
   name: 'car',
   model: 'toyota',
@@ -103,13 +103,13 @@ const prop = (prop) => (data) => data[prop]
 const lte = (a) => (b) => a <= b
 
 const pipeline = pipe(
-  prop ('money'), // получаем деньги пользователя
-  lte (prop ('price') (product)), // проверяем, что цена товара не больше денег пользователя
+  prop ('money'), // get the user's money
+  lte (prop ('price') (product)), // check that the product price is not greater than the user's money
   (success) => success ? 'the product can be purchased' : "you don't have enough money"
-  // сообщаем может ли купить товар или не хватает денег
+  // report whether the user can buy the product or lacks the money
 )
 
-// запускаем композицию
+// run the composition
 const resultMsg = pipeline (dataUser)
 
 console.log(resultMsg) // the product can be purchased`,
@@ -170,40 +170,40 @@ pipe(
   (success) => success ? 'the product can be purchased' : "you don't have enough money",
   logger, // 'the product can be purchased'
 ) (dataUser)`,
-        en: `// Утилита которая вызовет функцию в аргументе
-// и прокинет аргумент дальше по композиции
+        en: `// A utility that calls the function it was given
+// and passes the argument further down the composition
 // ===============================
 // tapD :: (a → *) → a → a
 const tapD = (fn) => (arg) => {
 
-  // делаем проверку
-  // действительно ли первый аргумент функция
+  // check that the first argument
+  // really is a function
   if (typeof fn === 'function') {
-    // вызываем функцию с аргументом
+    // call the function with the argument
     fn (arg)
   }
 
-  // не забываем дальше прокинуть аргумент
-  // для вызова в композиции функций
+  // don't forget to pass the argument on
+  // to the next call in the composition
   return arg
 }
 
-// можно сократить в одну строку
+// it can be shortened to one line
 // tap :: (a → *) → a → a
 const tap = (fn) => (arg) => (fn (arg), arg)
 
-// а теперь давайте подготовим утилиту
-// для логирования данных
-// после каждого вызова в композиции
+// now let's prepare a utility
+// that logs the data
+// after each call in the composition
 
-// стандартный вывод в консоль
+// standard console output
 const log = console.log
 
-// создаем логгер
+// create the logger
 const logger = tap (log)
 
-// вводим логгер в цепочку вызовов функций
-// сразу запустим цепочку
+// put the logger into the chain of function calls
+// and run the chain right away
 pipe(
   prop ('money'),
   logger, // 10000
