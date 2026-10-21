@@ -24,15 +24,15 @@ const changeAge = () => user.age = 30
 changeAge()
 console.log(user) // { name: 'John', age: 30 }
 // ===============================`,
-        en: `// НЕчистая функция
+        en: `// An IMpure function
 // ===============================
 let user = { name: 'John', age: 25 }
 
 const changeAge = () => user.age = 30
 
-// мы мутируем внешнюю переменную и создаем сайд эффекты
-// программа будет вести себя непредсказуемо, так как с этой
-// переменной могут работать несколько функций, и отловить ошибку будет сложнее
+// we mutate an outer variable and create side effects
+// the program will behave unpredictably, since several functions
+// may work with this variable, and a bug will be harder to track down
 changeAge()
 console.log(user) // { name: 'John', age: 30 }
 // ===============================`,
@@ -82,35 +82,35 @@ john.changeAge(30)
 console.log(john.getUser()) // { name: 'John', age: 30 } изменение видно снаружи
 console.log(before) // { name: 'John', age: 25 } прежний объект не изменился
 // ===============================`,
-        en: `// Такой код допустим, если мы создаем независимые модули с собственным замыканием
+        en: `// Code like this is acceptable if we create independent modules with their own closure
 // ===============================
 // useChangeUser :: Object -> Object
 const useChangeUser = (user) => {
 
-  let userBase = structuredClone(user) // обязательно клонируем
+  let userBase = structuredClone(user) // be sure to clone
 
   const changeAge = (newAge) => userBase.age = newAge
 
-  // для работы снаружи с данными
+  // to work with the data from outside
   return {
     userBase,
     changeAge
   }
 }
 
-// Но даже в этом случае лучше делать так
+// But even in this case it is better to do this
 // useImmutableUser :: Object -> Object
 const useImmutableUser = (user) => {
 
-  let userBase = structuredClone(user) // обязательно клонируем
+  let userBase = structuredClone(user) // be sure to clone
 
   const changeAge = (newAge) => userBase = ({
-    ...userBase, // или structuredClone(userBase) или JSON.parse(JSON.stringify(userBase))
+    ...userBase, // or structuredClone(userBase) or JSON.parse(JSON.stringify(userBase))
     age: newAge
   })
 
-  // для работы снаружи с данными
-  // getUser каждый раз отдает актуальный объект: changeAge заменяет его новым
+  // to work with the data from outside
+  // getUser always returns the current object: changeAge replaces it with a new one
   return {
     getUser: () => userBase,
     changeAge
@@ -120,8 +120,8 @@ const useImmutableUser = (user) => {
 const john = useImmutableUser({ name: 'John', age: 25 })
 const before = john.getUser()
 john.changeAge(30)
-console.log(john.getUser()) // { name: 'John', age: 30 } изменение видно снаружи
-console.log(before) // { name: 'John', age: 25 } прежний объект не изменился
+console.log(john.getUser()) // { name: 'John', age: 30 } the change is visible from outside
+console.log(before) // { name: 'John', age: 25 } the previous object has not changed
 // ===============================`,
       },
     },
@@ -154,31 +154,31 @@ const changedUser = changeAgeCurried (30) (user)
 console.log(user) // { name: John, age: 25 } сохранил первоначальное состояние
 console.log(changedUser) // { name: John, age: 30 } получили нового пользователя без сайд эффектов
 // ===============================`,
-        en: `// А теперь давайте поправим пример выше
+        en: `// Now let's fix the example above
 // ===============================
 let user = { name: 'John', age: 25 }
 
-// Чистая функция
+// A pure function
 // changeAge :: (Number, Object) -> Object
 const changeAge = (newAge, user) => ({
   ...user,
   age: newAge
 })
 
-//  улучшим
-// или если требуется глубокое клонирование и каррирование
+//  let's improve it
+// in case we need deep cloning and currying
 
 // changeAgeCurried :: Number -> Object -> Object
 const changeAgeCurried = (newAge) => (user) => ({
-  ...structuredClone(user), // или JSON.parse(JSON.stringify(user))
+  ...structuredClone(user), // or JSON.parse(JSON.stringify(user))
   age: newAge
 })
 
-// тут мы проверим все
+// let's check everything here
 const changedUser = changeAgeCurried (30) (user)
 
-console.log(user) // { name: John, age: 25 } сохранил первоначальное состояние
-console.log(changedUser) // { name: John, age: 30 } получили нового пользователя без сайд эффектов
+console.log(user) // { name: John, age: 25 } kept its original state
+console.log(changedUser) // { name: John, age: 30 } we got a new user without side effects
 // ===============================`,
       },
     },
