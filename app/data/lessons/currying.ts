@@ -180,7 +180,7 @@ const { pipe, curry } = R
 
 // данные с которыми будем работать
 // список пользователей
-// fetchAllUsers :: * -> Promise a
+// fetchAllUsers :: () -> Promise [Object]
 const fetchAllUsers = () => new Promise(resolve => resolve([
   { name: 'John', status: 'online', age: 28 },
   { name: 'Angel', status: 'online', age: 35 },
@@ -267,7 +267,7 @@ const { pipe, curry } = R
 
 // the data we will work with:
 // a list of users
-// fetchAllUsers :: * -> Promise a
+// fetchAllUsers :: () -> Promise [Object]
 const fetchAllUsers = () => new Promise(resolve => resolve([
   { name: 'John', status: 'online', age: 28 },
   { name: 'Angel', status: 'online', age: 35 },

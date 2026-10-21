@@ -30,7 +30,7 @@ const compose = (f3, f2, f1) => (...args) => f3(f2(f1(...args)))
 // 2. Их имена
 // 3. Вывести список имён в лог
 
-// fetchAllUsers :: * -> Promise a
+// fetchAllUsers :: () -> Promise [Object]
 const fetchAllUsers = () => new Promise(resolve => resolve([
   {
     name: 'John',
@@ -80,7 +80,7 @@ const compose = (f3, f2, f1) => (...args) => f3(f2(f1(...args)))
 // 2. Take their names
 // 3. Log the list of names
 
-// fetchAllUsers :: * -> Promise a
+// fetchAllUsers :: () -> Promise [Object]
 const fetchAllUsers = () => new Promise(resolve => resolve([
   {
     name: 'John',

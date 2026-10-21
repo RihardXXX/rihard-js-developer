@@ -32,7 +32,7 @@ const lesson: Lesson = {
 // в своем проекте: import S from 'sanctuary'
 const { pipe, prop, equals, filter, head, gt, map, fromMaybe } = S
 
-// fetchAllUsers :: * -> Promise a
+// fetchAllUsers :: () -> Promise [Object]
 const fetchAllUsers = () => new Promise(resolve => resolve([
   {
     name: 'John',
@@ -108,7 +108,7 @@ fetchAllUsers()
 // in your own project: import S from 'sanctuary'
 const { pipe, prop, equals, filter, head, gt, map, fromMaybe } = S
 
-// fetchAllUsers :: * -> Promise a
+// fetchAllUsers :: () -> Promise [Object]
 const fetchAllUsers = () => new Promise(resolve => resolve([
   {
     name: 'John',

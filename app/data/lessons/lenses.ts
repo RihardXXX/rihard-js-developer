@@ -25,7 +25,7 @@ const lesson: Lesson = {
     {
       type: 'code',
       code: {
-        ru: `// Lens s a = Functor f => (a → f a) → s → f s
+        ru: `// Lens s a = Functor f => (a -> f a) -> s -> f s
 // ===============================
 // создаем линзу
 // путь к данным
@@ -54,7 +54,7 @@ const resultOver = R.over(xHeadYLens, R.negate, data);
 console.log(resultView) // 2
 console.log(resultSet) // {x: [{y: 1, z: 3}, {y: 4, z: 5}]}
 console.log(resultOver) // {x: [{y: -2, z: 3}, {y: 4, z: 5}]}`,
-        en: `// Lens s a = Functor f => (a → f a) → s → f s
+        en: `// Lens s a = Functor f => (a -> f a) -> s -> f s
 // ===============================
 // create the lens
 // the path to the data
@@ -101,7 +101,7 @@ console.log(resultOver) // {x: [{y: -2, z: 3}, {y: 4, z: 5}]}`,
         ru: `// упрощённая линза: пара функций getter и setter,
 // замкнутых на путь к данным
 // Lens s a = { getter :: s -> a, setter :: (a | (a -> a)) -> s -> s }
-// в Ramda линза закодирована иначе: Functor f => (a → f a) → s → f s
+// в Ramda линза закодирована иначе: Functor f => (a -> f a) -> s -> f s
 // ===============================
 // создаем линзу
 // lens :: [String | Number] -> Lens s a
@@ -229,7 +229,7 @@ console.log(resultOver) // {x: [{y: 5, z: 3}, {y: 4, z: 5}]}`,
         en: `// a simplified lens: a pair of getter and setter functions
 // closed over the path to the data
 // Lens s a = { getter :: s -> a, setter :: (a | (a -> a)) -> s -> s }
-// in Ramda a lens is encoded differently: Functor f => (a → f a) → s → f s
+// in Ramda a lens is encoded differently: Functor f => (a -> f a) -> s -> f s
 // ===============================
 // create the lens
 // lens :: [String | Number] -> Lens s a

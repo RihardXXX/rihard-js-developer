@@ -65,7 +65,7 @@ const mapI = (fn) => (arr) => {
 
 // ==== реализация императивная ====
 // с индексом итерации и контекстом
-// mapIq :: (a -> b) -> [a] -> [b]
+// mapIq :: ((a, Number, [a]) -> b) -> [a] -> [b]
 const mapIq = (fn) => (arr) => {
   let result = []
 
@@ -159,7 +159,7 @@ const mapI = (fn) => (arr) => {
 
 // ==== imperative implementation ====
 // with the iteration index and context
-// mapIq :: (a -> b) -> [a] -> [b]
+// mapIq :: ((a, Number, [a]) -> b) -> [a] -> [b]
 const mapIq = (fn) => (arr) => {
   let result = []
 
@@ -282,7 +282,7 @@ const filterI = (fn) => (arr) => {
 
 // ==== реализация императивная ====
 // с индексом итерации и контекстом
-// filterIq :: (a -> Boolean) -> [a] -> [a]
+// filterIq :: ((a, Number, [a]) -> Boolean) -> [a] -> [a]
 const filterIq = (fn) => (arr) => {
   let result = []
 
@@ -392,7 +392,7 @@ const filterI = (fn) => (arr) => {
 
 // ==== imperative implementation ====
 // with the iteration index and context
-// filterIq :: (a -> Boolean) -> [a] -> [a]
+// filterIq :: ((a, Number, [a]) -> Boolean) -> [a] -> [a]
 const filterIq = (fn) => (arr) => {
   let result = []
 
