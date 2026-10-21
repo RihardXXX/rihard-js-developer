@@ -17,6 +17,7 @@ import partialApplication from './lessons/partial-application'
 import pointFree from './lessons/point-free'
 import recursion from './lessons/recursion'
 import performance from './lessons/performance'
+import memoization from './lessons/memoization'
 import neuralNetworks from './lessons/neural-networks'
 import functionMapFilterReduce from './lessons/function-map-filter-reduce'
 import higherOrderFunctions from './lessons/first-class-and-higher-order-functions'
@@ -43,6 +44,7 @@ export const lessons: Lesson[] = [
   recursion,
   functionMapFilterReduce,
   performance,
+  memoization,
   lenses,
   sideEffects,
   categoryTheory,
