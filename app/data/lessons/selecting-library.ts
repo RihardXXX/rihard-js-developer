@@ -6,6 +6,10 @@ const lesson: Lesson = {
     ru: "Vanilla JS, Lodash, Ramda, Sanctuary -> что выбрать",
     en: "Vanilla JS, Lodash, Ramda, Sanctuary -> which one to choose",
   },
+  goal: {
+    ru: "Научиться выбирать между Vanilla JS, Lodash, Ramda и Sanctuary по критериям проекта и команды — бюджету, этапу, команде, качеству, производительности и парадигме, — а не по вкусу и моде.",
+    en: "Learn to choose between Vanilla JS, Lodash, Ramda and Sanctuary by the criteria of the project and the team (budget, stage, team, quality, performance and paradigm) rather than by taste or fashion.",
+  },
   blocks: [
     {
       type: 'text',
@@ -288,6 +292,276 @@ const lesson: Lesson = {
           { ru: "Академичное ФП", en: "Academic FP" },
         ],
       ],
+    },
+  ],
+  summary: [
+    {
+      ru: "Выбирать библиотеку по принципам «мне нравится», «это модно» и «я главный, я так хочу» — непрофессиональный подход.",
+      en: "Choosing a library because \"I like it\", \"it's trendy\" or \"I'm in charge and that's what I want\" is not a professional approach.",
+    },
+    {
+      ru: "Критерии выбора: бюджет, этап проекта, команда и онбординг новых разработчиков, качество продукта, производительность и парадигма функционального программирования.",
+      en: "The criteria are the budget, the project stage, the team and the onboarding of new developers, product quality, performance and the functional programming paradigm.",
+    },
+    {
+      ru: "Производительность — не самый важный фактор: просадку чаще даёт ошибка в логике приложения, а не библиотека.",
+      en: "Performance is not the most important factor: a slowdown more often comes from a flaw in the application's logic than from a library.",
+    },
+    {
+      ru: "Lodash не совсем функциональна: есть проблемы с иммутабельностью, а функции принимают сначала данные и только потом функцию, что мешает композиции. Эти проблемы снимает модуль lodash/fp: в нём функции каррированы, не мутируют данные и принимают их последним аргументом.",
+      en: "Lodash is not entirely functional: there are problems with immutability, and its functions take the data first and only then the function, which gets in the way of composition. The lodash/fp module removes these problems: its functions are curried, do not mutate the data and take it as the last argument.",
+    },
+    {
+      ru: "По приверженности к функциональному программированию варианты выстраиваются так: Vanilla JS (присутствует) -> Lodash (не полноценное) -> Ramda (полноценное) -> Sanctuary (полноценное и строгое).",
+      en: "By commitment to functional programming the options line up like this: Vanilla JS (present) -> Lodash (not full-fledged) -> Ramda (full-fledged) -> Sanctuary (full-fledged and strict).",
+    },
+  ],
+  exercises: [
+    {
+      task: {
+        ru: "Из списка заказов получите строку с названиями оплаченных заказов дороже 100 — через запятую, в алфавитном порядке. Решите задачу трижды: на Vanilla JS методами массива, на Ramda (R.pipe, R.filter, R.map и другие) и на Sanctuary (S.pipe со списком функций, S.filter, S.map, S.prop, S.sort, S.joinWith). Сравните, как в каждом варианте передаются данные и как собирается композиция.",
+        en: "From the list of orders, get a string with the titles of the paid orders over 100, comma-separated and in alphabetical order. Solve it three times: in Vanilla JS with array methods, in Ramda (R.pipe, R.filter, R.map and others) and in Sanctuary (S.pipe with a list of functions, S.filter, S.map, S.prop, S.sort, S.joinWith). Compare how each version passes the data along and how it builds the composition.",
+      },
+      starter: {
+        ru: `const orders = [
+  { title: 'keyboard', total: 120, paid: true },
+  { title: 'mouse', total: 40, paid: true },
+  { title: 'monitor', total: 300, paid: false },
+  { title: 'laptop', total: 900, paid: true },
+  { title: 'cable', total: 15, paid: false },
+]
+
+// ваш код: withVanilla, withRamda и withSanctuary :: [Object] -> String
+
+console.log(\`Vanilla JS: \${withVanilla(orders)}\`)
+console.log(\`Ramda: \${withRamda(orders)}\`)
+console.log(\`Sanctuary: \${withSanctuary(orders)}\`)`,
+        en: `const orders = [
+  { title: 'keyboard', total: 120, paid: true },
+  { title: 'mouse', total: 40, paid: true },
+  { title: 'monitor', total: 300, paid: false },
+  { title: 'laptop', total: 900, paid: true },
+  { title: 'cable', total: 15, paid: false },
+]
+
+// your code: withVanilla, withRamda and withSanctuary :: [Object] -> String
+
+console.log(\`Vanilla JS: \${withVanilla(orders)}\`)
+console.log(\`Ramda: \${withRamda(orders)}\`)
+console.log(\`Sanctuary: \${withSanctuary(orders)}\`)`,
+      },
+      solution: {
+        ru: `const orders = [
+  { title: 'keyboard', total: 120, paid: true },
+  { title: 'mouse', total: 40, paid: true },
+  { title: 'monitor', total: 300, paid: false },
+  { title: 'laptop', total: 900, paid: true },
+  { title: 'cable', total: 15, paid: false },
+]
+
+// Vanilla JS: цепочка методов, данные — сам массив
+// withVanilla :: [Object] -> String
+const withVanilla = (list) =>
+  list
+    .filter((order) => order.paid && order.total > 100)
+    .map((order) => order.title)
+    .sort()
+    .join(', ')
+
+// Ramda: функции каррированы и принимают данные последним аргументом
+// withRamda :: [Object] -> String
+const withRamda = R.pipe(
+  R.filter(R.prop('paid')),
+  R.filter(R.pipe(R.prop('total'), R.lt(100))), // R.lt(100)(total) — это 100 < total
+  R.map(R.prop('title')),
+  R.sortBy(R.identity),
+  R.join(', '),
+)
+
+// Sanctuary: S.pipe принимает массив функций, данные тоже идут последним аргументом
+// withSanctuary :: [Object] -> String
+const withSanctuary = S.pipe([
+  S.filter(S.prop('paid')),
+  S.filter(S.pipe([S.prop('total'), S.gt(100)])), // S.gt(100)(total) — это total > 100
+  S.map(S.prop('title')),
+  S.sort,
+  S.joinWith(', '),
+])
+
+console.log(\`Vanilla JS: \${withVanilla(orders)}\`)
+console.log(\`Ramda: \${withRamda(orders)}\`)
+console.log(\`Sanctuary: \${withSanctuary(orders)}\`)`,
+        en: `const orders = [
+  { title: 'keyboard', total: 120, paid: true },
+  { title: 'mouse', total: 40, paid: true },
+  { title: 'monitor', total: 300, paid: false },
+  { title: 'laptop', total: 900, paid: true },
+  { title: 'cable', total: 15, paid: false },
+]
+
+// Vanilla JS: a chain of methods, the data is the array itself
+// withVanilla :: [Object] -> String
+const withVanilla = (list) =>
+  list
+    .filter((order) => order.paid && order.total > 100)
+    .map((order) => order.title)
+    .sort()
+    .join(', ')
+
+// Ramda: functions are curried and take the data as the last argument
+// withRamda :: [Object] -> String
+const withRamda = R.pipe(
+  R.filter(R.prop('paid')),
+  R.filter(R.pipe(R.prop('total'), R.lt(100))), // R.lt(100)(total) means 100 < total
+  R.map(R.prop('title')),
+  R.sortBy(R.identity),
+  R.join(', '),
+)
+
+// Sanctuary: S.pipe takes an array of functions, the data also comes last
+// withSanctuary :: [Object] -> String
+const withSanctuary = S.pipe([
+  S.filter(S.prop('paid')),
+  S.filter(S.pipe([S.prop('total'), S.gt(100)])), // S.gt(100)(total) means total > 100
+  S.map(S.prop('title')),
+  S.sort,
+  S.joinWith(', '),
+])
+
+console.log(\`Vanilla JS: \${withVanilla(orders)}\`)
+console.log(\`Ramda: \${withRamda(orders)}\`)
+console.log(\`Sanctuary: \${withSanctuary(orders)}\`)`,
+      },
+      expected: {
+        ru: "Vanilla JS: keyboard, laptop\nRamda: keyboard, laptop\nSanctuary: keyboard, laptop",
+        en: "Vanilla JS: keyboard, laptop\nRamda: keyboard, laptop\nSanctuary: keyboard, laptop",
+      },
+    },
+    {
+      task: {
+        ru: "Найдите название первого оплаченного заказа дороже заданной суммы, а если такого нет, верните «нет». Сделайте это на Ramda через R.find и на Sanctuary через S.find, S.map и S.fromMaybe, проверьте на суммах 500 и 1000. Затем выведите, что возвращают сами R.find и S.find, когда подходящего заказа нет. Чем ответ Sanctuary надёжнее?",
+        en: "Find the title of the first paid order over a given amount, and if there is none, return \"none\". Do it in Ramda with R.find and in Sanctuary with S.find, S.map and S.fromMaybe, and check it with the amounts 500 and 1000. Then print what R.find and S.find themselves return when there is no matching order. Why is the Sanctuary answer more reliable?",
+      },
+      starter: {
+        ru: `const orders = [
+  { title: 'keyboard', total: 120, paid: true },
+  { title: 'mouse', total: 40, paid: true },
+  { title: 'monitor', total: 300, paid: false },
+  { title: 'laptop', total: 900, paid: true },
+  { title: 'cable', total: 15, paid: false },
+]
+
+// isPaidOver :: Number -> Object -> Boolean
+const isPaidOver = (limit) => (order) => order.paid && order.total > limit
+
+// ваш код: titleWithRamda и titleWithSanctuary :: Number -> [Object] -> String
+
+console.log(\`Ramda, 500: \${titleWithRamda(500)(orders)}\`)
+console.log(\`Ramda, 1000: \${titleWithRamda(1000)(orders)}\`)
+console.log(\`Sanctuary, 500: \${titleWithSanctuary(500)(orders)}\`)
+console.log(\`Sanctuary, 1000: \${titleWithSanctuary(1000)(orders)}\`)`,
+        en: `const orders = [
+  { title: 'keyboard', total: 120, paid: true },
+  { title: 'mouse', total: 40, paid: true },
+  { title: 'monitor', total: 300, paid: false },
+  { title: 'laptop', total: 900, paid: true },
+  { title: 'cable', total: 15, paid: false },
+]
+
+// isPaidOver :: Number -> Object -> Boolean
+const isPaidOver = (limit) => (order) => order.paid && order.total > limit
+
+// your code: titleWithRamda and titleWithSanctuary :: Number -> [Object] -> String
+
+console.log(\`Ramda, 500: \${titleWithRamda(500)(orders)}\`)
+console.log(\`Ramda, 1000: \${titleWithRamda(1000)(orders)}\`)
+console.log(\`Sanctuary, 500: \${titleWithSanctuary(500)(orders)}\`)
+console.log(\`Sanctuary, 1000: \${titleWithSanctuary(1000)(orders)}\`)`,
+      },
+      solution: {
+        ru: `const orders = [
+  { title: 'keyboard', total: 120, paid: true },
+  { title: 'mouse', total: 40, paid: true },
+  { title: 'monitor', total: 300, paid: false },
+  { title: 'laptop', total: 900, paid: true },
+  { title: 'cable', total: 15, paid: false },
+]
+
+// isPaidOver :: Number -> Object -> Boolean
+const isPaidOver = (limit) => (order) => order.paid && order.total > limit
+
+// Ramda: R.find возвращает заказ или undefined, пустоту проверяем сами
+// titleWithRamda :: Number -> [Object] -> String
+const titleWithRamda = (limit) => R.pipe(
+  R.find(isPaidOver(limit)),
+  (order) => (order === undefined ? 'нет' : order.title),
+)
+
+// Sanctuary: S.find возвращает Maybe — Just (заказ) или Nothing,
+// S.map и S.fromMaybe обрабатывают оба случая
+// titleWithSanctuary :: Number -> [Object] -> String
+const titleWithSanctuary = (limit) => S.pipe([
+  S.find(isPaidOver(limit)),
+  S.map(S.prop('title')),
+  S.fromMaybe('нет'),
+])
+
+console.log(\`Ramda, 500: \${titleWithRamda(500)(orders)}\`)
+console.log(\`Ramda, 1000: \${titleWithRamda(1000)(orders)}\`)
+console.log(\`Sanctuary, 500: \${titleWithSanctuary(500)(orders)}\`)
+console.log(\`Sanctuary, 1000: \${titleWithSanctuary(1000)(orders)}\`)
+
+// заказа дороже 1000 нет: Ramda возвращает undefined, Sanctuary — Nothing
+console.log(R.find(isPaidOver(1000))(orders))
+console.log(S.find(isPaidOver(1000))(orders))
+
+// undefined легко пропустить: забытая проверка уронит код дальше,
+// например на чтении order.title. Maybe прямо говорит, что результата
+// может не быть, и S.map и S.fromMaybe обрабатывают оба случая`,
+        en: `const orders = [
+  { title: 'keyboard', total: 120, paid: true },
+  { title: 'mouse', total: 40, paid: true },
+  { title: 'monitor', total: 300, paid: false },
+  { title: 'laptop', total: 900, paid: true },
+  { title: 'cable', total: 15, paid: false },
+]
+
+// isPaidOver :: Number -> Object -> Boolean
+const isPaidOver = (limit) => (order) => order.paid && order.total > limit
+
+// Ramda: R.find returns the order or undefined, we check for emptiness ourselves
+// titleWithRamda :: Number -> [Object] -> String
+const titleWithRamda = (limit) => R.pipe(
+  R.find(isPaidOver(limit)),
+  (order) => (order === undefined ? 'none' : order.title),
+)
+
+// Sanctuary: S.find returns a Maybe, either Just (order) or Nothing,
+// and S.map and S.fromMaybe handle both cases
+// titleWithSanctuary :: Number -> [Object] -> String
+const titleWithSanctuary = (limit) => S.pipe([
+  S.find(isPaidOver(limit)),
+  S.map(S.prop('title')),
+  S.fromMaybe('none'),
+])
+
+console.log(\`Ramda, 500: \${titleWithRamda(500)(orders)}\`)
+console.log(\`Ramda, 1000: \${titleWithRamda(1000)(orders)}\`)
+console.log(\`Sanctuary, 500: \${titleWithSanctuary(500)(orders)}\`)
+console.log(\`Sanctuary, 1000: \${titleWithSanctuary(1000)(orders)}\`)
+
+// there is no order over 1000: Ramda returns undefined, Sanctuary returns Nothing
+console.log(R.find(isPaidOver(1000))(orders))
+console.log(S.find(isPaidOver(1000))(orders))
+
+// undefined is easy to miss: a forgotten check will crash the code later,
+// for example when reading order.title. A Maybe states outright that there
+// may be no result, and S.map and S.fromMaybe handle both cases`,
+      },
+      expected: {
+        ru: "Ramda, 500: laptop\nRamda, 1000: нет\nSanctuary, 500: laptop\nSanctuary, 1000: нет\nundefined\nNothing",
+        en: "Ramda, 500: laptop\nRamda, 1000: none\nSanctuary, 500: laptop\nSanctuary, 1000: none\nundefined\nNothing",
+      },
     },
   ],
 }
