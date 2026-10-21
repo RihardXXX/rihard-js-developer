@@ -54,9 +54,9 @@ const pipeline = compose(
 pipeline(5) // ['5 X'] результат
 
 // Что же тут произошло
-// входной аргумент 5 — это "a", тип Number
-// конкатенировали букву X и получили '5 X' — это "b", тип String
-// добавили в массив и получили ['5 X'] — это "c", тип Array
+// входной аргумент 5 — значение типа "a" (Number)
+// конкатенировали букву X и получили '5 X' — значение типа "b" (String)
+// добавили в массив и получили ['5 X'] — значение типа "c" (Array)
 // concatX :: Number -> String — морфизм f :: a -> b
 // toArray :: String -> [String] — морфизм g :: b -> c
 // pipeline = compose(toArray, concatX) :: Number -> [String] — композиция g . f :: a -> c`,
@@ -89,9 +89,9 @@ const pipeline = compose(
 pipeline(5) // ['5 X'] is the result
 
 // So what happened here
-// the input argument 5 is "a", of type Number
-// we concatenated the letter X and got '5 X', which is "b", of type String
-// we put it into an array and got ['5 X'], which is "c", of type Array
+// the input argument 5 is a value of type "a" (Number)
+// we concatenated the letter X and got '5 X', a value of type "b" (String)
+// we put it into an array and got ['5 X'], a value of type "c" (Array)
 // concatX :: Number -> String is the morphism f :: a -> b
 // toArray :: String -> [String] is the morphism g :: b -> c
 // pipeline = compose(toArray, concatX) :: Number -> [String] is the composition g . f :: a -> c`,

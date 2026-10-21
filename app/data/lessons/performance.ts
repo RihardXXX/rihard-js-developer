@@ -6,8 +6,8 @@ const lesson: Lesson = {
   blocks: [
     {
       type: 'text',
-      ru: "Следует отметить, что в типичных случаях императивный код работает немного быстрее, однако разница обычно незначительна. Иногда функциональный код может показывать даже те же или лучшие результаты благодаря оптимизациям движка JavaScript. Если на одной чаше весов удобство сопровождения кода, надёжность кода, правильная архитектура, то безусловно лучше выбирать функциональный код.",
-      en: "It is worth noting that in typical cases imperative code runs slightly faster, but the difference is usually negligible. Sometimes functional code can even show the same or better results thanks to optimizations in the JavaScript engine. If maintainability, reliability, and a sound architecture are on one side of the scales, then functional code is undoubtedly the better choice.",
+      ru: "Следует отметить, что в микробенчмарках императивный цикл бывает в разы быстрее, но в абсолютных числах разница обычно незначительна. Иногда функциональный код может показывать даже те же или лучшие результаты благодаря оптимизациям движка JavaScript. Если на одной чаше весов удобство сопровождения кода, надёжность кода, правильная архитектура, то безусловно лучше выбирать функциональный код.",
+      en: "It is worth noting that in microbenchmarks an imperative loop can be several times faster, but in absolute terms the difference is usually negligible. Sometimes functional code can even show the same or better results thanks to optimizations in the JavaScript engine. If maintainability, reliability, and a sound architecture are on one side of the scales, then functional code is undoubtedly the better choice.",
     },
     {
       type: 'text',

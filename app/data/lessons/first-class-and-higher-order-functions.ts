@@ -68,8 +68,8 @@ console.log (result) // [2, 4, 6, 8]`,
     },
     {
       type: 'text',
-      ru: "В React функциональный компонент — это функция, поэтому компонент высшего порядка (HOC) — это функция, которая принимает компонент и возвращает новый компонент. Во Vue компонент обычно описывается объектом опций, а не функцией (обычной функцией бывает только функциональный компонент), но идея та же: компоненты и слоты передаются как значения, а слоты в render-функциях — это функции, которые получают данные и возвращают виртуальные узлы (vnodes).",
-      en: "In React a function component is a function, so a higher-order component (HOC) is a function that takes a component and returns a new component. In Vue a component is usually described by an options object rather than a function (only a functional component is a plain function), but the idea is the same: components and slots are passed around as values, and in render functions slots are functions that receive data and return virtual nodes (vnodes).",
+      ru: "В React компонент — это значение (функция или класс), поэтому его можно передать в функцию: компонент высшего порядка (HOC) — это функция, которая принимает компонент и возвращает новый компонент. Во Vue компонент обычно описывается объектом опций, а не функцией (обычной функцией бывает только функциональный компонент), но идея та же: компоненты и слоты передаются как значения, а слоты в render-функциях — это функции, которые получают данные и возвращают виртуальные узлы (vnodes).",
+      en: "In React a component is a value (a function or a class), so it can be passed to a function: a higher-order component (HOC) is a function that takes a component and returns a new component. In Vue a component is usually described by an options object rather than a function (only a functional component is a plain function), but the idea is the same: components and slots are passed around as values, and in render functions slots are functions that receive data and return virtual nodes (vnodes).",
     },
     {
       type: 'code',
