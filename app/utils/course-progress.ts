@@ -38,6 +38,18 @@ export const parseProgress = (raw: string | null): CourseProgress => {
   return typeof value.last === 'string' ? { v: 1, read, last: value.last } : { v: 1, read }
 }
 
+// A JSON object with "v" other than 1 is another version's progress: this one reads it as no
+// progress and never writes over it. Garbage and broken values of version 1 may be overwritten.
+export const isOtherVersion = (raw: string | null): boolean => {
+  let value: unknown
+  try {
+    value = JSON.parse(raw ?? '')
+  } catch {
+    return false
+  }
+  return isRecord(value) && Object.hasOwn(value, 'v') && value.v !== 1
+}
+
 /** a copy with the lesson marked as read at `at`, or unmarked when `at` is null */
 export const withRead = (p: CourseProgress, slug: string, at: string | null): CourseProgress => ({
   ...p,

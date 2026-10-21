@@ -3,6 +3,7 @@ import assert from 'node:assert/strict'
 import {
   PROGRESS_KEY,
   emptyProgress,
+  isOtherVersion,
   parseProgress,
   readCount,
   resumeFrom,
@@ -78,6 +79,18 @@ test('parseProgress: slug "__proto__" не подменяет прототип',
   const { read } = parseProgress(`{"v":1,"read":{"__proto__":"${AT}","one":"${AT}"}}`)
   assert.equal(Object.getPrototypeOf(read), Object.prototype)
   assert.equal(read.one, AT)
+})
+
+test('isOtherVersion: объект JSON с v не 1 — чужая версия, поверх неё не пишем', () => {
+  for (const raw of ['{"v":2,"read":{"x":"2026-10-21T10:00:00.000Z"},"extra":1}', '{"v":"1","read":{}}', '{"v":0}', '{"v":null}']) {
+    assert.equal(isOtherVersion(raw), true, raw)
+  }
+})
+
+test('isOtherVersion: ключа нет, мусор и версия 1, даже битая, — писать можно', () => {
+  for (const raw of [null, '', 'not json', 'null', '42', '"course"', '[]', '{"read":{}}', '{"v":1,"read":{}}', '{"v":1,"read":null}']) {
+    assert.equal(isOtherVersion(raw), false, String(raw))
+  }
 })
 
 test('withRead: ставит отметку с датой, вход не меняется', () => {
