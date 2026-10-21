@@ -18,14 +18,18 @@ const lesson: Lesson = {
       en: "Currying can be used:",
     },
     {
-      type: 'text',
-      ru: "1. В композиции функций, когда функция в последовательности вызовов ожидает два и более аргумента.",
-      en: "1. In function composition, when a function in a chain of calls expects two or more arguments.",
-    },
-    {
-      type: 'text',
-      ru: "2. Когда мы хотим создавать специализированные функции на основе базовой функции, меняя значение аргумента в замыкании.",
-      en: "2. When we want to create specialized functions based on a base function by changing the value of an argument captured in a closure.",
+      type: 'list',
+      ordered: true,
+      items: [
+        {
+          ru: "В композиции функций, когда функция в последовательности вызовов ожидает два и более аргумента.",
+          en: "In function composition, when a function in a chain of calls expects two or more arguments.",
+        },
+        {
+          ru: "Когда мы хотим создавать специализированные функции на основе базовой функции, меняя значение аргумента в замыкании.",
+          en: "When we want to create specialized functions based on a base function by changing the value of an argument captured in a closure.",
+        },
+      ],
     },
     {
       type: 'code',
