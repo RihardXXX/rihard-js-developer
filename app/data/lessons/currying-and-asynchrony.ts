@@ -428,8 +428,8 @@ clickElement (btnWrapper) (pipe(
     },
     {
       type: 'text',
-      ru: "Признаюсь: запах плохого кода не пропал.",
-      en: "I'll admit it: the smell of bad code hasn't gone away.",
+      ru: "Признаюсь: запах плохого кода не пропал. Вдобавок эта версия потеряла проверки из первой: что клик был по кнопке пользователя и что у кнопки есть слаг. Поэтому клик мимо кнопки отправит запрос на /reviews/undefined, а ошибки здесь никак не обрабатываются. Оба недостатка исправим в следующей версии.",
+      en: "I'll admit it: the smell of bad code hasn't gone away. On top of that, this version lost the checks from the first one: that the click was on a user button and that the button has a slug. So a click outside a button sends a request to /reviews/undefined, and errors aren't handled here at all. We'll fix both shortcomings in the next version.",
     },
     {
       type: 'text',
@@ -440,7 +440,9 @@ clickElement (btnWrapper) (pipe(
       type: 'code',
       code: {
         ru: `//  А теперь возьмемся за дело
-// clickElement, btnWrapper, head, prop и textReview — из прошлого примера
+// clickElement, btnWrapper, head, prop и textReview скопируйте из прошлого примера;
+// BASE_URL, REVIEWS, REVIEW_INFO, getReviews и getReviewInfo объявлены здесь заново,
+// поэтому оба блока одним куском не запустить
 // перепишем нашу функцию получения данных
 // которая сама возвращает промис
 
@@ -505,7 +507,9 @@ clickElement (btnWrapper) (onUserButton ((slug) =>
     .catch ((error) => console.error('Не удалось получить отзыв:', error.message))
 ))`,
         en: `//  Now let's get down to business
-// clickElement, btnWrapper, head, prop and textReview come from the previous example
+// copy clickElement, btnWrapper, head, prop and textReview from the previous example;
+// BASE_URL, REVIEWS, REVIEW_INFO, getReviews and getReviewInfo are declared here again,
+// so the two blocks can't be run together as a single piece
 // let's rewrite our data-fetching function
 // so that it returns a promise itself
 
