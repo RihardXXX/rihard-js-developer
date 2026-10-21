@@ -11,10 +11,28 @@ export interface PlaygroundRunner {
   clear(): void
 }
 
+// Values JSON can't show: functions, and Sanctuary types (Maybe, Either, ...)
+// which print themselves via `@@show` as `Just (1)` / `Nothing`.
+const describe = (value: unknown): string | undefined => {
+  if (typeof value === 'function') {
+    return value.name ? `[Function: ${value.name}]` : '[Function (anonymous)]'
+  }
+  if (typeof value === 'object' && value !== null) {
+    const show = (value as { '@@show'?: () => unknown })['@@show']
+    if (typeof show === 'function') return String(show.call(value))
+  }
+  return undefined
+}
+
 export const formatValue = (item: unknown): string => {
   if (typeof item === 'string') return item
   try {
-    return JSON.stringify(item, null, 2)
+    // `?? String(item)`: JSON.stringify gives undefined for undefined and symbols.
+    return (
+      describe(item) ??
+      JSON.stringify(item, (_key, value: unknown) => describe(value) ?? value, 2) ??
+      String(item)
+    )
   } catch {
     return String(item)
   }
