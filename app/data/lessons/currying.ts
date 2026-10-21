@@ -6,6 +6,10 @@ const lesson: Lesson = {
     ru: "Каррирование",
     en: "Currying",
   },
+  goal: {
+    ru: "Понять, как каррированная функция откладывает вычисление до получения всех аргументов, и научиться каррировать функции вручную и через curry, чтобы встраивать их в композицию и создавать специализированные функции.",
+    en: "Understand how a curried function postpones evaluation until it has all of its arguments, and learn to curry functions by hand and with curry to use them in composition and build specialized functions.",
+  },
   blocks: [
     {
       type: 'text',
@@ -494,6 +498,202 @@ const and = (valueFirst) => (valueSecond) => valueFirst && valueSecond
 if (and (isOnlineUser) (isMarriedUser) ) {
   // do something here ...
 }`,
+      },
+    },
+  ],
+  summary: [
+    {
+      ru: "Каррированная функция вычисляется только при получении всех аргументов, а при частичном получении аргументов возвращает новую функцию.",
+      en: "A curried function is evaluated only once it has all of its arguments; given only some of them, it returns a new function.",
+    },
+    {
+      ru: "Каррирование используют в композиции функций, когда функция в последовательности вызовов ожидает два и более аргумента, и чтобы создавать специализированные функции на основе базовой.",
+      en: "Currying is used in function composition, when a function in a chain of calls expects two or more arguments, and to create specialized functions based on a base function.",
+    },
+    {
+      ru: "Любую функцию с фиксированным числом параметров можно каррировать автоматически и передавать ей аргументы любыми группами: меняется только группировка, порядок аргументов остаётся прежним.",
+      en: "Any function with a fixed number of parameters can be curried automatically and given its arguments in any grouping: only the grouping changes, the order of the arguments stays the same.",
+    },
+    {
+      ru: "Из базовой каррированной функции вызовами получают специализированные: из equalBy — equalByStatus, из него — isOnline. Это похоже на «наследование» в ООП.",
+      en: "Specialized functions are built from a base curried function through calls: equalByStatus from equalBy, then isOnline from equalByStatus. This is somewhat similar to \"inheritance\" in OOP.",
+    },
+  ],
+  exercises: [
+    {
+      task: {
+        ru: "Напишите вручную каррированную функцию formatLog :: String -> String -> String -> String: она принимает уровень, модуль и сообщение и возвращает строку вида [ERROR] auth: wrong password. Создайте из неё специализированные функции: logError и logInfo с зафиксированным уровнем, а из них — authError и cartInfo с зафиксированным модулем. Выведите через них сообщения из заготовки.",
+        en: "Write a curried function formatLog :: String -> String -> String -> String by hand: it takes a level, a module name and a message and returns a string like [ERROR] auth: wrong password. Build specialized functions from it: logError and logInfo with the level fixed, and from those, authError and cartInfo with the module fixed. Use them to print the messages from the starter.",
+      },
+      starter: {
+        ru: `// formatLog :: String -> String -> String -> String
+// ваш код
+
+console.log(authError('wrong password'))
+console.log(authError('token expired'))
+console.log(cartInfo('item added'))`,
+        en: `// formatLog :: String -> String -> String -> String
+// your code
+
+console.log(authError('wrong password'))
+console.log(authError('token expired'))
+console.log(cartInfo('item added'))`,
+      },
+      solution: {
+        ru: `// formatLog :: String -> String -> String -> String
+const formatLog = (level) => (moduleName) => (message) => \`[\${level}] \${moduleName}: \${message}\`
+
+// уровень сохранён в замыкании, функция ждёт модуль
+const logError = formatLog('ERROR')
+const logInfo = formatLog('INFO')
+
+// уровень и модуль сохранены, функция ждёт только сообщение
+const authError = logError('auth')
+const cartInfo = logInfo('cart')
+
+console.log(authError('wrong password'))
+console.log(authError('token expired'))
+console.log(cartInfo('item added'))`,
+        en: `// formatLog :: String -> String -> String -> String
+const formatLog = (level) => (moduleName) => (message) => \`[\${level}] \${moduleName}: \${message}\`
+
+// the level is kept in the closure, the function waits for the module
+const logError = formatLog('ERROR')
+const logInfo = formatLog('INFO')
+
+// the level and the module are kept, the function waits only for the message
+const authError = logError('auth')
+const cartInfo = logInfo('cart')
+
+console.log(authError('wrong password'))
+console.log(authError('token expired'))
+console.log(cartInfo('item added'))`,
+      },
+      expected: {
+        ru: "[ERROR] auth: wrong password\n[ERROR] auth: token expired\n[INFO] cart: item added",
+        en: "[ERROR] auth: wrong password\n[ERROR] auth: token expired\n[INFO] cart: item added",
+      },
+    },
+    {
+      task: {
+        ru: "Функция applyDiscount(percent, price) ожидает два аргумента, а map передаёт функции цены по одной. Каррируйте её через curry из Ramda, зафиксируйте скидку 10% и соберите через pipe функцию totalWithDiscount: она берёт цены позиций заказа, применяет к каждой скидку и складывает результат.",
+        en: "applyDiscount(percent, price) expects two arguments, while map hands the function one price at a time. Curry it with curry from Ramda, fix a 10% discount and use pipe to build totalWithDiscount: it takes the prices of the order items, applies the discount to each of them and adds them up.",
+      },
+      starter: {
+        ru: `// pipe и curry берём из Ramda
+const { pipe, curry } = R
+
+const order = [
+  { title: 'Book', price: 400 },
+  { title: 'Pen', price: 50 },
+  { title: 'Lamp', price: 1200 },
+]
+
+// applyDiscount :: (Number, Number) -> Number
+const applyDiscount = (percent, price) => price - (price * percent) / 100
+
+// map :: (a -> b) -> [a] -> [b]
+const map = (fn) => (arr) => arr.map(fn)
+// getByProp :: String -> a -> b
+const getByProp = (prop) => (obj) => obj[prop]
+// sum :: [Number] -> Number
+const sum = (arr) => arr.reduce((acc, n) => acc + n, 0)
+
+// ваш код
+
+console.log(totalWithDiscount(order))`,
+        en: `// pipe and curry come from Ramda
+const { pipe, curry } = R
+
+const order = [
+  { title: 'Book', price: 400 },
+  { title: 'Pen', price: 50 },
+  { title: 'Lamp', price: 1200 },
+]
+
+// applyDiscount :: (Number, Number) -> Number
+const applyDiscount = (percent, price) => price - (price * percent) / 100
+
+// map :: (a -> b) -> [a] -> [b]
+const map = (fn) => (arr) => arr.map(fn)
+// getByProp :: String -> a -> b
+const getByProp = (prop) => (obj) => obj[prop]
+// sum :: [Number] -> Number
+const sum = (arr) => arr.reduce((acc, n) => acc + n, 0)
+
+// your code
+
+console.log(totalWithDiscount(order))`,
+      },
+      solution: {
+        ru: `// pipe и curry берём из Ramda
+const { pipe, curry } = R
+
+const order = [
+  { title: 'Book', price: 400 },
+  { title: 'Pen', price: 50 },
+  { title: 'Lamp', price: 1200 },
+]
+
+// applyDiscount :: (Number, Number) -> Number
+const applyDiscount = (percent, price) => price - (price * percent) / 100
+
+// map :: (a -> b) -> [a] -> [b]
+const map = (fn) => (arr) => arr.map(fn)
+// getByProp :: String -> a -> b
+const getByProp = (prop) => (obj) => obj[prop]
+// sum :: [Number] -> Number
+const sum = (arr) => arr.reduce((acc, n) => acc + n, 0)
+
+// скидка 10% сохранена в замыкании, функция ждёт цену
+// discount10 :: Number -> Number
+const discount10 = curry(applyDiscount)(10)
+
+// totalWithDiscount :: [Object] -> Number
+const totalWithDiscount = pipe(
+  map(getByProp('price')), // цены позиций
+  map(discount10), // скидка на каждую цену
+  sum, // итог
+)
+
+// 360 + 45 + 1080
+console.log(totalWithDiscount(order))`,
+        en: `// pipe and curry come from Ramda
+const { pipe, curry } = R
+
+const order = [
+  { title: 'Book', price: 400 },
+  { title: 'Pen', price: 50 },
+  { title: 'Lamp', price: 1200 },
+]
+
+// applyDiscount :: (Number, Number) -> Number
+const applyDiscount = (percent, price) => price - (price * percent) / 100
+
+// map :: (a -> b) -> [a] -> [b]
+const map = (fn) => (arr) => arr.map(fn)
+// getByProp :: String -> a -> b
+const getByProp = (prop) => (obj) => obj[prop]
+// sum :: [Number] -> Number
+const sum = (arr) => arr.reduce((acc, n) => acc + n, 0)
+
+// the 10% discount is kept in the closure, the function waits for a price
+// discount10 :: Number -> Number
+const discount10 = curry(applyDiscount)(10)
+
+// totalWithDiscount :: [Object] -> Number
+const totalWithDiscount = pipe(
+  map(getByProp('price')), // item prices
+  map(discount10), // discount on each price
+  sum, // total
+)
+
+// 360 + 45 + 1080
+console.log(totalWithDiscount(order))`,
+      },
+      expected: {
+        ru: "1485",
+        en: "1485",
       },
     },
   ],
