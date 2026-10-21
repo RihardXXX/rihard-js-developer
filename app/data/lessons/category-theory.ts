@@ -19,18 +19,20 @@ const lesson: Lesson = {
     },
     {
       type: 'text',
-      ru: "Теория категорий в рамках программирования — это совокупность абстрактных объектов (любые типы данных Array, Object, Number, String ...) и их морфизмов (стрелок, их отношений, то есть функций), а также законов, по которым они работают (композиция и т. п.).",
-      en: "Category theory in the context of programming is a collection of abstract objects (any data types: Array, Object, Number, String, ...) and their morphisms (arrows, the relations between them — that is, functions), as well as the laws by which they operate (composition and so on).",
+      ru: "Категория в рамках программирования — это совокупность объектов (типы данных: Array, Object, Number, String ...) и морфизмов между ними (стрелок, то есть функций). Морфизмы f :: a -> b и g :: b -> c можно скомпоновать в g . f :: a -> c (читается «g после f»: сначала f, затем g). Для композиции выполняются два закона. Тождество: у каждого объекта есть тождественный морфизм id :: a -> a, и композиция с ним ничего не меняет (f . id = f, id . f = f). Ассоциативность: h . (g . f) = (h . g) . f, то есть неважно, как расставить скобки.",
+      en: "A category, in the context of programming, is a collection of objects (data types: Array, Object, Number, String, ...) and morphisms between them (arrows, that is, functions). Morphisms f :: a -> b and g :: b -> c can be composed into g . f :: a -> c (read as \"g after f\": first f, then g). Composition obeys two laws. Identity: every object has an identity morphism id :: a -> a, and composing with it changes nothing (f . id = f, id . f = f). Associativity: h . (g . f) = (h . g) . f, so it does not matter where the parentheses go.",
     },
     {
       type: 'code',
       code: {
         ru: `//  Пример
-// a -> b -> c
+// f :: a -> b
+// g :: b -> c
+// g . f :: a -> c
 
-// a, b, c // это объекты
-// -> // это их отношения и процессы над ними
-// a ... c // процесс композиции
+// a, b, c — это объекты (типы)
+// f, g — морфизмы (стрелки), то есть функции
+// g . f — композиция: сначала f, затем g
 
 // Практический пример
 
@@ -40,7 +42,7 @@ const concatX = num => \`\${num} X\`
 // toArray:: a -> [a]
 const toArray = word => [word]
 
-// compose :: (* -> *) -> (* -> *) -> * -> *
+// compose :: (b -> c, a -> b) -> a -> c
 const compose = (f2, f1) => (...args) => f2(f1(...args))
 
 const pipeline = compose(
@@ -52,18 +54,20 @@ const pipeline = compose(
 pipeline(5) // ['5 X'] результат
 
 // Что же тут произошло
-// мы входной аргумент 5 это "a" тип Number
-// конкатенировали букву X и получили '5 X' это "b" тип String
-// добавили в массив и получили ['5 X'] это "с" тип Array
-// и все это сделали законом композиции
-// 5 -> '5 X' -> ['5 X'] это абстрактные объекты (Number, String, Array) их отношение объектов(вызовы функций -> ) по законом композиции
-// a -> b -> c`,
+// входной аргумент 5 — это "a", тип Number
+// конкатенировали букву X и получили '5 X' — это "b", тип String
+// добавили в массив и получили ['5 X'] — это "c", тип Array
+// concatX :: Number -> String — морфизм f :: a -> b
+// toArray :: String -> [String] — морфизм g :: b -> c
+// pipeline = compose(toArray, concatX) :: Number -> [String] — композиция g . f :: a -> c`,
         en: `//  Пример
-// a -> b -> c
+// f :: a -> b
+// g :: b -> c
+// g . f :: a -> c
 
-// a, b, c // это объекты
-// -> // это их отношения и процессы над ними
-// a ... c // процесс композиции
+// a, b, c — это объекты (типы)
+// f, g — морфизмы (стрелки), то есть функции
+// g . f — композиция: сначала f, затем g
 
 // Практический пример
 
@@ -73,7 +77,7 @@ const concatX = num => \`\${num} X\`
 // toArray:: a -> [a]
 const toArray = word => [word]
 
-// compose :: (* -> *) -> (* -> *) -> * -> *
+// compose :: (b -> c, a -> b) -> a -> c
 const compose = (f2, f1) => (...args) => f2(f1(...args))
 
 const pipeline = compose(
@@ -85,12 +89,12 @@ const pipeline = compose(
 pipeline(5) // ['5 X'] результат
 
 // Что же тут произошло
-// мы входной аргумент 5 это "a" тип Number
-// конкатенировали букву X и получили '5 X' это "b" тип String
-// добавили в массив и получили ['5 X'] это "с" тип Array
-// и все это сделали законом композиции
-// 5 -> '5 X' -> ['5 X'] это абстрактные объекты (Number, String, Array) их отношение объектов(вызовы функций -> ) по законом композиции
-// a -> b -> c`,
+// входной аргумент 5 — это "a", тип Number
+// конкатенировали букву X и получили '5 X' — это "b", тип String
+// добавили в массив и получили ['5 X'] — это "c", тип Array
+// concatX :: Number -> String — морфизм f :: a -> b
+// toArray :: String -> [String] — морфизм g :: b -> c
+// pipeline = compose(toArray, concatX) :: Number -> [String] — композиция g . f :: a -> c`,
       },
     },
     {
@@ -100,21 +104,20 @@ pipeline(5) // ['5 X'] результат
     },
     {
       type: 'text',
-      ru: "Мы используем природу и напишем псевдокод, реализующий теорию категорий.",
-      en: "We will use nature and write pseudocode that implements category theory.",
+      ru: "Мы используем природу и напишем псевдокод, иллюстрирующий идеи теории категорий.",
+      en: "We will use nature and write pseudocode that illustrates the ideas of category theory.",
     },
     {
       type: 'code',
       pseudo: true,
       code: {
         ru: `//  Пример
-a -> b -> c
 твердое -> жидкое -> газообразное
 лёд -> вода -> пар
 
 лёд, вода, пар // это объекты
--> // процессы над ними (нагрев и тп)
-a ... c // процесс композиции (упорядоченная совокупность процессов)
+-> // морфизмы: процессы над ними (нагрев и т. п.)
+превратитьВПар . превратитьВВоду :: лёд -> пар // композиция процессов
 
 // Практический пример
 
@@ -124,7 +127,7 @@ const превратитьВВоду = лёд => (держим в комнатн
 // превратитьВПар:: вода -> пар
 const превратитьВПар = вода=> (производим сильный нагрев, пар)
 
-// композицияПроцессов :: (* -> *) -> (* -> *) -> * -> *
+// композицияПроцессов :: (b -> c, a -> b) -> a -> c
 const композицияПроцессов = (f2, f1) => (...args) => f2(f1(...args))
 
 const pipeline = композицияПроцессов(
@@ -135,13 +138,12 @@ const pipeline = композицияПроцессов(
 // start
 pipeline(лёд) // пар результат`,
         en: `//  Пример
-a -> b -> c
 твердое -> жидкое -> газообразное
 лёд -> вода -> пар
 
 лёд, вода, пар // это объекты
--> // процессы над ними (нагрев и тп)
-a ... c // процесс композиции (упорядоченная совокупность процессов)
+-> // морфизмы: процессы над ними (нагрев и т. п.)
+превратитьВПар . превратитьВВоду :: лёд -> пар // композиция процессов
 
 // Практический пример
 
@@ -151,7 +153,7 @@ const превратитьВВоду = лёд => (держим в комнатн
 // превратитьВПар:: вода -> пар
 const превратитьВПар = вода=> (производим сильный нагрев, пар)
 
-// композицияПроцессов :: (* -> *) -> (* -> *) -> * -> *
+// композицияПроцессов :: (b -> c, a -> b) -> a -> c
 const композицияПроцессов = (f2, f1) => (...args) => f2(f1(...args))
 
 const pipeline = композицияПроцессов(
