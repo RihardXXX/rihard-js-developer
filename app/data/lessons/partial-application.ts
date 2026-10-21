@@ -26,7 +26,8 @@ const lesson: Lesson = {
     },
     {
       type: 'code',
-      code: `//  пример функции с частичным применением
+      code: {
+        ru: `//  пример функции с частичным применением
 // partialSumA :: Number -> Number -> Number -> Number
 const partialSumA = (a) => (b, c) => a + b + c
 // partialSumB :: Number -> Number -> Number -> Number
@@ -76,6 +77,57 @@ const sumPartial = partial (sum)
 // теперь мы можем вызывать возвращенную функцию
 console.log ( sumPartial (1) (1, 1) ) // 3
 console.log ( sumPartial (1, 1) (1) ) // 3`,
+        en: `//  пример функции с частичным применением
+// partialSumA :: Number -> Number -> Number -> Number
+const partialSumA = (a) => (b, c) => a + b + c
+// partialSumB :: Number -> Number -> Number -> Number
+const partialSumB = (a, b) => (c) => a + b + c
+
+// давайте теперь вызовем эти функции
+console.log ( partialSumA (1) (1, 1) ) // 3
+console.log ( partialSumB (1, 1) (1) ) // 3
+
+// А давайте напишем функцию, которая применяет
+// частичное применение к любой обычной функции
+
+// ((a, b, c, …, n) → x) → [a, b, c, …] → ((d, e, f, …, n) → x)
+// partial:: (a -> b) -> (a ->b)
+const partial = (fn) => {
+
+  // количество аргументов у вызываемой функции
+  const lengthArgs = fn.length
+
+  // возвращаемая функция
+  const innerPartial = (...firstArgs) => {
+    // если количество входящих аргументов
+    // больше или равно чем у функции вызывающей
+    // значит сразу можно ее вызвать
+    if (firstArgs.length >= lengthArgs) {
+      return fn (...firstArgs)
+    }
+
+    // иначе мы вторым вызовом
+    // запускаем функцию в любом случае
+    return (...secondArgs) => fn (...firstArgs, ...secondArgs)
+  }
+
+  return innerPartial
+}
+
+// можем применить нашу функцию
+// которая применяет частичное применение
+// к любой функции
+
+// sum :: Number -> Number -> Number -> Number
+const sum = (a, b, c) => a + b + c
+
+// возвращаем функцию с супер способностями )
+const sumPartial = partial (sum)
+
+// теперь мы можем вызывать возвращенную функцию
+console.log ( sumPartial (1) (1, 1) ) // 3
+console.log ( sumPartial (1, 1) (1) ) // 3`,
+      },
     },
   ],
 }

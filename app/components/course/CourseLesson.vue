@@ -15,7 +15,7 @@ const isEn = computed(() => locale.value !== 'ru')
     </h3>
 
     <template v-for="(block, i) in lesson.blocks" :key="i">
-      <CourseCodeBlock v-if="block.type === 'code'" :code="block.code" />
+      <CourseCodeBlock v-if="block.type === 'code'" :code="isEn ? block.code.en : block.code.ru" />
       <p v-else class="lesson__text">{{ isEn ? block.en : block.ru }}</p>
     </template>
   </section>
