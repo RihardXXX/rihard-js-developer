@@ -175,6 +175,9 @@ console.log( sumCurry (1, 1, 1) ) // 3`,
 // одна каррированая уже
 // а другая автоматически каррируем перед вызовом
 
+// pipe и curry берём из Ramda: в песочнице курса она доступна как R
+const { pipe, curry } = R
+
 // данные с которыми будем работать
 // список пользователей
 // fetchAllUsers :: * -> Promise a
@@ -220,14 +223,13 @@ const getName = getByProp('name')
 
 // готовим композицию и при след вызове в качестве аргумента
 // ждем массив пользователей
-// представим что pipe функция уже реализована или готова
 const pipeline = pipe (
   filter ( isStatus ('online') ('status') ), // только онлайн пользователей получаем
   filter ( isMoreAge30 ), // возрастом старше 30 лет
   map ( getName ), // вернуть имена
 )
 
-(async () => {
+const showAdultsUsers = async () => {
 
   // запуск промиса с данными
   // данные бросаем в композицию и запускаем её
@@ -235,7 +237,9 @@ const pipeline = pipe (
                                           .then(pipeline)
 
   console.log(adultsUsers) // ['Angel']
-})
+}
+
+showAdultsUsers()
 
 
 // =============================
@@ -244,7 +248,7 @@ const pipeline = pipe (
 // но если пользователей несколько десятков тысяч
 // и нам нужна оптимизация мы можем сделать так
 // чтобы исключить двойной обход массива в рамках filter
-const pipeline = pipe (
+const pipelineOnePass = pipe (
   filter (
     (user) => (
       isStatus ('online') ('status') (user) && isMoreAge30 (user)
@@ -258,6 +262,9 @@ const pipeline = pipe (
 // одна каррированая уже
 // а другая автоматически каррируем перед вызовом
 
+// pipe и curry берём из Ramda: в песочнице курса она доступна как R
+const { pipe, curry } = R
+
 // данные с которыми будем работать
 // список пользователей
 // fetchAllUsers :: * -> Promise a
@@ -303,14 +310,13 @@ const getName = getByProp('name')
 
 // готовим композицию и при след вызове в качестве аргумента
 // ждем массив пользователей
-// представим что pipe функция уже реализована или готова
 const pipeline = pipe (
   filter ( isStatus ('online') ('status') ), // только онлайн пользователей получаем
   filter ( isMoreAge30 ), // возрастом старше 30 лет
   map ( getName ), // вернуть имена
 )
 
-(async () => {
+const showAdultsUsers = async () => {
 
   // запуск промиса с данными
   // данные бросаем в композицию и запускаем её
@@ -318,7 +324,9 @@ const pipeline = pipe (
                                           .then(pipeline)
 
   console.log(adultsUsers) // ['Angel']
-})
+}
+
+showAdultsUsers()
 
 
 // =============================
@@ -327,7 +335,7 @@ const pipeline = pipe (
 // но если пользователей несколько десятков тысяч
 // и нам нужна оптимизация мы можем сделать так
 // чтобы исключить двойной обход массива в рамках filter
-const pipeline = pipe (
+const pipelineOnePass = pipe (
   filter (
     (user) => (
       isStatus ('online') ('status') (user) && isMoreAge30 (user)
