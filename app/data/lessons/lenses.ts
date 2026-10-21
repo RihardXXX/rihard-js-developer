@@ -9,13 +9,13 @@ const lesson: Lesson = {
   blocks: [
     {
       type: 'text',
-      ru: "Линзы это инструмент (паттерн), который используется в функциональном программировании при работе с данными, обеспечивая иммутабельность данных и чистоту функции.",
+      ru: "Линзы — это инструмент (паттерн), который используется в функциональном программировании при работе с данными, обеспечивая иммутабельность данных и чистоту функции.",
       en: "Lenses are a tool (a pattern) used in functional programming when working with data, providing data immutability and function purity.",
     },
     {
       type: 'text',
-      ru: "Иммутабельность - это способность не изменять данные.",
-      en: "Immutability is the ability not to mutate data.",
+      ru: "Иммутабельность (неизменяемость) — это когда данные после создания не меняются: вместо изменения создаётся новая копия с нужными правками.",
+      en: "Immutability means that data does not change after it is created: instead of modifying it, you create a new copy with the changes applied.",
     },
     {
       type: 'text',
@@ -28,7 +28,7 @@ const lesson: Lesson = {
         ru: `// Lens s a = Functor f => (a → f a) → s → f s
 // ===============================
 // создаем линзу
-// путь к данными
+// путь к данным
 const xHeadYLens = R.lensPath(['x', 0, 'y']);
 
 // запускаем линзу в разных функциях
@@ -41,7 +41,7 @@ const data = { x: [ { y: 2, z: 3 }, { y: 4, z: 5 } ] }
 const resultView = R.view(xHeadYLens, data);
 
 // функция set устанавливает новые данные
-// по пути линзы не меняя исходные данные  в объекте
+// по пути линзы, не меняя исходные данные в объекте
 // а возвращая новый объект с измененными данными
 const resultSet = R.set(xHeadYLens, 1, data);
 
@@ -57,7 +57,7 @@ console.log(resultOver) // {x: [{y: -2, z: 3}, {y: 4, z: 5}]}`,
         en: `// Lens s a = Functor f => (a → f a) → s → f s
 // ===============================
 // создаем линзу
-// путь к данными
+// путь к данным
 const xHeadYLens = R.lensPath(['x', 0, 'y']);
 
 // запускаем линзу в разных функциях
@@ -70,7 +70,7 @@ const data = { x: [ { y: 2, z: 3 }, { y: 4, z: 5 } ] }
 const resultView = R.view(xHeadYLens, data);
 
 // функция set устанавливает новые данные
-// по пути линзы не меняя исходные данные  в объекте
+// по пути линзы, не меняя исходные данные в объекте
 // а возвращая новый объект с измененными данными
 const resultSet = R.set(xHeadYLens, 1, data);
 
@@ -92,19 +92,22 @@ console.log(resultOver) // {x: [{y: -2, z: 3}, {y: 4, z: 5}]}`,
     },
     {
       type: 'text',
-      ru: "А теперь попробуем реализовать свою кастомную линзу. В продакшен коде используйте готовые решения из библиотек Ramda JS или Sanctuary JS.",
-      en: "And now let's try to implement our own custom lens. In production code, use ready-made solutions from libraries like Ramda JS or Sanctuary JS.",
+      ru: "А теперь попробуем реализовать свою кастомную линзу. В продакшен коде используйте готовые решения, например линзы из Ramda JS (в Sanctuary JS линз нет).",
+      en: "And now let's try to implement our own custom lens. In production code, use ready-made solutions such as the lenses in Ramda JS (Sanctuary JS has no lenses).",
     },
     {
       type: 'code',
       code: {
-        ru: `// Lens s a = Functor f => (a → f a) → s → f s
+        ru: `// упрощённая линза: пара функций getter и setter,
+// замкнутых на путь к данным
+// Lens s a = { getter :: s -> a, setter :: (a | (a -> a)) -> s -> s }
+// в Ramda линза закодирована иначе: Functor f => (a → f a) → s → f s
 // ===============================
 // создаем линзу
-// lens :: [String] -> Lens s a
+// lens :: [String | Number] -> Lens s a
 const lens = (path) => {
 
-  // getter :: [a] -> [b] -> b
+  // getter :: [String | Number] -> s -> a
   const getter = (path) => (data) => {
     // если в линзу не прокинут путь
     // то возвращаем данные
@@ -125,7 +128,7 @@ const lens = (path) => {
 
     // рекурсивный случай
     // срезанный путь бросаем в качестве первого аргумента
-    // в качестве данные бросаем вложенность
+    // в качестве данных бросаем вложенность
     return getter (tail) (data[head])
   }
 
@@ -139,7 +142,7 @@ const lens = (path) => {
     return copy
   }
 
-  // setter :: [a] -> b | (* -> *) -> [b] -> [c]
+  // setter :: [String | Number] -> (a | (a -> a)) -> s -> s
   const setter = (path) => (v) => (data) => {
     // если в линзу не прокинут путь
     // то возвращаем данные
@@ -161,6 +164,8 @@ const lens = (path) => {
       // вызывается как over или set
       // чисто функция или значение
       // отправлено в качестве аргумента
+      // поэтому записать функцию как значение через set нельзя:
+      // в Ramda set сделан через over и такого ограничения нет
       const isFunction = typeof v === 'function'
 
       return assoc (head) (
@@ -173,12 +178,12 @@ const lens = (path) => {
     // рекурсивный случай
     // срезанный путь бросаем в качестве первого аргумента
     // аргумент изменения оставляем такой же
-    // в качестве данные бросаем вложенность
+    // в качестве данных бросаем вложенность
     return assoc (head) (setter (tail) (v) (data[head])) (data)
   }
 
 
-  // возвращает геттер  и сеттер
+  // возвращает геттер и сеттер
   // сохраняя в замыкании путь к данным
   return {
     getter: getter (path),
@@ -187,20 +192,20 @@ const lens = (path) => {
 }
 
 // линза готова
-//  осталось реализовать view set over
+// осталось реализовать view, set, over
 
 // мы просто вызываем геттер у линзы
 // и бросаем туда данные для обработки
-// view :: [a] -> [b] -> b
+// view :: Lens s a -> s -> a
 const view = (lens) => (data) => lens.getter (data)
 
 // мы просто вызываем сеттер у линзы
 // и бросаем туда данные для обработки
-// set :: [a] -> c -> [b] -> b
+// set :: Lens s a -> a -> s -> s
 const set = (lens) => (v) => (data) => lens.setter (v) (data)
 
 // аналогичен в реализации set
-// over :: [a] -> c -> [b] -> b
+// over :: Lens s a -> (a -> a) -> s -> s
 const over = (lens) => (fn) => (data) => lens.setter (fn) (data)
 
 // тестируем код
@@ -213,7 +218,7 @@ const data = { x: [ { y: 2, z: 3 }, { y: 4, z: 5 } ] }
 
 const resultView = view (xLens) (data)
 const resultSet = set (xLens) (1) (data)
-// ((a) => (b) => a + b) (3) создается каррированая функция
+// ((a) => (b) => a + b) (3) создается каррированная функция
 // которая сразу вызывается и возвращает
 // (b) => 3 + b
 const resultOver = over (xLens) ( ((a) => (b) => a + b) (3) ) (data)
@@ -221,13 +226,16 @@ const resultOver = over (xLens) ( ((a) => (b) => a + b) (3) ) (data)
 console.log(resultView) // 2
 console.log(resultSet) // {x: [{y: 1, z: 3}, {y: 4, z: 5}]}
 console.log(resultOver) // {x: [{y: 5, z: 3}, {y: 4, z: 5}]}`,
-        en: `// Lens s a = Functor f => (a → f a) → s → f s
+        en: `// упрощённая линза: пара функций getter и setter,
+// замкнутых на путь к данным
+// Lens s a = { getter :: s -> a, setter :: (a | (a -> a)) -> s -> s }
+// в Ramda линза закодирована иначе: Functor f => (a → f a) → s → f s
 // ===============================
 // создаем линзу
-// lens :: [String] -> Lens s a
+// lens :: [String | Number] -> Lens s a
 const lens = (path) => {
 
-  // getter :: [a] -> [b] -> b
+  // getter :: [String | Number] -> s -> a
   const getter = (path) => (data) => {
     // если в линзу не прокинут путь
     // то возвращаем данные
@@ -248,7 +256,7 @@ const lens = (path) => {
 
     // рекурсивный случай
     // срезанный путь бросаем в качестве первого аргумента
-    // в качестве данные бросаем вложенность
+    // в качестве данных бросаем вложенность
     return getter (tail) (data[head])
   }
 
@@ -262,7 +270,7 @@ const lens = (path) => {
     return copy
   }
 
-  // setter :: [a] -> b | (* -> *) -> [b] -> [c]
+  // setter :: [String | Number] -> (a | (a -> a)) -> s -> s
   const setter = (path) => (v) => (data) => {
     // если в линзу не прокинут путь
     // то возвращаем данные
@@ -284,6 +292,8 @@ const lens = (path) => {
       // вызывается как over или set
       // чисто функция или значение
       // отправлено в качестве аргумента
+      // поэтому записать функцию как значение через set нельзя:
+      // в Ramda set сделан через over и такого ограничения нет
       const isFunction = typeof v === 'function'
 
       return assoc (head) (
@@ -296,12 +306,12 @@ const lens = (path) => {
     // рекурсивный случай
     // срезанный путь бросаем в качестве первого аргумента
     // аргумент изменения оставляем такой же
-    // в качестве данные бросаем вложенность
+    // в качестве данных бросаем вложенность
     return assoc (head) (setter (tail) (v) (data[head])) (data)
   }
 
 
-  // возвращает геттер  и сеттер
+  // возвращает геттер и сеттер
   // сохраняя в замыкании путь к данным
   return {
     getter: getter (path),
@@ -310,20 +320,20 @@ const lens = (path) => {
 }
 
 // линза готова
-//  осталось реализовать view set over
+// осталось реализовать view, set, over
 
 // мы просто вызываем геттер у линзы
 // и бросаем туда данные для обработки
-// view :: [a] -> [b] -> b
+// view :: Lens s a -> s -> a
 const view = (lens) => (data) => lens.getter (data)
 
 // мы просто вызываем сеттер у линзы
 // и бросаем туда данные для обработки
-// set :: [a] -> c -> [b] -> b
+// set :: Lens s a -> a -> s -> s
 const set = (lens) => (v) => (data) => lens.setter (v) (data)
 
 // аналогичен в реализации set
-// over :: [a] -> c -> [b] -> b
+// over :: Lens s a -> (a -> a) -> s -> s
 const over = (lens) => (fn) => (data) => lens.setter (fn) (data)
 
 // тестируем код
@@ -336,7 +346,7 @@ const data = { x: [ { y: 2, z: 3 }, { y: 4, z: 5 } ] }
 
 const resultView = view (xLens) (data)
 const resultSet = set (xLens) (1) (data)
-// ((a) => (b) => a + b) (3) создается каррированая функция
+// ((a) => (b) => a + b) (3) создается каррированная функция
 // которая сразу вызывается и возвращает
 // (b) => 3 + b
 const resultOver = over (xLens) ( ((a) => (b) => a + b) (3) ) (data)
