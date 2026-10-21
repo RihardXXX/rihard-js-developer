@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { fillLocale, pickLocale } from '~/utils/course-locale'
 
-const { t, locale } = useI18n()
+const { t, locale, localeProperties } = useI18n()
 const localePath = useLocalePath()
 // Lesson content exists in RU and EN only; every non-Russian locale shows English.
 const isEn = computed(() => locale.value !== 'ru')
@@ -33,7 +33,7 @@ useSchemaOrg([
   defineCourse({
     name: t('course.title'),
     description: t('course.desc'),
-    inLanguage: lang === 'en' ? 'en-US' : 'ru-RU',
+    inLanguage: localeProperties.value.language,
   }),
 ])
 
