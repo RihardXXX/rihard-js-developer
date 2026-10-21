@@ -3,6 +3,10 @@ import type { Lesson } from '~/data/course-types'
 const lesson: Lesson = {
   slug: 'recursion',
   title: { ru: "Рекурсия", en: "Recursion" },
+  goal: {
+    ru: "Научиться писать рекурсивные функции с базовым и рекурсивным случаем и понять, почему глубокая рекурсия в JS переполняет стек и как этого избежать с помощью трамплина.",
+    en: "Learn to write recursive functions with a base case and a recursive case, and understand why deep recursion in JS overflows the stack and how a trampoline avoids it.",
+  },
   blocks: [
     {
       type: 'text',
@@ -760,6 +764,208 @@ return result // 16.5
   () => sum ([], 16.5), // result = result() inside the loop
   16.5 // the loop ends: return result
 ]`,
+      },
+    },
+  ],
+  summary: [
+    {
+      ru: "У рекурсии два обязательных случая: базовый прекращает вызовы, а рекурсивный вызывает функцию снова, обычно с небольшими изменениями в аргументах.",
+      en: "Recursion needs two cases: the base case stops the calls, and the recursive case calls the function again, usually with small changes to the arguments.",
+    },
+    {
+      ru: "Пока вызов не завершился, его кадр лежит в стеке вызовов. Размер стека ограничен, поэтому на большом массиве синхронная рекурсия падает с переполнением стека.",
+      en: "Until a call finishes, its frame stays on the call stack. The stack size is limited, so on a large array synchronous recursion fails with a stack overflow.",
+    },
+    {
+      ru: "Хвостовой вызов не уменьшает число вызовов. Не хранить кадр вызывающей функции стандарт ES2015 требует только в строгом режиме (proper tail calls), а из браузерных движков это реализовано только в JavaScriptCore (Safari). Поэтому в продакшен-коде на хвостовую рекурсию не рассчитывают, если не знают точно, сколько будет вызовов.",
+      en: "A tail call does not reduce the number of calls. ES2015 requires the engine to drop the caller's stack frame only in strict mode (proper tail calls), and among browser engines only JavaScriptCore (Safari) implements it. So production code should not rely on tail recursion unless you know exactly how many calls there will be.",
+    },
+    {
+      ru: "Стек можно освобождать, вызывая рекурсивный шаг асинхронно через таймер: поток не блокируется, но такой код работает медленно.",
+      en: "You can free the stack by running the recursive step asynchronously through a timer: the thread is not blocked, but such code is slow.",
+    },
+    {
+      ru: "Трамплин работает синхронно: в рекурсивном случае функция возвращает thunk — функцию без аргументов со следующим шагом, а трамплин вызывает такие функции в цикле, пока результат — функция. Стек при этом не растёт.",
+      en: "A trampoline works synchronously: in the recursive case the function returns a thunk, a function with no arguments holding the next step, and the trampoline calls these functions in a loop while the result is a function. The stack does not grow.",
+    },
+  ],
+  exercises: [
+    {
+      task: {
+        ru: "Напишите рекурсивную функцию flatten, которая превращает массив с вложенными массивами любой глубины в плоский массив, не используя встроенный метод flat. Сначала определите базовый случай, затем рекурсивный: что делать, если первый элемент сам массив, и что — если нет.",
+        en: "Write a recursive function flatten that turns an array with nested arrays of any depth into a flat array, without using the built-in flat method. Define the base case first, then the recursive case: what to do when the first element is itself an array, and what to do when it is not.",
+      },
+      starter: {
+        ru: `// flatten :: [*] -> [*]
+const flatten = (arr) => {
+  // ваш код
+}
+
+console.log(flatten([1, [2, [3, [4]], 5], [[6]]]))
+console.log(flatten([]))`,
+        en: `// flatten :: [*] -> [*]
+const flatten = (arr) => {
+  // your code
+}
+
+console.log(flatten([1, [2, [3, [4]], 5], [[6]]]))
+console.log(flatten([]))`,
+      },
+      solution: {
+        ru: `// flatten :: [*] -> [*]
+const flatten = (arr) => {
+  // базовый случай: пустой массив разворачивать нечего
+  if (!arr.length) {
+    return []
+  }
+
+  const [head, ...tail] = arr
+
+  // рекурсивный случай: вложенный массив разворачиваем той же функцией,
+  // обычное значение оставляем как есть, а хвост обрабатываем дальше
+  return Array.isArray(head)
+    ? [...flatten(head), ...flatten(tail)]
+    : [head, ...flatten(tail)]
+}
+
+console.log(flatten([1, [2, [3, [4]], 5], [[6]]]))
+console.log(flatten([]))`,
+        en: `// flatten :: [*] -> [*]
+const flatten = (arr) => {
+  // base case: an empty array has nothing to flatten
+  if (!arr.length) {
+    return []
+  }
+
+  const [head, ...tail] = arr
+
+  // recursive case: flatten a nested array with the same function,
+  // keep a plain value as is, and go on with the tail
+  return Array.isArray(head)
+    ? [...flatten(head), ...flatten(tail)]
+    : [head, ...flatten(tail)]
+}
+
+console.log(flatten([1, [2, [3, [4]], 5], [[6]]]))
+console.log(flatten([]))`,
+      },
+      expected: {
+        ru: "[\n  1,\n  2,\n  3,\n  4,\n  5,\n  6\n]\n[]",
+        en: "[\n  1,\n  2,\n  3,\n  4,\n  5,\n  6\n]\n[]",
+      },
+    },
+    {
+      task: {
+        ru: "Функция sumTo складывает числа от 1 до n обычной рекурсией, и sumTo(100000) в Chrome и Node.js падает с RangeError: Maximum call stack size exceeded. Перепишите её для трамплина из урока: сумму копите в аккумуляторе, а в рекурсивном случае возвращайте thunk со следующим шагом. Проверьте результат на 10 и на 100 000.",
+        en: "The sumTo function adds up the numbers from 1 to n with plain recursion, and sumTo(100000) fails in Chrome and Node.js with RangeError: Maximum call stack size exceeded. Rewrite it for the trampoline from the lesson: keep the sum in an accumulator, and in the recursive case return a thunk with the next step. Check the result for 10 and for 100,000.",
+      },
+      starter: {
+        ru: `// трамплин из урока
+// trampoline :: ((...args -> *) -> (...args -> *))
+const trampoline = (fn) => (...args) => {
+  let result = fn(...args)
+
+  while (typeof result === 'function') {
+    result = result()
+  }
+
+  return result
+}
+
+// обычная рекурсия: каждый вызов ждёт результат следующего
+// sumTo :: Number -> Number
+const sumTo = (n) => n === 0 ? 0 : n + sumTo(n - 1)
+
+// sumToStep возвращает либо сумму, либо thunk со следующим шагом
+// sumToStep :: (Number, Number) -> (Number | (() -> *))
+const sumToStep = (n, acc = 0) => {
+  // ваш код
+}
+
+// sumToSafe :: Number -> Number
+const sumToSafe = trampoline(sumToStep)
+
+console.log(sumToSafe(10))
+console.log(sumToSafe(100000))`,
+        en: `// the trampoline from the lesson
+// trampoline :: ((...args -> *) -> (...args -> *))
+const trampoline = (fn) => (...args) => {
+  let result = fn(...args)
+
+  while (typeof result === 'function') {
+    result = result()
+  }
+
+  return result
+}
+
+// plain recursion: each call waits for the result of the next one
+// sumTo :: Number -> Number
+const sumTo = (n) => n === 0 ? 0 : n + sumTo(n - 1)
+
+// sumToStep returns either the sum or a thunk with the next step
+// sumToStep :: (Number, Number) -> (Number | (() -> *))
+const sumToStep = (n, acc = 0) => {
+  // your code
+}
+
+// sumToSafe :: Number -> Number
+const sumToSafe = trampoline(sumToStep)
+
+console.log(sumToSafe(10))
+console.log(sumToSafe(100000))`,
+      },
+      solution: {
+        ru: `// трамплин из урока
+// trampoline :: ((...args -> *) -> (...args -> *))
+const trampoline = (fn) => (...args) => {
+  let result = fn(...args)
+
+  while (typeof result === 'function') {
+    result = result()
+  }
+
+  return result
+}
+
+// sumToStep :: (Number, Number) -> (Number | (() -> *))
+const sumToStep = (n, acc = 0) =>
+  n === 0
+    ? acc // базовый случай: сумма уже в аккумуляторе
+    : () => sumToStep(n - 1, acc + n) // рекурсивный случай: thunk со следующим шагом
+
+// sumToSafe :: Number -> Number
+const sumToSafe = trampoline(sumToStep)
+
+console.log(sumToSafe(10))
+console.log(sumToSafe(100000))`,
+        en: `// the trampoline from the lesson
+// trampoline :: ((...args -> *) -> (...args -> *))
+const trampoline = (fn) => (...args) => {
+  let result = fn(...args)
+
+  while (typeof result === 'function') {
+    result = result()
+  }
+
+  return result
+}
+
+// sumToStep :: (Number, Number) -> (Number | (() -> *))
+const sumToStep = (n, acc = 0) =>
+  n === 0
+    ? acc // base case: the sum is already in the accumulator
+    : () => sumToStep(n - 1, acc + n) // recursive case: a thunk with the next step
+
+// sumToSafe :: Number -> Number
+const sumToSafe = trampoline(sumToStep)
+
+console.log(sumToSafe(10))
+console.log(sumToSafe(100000))`,
+      },
+      expected: {
+        ru: "55\n5000050000",
+        en: "55\n5000050000",
       },
     },
   ],
