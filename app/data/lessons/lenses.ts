@@ -129,6 +129,16 @@ const lens = (path) => {
     return getter (tail) (data[head])
   }
 
+  // копия узла с новым значением по ключу
+  // массив копируем как массив: {...data} превратил бы его
+  // в объект с ключами 0, 1 и т. д.
+  // assoc :: (String | Number) -> a -> s -> s
+  const assoc = (key) => (value) => (data) => {
+    const copy = Array.isArray(data) ? [...data] : { ...data }
+    copy[key] = value
+    return copy
+  }
+
   // setter :: [a] -> b | (* -> *) -> [b] -> [c]
   const setter = (path) => (v) => (data) => {
     // если в линзу не прокинут путь
@@ -153,22 +163,18 @@ const lens = (path) => {
       // отправлено в качестве аргумента
       const isFunction = typeof v === 'function'
 
-      return {
-        ...data,
-        [head]: isFunction
-                    ? v (data[head])
-                    : v
-      }
+      return assoc (head) (
+        isFunction
+          ? v (data[head])
+          : v
+      ) (data)
     }
 
     // рекурсивный случай
     // срезанный путь бросаем в качестве первого аргумента
     // аргумент изменения оставляем такой же
     // в качестве данные бросаем вложенность
-    return {
-      ...data,
-      [head]: setter (tail) (v) (data[head])
-    }
+    return assoc (head) (setter (tail) (v) (data[head])) (data)
   }
 
 
@@ -246,6 +252,16 @@ const lens = (path) => {
     return getter (tail) (data[head])
   }
 
+  // копия узла с новым значением по ключу
+  // массив копируем как массив: {...data} превратил бы его
+  // в объект с ключами 0, 1 и т. д.
+  // assoc :: (String | Number) -> a -> s -> s
+  const assoc = (key) => (value) => (data) => {
+    const copy = Array.isArray(data) ? [...data] : { ...data }
+    copy[key] = value
+    return copy
+  }
+
   // setter :: [a] -> b | (* -> *) -> [b] -> [c]
   const setter = (path) => (v) => (data) => {
     // если в линзу не прокинут путь
@@ -270,22 +286,18 @@ const lens = (path) => {
       // отправлено в качестве аргумента
       const isFunction = typeof v === 'function'
 
-      return {
-        ...data,
-        [head]: isFunction
-                    ? v (data[head])
-                    : v
-      }
+      return assoc (head) (
+        isFunction
+          ? v (data[head])
+          : v
+      ) (data)
     }
 
     // рекурсивный случай
     // срезанный путь бросаем в качестве первого аргумента
     // аргумент изменения оставляем такой же
     // в качестве данные бросаем вложенность
-    return {
-      ...data,
-      [head]: setter (tail) (v) (data[head])
-    }
+    return assoc (head) (setter (tail) (v) (data[head])) (data)
   }
 
 
