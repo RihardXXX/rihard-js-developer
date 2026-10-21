@@ -145,6 +145,7 @@
     "output": "Output",
     "copy": "Copy",
     "copied": "Copied!",
+    "copyFailed": "Couldn't copy",
     "libraries": "Connected:",
     "addLib": "library",
     "alias": "alias (R)",

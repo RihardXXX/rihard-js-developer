@@ -21,16 +21,24 @@ const highlighted = computed(() =>
   props.pseudo ? '' : hljs.highlight(props.code, { language: 'javascript' }).value,
 )
 
-const copied = ref(false)
+const copyState = ref<'idle' | 'copied' | 'failed'>('idle')
 const copy = async () => {
   try {
     await navigator.clipboard.writeText(props.code)
-    copied.value = true
-    setTimeout(() => (copied.value = false), 2000)
+    copyState.value = 'copied'
   } catch {
-    /* clipboard unavailable */
+    // clipboard blocked by the browser: say so instead of staying silent
+    copyState.value = 'failed'
   }
+  setTimeout(() => (copyState.value = 'idle'), 2000)
 }
+const copyText = computed(() =>
+  copyState.value === 'copied'
+    ? t('course.copied')
+    : copyState.value === 'failed'
+      ? t('course.copyFailed')
+      : t('course.copy'),
+)
 </script>
 
 <template>
@@ -49,10 +57,10 @@ const copy = async () => {
       <button
         class="cb__copy"
         type="button"
-        :aria-label="`${copied ? t('course.copied') : t('course.copy')}: ${label}`"
+        :aria-label="`${copyText}: ${label}`"
         @click="copy"
       >
-        {{ copied ? t('course.copied') : t('course.copy') }}
+        {{ copyText }}
       </button>
     </div>
     <pre
@@ -61,7 +69,7 @@ const copy = async () => {
       role="group"
       :aria-label="label"
     ><code v-if="pseudo">{{ code }}</code><code v-else class="hljs language-javascript" v-html="highlighted" /></pre>
-    <span class="cb__status" role="status" aria-live="polite">{{ copied ? t('course.copied') : '' }}</span>
+    <span class="cb__status" role="status" aria-live="polite">{{ copyState === 'idle' ? '' : copyText }}</span>
   </div>
 </template>
 
@@ -94,6 +102,13 @@ const copy = async () => {
     &:hover {
       border-color: var(--accent);
     }
+
+    // a finger-sized target on touch screens
+    @media (pointer: coarse) {
+      min-height: 4.4rem;
+      padding: 0.8rem 1.4rem;
+      font-size: 1.4rem;
+    }
   }
 
   &__pre {
@@ -103,6 +118,7 @@ const copy = async () => {
     border-radius: 1rem;
     background-color: var(--code-bg);
     overflow-x: auto;
+    scrollbar-color: var(--code-border) var(--code-bg);
     font-family: $mono-font;
     font-size: 1.4rem;
     line-height: 1.6;
