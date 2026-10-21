@@ -15,14 +15,18 @@ const lesson: Lesson = {
       en: "Partial application is very similar to currying, but there are differences.",
     },
     {
-      type: 'text',
-      ru: "1. Частичное применение фиксирует часть аргументов за один шаг: получается функция, которой оставшиеся аргументы передают одним вызовом, и она сразу вычисляет результат. Каррированная функция возвращает новую функцию после каждого вызова, пока не получит все аргументы.",
-      en: "1. Partial application fixes some of the arguments in one step: the result is a function that takes the remaining arguments in a single call and immediately computes the result. A curried function returns a new function after each call until it has received all of its arguments.",
-    },
-    {
-      type: 'text',
-      ru: "2. Количество аргументов, передаваемых в функцию при частичном применении, может быть несколько, а в классическом каррировании обычно одно.",
-      en: "2. The number of arguments passed to the function in partial application can be several, whereas in classic currying it is usually one.",
+      type: 'list',
+      ordered: true,
+      items: [
+        {
+          ru: "Частичное применение фиксирует часть аргументов за один шаг: получается функция, которой оставшиеся аргументы передают одним вызовом, и она сразу вычисляет результат. Каррированная функция возвращает новую функцию после каждого вызова, пока не получит все аргументы.",
+          en: "Partial application fixes some of the arguments in one step: the result is a function that takes the remaining arguments in a single call and immediately computes the result. A curried function returns a new function after each call until it has received all of its arguments.",
+        },
+        {
+          ru: "Количество аргументов, передаваемых в функцию при частичном применении, может быть несколько, а в классическом каррировании обычно одно.",
+          en: "The number of arguments passed to the function in partial application can be several, whereas in classic currying it is usually one.",
+        },
+      ],
     },
     {
       type: 'code',
