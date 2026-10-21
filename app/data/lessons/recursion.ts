@@ -45,6 +45,9 @@ const fetchAllUsers = () => new Promise(resolve => resolve([
   { name: 'Anna', status: 'offline', age: 20 },
 ]))
 
+// pipe из урока «Композиция функций»: передаёт результат каждой функции следующей
+const pipe = (...fns) => (x) => fns.reduce((v, f) => f(v), x)
+
 // getAgeAverage :: [a] -> Number
 const getAgeAverage = (users) => pipe (
   (users) => [
@@ -93,8 +96,8 @@ const recurAgeAverage = (
 // ================================
 
 // Давайте нашу функцию перепишем в одну строку и вызовем
-const recurAgeAverageF = (users, sumAges = 0, quantityUsers)
-                          => !users.length
+const recurAgeAverageF = (users, sumAges = 0, quantityUsers = users.length) =>
+                          !users.length
                               ? sumAges / quantityUsers
                               : recurAgeAverageF (
                                   users.slice(1),
@@ -102,7 +105,9 @@ const recurAgeAverageF = (users, sumAges = 0, quantityUsers)
                                   quantityUsers
                                 )
 
-( async () => {
+// точка с запятой перед скобкой обязательна: без неё JS склеит
+// эту скобку с выражением выше и попробует вызвать его результат
+;( async () => {
   const users = await fetchAllUsers () // получаем список пользователей
   const averageAge = recurAgeAverageF (users) // получаем средний возраст рекурсивно
   console.log (averageAge) // логируем результат 25.25
@@ -121,6 +126,9 @@ const fetchAllUsers = () => new Promise(resolve => resolve([
   { name: 'Anna', status: 'offline', age: 20 },
 ]))
 
+// pipe из урока «Композиция функций»: передаёт результат каждой функции следующей
+const pipe = (...fns) => (x) => fns.reduce((v, f) => f(v), x)
+
 // getAgeAverage :: [a] -> Number
 const getAgeAverage = (users) => pipe (
   (users) => [
@@ -169,8 +177,8 @@ const recurAgeAverage = (
 // ================================
 
 // Давайте нашу функцию перепишем в одну строку и вызовем
-const recurAgeAverageF = (users, sumAges = 0, quantityUsers)
-                          => !users.length
+const recurAgeAverageF = (users, sumAges = 0, quantityUsers = users.length) =>
+                          !users.length
                               ? sumAges / quantityUsers
                               : recurAgeAverageF (
                                   users.slice(1),
@@ -178,7 +186,9 @@ const recurAgeAverageF = (users, sumAges = 0, quantityUsers)
                                   quantityUsers
                                 )
 
-( async () => {
+// точка с запятой перед скобкой обязательна: без неё JS склеит
+// эту скобку с выражением выше и попробует вызвать его результат
+;( async () => {
   const users = await fetchAllUsers () // получаем список пользователей
   const averageAge = recurAgeAverageF (users) // получаем средний возраст рекурсивно
   console.log (averageAge) // логируем результат 25.25
@@ -602,56 +612,7 @@ const sum = (users, result = 0) =>
 const sumTrampoline = trampoline (sum)
 
 // теперь на самом деле в цикле будут запускаться функции
-console.log (sumTrampoline ([4.5, 4, 3, 5], 0)) // 16.5
-
-// давайте теперь визуализируем вызовы
-// логика внутри функции трамплин
-
-//  === первый вызов =====
-let result = sum([4.5, 4, 3, 5], 0) //
-// вернет в result () => sum ([4, 3, 5], 4.5 + 0)
-// =======================
-
-//  === обычные вызовы =====
-while (typeof result == 'function') {
-  result = result() // () => sum ([4, 3, 5], 4.5 + 0)
-  // вернет в result () => sum ([3, 5], 4.5 + 4)
-}
-// =======================
-
-//  === обычные вызовы =====
-while (typeof result == 'function') {
-  result = result() // () => sum ([3, 5], 4.5 + 4)
-  // вернет в result () => sum ([5], 8.5 + 3)
-}
-// =======================
-
-//  === обычные вызовы =====
-while (typeof result == 'function') {
-  result = result() // () => sum ([5], 8.5 + 3)
-  // вернет в result () => sum ([], 11.5 + 5)
-}
-// =======================
-
-//  === последний вызов условие выхода из цикла =====
-return result // где result это второй аргумент 16.5
-// =======================
-
-
-// визуализация через схему
-// это как тип связный список функций, который заранее не готов
-// а формируется в процессе
-[(a -> b)] -> [(b -> c)] -> [(c -> d)]
-// массив функция где след элемент формируется динамически
-[
-  ([4.5, 4, 3, 5]) => sum ([4.5, 4, 3, 5], 0), // первый вызов let result = fn(...args)
-  () => sum ([4.5, 4, 3, 5], 0), // result = result() внутри цикла
-  () => sum ([4, 3, 5], 4.5), // result = result() внутри цикла
-  () => sum ([3, 5], 8.5), // result = result() внутри цикла
-  () => sum ([5], 11.5), // result = result() внутри цикла
-  () => sum ([], 16.5), // result = result() внутри цикла
-  16.5 // цикл завершается return result
-]`,
+console.log (sumTrampoline ([4.5, 4, 3, 5], 0)) // 16.5`,
         en: `// === Рекурсия через трамплин ====
 
 // обратите внимание первый аргумент это функция
@@ -702,39 +663,37 @@ const sum = (users, result = 0) =>
 const sumTrampoline = trampoline (sum)
 
 // теперь на самом деле в цикле будут запускаться функции
-console.log (sumTrampoline ([4.5, 4, 3, 5], 0)) // 16.5
+console.log (sumTrampoline ([4.5, 4, 3, 5], 0)) // 16.5`,
+      },
+    },
+    {
+      type: 'code',
+      pseudo: true,
+      code: {
+        ru: `// давайте теперь визуализируем вызовы
+// логика внутри функции трамплин для sumTrampoline ([4.5, 4, 3, 5], 0)
 
-// давайте теперь визуализируем вызовы
-// логика внутри функции трамплин
-
-//  === первый вызов =====
-let result = sum([4.5, 4, 3, 5], 0) //
-// вернет в result () => sum ([4, 3, 5], 4.5 + 0)
+//  === первый вызов, до цикла =====
+let result = sum ([4.5, 4, 3, 5], 0)
+// вернет в result () => sum ([4, 3, 5], 0 + 4.5)
 // =======================
 
-//  === обычные вызовы =====
-while (typeof result == 'function') {
-  result = result() // () => sum ([4, 3, 5], 4.5 + 0)
-  // вернет в result () => sum ([3, 5], 4.5 + 4)
-}
+//  === цикл while: каждая итерация вызывает одну функцию =====
+result = result () // вызывает sum ([4, 3, 5], 4.5)
+// вернет в result () => sum ([3, 5], 4.5 + 4)
+
+result = result () // вызывает sum ([3, 5], 8.5)
+// вернет в result () => sum ([5], 8.5 + 3)
+
+result = result () // вызывает sum ([5], 11.5)
+// вернет в result () => sum ([], 11.5 + 5)
+
+result = result () // вызывает sum ([], 16.5)
+// вернет в result 16.5, это уже не функция, и цикл завершается
 // =======================
 
-//  === обычные вызовы =====
-while (typeof result == 'function') {
-  result = result() // () => sum ([3, 5], 4.5 + 4)
-  // вернет в result () => sum ([5], 8.5 + 3)
-}
-// =======================
-
-//  === обычные вызовы =====
-while (typeof result == 'function') {
-  result = result() // () => sum ([5], 8.5 + 3)
-  // вернет в result () => sum ([], 11.5 + 5)
-}
-// =======================
-
-//  === последний вызов условие выхода из цикла =====
-return result // где result это второй аргумент 16.5
+//  === выход из трамплина =====
+return result // 16.5
 // =======================
 
 
@@ -744,8 +703,47 @@ return result // где result это второй аргумент 16.5
 [(a -> b)] -> [(b -> c)] -> [(c -> d)]
 // массив функция где след элемент формируется динамически
 [
-  ([4.5, 4, 3, 5]) => sum ([4.5, 4, 3, 5], 0), // первый вызов let result = fn(...args)
-  () => sum ([4.5, 4, 3, 5], 0), // result = result() внутри цикла
+  sum ([4.5, 4, 3, 5], 0), // первый вызов let result = fn(...args)
+  () => sum ([4, 3, 5], 4.5), // result = result() внутри цикла
+  () => sum ([3, 5], 8.5), // result = result() внутри цикла
+  () => sum ([5], 11.5), // result = result() внутри цикла
+  () => sum ([], 16.5), // result = result() внутри цикла
+  16.5 // цикл завершается return result
+]`,
+        en: `// давайте теперь визуализируем вызовы
+// логика внутри функции трамплин для sumTrampoline ([4.5, 4, 3, 5], 0)
+
+//  === первый вызов, до цикла =====
+let result = sum ([4.5, 4, 3, 5], 0)
+// вернет в result () => sum ([4, 3, 5], 0 + 4.5)
+// =======================
+
+//  === цикл while: каждая итерация вызывает одну функцию =====
+result = result () // вызывает sum ([4, 3, 5], 4.5)
+// вернет в result () => sum ([3, 5], 4.5 + 4)
+
+result = result () // вызывает sum ([3, 5], 8.5)
+// вернет в result () => sum ([5], 8.5 + 3)
+
+result = result () // вызывает sum ([5], 11.5)
+// вернет в result () => sum ([], 11.5 + 5)
+
+result = result () // вызывает sum ([], 16.5)
+// вернет в result 16.5, это уже не функция, и цикл завершается
+// =======================
+
+//  === выход из трамплина =====
+return result // 16.5
+// =======================
+
+
+// визуализация через схему
+// это как тип связный список функций, который заранее не готов
+// а формируется в процессе
+[(a -> b)] -> [(b -> c)] -> [(c -> d)]
+// массив функция где след элемент формируется динамически
+[
+  sum ([4.5, 4, 3, 5], 0), // первый вызов let result = fn(...args)
   () => sum ([4, 3, 5], 4.5), // result = result() внутри цикла
   () => sum ([3, 5], 8.5), // result = result() внутри цикла
   () => sum ([5], 11.5), // result = result() внутри цикла
