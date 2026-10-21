@@ -103,7 +103,7 @@ Setoid   Semigroupoid  Semigroup   Foldable        Functor      Contravariant  F
       type: 'code',
       code: {
         ru: `// Сигнатура
-fantasy-land/map :: Functor f => f a ~> (a -> b) -> f b
+// fantasy-land/map :: Functor f => f a ~> (a -> b) -> f b
 
 // Создание функтора
 // ==== синтаксис es5 ======
@@ -132,9 +132,9 @@ prototypeFunctor[FANTASY_LAND_MAP] = function (fn) {
 // Давайте разделим ключевую логику на части
 // return new Functor(fn(this.value))
 // 1. Текущей содержимое контейнера мы пропускаем через функцию
-fn(this.value)
+// fn(this.value)
 // 2. Возвращаем новый экземпляр типа функтор уже с новым значением
-return new Functor(тут результат инструкции выше)
+// return new Functor(тут результат инструкции выше)
 
 // Пример
 var functorObj = new Functor(5)
@@ -156,15 +156,82 @@ var createObjectProto = function (obj) {
 
   // устанавливаем правильные ссылки
   XXX.prototype = obj || Object.prototype
-  XXX.prototype.constructor = XXX
+  // constructor не переписываем: иначе мы изменили бы переданный obj,
+  // а без аргумента — общий для всех объектов Object.prototype
 
   // создаем экземпляр и возвращаем
   return new XXX()
+}`,
+        en: `// Сигнатура
+// fantasy-land/map :: Functor f => f a ~> (a -> b) -> f b
+
+// Создание функтора
+// ==== синтаксис es5 ======
+
+// подготавливаем прототип для функции конструктора
+// удалив наследование Object.prototype дефолтная
+var prototypeFunctor = Object.create(null)
+
+// Название строки функции и метода согласно спецификации
+const FANTASY_LAND_MAP = 'fantasy-land/map'
+
+// создаем функцию конструктор
+function Functor(value) {
+  this.value = value
 }
 
-// ==== синтаксис es6 ======
+// создаем правильные связи между прототипом и функций конструктором
+Functor.prototype = prototypeFunctor
+prototypeFunctor.constructor = Functor
+
+//  а вот теперь самое главное реализовываем интерфейс функтора
+prototypeFunctor[FANTASY_LAND_MAP] = function (fn) {
+  return new Functor(fn(this.value))
+}
+
+// Давайте разделим ключевую логику на части
+// return new Functor(fn(this.value))
+// 1. Текущей содержимое контейнера мы пропускаем через функцию
+// fn(this.value)
+// 2. Возвращаем новый экземпляр типа функтор уже с новым значением
+// return new Functor(тут результат инструкции выше)
+
+// Пример
+var functorObj = new Functor(5)
+
+var functorResult = functorObj[FANTASY_LAND_MAP](value => value * 2)
+
+// отсутствуют мутации
+// реализован интерфейс спецификации
+console.log(functorObj.value) // 5
+console.log(functorResult.value) // 10
+
+// =========================
+
+// Полифил
+// как устроен примерно внутри Object.create(objectProto)
+var createObjectProto = function (obj) {
+  // для создания экземпляра формируем конструктор
+  function XXX() {}
+
+  // устанавливаем правильные ссылки
+  XXX.prototype = obj || Object.prototype
+  // constructor не переписываем: иначе мы изменили бы переданный obj,
+  // а без аргумента — общий для всех объектов Object.prototype
+
+  // создаем экземпляр и возвращаем
+  return new XXX()
+}`,
+      },
+    },
+    {
+      type: 'code',
+      code: {
+        ru: `// ==== синтаксис es6 ======
 // тут все гораздо проще
 // тут в прототипе мы также можем уничтожить дефолтное наследование Object.prototype
+const FANTASY_LAND_MAP = 'fantasy-land/map'
+
 class Functor {
   constructor (value) {
     this.value = value
@@ -197,69 +264,11 @@ console.log(objA.value) // 10
 console.log(objB.value) // 5
 
 // =========================`,
-        en: `// Сигнатура
-fantasy-land/map :: Functor f => f a ~> (a -> b) -> f b
-
-// Создание функтора
-// ==== синтаксис es5 ======
-
-// подготавливаем прототип для функции конструктора
-// удалив наследование Object.prototype дефолтная
-var prototypeFunctor = Object.create(null)
-
-// Название строки функции и метода согласно спецификации
-const FANTASY_LAND_MAP = 'fantasy-land/map'
-
-// создаем функцию конструктор
-function Functor(value) {
-  this.value = value
-}
-
-// создаем правильные связи между прототипом и функций конструктором
-Functor.prototype = prototypeFunctor
-prototypeFunctor.constructor = Functor
-
-//  а вот теперь самое главное реализовываем интерфейс функтора
-prototypeFunctor[FANTASY_LAND_MAP] = function (fn) {
-  return new Functor(fn(this.value))
-}
-
-// Давайте разделим ключевую логику на части
-// return new Functor(fn(this.value))
-// 1. Текущей содержимое контейнера мы пропускаем через функцию
-fn(this.value)
-// 2. Возвращаем новый экземпляр типа функтор уже с новым значением
-return new Functor(тут результат инструкции выше)
-
-// Пример
-var functorObj = new Functor(5)
-
-var functorResult = functorObj[FANTASY_LAND_MAP](value => value * 2)
-
-// отсутствуют мутации
-// реализован интерфейс спецификации
-console.log(functorObj.value) // 5
-console.log(functorResult.value) // 10
-
-// =========================
-
-// Полифил
-// как устроен примерно внутри Object.create(objectProto)
-var createObjectProto = function (obj) {
-  // для создания экземпляра формируем конструктор
-  function XXX() {}
-
-  // устанавливаем правильные ссылки
-  XXX.prototype = obj || Object.prototype
-  XXX.prototype.constructor = XXX
-
-  // создаем экземпляр и возвращаем
-  return new XXX()
-}
-
-// ==== синтаксис es6 ======
+        en: `// ==== синтаксис es6 ======
 // тут все гораздо проще
 // тут в прототипе мы также можем уничтожить дефолтное наследование Object.prototype
+const FANTASY_LAND_MAP = 'fantasy-land/map'
+
 class Functor {
   constructor (value) {
     this.value = value
