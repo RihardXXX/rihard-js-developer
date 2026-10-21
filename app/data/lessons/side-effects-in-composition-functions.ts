@@ -19,7 +19,7 @@ const lesson: Lesson = {
     },
     {
       type: 'text',
-      ru: "1. Дебагинг композиции и её логирование, в случае ошибок или вообще, чтобы понимать поток выполнения и изменения входных данных в композиции функции.",
+      ru: "1. Отладка композиции и её логирование, в случае ошибок или вообще, чтобы понимать поток выполнения и изменения входных данных в композиции функции.",
       en: "1. Debugging the composition and logging it, in case of errors or simply to understand the execution flow and how the input data changes within the function composition.",
     },
     {

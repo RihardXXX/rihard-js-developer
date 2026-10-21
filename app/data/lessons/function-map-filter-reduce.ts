@@ -492,7 +492,7 @@ console.log (result) // [4, 5]
     },
     {
       type: 'text',
-      ru: "Функцией reduce можно сымитировать любое кастомное поведение, а также поведение map и filter. Но обычно оно используется для сбора конкретно каких-то данных по определенной логике из итерируемого типа объекта.",
+      ru: "Функцией reduce можно сымитировать любое кастомное поведение, а также поведение map и filter. Но обычно её используют для сбора конкретно каких-то данных по определенной логике из итерируемого типа объекта.",
       en: "With reduce you can emulate any custom behavior, as well as the behavior of map and filter. But it is usually used to collect specific data according to a particular logic from an iterable object type.",
     },
     {

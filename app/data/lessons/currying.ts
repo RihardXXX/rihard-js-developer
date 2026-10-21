@@ -473,11 +473,11 @@ const notMarriedCheck = not (isMarried)
 
 // get the user's status
 const isOnlineUser = isOnline (user)
-//  get whether the user is married
+//  check whether the user is married
 const isMarriedUser = isMarried (user)
 
-// now let's let into our app
-// only users who are married and online
+// now let's only let users who are married and online
+// into our app
 
 // write a helper
 // and :: Boolean -> Boolean -> Boolean
