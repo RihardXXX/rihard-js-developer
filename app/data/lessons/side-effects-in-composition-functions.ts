@@ -60,12 +60,12 @@ const product = {
 // prop :: String -> Record -> a
 const prop = (prop) => (data) => data[prop]
 
-// lt :: Number -> Number -> Boolean
-const lt = (a) => (b) => a < b
+// lte :: Number -> Number -> Boolean
+const lte = (a) => (b) => a <= b
 
 const pipeline = pipe(
   prop ('money'), // получаем деньги пользователя
-  lt (prop ('price') (product)), // сравниваем цену товара и деньги пользователя
+  lte (prop ('price') (product)), // проверяем, что цена товара не больше денег пользователя
   (success) => success ? 'the product can be purchased' : "you don't have enough money"
   // сообщаем может ли купить товар или не хватает денег
 )
@@ -99,12 +99,12 @@ const product = {
 // prop :: String -> Record -> a
 const prop = (prop) => (data) => data[prop]
 
-// lt :: Number -> Number -> Boolean
-const lt = (a) => (b) => a < b
+// lte :: Number -> Number -> Boolean
+const lte = (a) => (b) => a <= b
 
 const pipeline = pipe(
   prop ('money'), // получаем деньги пользователя
-  lt (prop ('price') (product)), // сравниваем цену товара и деньги пользователя
+  lte (prop ('price') (product)), // проверяем, что цена товара не больше денег пользователя
   (success) => success ? 'the product can be purchased' : "you don't have enough money"
   // сообщаем может ли купить товар или не хватает денег
 )
@@ -165,9 +165,9 @@ const logger = tap (log)
 pipe(
   prop ('money'),
   logger, // 10000
-  lt (prop ('price') (product)),
+  lte (prop ('price') (product)),
   logger, // true
-  (success) => success ? 'the product can be purchased' : 'you don"t have enough money',
+  (success) => success ? 'the product can be purchased' : "you don't have enough money",
   logger, // 'the product can be purchased'
 ) (dataUser)`,
         en: `// Утилита которая вызовет функцию в аргументе
@@ -207,9 +207,9 @@ const logger = tap (log)
 pipe(
   prop ('money'),
   logger, // 10000
-  lt (prop ('price') (product)),
+  lte (prop ('price') (product)),
   logger, // true
-  (success) => success ? 'the product can be purchased' : 'you don"t have enough money',
+  (success) => success ? 'the product can be purchased' : "you don't have enough money",
   logger, // 'the product can be purchased'
 ) (dataUser)`,
       },
