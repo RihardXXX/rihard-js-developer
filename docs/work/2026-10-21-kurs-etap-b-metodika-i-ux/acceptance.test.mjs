@@ -18,10 +18,9 @@ module.registerHooks({
   resolve: (specifier, context, next) =>
     next(/^\.\.?\//.test(specifier) && !/\.\w+$/.test(specifier) ? `${specifier}.ts` : specifier, context),
 })
-// Пространство имён: пока в course.ts нет introSections, красным становится проверка, а не весь файл.
 const course = await import(pathToFileURL(resolve(ROOT, 'app/data/course.ts')).href)
 const lessons = course.lessons
-const introSections = course.introSections ?? []
+const introSections = course.introSections
 const sections = [...introSections, ...lessons]
 
 const readLocale = (name) => JSON.parse(readFileSync(resolve(ROOT, `i18n/locales/${name}.json`), 'utf8'))

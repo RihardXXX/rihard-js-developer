@@ -11,9 +11,9 @@ module.registerHooks({
 })
 const course = await import('../app/data/course.ts')
 // Разделы страницы курса: вводные без номера и нумерованные уроки.
-const sections = [...(course.introSections ?? []), ...course.lessons]
+const sections = [...course.introSections, ...course.lessons]
 
-// Все виды блоков и полей урока: данные курса могут ещё не содержать списков, таблиц и упражнений.
+// Все виды блоков и полей урока: образец не зависит от того, какие блоки сейчас есть в данных курса.
 const SAMPLE = [
   {
     slug: 'sample',

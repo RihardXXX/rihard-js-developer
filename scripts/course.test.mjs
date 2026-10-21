@@ -11,11 +11,7 @@ module.registerHooks({
   resolve: (specifier, context, next) =>
     next(/^\.\.?\//.test(specifier) && !/\.\w+$/.test(specifier) ? `${specifier}.ts` : specifier, context),
 })
-// Данные берём пространством имён: пока в course.ts нет introSections, красным становится
-// проверка вводных разделов, а не весь файл.
-const course = await import('../app/data/course.ts')
-const { lessons } = course
-const introSections = course.introSections ?? []
+const { lessons, introSections } = await import('../app/data/course.ts')
 // Все разделы страницы: вводные без номера и нумерованные уроки.
 const sections = [...introSections, ...lessons]
 
@@ -186,7 +182,8 @@ const codeBlocks = sections.flatMap((lesson) =>
 )
 
 // Код упражнений: заготовка (если есть) и решение.
-const exercisesOf = (section) => (Array.isArray(section.exercises) ? section.exercises : [])
+// У вводных разделов упражнений нет; что они есть у каждого урока, проверяет отдельный тест.
+const exercisesOf = (section) => section.exercises ?? []
 const exerciseCode = sections.flatMap((section) =>
   exercisesOf(section).flatMap((exercise, index) => {
     const part = (name, noun, genitive) => ({
@@ -285,19 +282,19 @@ const around = (text, at) => JSON.stringify(text.slice(Math.max(0, at - 25), at 
 
 test('вводные разделы: «Для кого» и «Кому не подойдёт» вынесены в introSections', () => {
   assert.ok(
-    Array.isArray(course.introSections),
+    Array.isArray(introSections),
     'в course.ts нет introSections: «Для кого» и «Кому не подойдёт» остаются уроками 01 и 02',
   )
   assert.deepEqual(
-    course.introSections.map((s) => s.slug).sort(),
+    introSections.map((s) => s.slug).sort(),
     [...INTRO_SLUGS].sort(),
     'вводными должны быть ровно for-whom и not-for-whom',
   )
 })
 
 test('вводные разделы: нет цели, «главного» и упражнений', () => {
-  assert.ok(Array.isArray(course.introSections), 'в course.ts нет introSections')
-  const extra = course.introSections.flatMap((s) =>
+  assert.ok(Array.isArray(introSections), 'в course.ts нет introSections')
+  const extra = introSections.flatMap((s) =>
     ['goal', 'summary', 'exercises'].filter((field) => field in s).map((field) => `${s.slug}.${field}`),
   )
   assert.deepEqual(extra, [], 'у вводного раздела не должно быть цели, «главного» и упражнений: это не урок')

@@ -8,8 +8,8 @@ const isEn = computed(() => locale.value !== 'ru')
 const tr = (text: LocalizedText) => (isEn.value ? text.en : text.ru)
 // Intro sections come without index: h2 without a number, their subheadings one level up.
 const intro = computed(() => props.index === undefined)
-// Goal, key points and exercises belong to numbered lessons; a field the lesson does not have yet is not rendered.
-const study = computed<Partial<Lesson> | undefined>(() => (intro.value ? undefined : props.lesson))
+// Goal, key points and exercises belong to numbered lessons: a lesson with an index is a Lesson.
+const study = computed(() => (intro.value ? undefined : (props.lesson as Lesson)))
 const exerciseLabel = (key: 'course.starterLabel' | 'course.solutionLabel', k: number) =>
   t(key, { n: k + 1, lesson: tr(props.lesson.title) })
 
@@ -26,7 +26,7 @@ const exampleLabel = (i: number) =>
       {{ isEn ? lesson.title.en : lesson.title.ru }}
     </component>
 
-    <p v-if="study?.goal" class="lesson__goal">
+    <p v-if="study" class="lesson__goal">
       <strong class="lesson__goal-label">{{ t('course.goal') }}</strong>
       {{ tr(study.goal) }}
     </p>
@@ -77,14 +77,14 @@ const exampleLabel = (i: number) =>
       <p v-else class="lesson__text">{{ isEn ? block.en : block.ru }}</p>
     </template>
 
-    <template v-if="study?.summary?.length">
+    <template v-if="study">
       <h4 class="lesson__heading">{{ t('course.summary') }}</h4>
       <ul class="lesson__list">
         <li v-for="(point, j) in study.summary" :key="j">{{ tr(point) }}</li>
       </ul>
     </template>
 
-    <template v-if="study?.exercises?.length">
+    <template v-if="study">
       <h4 class="lesson__heading">{{ t('course.exercises') }}</h4>
       <div
         v-for="(exercise, k) in study.exercises"
