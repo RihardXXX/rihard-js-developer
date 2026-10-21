@@ -187,7 +187,7 @@ fetchAllUsers()
     },
     {
       ru: "В примере задачу решает конвейер pipe из небольших функций: отобрать пользователей онлайн, затем старше 20 лет, взять первого и получить его имя.",
-      en: "In the example, the task is solved by a pipe pipeline of small functions: keep the users who are online, then those older than 20, take the first one and get their name.",
+      en: "In the example, the task is solved by a pipeline of small functions built with pipe: keep the users who are online, then those older than 20, take the first one and get their name.",
     },
     {
       ru: "head возвращает Maybe: Just (пользователь) или Nothing, если список пуст. fromMaybe достает значение из Maybe, а для Nothing подставляет запасное.",
