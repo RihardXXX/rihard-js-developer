@@ -1,7 +1,7 @@
 import { test } from 'node:test'
 import assert from 'node:assert/strict'
 import module from 'node:module'
-import { pickLocale } from '../app/utils/course-locale.ts'
+import { fillLocale, pickLocale } from '../app/utils/course-locale.ts'
 
 // Уроки лежат в app/data/lessons/*.ts, в course.ts импорты без расширения: дописываем .ts.
 // Типы Node стирает сам.
@@ -47,13 +47,14 @@ const SAMPLE = [
 
 const isPair = (value) => typeof value.ru === 'string' && typeof value.en === 'string'
 
-// Обходит исходник и результат параллельно: у пары ru/en строка своей локали та же, чужая пустая,
-// остальное (type, slug, pseudo, noRun, ordered, длины массивов) совпадает. Возвращает список расхождений.
-const diff = (source, picked, locale, path = '') => {
+// Обходит исходник и результат параллельно: у пары ru/en строка своей локали та же, чужая равна
+// otherOf(пара) (пустая для pickLocale), остальное (type, slug, pseudo, noRun, ordered, длины массивов)
+// совпадает. Возвращает список расхождений.
+const diff = (source, picked, locale, otherOf = () => '', path = '') => {
   const other = locale === 'ru' ? 'en' : 'ru'
   if (Array.isArray(source)) {
     if (!Array.isArray(picked) || picked.length !== source.length) return [`${path}: длина массива изменилась`]
-    return source.flatMap((item, i) => diff(item, picked[i], locale, `${path}[${i}]`))
+    return source.flatMap((item, i) => diff(item, picked[i], locale, otherOf, `${path}[${i}]`))
   }
   if (typeof source !== 'object' || source === null) {
     return Object.is(source, picked) ? [] : [`${path}: ${JSON.stringify(picked)} вместо ${JSON.stringify(source)}`]
@@ -64,11 +65,13 @@ const diff = (source, picked, locale, path = '') => {
   if (isPair(source)) {
     return [
       ...(picked[locale] === source[locale] ? [] : [`${path}.${locale}: текст своей локали изменился`]),
-      ...(picked[other] === '' ? [] : [`${path}.${other}: текст чужой локали остался`]),
-      ...keys.filter((k) => k !== 'ru' && k !== 'en').flatMap((k) => diff(source[k], picked[k], locale, `${path}.${k}`)),
+      ...(picked[other] === otherOf(source) ? [] : [`${path}.${other}: ${JSON.stringify(picked[other])} вместо ${JSON.stringify(otherOf(source))}`]),
+      ...keys
+        .filter((k) => k !== 'ru' && k !== 'en')
+        .flatMap((k) => diff(source[k], picked[k], locale, otherOf, `${path}.${k}`)),
     ]
   }
-  return keys.flatMap((k) => diff(source[k], picked[k], locale, `${path}.${k}`))
+  return keys.flatMap((k) => diff(source[k], picked[k], locale, otherOf, `${path}.${k}`))
 }
 
 const countPairs = (value) =>
@@ -96,6 +99,14 @@ for (const [name, data] of [
       const before = structuredClone(data)
       pickLocale(data, locale)
       assert.deepEqual(data, before, 'pickLocale испортил данные, из которых собирается страница другой локали')
+    })
+
+    // Пока язык переключается, старая страница на миг рисуется в новой локали: там должны быть её тексты, а не пустота.
+    test(`fillLocale(pickLocale(${name}, '${locale}')): чужая локаль повторяет свою, остальное как было`, () => {
+      const picked = pickLocale(data, locale)
+      const before = structuredClone(picked)
+      assert.deepEqual(diff(data, fillLocale(picked, locale), locale, (pair) => pair[locale]), [])
+      assert.deepEqual(picked, before, 'fillLocale испортил данные из payload')
     })
   }
 }

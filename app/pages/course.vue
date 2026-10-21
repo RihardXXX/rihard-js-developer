@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { pickLocale } from '~/utils/course-locale'
+import { fillLocale, pickLocale } from '~/utils/course-locale'
 
 const { t, locale } = useI18n()
 const localePath = useLocalePath()
@@ -14,8 +14,10 @@ const { data: course } = await useAsyncData(`course-${lang}`, async () => {
   const { introSections, lessons } = await import('~/data/course')
   return pickLocale({ introSections, lessons }, lang)
 })
-const introSections = computed(() => course.value?.introSections ?? [])
-const lessons = computed(() => course.value?.lessons ?? [])
+// i18n switches the locale before the new page's payload arrives; meanwhile this page shows its own texts.
+const sections = computed(() => fillLocale(course.value ?? { introSections: [], lessons: [] }, lang))
+const introSections = computed(() => sections.value.introSections)
+const lessons = computed(() => sections.value.lessons)
 
 useSeoMeta({
   title: () => t('course.title'),
