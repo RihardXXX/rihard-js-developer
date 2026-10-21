@@ -77,11 +77,11 @@ useSchemaOrg([
       </ol>
     </nav>
 
-    <CourseLesson :lesson="lesson" :index="number">
-      <template #after-title>
-        <CourseReadBadge :slug="lesson.slug" class="lesson-read" />
-      </template>
-    </CourseLesson>
+    <!-- The mark comes after mount; its line is in the HTML from the start, so the lesson doesn't move. -->
+    <div class="lesson-read">
+      <CourseReadBadge :slug="lesson.slug" />
+    </div>
+    <CourseLesson :lesson="lesson" :index="number" />
     <CourseReadToggle :slug="lesson.slug" class="lesson-read-toggle" />
 
     <section class="lesson-playground">
@@ -106,7 +106,7 @@ useSchemaOrg([
 
 <style scoped lang="scss">
 .crumbs {
-  margin-bottom: 3.2rem;
+  margin-bottom: 1.2rem;
   font-size: 1.5rem;
 
   &__list {
@@ -157,8 +157,12 @@ useSchemaOrg([
   margin-bottom: 2rem;
 }
 
+// as tall as the badge
 .lesson-read {
-  margin: -0.8rem 0 2rem;
+  display: flex;
+  align-items: center;
+  height: 2.4rem;
+  margin-bottom: 0.8rem;
 }
 
 .lesson-read-toggle {
