@@ -3,6 +3,10 @@ import type { Lesson } from '~/data/course-types'
 const lesson: Lesson = {
   slug: 'partial-application',
   title: { ru: "Частичное применение", en: "Partial application" },
+  description: {
+    ru: "Как частичное применение в JavaScript заранее фиксирует часть аргументов, чем оно отличается от каррирования и как написать свою функцию partial.",
+    en: "How partial application in JavaScript fixes some arguments in advance, how it differs from currying, and how to write your own partial function.",
+  },
   goal: {
     ru: "Понять, чем частичное применение отличается от каррирования, и научиться заранее фиксировать часть аргументов функции, чтобы получать из неё новые функции.",
     en: "Understand how partial application differs from currying, and learn to fix some of a function's arguments in advance to derive new functions from it.",

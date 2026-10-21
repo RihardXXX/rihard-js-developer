@@ -6,6 +6,10 @@ const lesson: Lesson = {
     ru: "Композиция функций",
     en: "Function composition",
   },
+  description: {
+    ru: "Композиция в JavaScript: compose вызывает функции справа налево, pipe — слева направо, а pipe для любого их числа пишется циклом, через reduce и рекурсией.",
+    en: "Composing JavaScript functions with compose (right to left) and pipe (left to right), and writing pipe for any number of functions: loop, reduce, recursion.",
+  },
   goal: {
     ru: "Понять, что такое композиция функций, и научиться собирать функции в конвейер с помощью compose и pipe — для трёх функций и для любого их числа.",
     en: "Understand what function composition is and learn to chain functions with compose and pipe, both for three functions and for any number of them.",

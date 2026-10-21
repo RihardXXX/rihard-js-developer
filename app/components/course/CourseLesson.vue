@@ -1,12 +1,13 @@
 <script setup lang="ts">
 import type { CourseSection, Lesson, LocalizedText } from '~/data/course-types'
 
-const props = defineProps<{ lesson: Lesson | CourseSection; index?: number; next?: CourseSection }>()
+const props = defineProps<{ lesson: Lesson | CourseSection; index?: number }>()
 const { t, locale } = useI18n()
 // Lesson content exists in RU and EN only; every non-Russian locale shows English.
 const isEn = computed(() => locale.value !== 'ru')
 const tr = (text: LocalizedText) => (isEn.value ? text.en : text.ru)
-// Intro sections come without index: h2 without a number, their subheadings one level up.
+// A lesson with an index is its own page: h1 with the number, h2 subheadings, h3 exercises.
+// Intro sections come without index on the contents page: h2 without a number, h3 subheadings.
 const intro = computed(() => props.index === undefined)
 // Goal, key points and exercises belong to numbered lessons: a lesson with an index is a Lesson.
 const study = computed(() => (intro.value ? undefined : (props.lesson as Lesson)))
@@ -20,11 +21,12 @@ const exampleLabel = (i: number) =>
 </script>
 
 <template>
-  <section :id="lesson.slug" class="lesson">
-    <component :is="intro ? 'h2' : 'h3'" class="lesson__title">
+  <section :id="lesson.slug" :class="['lesson', { 'lesson--page': !intro }]">
+    <component :is="intro ? 'h2' : 'h1'" class="lesson__title">
       <span v-if="!intro" class="lesson__num">{{ String(index).padStart(2, '0') }}</span>
       {{ isEn ? lesson.title.en : lesson.title.ru }}
     </component>
+    <slot name="after-title" />
 
     <p v-if="study" class="lesson__goal">
       <strong class="lesson__goal-label">{{ t('course.goal') }}</strong>
@@ -40,7 +42,7 @@ const exampleLabel = (i: number) =>
         :playground="!block.pseudo && !block.noRun"
         :pseudo="block.pseudo"
       />
-      <component :is="intro ? 'h3' : 'h4'" v-else-if="block.type === 'heading'" class="lesson__heading">
+      <component :is="intro ? 'h3' : 'h2'" v-else-if="block.type === 'heading'" class="lesson__heading">
         {{ tr(block) }}
       </component>
       <component
@@ -78,21 +80,21 @@ const exampleLabel = (i: number) =>
     </template>
 
     <template v-if="study">
-      <h4 class="lesson__heading">{{ t('course.summary') }}</h4>
+      <h2 class="lesson__heading">{{ t('course.summary') }}</h2>
       <ul class="lesson__list">
         <li v-for="(point, j) in study.summary" :key="j">{{ tr(point) }}</li>
       </ul>
     </template>
 
     <template v-if="study">
-      <h4 class="lesson__heading">{{ t('course.exercises') }}</h4>
+      <h2 class="lesson__heading">{{ t('course.exercises') }}</h2>
       <div
         v-for="(exercise, k) in study.exercises"
         :id="`${lesson.slug}-exercise-${k + 1}`"
         :key="k"
         class="exercise"
       >
-        <h5 class="exercise__title">{{ t('course.exercise', { n: k + 1 }) }}</h5>
+        <h3 class="exercise__title">{{ t('course.exercise', { n: k + 1 }) }}</h3>
         <p class="exercise__task">{{ tr(exercise.task) }}</p>
         <template v-if="exercise.starter">
           <p class="exercise__label">{{ t('course.starter') }}</p>
@@ -116,13 +118,6 @@ const exampleLabel = (i: number) =>
         </details>
       </div>
     </template>
-
-    <div v-if="!intro" class="lesson__nav">
-      <a href="#course-toc" class="lesson__link"><span aria-hidden="true">↑</span> {{ t('course.backToToc') }}</a>
-      <a v-if="next" :href="`#${next.slug}`" class="lesson__link lesson__link--next">
-        {{ t('course.nextLesson', { title: tr(next.title) }) }} <span aria-hidden="true">→</span>
-      </a>
-    </div>
   </section>
 </template>
 
@@ -133,6 +128,12 @@ const exampleLabel = (i: number) =>
   padding-top: 4rem;
   border-top: 1px solid var(--border);
 
+  // the lesson is the page: no rule above it, the title sized like the course title
+  &--page {
+    padding-top: 0;
+    border-top: none;
+  }
+
   &__title {
     display: flex;
     align-items: baseline;
@@ -141,6 +142,11 @@ const exampleLabel = (i: number) =>
     font-size: clamp(2.2rem, 3vw, 2.8rem);
     font-weight: 700;
     color: var(--text-color);
+  }
+
+  &--page &__title {
+    font-size: clamp(2.8rem, 4vw, 4rem);
+    font-weight: 800;
   }
 
   &__num {
@@ -250,35 +256,6 @@ const exampleLabel = (i: number) =>
 
     td {
       color: var(--text-muted);
-    }
-  }
-
-  &__nav {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-between;
-    gap: 1.2rem 2.4rem;
-    margin-top: 3.2rem;
-  }
-
-  &__link {
-    font-size: 1.5rem;
-    font-weight: 600;
-    color: var(--text-muted);
-    transition: color $transition;
-
-    &:hover {
-      color: var(--accent);
-    }
-
-    &--next {
-      color: var(--accent);
-    }
-
-    // a finger-sized target on touch screens
-    @media (pointer: coarse) {
-      display: inline-block;
-      padding: 1rem 0;
     }
   }
 }

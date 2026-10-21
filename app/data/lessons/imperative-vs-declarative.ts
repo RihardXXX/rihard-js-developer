@@ -3,6 +3,10 @@ import type { Lesson } from '~/data/course-types'
 const lesson: Lesson = {
   slug: 'imperative-vs-declarative',
   title: { ru: "Императивность и декларативность", en: "Imperative vs declarative" },
+  description: {
+    ru: "Чем императивный код отличается от декларативного в JavaScript: как заменить цикл с push на filter с предикатом и поднять уровень абстракции через filterBy.",
+    en: "How imperative code differs from declarative in JavaScript: swapping a loop with push for filter and a predicate, then raising the abstraction with filterBy.",
+  },
   goal: {
     ru: "Понять разницу между императивным кодом, который говорит, как вы это делаете, и декларативным, который говорит, что делает код, и научиться переписывать цикл через filter и предикат.",
     en: "Understand the difference between imperative code, which tells you how you do it, and declarative code, which tells you what the code does, and learn to rewrite a loop with filter and a predicate.",

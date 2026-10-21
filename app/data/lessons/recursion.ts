@@ -3,6 +3,10 @@ import type { Lesson } from '~/data/course-types'
 const lesson: Lesson = {
   slug: 'recursion',
   title: { ru: "Рекурсия", en: "Recursion" },
+  description: {
+    ru: "Базовый и рекурсивный случай в JavaScript, переполнение стека при глубокой рекурсии, почему на хвостовые вызовы не рассчитывают и чем помогает трамплин.",
+    en: "Base and recursive cases in JavaScript, stack overflow in deep recursion, why not to rely on tail calls, and how a trampoline keeps the stack from growing.",
+  },
   goal: {
     ru: "Научиться писать рекурсивные функции с базовым и рекурсивным случаем и понять, почему глубокая рекурсия в JS переполняет стек и как этого избежать с помощью трамплина.",
     en: "Learn to write recursive functions with a base case and a recursive case, and understand why deep recursion in JS overflows the stack and how a trampoline avoids it.",

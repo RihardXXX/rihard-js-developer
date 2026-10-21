@@ -6,15 +6,19 @@ const lesson: Lesson = {
     ru: "Vanilla JS, Lodash, Ramda, Sanctuary -> что выбрать",
     en: "Vanilla JS, Lodash, Ramda, Sanctuary -> which one to choose",
   },
+  description: {
+    ru: "Как выбрать библиотеку для ФП в JavaScript и TypeScript: Vanilla JS, Lodash, Ramda, Sanctuary, fp-ts или Effect — по бюджету, этапу, команде и качеству.",
+    en: "How to choose a library for FP in JavaScript and TypeScript: Vanilla JS, Lodash, Ramda, Sanctuary, fp-ts or Effect, by budget, stage, team and quality.",
+  },
   goal: {
-    ru: "Научиться выбирать между Vanilla JS, Lodash, Ramda и Sanctuary по критериям проекта и команды — бюджету, этапу, команде, качеству, производительности и парадигме, — а не по вкусу и моде.",
-    en: "Learn to choose between Vanilla JS, Lodash, Ramda and Sanctuary by the criteria of the project and the team (budget, stage, team, quality, performance and paradigm) rather than by taste or fashion.",
+    ru: "Научиться выбирать между Vanilla JS, Lodash, Ramda, Sanctuary, fp-ts и Effect по критериям проекта и команды — бюджету, этапу, команде, качеству, производительности и парадигме, — а не по вкусу и моде.",
+    en: "Learn to choose between Vanilla JS, Lodash, Ramda, Sanctuary, fp-ts and Effect by the criteria of the project and the team (budget, stage, team, quality, performance and paradigm) rather than by taste or fashion.",
   },
   blocks: [
     {
       type: 'text',
-      ru: "Когда перед вами стоит выбор, что выбрать из выше описанных библиотек или ванильного решения, не стоит опираться на следующие принципы, которые я часто встречал в своей практике при коммерческой разработке. Не стоит придерживаться следующего:",
-      en: "When you face the choice of which of the libraries described above, or a vanilla solution, to pick, you should not rely on the following principles, which I have often encountered in my own commercial development practice. You should not stick to the following:",
+      ru: "Когда перед вами стоит выбор, что выбрать из библиотек, описанных в курсе и ниже, или ванильного решения, не стоит опираться на следующие принципы, которые я часто встречал в своей практике при коммерческой разработке. Не стоит придерживаться следующего:",
+      en: "When you face the choice of which of the libraries described in the course and below, or a vanilla solution, to pick, you should not rely on the following principles, which I have often encountered in my own commercial development practice. You should not stick to the following:",
     },
     {
       type: 'list',
@@ -92,8 +96,8 @@ const lesson: Lesson = {
           en: "How far along the project is, percentage-wise, or whether it is just at the beginning. When the project was already started earlier in JS and has passed the horizon and the home stretch.",
         },
         {
-          ru: "Кто работает с тобой в команде и сколько вас человек. Для малых команд с глубокими знаниями в JS. Порой это будет эффективнее, чем большие команды с поверхностными знаниями в JS, которые рассчитывают, что TypeScript сам защитит их от ошибок.",
-          en: "Who works with you on the team and how many of you there are. For small teams with deep knowledge of JS. At times this will be more effective than large teams with shallow knowledge of JS who count on TypeScript alone to protect them from errors.",
+          ru: "Кто работает с тобой в команде и сколько вас человек. Для малых команд с глубокими знаниями JS. Порой такая команда работает эффективнее большой, где язык знают поверхностно. Глубокое знание JS нужно и в проектах на TypeScript: типы проверяются при компиляции и сами по себе не защищают от ошибок в данных, которые приходят во время выполнения.",
+          en: "Who works with you on the team and how many of you there are. For small teams with deep knowledge of JS. At times such a team works more effectively than a large one where the language is known only superficially. Deep knowledge of JS matters in TypeScript projects too: types are checked at compile time and on their own do not protect against errors in data that arrives at runtime.",
         },
         {
           ru: "Качество продукта. Зависит от команды, сроков и бюджета, зачастую невысокое.",
@@ -216,6 +220,81 @@ const lesson: Lesson = {
     },
     {
       type: 'text',
+      ru: "Следующие две библиотеки рассчитаны на TypeScript. Из JavaScript их тоже можно вызывать, но основную пользу они дают вместе с проверкой типов: отсутствие значения и возможные ошибки видны в типах, и компилятор проверяет, как код с ними обращается.",
+      en: "The next two libraries are designed for TypeScript. They can be called from JavaScript as well, but most of their value comes with type checking: a missing value and possible errors show up in the types, and the compiler checks how the code deals with them.",
+    },
+    {
+      type: 'heading',
+      ru: "fp-ts",
+      en: "fp-ts",
+    },
+    {
+      type: 'list',
+      ordered: true,
+      items: [
+        {
+          ru: "Бюджет. Подходит для проектов среднего и крупного масштаба с бюджетом не ниже среднего: команде нужно время на обучение.",
+          en: "Budget. Suitable for medium and large projects with at least an average budget: the team needs time to learn it.",
+        },
+        {
+          ru: "Насколько % проект завершён или он находится в начале. Прежде всего для проектов, где fp-ts уже используется. Новым пользователям README fp-ts предлагает смотреть на Effect как на преемника fp-ts v2.",
+          en: "How far along the project is, percentage-wise, or whether it is just at the beginning. Above all for projects that already use fp-ts. For new users, the fp-ts README points to Effect as the successor to fp-ts v2.",
+        },
+        {
+          ru: "Кто работает с тобой в команде и сколько вас человек. Для команд любого размера, которые пишут на TypeScript и профессионально используют функциональное программирование: нужно понимать Option, Either, Task и классы типов, например функтор и монаду.",
+          en: "Who works with you on the team and how many of you there are. For teams of any size who write TypeScript and use functional programming professionally: you need to understand Option, Either, Task and type classes such as functor and monad.",
+        },
+        {
+          ru: "Качество продукта. Качество продукта, как правило, высокое: отсутствие значения и ошибки видны в типах Option и Either, и компилятор напоминает обработать оба случая.",
+          en: "Product quality. The product quality is, as a rule, high: a missing value and errors show up in the Option and Either types, and the compiler reminds you to handle both cases.",
+        },
+        {
+          ru: "Перфоманс. Будет ниже ванилы при аналогичном коде: значения заворачиваются в Option и Either, а шаги pipe — это дополнительные вызовы функций. Модули подключаются по отдельности (fp-ts/Option, fp-ts/Either), всю библиотеку тянуть не нужно.",
+          en: "Performance. It will be lower than vanilla given equivalent code: values are wrapped in Option and Either, and the steps of pipe are extra function calls. Modules are imported one by one (fp-ts/Option, fp-ts/Either), so there is no need to pull in the whole library.",
+        },
+        {
+          ru: "Парадигма функционального программирования. Полноценное и строгое типизированное функциональное программирование по образцу Haskell, PureScript и Scala: классы типов и эмуляция типов высших родов (higher-kinded types), которые TypeScript сам не поддерживает. Высокий порог входа. Проект fp-ts объявил о слиянии с экосистемой Effect, а его автор, Джулио Канти, присоединился к организации Effect. Учтите, что последний релиз fp-ts, 2.16.11, вышел 18 августа 2025 года (по данным реестра npm на октябрь 2026 года).",
+          en: "The functional programming paradigm. Full-fledged and strict typed functional programming modelled on Haskell, PureScript and Scala: type classes and an emulation of higher-kinded types, which TypeScript does not support natively. A high barrier to entry. The fp-ts project has announced that it is merging with the Effect ecosystem, and its author, Giulio Canti, has joined the Effect organization. Keep in mind that the latest fp-ts release, 2.16.11, came out on August 18, 2025 (according to the npm registry as of October 2026).",
+        },
+      ],
+    },
+    {
+      type: 'heading',
+      ru: "Effect",
+      en: "Effect",
+    },
+    {
+      type: 'list',
+      ordered: true,
+      items: [
+        {
+          ru: "Бюджет. Подходит для проектов среднего и крупного масштаба, где цена ошибки высока и есть время на обучение команды.",
+          en: "Budget. Suitable for medium and large projects where the cost of an error is high and there is time to train the team.",
+        },
+        {
+          ru: "Насколько % проект завершён или он находится в начале. Лучше всего на начальном этапе. В готовый проект Effect можно вводить постепенно: Effect.runPromise возвращает обычный Promise, поэтому новый код уживается со старым.",
+          en: "How far along the project is, percentage-wise, or whether it is just at the beginning. Best at the early stage. Effect can be brought into an existing project gradually: Effect.runPromise returns an ordinary Promise, so the new code gets along with the old.",
+        },
+        {
+          ru: "Кто работает с тобой в команде и сколько вас человек. Для команд любого размера, которые пишут на TypeScript и готовы освоить новую модель: тип Effect<A, E, R>, генераторы Effect.gen, сервисы и слои (Layer). Теорию категорий знать не обязательно: код в Effect.gen читается последовательно, почти как async/await.",
+          en: "Who works with you on the team and how many of you there are. For teams of any size who write TypeScript and are ready to learn a new model: the Effect<A, E, R> type, Effect.gen generators, services and layers (Layer). Category theory is not required: code inside Effect.gen reads sequentially, much like async/await.",
+        },
+        {
+          ru: "Качество продукта. Качество продукта, как правило, высокое: возможные ошибки и нужные зависимости видны в типе Effect<A, E, R>, а повторы, тайм-ауты, отмена и конкурентность встроены в библиотеку.",
+          en: "Product quality. The product quality is, as a rule, high: possible errors and required dependencies show up in the Effect<A, E, R> type, and retries, timeouts, cancellation and concurrency are built into the library.",
+        },
+        {
+          ru: "Перфоманс. Будет ниже ванилы при аналогичном коде: программы выполняет собственный рантайм Effect на файберах. Неиспользуемые модули отсекаются при сборке (tree shaking), а в версии 4 рантайм переписан и бандл заметно уменьшен.",
+          en: "Performance. It will be lower than vanilla given equivalent code: programs are run by Effect's own fiber-based runtime. Unused modules are dropped at build time (tree shaking), and version 4 rewrote the runtime and noticeably reduced the bundle size.",
+        },
+        {
+          ru: "Парадигма функционального программирования. Полноценное и строгое типизированное функциональное программирование, нацеленное на продакшен. Эффекты — это значения: Effect только описывает работу и ничего не делает, пока его не запустит рантайм, а возможные ошибки и нужные зависимости записаны в типе Effect<A, E, R>. Кроме того, в библиотеку входят конкурентность на файберах и Schema для проверки данных во время выполнения. Высокий порог входа, но другого рода, чем у fp-ts: осваивать нужно не классы типов, а модель эффектов и большой API. По README fp-ts, Effect можно считать преемником fp-ts v2. Текущая мажорная версия — 4: Effect 4.0.0 вышел 1 октября 2026 года, а ветка 3.x ещё получает исправления (по данным реестра npm на октябрь 2026 года).",
+          en: "The functional programming paradigm. Full-fledged and strict typed functional programming aimed at production. Effects are values: an Effect only describes the work and does nothing until the runtime runs it, and possible errors and required dependencies are recorded in the Effect<A, E, R> type. On top of that come fiber-based concurrency and Schema for validating data at runtime. A high barrier to entry, but of a different kind than with fp-ts: you learn the effect model and a large API rather than type classes. According to the fp-ts README, Effect can be regarded as the successor to fp-ts v2. The current major version is 4: Effect 4.0.0 came out on October 1, 2026, and the 3.x line still receives fixes (according to the npm registry as of October 2026).",
+        },
+      ],
+    },
+    {
+      type: 'text',
       ru: "Можно себе представить приверженность к функциональному программированию.",
       en: "One can picture the degree of commitment to functional programming.",
     },
@@ -223,6 +302,11 @@ const lesson: Lesson = {
       type: 'text',
       ru: "Vanilla JS (присутствует) -> Lodash (не полноценное) -> Ramda (полноценное) -> Sanctuary (полноценное и строгое)",
       en: "Vanilla JS (present) -> Lodash (not full-fledged) -> Ramda (full-fledged) -> Sanctuary (full-fledged and strict)",
+    },
+    {
+      type: 'text',
+      ru: "В TypeScript рядом с ними стоят fp-ts (полноценное и строгое, на классах типов) и Effect (полноценное и строгое, с эффектами и ошибками в типах).",
+      en: "In TypeScript they are joined by fp-ts (full-fledged and strict, built on type classes) and Effect (full-fledged and strict, with effects and errors in the types).",
     },
     {
       type: 'table',
@@ -233,6 +317,8 @@ const lesson: Lesson = {
         { ru: "Lodash", en: "Lodash" },
         { ru: "Ramda", en: "Ramda" },
         { ru: "Sanctuary", en: "Sanctuary" },
+        { ru: "fp-ts", en: "fp-ts" },
+        { ru: "Effect", en: "Effect" },
       ],
       rows: [
         [
@@ -241,6 +327,8 @@ const lesson: Lesson = {
           { ru: "Любой", en: "Any" },
           { ru: "Любой", en: "Any" },
           { ru: "Средний / Высокий", en: "Medium / High" },
+          { ru: "Средний / Высокий", en: "Medium / High" },
+          { ru: "Средний / Высокий", en: "Medium / High" },
         ],
         [
           { ru: "Этап проекта", en: "Project stage" },
@@ -248,6 +336,8 @@ const lesson: Lesson = {
           { ru: "Начальный", en: "Early" },
           { ru: "Любой", en: "Any" },
           { ru: "Начальный", en: "Early" },
+          { ru: "Если fp-ts уже в проекте", en: "If fp-ts is already in use" },
+          { ru: "Начальный или любой (постепенно)", en: "Early, or any (gradually)" },
         ],
         [
           { ru: "Размер команды", en: "Team size" },
@@ -255,11 +345,15 @@ const lesson: Lesson = {
           { ru: "Любая", en: "Any" },
           { ru: "Любая", en: "Any" },
           { ru: "Любая (профи)", en: "Any (pros)" },
+          { ru: "Любая (профи, TS)", en: "Any (pros, TS)" },
+          { ru: "Любая (TS)", en: "Any (TS)" },
         ],
         [
           { ru: "Качество", en: "Quality" },
           { ru: "Среднее", en: "Medium" },
           { ru: "Среднее", en: "Medium" },
+          { ru: "Высокое", en: "High" },
+          { ru: "Высокое", en: "High" },
           { ru: "Высокое", en: "High" },
           { ru: "Высокое", en: "High" },
         ],
@@ -269,12 +363,16 @@ const lesson: Lesson = {
           { ru: "3 из 5", en: "3 out of 5" },
           { ru: "2 из 5", en: "2 out of 5" },
           { ru: "2 из 5", en: "2 out of 5" },
+          { ru: "2 из 5", en: "2 out of 5" },
+          { ru: "2 из 5", en: "2 out of 5" },
         ],
         [
           { ru: "Строгость ФП", en: "FP strictness" },
           { ru: "1 из 5", en: "1 out of 5" },
           { ru: "2 из 5", en: "2 out of 5" },
           { ru: "3 из 5", en: "3 out of 5" },
+          { ru: "4 из 5", en: "4 out of 5" },
+          { ru: "4 из 5", en: "4 out of 5" },
           { ru: "4 из 5", en: "4 out of 5" },
         ],
         [
@@ -283,6 +381,8 @@ const lesson: Lesson = {
           { ru: "Низкий", en: "Low" },
           { ru: "Средний", en: "Medium" },
           { ru: "Высокий", en: "High" },
+          { ru: "Высокий", en: "High" },
+          { ru: "Высокий", en: "High" },
         ],
         [
           { ru: "Философия", en: "Philosophy" },
@@ -290,6 +390,8 @@ const lesson: Lesson = {
           { ru: "Утилитарность", en: "Utility" },
           { ru: "Практичное ФП", en: "Practical FP" },
           { ru: "Академичное ФП", en: "Academic FP" },
+          { ru: "ФП в духе Haskell", en: "Haskell-style FP" },
+          { ru: "ФП для продакшена", en: "FP for production" },
         ],
       ],
     },
@@ -312,8 +414,8 @@ const lesson: Lesson = {
       en: "Lodash is not entirely functional: there are problems with immutability, and its functions take the data first and only then the function, which gets in the way of composition. The lodash/fp module removes these problems: its functions are curried, do not mutate the data and take it as the last argument.",
     },
     {
-      ru: "По приверженности к функциональному программированию варианты выстраиваются так: Vanilla JS (присутствует) -> Lodash (не полноценное) -> Ramda (полноценное) -> Sanctuary (полноценное и строгое).",
-      en: "By commitment to functional programming the options line up like this: Vanilla JS (present) -> Lodash (not full-fledged) -> Ramda (full-fledged) -> Sanctuary (full-fledged and strict).",
+      ru: "По приверженности к функциональному программированию варианты выстраиваются так: Vanilla JS (присутствует) -> Lodash (не полноценное) -> Ramda (полноценное) -> Sanctuary (полноценное и строгое). В TypeScript к ним добавляются fp-ts и Effect, а README fp-ts предлагает считать Effect преемником fp-ts v2.",
+      en: "By commitment to functional programming the options line up like this: Vanilla JS (present) -> Lodash (not full-fledged) -> Ramda (full-fledged) -> Sanctuary (full-fledged and strict). In TypeScript they are joined by fp-ts and Effect, and according to the fp-ts README, Effect can be regarded as the successor to fp-ts v2.",
     },
   ],
   exercises: [

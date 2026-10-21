@@ -171,7 +171,20 @@
     "exampleLabel": "Пример {n}, урок «{lesson}»",
     "starterLabel": "Заготовка упражнения {n}, урок «{lesson}»",
     "solutionLabel": "Решение упражнения {n}, урок «{lesson}»",
-    "editorLabel": "Редактор кода песочницы"
+    "editorLabel": "Редактор кода песочницы",
+    "home": "Главная",
+    "breadcrumbs": "Навигационная цепочка",
+    "lessonNav": "Навигация по урокам",
+    "prevLesson": "Предыдущий урок: {title}",
+    "read": "Пройден",
+    "markRead": "Отметить урок пройденным",
+    "unmarkRead": "Снять отметку «пройден»",
+    "progressCount": "Пройдено {done} из {total}",
+    "progressContinue": "Продолжить: {title}",
+    "progressStart": "Начать с первого урока",
+    "progressReset": "Сбросить прогресс",
+    "progressResetConfirm": "Сбросить отметки о пройденных уроках?",
+    "progressNote": "Прогресс хранится только в этом браузере."
   },
   "certificates": {
     "eyebrow": "Обучение",

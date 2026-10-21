@@ -3,6 +3,10 @@ import type { Lesson } from '~/data/course-types'
 const lesson: Lesson = {
   slug: 'functional-programming',
   title: { ru: "Функциональное программирование", en: "Functional programming" },
+  description: {
+    ru: "Что такое функциональное программирование в JavaScript: чистые функции, конвейер pipe из небольших функций, Maybe из head и fromMaybe в Sanctuary.",
+    en: "What functional programming means in JavaScript: pure functions, a pipeline of small functions with pipe, and Maybe from head and fromMaybe in Sanctuary.",
+  },
   goal: {
     ru: "Понять, что такое функциональное программирование: декларативная разработка на основе чистых функций, в которой задача решается конвейером из небольших функций.",
     en: "Understand what functional programming is: declarative development based on pure functions, in which a task is solved by a pipeline of small functions.",

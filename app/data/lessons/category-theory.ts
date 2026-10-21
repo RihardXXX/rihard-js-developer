@@ -6,6 +6,10 @@ const lesson: Lesson = {
     ru: "Теория категорий",
     en: "Category theory",
   },
+  description: {
+    ru: "Основы теории категорий для JavaScript-разработчика: типы как объекты, функции как морфизмы и два закона композиции — тождество и ассоциативность.",
+    en: "Category theory basics for JavaScript developers: types as objects, functions as morphisms, and the composition laws of identity and associativity.",
+  },
   goal: {
     ru: "Понять, что такое категория в программировании — типы как объекты и функции как морфизмы — и какие два закона выполняет их композиция.",
     en: "Understand what a category is in programming, with types as objects and functions as morphisms, and which two laws their composition obeys.",

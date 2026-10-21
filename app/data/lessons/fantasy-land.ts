@@ -6,6 +6,10 @@ const lesson: Lesson = {
     ru: "Fantasy-land (Страна фантазий)",
     en: "Fantasy-land",
   },
+  description: {
+    ru: "Что описывает спецификация Fantasy-land и как реализовать по ней функтор на JavaScript: метод fantasy-land/map и два закона — тождество и композиция.",
+    en: "What the Fantasy Land specification describes and how to implement a JavaScript functor with fantasy-land/map that obeys the identity and composition laws.",
+  },
   goal: {
     ru: "Понять, что такое спецификация Fantasy-land, и научиться реализовывать по ней функтор: метод fantasy-land/map и два закона, которые функтор должен соблюдать.",
     en: "Understand what the Fantasy Land specification is and learn to implement a functor according to it: the fantasy-land/map method and the two laws a functor must obey.",

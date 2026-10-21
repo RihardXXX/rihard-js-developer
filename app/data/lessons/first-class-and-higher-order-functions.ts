@@ -6,6 +6,10 @@ const lesson: Lesson = {
     ru: "Функции первого класса и высшего порядка",
     en: "First-class and higher-order functions",
   },
+  description: {
+    ru: "Функции первого класса как свойство JavaScript и функции высшего порядка, которые принимают или возвращают функции: map, HOC в React и слоты во Vue.",
+    en: "First-class functions as a property of JavaScript, and higher-order functions that take or return functions: map, React HOCs and Vue slots.",
+  },
   goal: {
     ru: "Понять разницу между функциями первого класса — свойством языка — и функциями высшего порядка, которые принимают или возвращают функции, и научиться писать свои функции высшего порядка.",
     en: "Understand the difference between first-class functions, a property of the language, and higher-order functions, which take or return functions, and learn to write your own higher-order functions.",
