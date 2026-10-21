@@ -37,7 +37,7 @@ const useFetch = baseFetch (BASE_URL)
 // создадим две специализированные функции
 // получение списка всех пользователей
 const getAllUser = useFetch ('all-users')
-// получения списка всех книг
+// получение списка всех книг
 const getAllBooks = useFetch ('all-books')
 
 // дальше можем вызывать функции и получать данные
@@ -52,23 +52,23 @@ const xFetch = (baseUrl) =>
           (params) =>
           (config = {}) =>
             fetch(\`\${baseUrl}/\${params}\`, {
-              ...headers,
               ...config,
+              // общие заголовки с токеном объединяем с заголовками запроса,
+              // чтобы config.headers не заменил их целиком
+              headers: { ...headers, ...config.headers },
             })
 
 const token = 'xxx'
-// для работы с базовым url и установка заголовком сразу
+// для работы с базовым url и сразу с заголовками
 const useXFetch = xFetch (BASE_URL) ({
-  headers: {
-      'Content-Type': 'application/json',
-      'authorization': \`Bearer \${token}\`,
-    }
+  'Content-Type': 'application/json',
+  'authorization': \`Bearer \${token}\`,
 })
 
 // создадим две специализированные функции
 // получение списка всех пользователей
 const getAllUserX = useXFetch ('all-users')
-// получения списка всех книг
+// получение списка всех книг
 const getAllBooksX = useXFetch ('all-books')`,
         en: `//  Давайте создадим базовую функцию для запросов
 // baseFetch :: String -> String -> a -> Promise
@@ -85,7 +85,7 @@ const useFetch = baseFetch (BASE_URL)
 // создадим две специализированные функции
 // получение списка всех пользователей
 const getAllUser = useFetch ('all-users')
-// получения списка всех книг
+// получение списка всех книг
 const getAllBooks = useFetch ('all-books')
 
 // дальше можем вызывать функции и получать данные
@@ -100,23 +100,23 @@ const xFetch = (baseUrl) =>
           (params) =>
           (config = {}) =>
             fetch(\`\${baseUrl}/\${params}\`, {
-              ...headers,
               ...config,
+              // общие заголовки с токеном объединяем с заголовками запроса,
+              // чтобы config.headers не заменил их целиком
+              headers: { ...headers, ...config.headers },
             })
 
 const token = 'xxx'
-// для работы с базовым url и установка заголовком сразу
+// для работы с базовым url и сразу с заголовками
 const useXFetch = xFetch (BASE_URL) ({
-  headers: {
-      'Content-Type': 'application/json',
-      'authorization': \`Bearer \${token}\`,
-    }
+  'Content-Type': 'application/json',
+  'authorization': \`Bearer \${token}\`,
 })
 
 // создадим две специализированные функции
 // получение списка всех пользователей
 const getAllUserX = useXFetch ('all-users')
-// получения списка всех книг
+// получение списка всех книг
 const getAllBooksX = useXFetch ('all-books')`,
       },
     },
@@ -137,7 +137,7 @@ const getAllBooksX = useXFetch ('all-books')`,
 
 // создадим функцию для запросов на основе XMLHttpRequest
 // он на событиях без промисов
-// можно конечно обернуть в промисы, но сейчас у нас тема каррирование))
+// можно, конечно, обернуть в промисы, но сейчас у нас тема — каррирование
 
 const fetchXML = (url, callback) => {
   const req = new XMLHttpRequest()
@@ -156,8 +156,10 @@ const fetchXML = (url, callback) => {
 // 2. По слагу сделаем запрос и получим список отзывов,
 // 3. Берем слаг последнего отзыва (первый в списке) и делаем запрос
 // 4. Получаем подробную информацию об отзыве, берем оттуда текст
+// API: /reviews/<слаг пользователя> отдаёт массив отзывов (свежий — первый),
+// /review-info/<слаг отзыва> — отзыв с полем text
 
-// текс который покажем
+// текст, который покажем
 var textReview = ''
 
 // используем делегирование на всем контейнере с кнопками
@@ -166,7 +168,7 @@ document.getElementById('users-wrapper')
     // получаем элемент
     const el = e.target
 
-    // если кнопка не с пользователем но игнорим клик
+    // если клик не по кнопке пользователя, игнорируем его
     if(!el.classList.contains('user-btn')) {
       return
     }
@@ -180,18 +182,13 @@ document.getElementById('users-wrapper')
     }
 
     // получаем список отзывов по слагу пользователя
-    fetchXML('https://example.com/reviews/' + slugUser, (data) => {
-      // получаем список пользователей
-      const reviews = data.reviews
-
+    fetchXML('https://example.com/reviews/' + slugUser, (reviews) => {
       // получаем слаг последнего отзыва
       const slugFirstReview = reviews[0].slug
 
       // делаем запрос и получаем подробную информацию по отзыву
-      fetchXML('https://example.com/review/' + slugFirstReview, (data) => {
-        const review = data.review
-
-        textReview = review
+      fetchXML('https://example.com/review-info/' + slugFirstReview, (review) => {
+        textReview = review.text
       })
     })
   })`,
@@ -199,7 +196,7 @@ document.getElementById('users-wrapper')
 
 // создадим функцию для запросов на основе XMLHttpRequest
 // он на событиях без промисов
-// можно конечно обернуть в промисы, но сейчас у нас тема каррирование))
+// можно, конечно, обернуть в промисы, но сейчас у нас тема — каррирование
 
 const fetchXML = (url, callback) => {
   const req = new XMLHttpRequest()
@@ -218,8 +215,10 @@ const fetchXML = (url, callback) => {
 // 2. По слагу сделаем запрос и получим список отзывов,
 // 3. Берем слаг последнего отзыва (первый в списке) и делаем запрос
 // 4. Получаем подробную информацию об отзыве, берем оттуда текст
+// API: /reviews/<слаг пользователя> отдаёт массив отзывов (свежий — первый),
+// /review-info/<слаг отзыва> — отзыв с полем text
 
-// текс который покажем
+// текст, который покажем
 var textReview = ''
 
 // используем делегирование на всем контейнере с кнопками
@@ -228,7 +227,7 @@ document.getElementById('users-wrapper')
     // получаем элемент
     const el = e.target
 
-    // если кнопка не с пользователем но игнорим клик
+    // если клик не по кнопке пользователя, игнорируем его
     if(!el.classList.contains('user-btn')) {
       return
     }
@@ -242,18 +241,13 @@ document.getElementById('users-wrapper')
     }
 
     // получаем список отзывов по слагу пользователя
-    fetchXML('https://example.com/reviews/' + slugUser, (data) => {
-      // получаем список пользователей
-      const reviews = data.reviews
-
+    fetchXML('https://example.com/reviews/' + slugUser, (reviews) => {
       // получаем слаг последнего отзыва
       const slugFirstReview = reviews[0].slug
 
       // делаем запрос и получаем подробную информацию по отзыву
-      fetchXML('https://example.com/review/' + slugFirstReview, (data) => {
-        const review = data.review
-
-        textReview = review
+      fetchXML('https://example.com/review-info/' + slugFirstReview, (review) => {
+        textReview = review.text
       })
     })
   })`,
@@ -279,9 +273,9 @@ document.getElementById('users-wrapper')
 
 // создадим функцию для запросов на основе XMLHttpRequest
 // он на событиях без промисов
-// можно конечно обернуть в промисы, но сейчас у нас тема каррирование))
+// можно, конечно, обернуть в промисы, но сейчас у нас тема — каррирование
 
-// fetchXML :: String -> String -> String -> (a -> b) -> c
+// fetchXML :: String -> String -> String -> (a -> *) -> XMLHttpRequest
 const fetchXML = (baseUrl) => (params) => (id) => (callback) => {
   const req = new XMLHttpRequest()
   req.addEventListener('load', () => callback(JSON.parse(req.responseText)))
@@ -308,9 +302,9 @@ const getReviews = fetchBaseUrl(REVIEWS)
 // функция для получения подробностей по опред отзыву
 const getReviewInfo = fetchBaseUrl(REVIEW_INFO)
 
-// теперь создадим хелпер для сообщения клик
+// теперь создадим хелпер для события click
 // чтобы вызывать в композиции функций
-// clickElement :: a -> (a -> *) -> *
+// clickElement :: Element -> (Event -> *) -> Undefined
 const clickElement = (element) =>
                       (callback) =>
                         element.addEventListener('click', callback)
@@ -321,6 +315,8 @@ const clickElement = (element) =>
 // 2. По слагу сделаем запрос и получим список отзывов,
 // 3. Берем слаг последнего отзыва (первый в списке) и делаем запрос
 // 4. Получаем подробную информацию об отзыве, берем оттуда текст
+// API: /reviews/<слаг пользователя> отдаёт массив отзывов (свежий — первый),
+// /review-info/<слаг отзыва> — отзыв с полем text
 
 // head :: [a] -> a
 const head = (arr) => arr[0]
@@ -328,7 +324,7 @@ const head = (arr) => arr[0]
 // prop :: String -> a -> b
 const prop = (prop) => (obj) => obj[prop]
 
-// текс который покажем
+// текст, который покажем
 var textReview = ''
 
 // получаем контейнер с кнопками
@@ -356,9 +352,9 @@ clickElement (btnWrapper) (pipe(
 
 // создадим функцию для запросов на основе XMLHttpRequest
 // он на событиях без промисов
-// можно конечно обернуть в промисы, но сейчас у нас тема каррирование))
+// можно, конечно, обернуть в промисы, но сейчас у нас тема — каррирование
 
-// fetchXML :: String -> String -> String -> (a -> b) -> c
+// fetchXML :: String -> String -> String -> (a -> *) -> XMLHttpRequest
 const fetchXML = (baseUrl) => (params) => (id) => (callback) => {
   const req = new XMLHttpRequest()
   req.addEventListener('load', () => callback(JSON.parse(req.responseText)))
@@ -385,9 +381,9 @@ const getReviews = fetchBaseUrl(REVIEWS)
 // функция для получения подробностей по опред отзыву
 const getReviewInfo = fetchBaseUrl(REVIEW_INFO)
 
-// теперь создадим хелпер для сообщения клик
+// теперь создадим хелпер для события click
 // чтобы вызывать в композиции функций
-// clickElement :: a -> (a -> *) -> *
+// clickElement :: Element -> (Event -> *) -> Undefined
 const clickElement = (element) =>
                       (callback) =>
                         element.addEventListener('click', callback)
@@ -398,6 +394,8 @@ const clickElement = (element) =>
 // 2. По слагу сделаем запрос и получим список отзывов,
 // 3. Берем слаг последнего отзыва (первый в списке) и делаем запрос
 // 4. Получаем подробную информацию об отзыве, берем оттуда текст
+// API: /reviews/<слаг пользователя> отдаёт массив отзывов (свежий — первый),
+// /review-info/<слаг отзыва> — отзыв с полем text
 
 // head :: [a] -> a
 const head = (arr) => arr[0]
@@ -405,7 +403,7 @@ const head = (arr) => arr[0]
 // prop :: String -> a -> b
 const prop = (prop) => (obj) => obj[prop]
 
-// текс который покажем
+// текст, который покажем
 var textReview = ''
 
 // получаем контейнер с кнопками
@@ -430,18 +428,19 @@ clickElement (btnWrapper) (pipe(
     },
     {
       type: 'text',
-      ru: "Признаюсь вам ))) запах плохого кода не пропал.",
-      en: "I'll admit to you ))) the smell of bad code hasn't gone away.",
+      ru: "Признаюсь: запах плохого кода не пропал.",
+      en: "I'll admit it: the smell of bad code hasn't gone away.",
     },
     {
       type: 'text',
-      ru: "А что если мы добавим мощь промисов в код выше и преобразим его.",
-      en: "What if we add the power of promises to the code above and transform it.",
+      ru: "А что, если мы добавим в код выше мощь промисов и преобразим его?",
+      en: "What if we add the power of promises to the code above and transform it?",
     },
     {
       type: 'code',
       code: {
         ru: `//  А теперь возьмемся за дело
+// clickElement, btnWrapper, head, prop и textReview — из прошлого примера
 // перепишем нашу функцию получения данных
 // которая сама возвращает промис
 
@@ -450,39 +449,63 @@ const fetchClassic = (baseUrl) =>
                         (params) =>
                         (id) =>
                         fetch (\`\${baseUrl}/\${params}/\${id}\`)
-                          .then (res => res.json())
+                          .then ((res) => {
+                            // fetch не отклоняет промис при ответах вроде 404 или 500,
+                            // поэтому статус проверяем сами
+                            if (!res.ok) throw new Error(\`HTTP \${res.status}\`)
+                            return res.json()
+                          })
 
 const BASE_URL = 'https://example.com'
 const REVIEWS = 'reviews'
 const REVIEW_INFO = 'review-info'
 
-// получения списка отзывов
+// получение списка отзывов и подробностей отзыва
 const getReviews = fetchClassic (BASE_URL) (REVIEWS)
 const getReviewInfo = fetchClassic (BASE_URL) (REVIEW_INFO)
 
 
 // У нас будет супер пайп, который под капотом
-// будет проверять промисы ))
-// pipe :: ((a -> b), (b -> c), ..., (y -> z)) -> a -> z
+// сам дожидается промисов: если шаг вернул промис,
+// следующие шаги идут через then, и на выходе тоже промис
+// pipeAsync :: ((a -> b), (b -> c), ..., (y -> z)) -> a -> z
 const pipeAsync = (...fns) => (x) => fns.reduce((v, f) => {
   return v instanceof Promise
     ? v.then(f)
     : f(v)
 }, x)
 
-// запускаем улучшенный вариант
-// pipeAsync отрабатывает промисы под капотом
-clickElement (btnWrapper) (pipeAsync(
-  (e) => e?.target, // получаем элемент
-  (el) => el?.dataset?.slug, // получаем дата атрибут
+// по слагу пользователя получаем текст его свежего отзыва
+// loadReviewText :: String -> Promise String
+const loadReviewText = pipeAsync(
   getReviews, // делаем запрос на получение всех отзывов
   head, // берем первый отзыв
   prop('slug'), // оттуда слаг
   getReviewInfo, // по слагу делаем запрос на получение инфы отзыва
   prop('text'), // берем поле text
   (text) => textReview = text, // устанавливаем значением в глоб переменную
+)
+
+// те же проверки, что в первой версии: клик по кнопке пользователя
+// и у кнопки есть слаг, остальные клики игнорируем
+// onUserButton :: (String -> *) -> Event -> Undefined
+const onUserButton = (handler) => (e) => {
+  const el = e.target
+  if (!el.classList.contains('user-btn') || !el.dataset.slug) {
+    return
+  }
+  handler(el.dataset.slug)
+}
+
+// запускаем улучшенный вариант
+// pipeAsync отрабатывает промисы под капотом, а ошибка любого шага
+// (сеть, статус ответа, пустой список отзывов) попадает в catch
+clickElement (btnWrapper) (onUserButton ((slug) =>
+  loadReviewText (slug)
+    .catch ((error) => console.error('Не удалось получить отзыв:', error.message))
 ))`,
         en: `//  А теперь возьмемся за дело
+// clickElement, btnWrapper, head, prop и textReview — из прошлого примера
 // перепишем нашу функцию получения данных
 // которая сама возвращает промис
 
@@ -491,37 +514,60 @@ const fetchClassic = (baseUrl) =>
                         (params) =>
                         (id) =>
                         fetch (\`\${baseUrl}/\${params}/\${id}\`)
-                          .then (res => res.json())
+                          .then ((res) => {
+                            // fetch не отклоняет промис при ответах вроде 404 или 500,
+                            // поэтому статус проверяем сами
+                            if (!res.ok) throw new Error(\`HTTP \${res.status}\`)
+                            return res.json()
+                          })
 
 const BASE_URL = 'https://example.com'
 const REVIEWS = 'reviews'
 const REVIEW_INFO = 'review-info'
 
-// получения списка отзывов
+// получение списка отзывов и подробностей отзыва
 const getReviews = fetchClassic (BASE_URL) (REVIEWS)
 const getReviewInfo = fetchClassic (BASE_URL) (REVIEW_INFO)
 
 
 // У нас будет супер пайп, который под капотом
-// будет проверять промисы ))
-// pipe :: ((a -> b), (b -> c), ..., (y -> z)) -> a -> z
+// сам дожидается промисов: если шаг вернул промис,
+// следующие шаги идут через then, и на выходе тоже промис
+// pipeAsync :: ((a -> b), (b -> c), ..., (y -> z)) -> a -> z
 const pipeAsync = (...fns) => (x) => fns.reduce((v, f) => {
   return v instanceof Promise
     ? v.then(f)
     : f(v)
 }, x)
 
-// запускаем улучшенный вариант
-// pipeAsync отрабатывает промисы под капотом
-clickElement (btnWrapper) (pipeAsync(
-  (e) => e?.target, // получаем элемент
-  (el) => el?.dataset?.slug, // получаем дата атрибут
+// по слагу пользователя получаем текст его свежего отзыва
+// loadReviewText :: String -> Promise String
+const loadReviewText = pipeAsync(
   getReviews, // делаем запрос на получение всех отзывов
   head, // берем первый отзыв
   prop('slug'), // оттуда слаг
   getReviewInfo, // по слагу делаем запрос на получение инфы отзыва
   prop('text'), // берем поле text
   (text) => textReview = text, // устанавливаем значением в глоб переменную
+)
+
+// те же проверки, что в первой версии: клик по кнопке пользователя
+// и у кнопки есть слаг, остальные клики игнорируем
+// onUserButton :: (String -> *) -> Event -> Undefined
+const onUserButton = (handler) => (e) => {
+  const el = e.target
+  if (!el.classList.contains('user-btn') || !el.dataset.slug) {
+    return
+  }
+  handler(el.dataset.slug)
+}
+
+// запускаем улучшенный вариант
+// pipeAsync отрабатывает промисы под капотом, а ошибка любого шага
+// (сеть, статус ответа, пустой список отзывов) попадает в catch
+clickElement (btnWrapper) (onUserButton ((slug) =>
+  loadReviewText (slug)
+    .catch ((error) => console.error('Не удалось получить отзыв:', error.message))
 ))`,
       },
     },
