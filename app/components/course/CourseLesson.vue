@@ -8,6 +8,10 @@ const isEn = computed(() => locale.value !== 'ru')
 const tr = (text: LocalizedText) => (isEn.value ? text.en : text.ru)
 // Intro sections come without index: h2 without a number, their subheadings one level up.
 const intro = computed(() => props.index === undefined)
+// Goal, key points and exercises belong to numbered lessons; a field the lesson does not have yet is not rendered.
+const study = computed<Partial<Lesson> | undefined>(() => (intro.value ? undefined : props.lesson))
+const exerciseLabel = (key: 'course.starterLabel' | 'course.solutionLabel', k: number) =>
+  t(key, { n: k + 1, lesson: tr(props.lesson.title) })
 
 // Code blocks are numbered within the lesson from 1, pseudo ones included: id "<slug>-code-<n>", "Example n".
 const codeNumber = (i: number) => props.lesson.blocks.slice(0, i + 1).filter((b) => b.type === 'code').length
@@ -21,6 +25,11 @@ const exampleLabel = (i: number) =>
       <span v-if="!intro" class="lesson__num">{{ String(index).padStart(2, '0') }}</span>
       {{ isEn ? lesson.title.en : lesson.title.ru }}
     </component>
+
+    <p v-if="study?.goal" class="lesson__goal">
+      <strong class="lesson__goal-label">{{ t('course.goal') }}</strong>
+      {{ tr(study.goal) }}
+    </p>
 
     <template v-for="(block, i) in lesson.blocks" :key="i">
       <CourseCodeBlock
@@ -67,6 +76,46 @@ const exampleLabel = (i: number) =>
       </div>
       <p v-else class="lesson__text">{{ isEn ? block.en : block.ru }}</p>
     </template>
+
+    <template v-if="study?.summary?.length">
+      <h4 class="lesson__heading">{{ t('course.summary') }}</h4>
+      <ul class="lesson__list">
+        <li v-for="(point, j) in study.summary" :key="j">{{ tr(point) }}</li>
+      </ul>
+    </template>
+
+    <template v-if="study?.exercises?.length">
+      <h4 class="lesson__heading">{{ t('course.exercises') }}</h4>
+      <div
+        v-for="(exercise, k) in study.exercises"
+        :id="`${lesson.slug}-exercise-${k + 1}`"
+        :key="k"
+        class="exercise"
+      >
+        <h5 class="exercise__title">{{ t('course.exercise', { n: k + 1 }) }}</h5>
+        <p class="exercise__task">{{ tr(exercise.task) }}</p>
+        <template v-if="exercise.starter">
+          <p class="exercise__label">{{ t('course.starter') }}</p>
+          <CourseCodeBlock
+            :id="`${lesson.slug}-exercise-${k + 1}-starter`"
+            :code="tr(exercise.starter)"
+            :label="exerciseLabel('course.starterLabel', k)"
+            playground
+          />
+        </template>
+        <p class="exercise__label">{{ t('course.expected') }}</p>
+        <pre class="exercise__expected">{{ tr(exercise.expected) }}</pre>
+        <details class="exercise__solution">
+          <summary>{{ t('course.showSolution') }}</summary>
+          <CourseCodeBlock
+            :id="`${lesson.slug}-exercise-${k + 1}-solution`"
+            :code="tr(exercise.solution)"
+            :label="exerciseLabel('course.solutionLabel', k)"
+            playground
+          />
+        </details>
+      </div>
+    </template>
   </section>
 </template>
 
@@ -99,6 +148,27 @@ const exampleLabel = (i: number) =>
     line-height: 1.7;
     color: var(--text-muted);
     max-width: 72ch;
+  }
+
+  &__goal {
+    max-width: 72ch;
+    margin-bottom: 2.4rem;
+    padding: 1.4rem 1.8rem;
+    border-left: 3px solid var(--accent);
+    border-radius: 0 1rem 1rem 0;
+    background-color: var(--surface);
+    font-size: 1.7rem;
+    line-height: 1.6;
+    color: var(--text-color);
+  }
+
+  &__goal-label {
+    display: block;
+    margin-bottom: 0.4rem;
+    font-family: $mono-font;
+    font-size: 1.3rem;
+    font-weight: 600;
+    color: var(--accent);
   }
 
   &__heading {
@@ -172,6 +242,73 @@ const exampleLabel = (i: number) =>
 
     td {
       color: var(--text-muted);
+    }
+  }
+}
+
+.exercise {
+  margin-top: 2rem;
+  padding: 2.4rem;
+  border: 1px solid var(--border);
+  border-radius: 1.4rem;
+  background-color: var(--surface);
+  scroll-margin-top: $header-height;
+
+  @include respond-to(mobile) {
+    padding: 1.6rem;
+  }
+
+  &__title {
+    margin-bottom: 1rem;
+    font-size: 1.7rem;
+    font-weight: 700;
+    color: var(--text-color);
+  }
+
+  &__task {
+    max-width: 72ch;
+    margin-bottom: 1.6rem;
+    font-size: 1.6rem;
+    line-height: 1.7;
+    color: var(--text-muted);
+  }
+
+  &__label {
+    margin-bottom: 0.8rem;
+    font-family: $mono-font;
+    font-size: 1.3rem;
+    color: var(--text-muted);
+
+    + .cb {
+      margin-top: 0;
+    }
+  }
+
+  &__expected {
+    margin-bottom: 2rem;
+    padding: 1.2rem 1.6rem;
+    border: 1px dashed var(--code-border);
+    border-radius: 1rem;
+    background-color: var(--code-bg);
+    font-family: $mono-font;
+    font-size: 1.4rem;
+    line-height: 1.6;
+    color: var(--code-text);
+    white-space: pre-wrap;
+    overflow-wrap: anywhere;
+  }
+
+  &__solution {
+    summary {
+      width: fit-content;
+      font-size: 1.5rem;
+      font-weight: 600;
+      color: var(--accent);
+      cursor: pointer;
+    }
+
+    .cb {
+      margin-bottom: 0;
     }
   }
 }
