@@ -38,8 +38,8 @@ const add = (a, b) => a + b // сложение
 // с нотацией
 // Название функции :: Первый аргумент -> Второй аргумент -> Возвращаемое значение
 
-// add :: Number -> Number -> Number
-const add = (a, b) => a + b // сложение
+// addCurried :: Number -> Number -> Number
+const addCurried = (a) => (b) => a + b // сложение
 
 // map :: (a -> b) -> [a] -> [b]
 const map = (mappable) => (arr) => arr.map(mappable)
@@ -48,8 +48,7 @@ const map = (mappable) => (arr) => arr.map(mappable)
 // и Спецификации Fantasy-land не пугаемся об этом поговорим позже
 // Тип Функтор => Принимает функцию (a значение превращает в b) -> Функтор a аргумент -> Функтор b возвращает
 // Спойлер )) функтор это любой тип, который реализовал интерфейс map
-// Functor f => (a → b) → f a → f b
-const map = (mappable) => (arr) => arr.map(mappable)`,
+// Functor f => (a → b) → f a → f b`,
         en: `// без нотации
 const foo = (a, b) => a + b
 
@@ -63,8 +62,8 @@ const add = (a, b) => a + b // сложение
 // с нотацией
 // Название функции :: Первый аргумент -> Второй аргумент -> Возвращаемое значение
 
-// add :: Number -> Number -> Number
-const add = (a, b) => a + b // сложение
+// addCurried :: Number -> Number -> Number
+const addCurried = (a) => (b) => a + b // сложение
 
 // map :: (a -> b) -> [a] -> [b]
 const map = (mappable) => (arr) => arr.map(mappable)
@@ -73,8 +72,7 @@ const map = (mappable) => (arr) => arr.map(mappable)
 // и Спецификации Fantasy-land не пугаемся об этом поговорим позже
 // Тип Функтор => Принимает функцию (a значение превращает в b) -> Функтор a аргумент -> Функтор b возвращает
 // Спойлер )) функтор это любой тип, который реализовал интерфейс map
-// Functor f => (a → b) → f a → f b
-const map = (mappable) => (arr) => arr.map(mappable)`,
+// Functor f => (a → b) → f a → f b`,
       },
     },
   ],
