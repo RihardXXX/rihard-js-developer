@@ -288,8 +288,8 @@ const lesson: Lesson = {
           en: "Performance. It will be lower than vanilla given equivalent code: programs are run by Effect's own fiber-based runtime. Unused modules are dropped at build time (tree shaking), and version 4 rewrote the runtime and noticeably reduced the bundle size.",
         },
         {
-          ru: "Парадигма функционального программирования. Полноценное типизированное функциональное программирование, нацеленное на продакшен: эффекты как значения, ошибки и зависимости в типах, конкурентность на файберах, Schema для проверки данных во время выполнения. Высокий порог входа, но другого рода, чем у fp-ts: осваивать нужно не классы типов, а модель эффектов и большой API. По README fp-ts, Effect можно считать преемником fp-ts v2. Текущая мажорная версия — 4: Effect 4.0.0 вышел 1 октября 2026 года, а ветка 3.x ещё получает исправления (по данным реестра npm на октябрь 2026 года).",
-          en: "The functional programming paradigm. Full-fledged typed functional programming aimed at production: effects as values, errors and dependencies in the types, fiber-based concurrency, and Schema for validating data at runtime. A high barrier to entry, but of a different kind than with fp-ts: you learn the effect model and a large API rather than type classes. According to the fp-ts README, Effect can be regarded as the successor to fp-ts v2. The current major version is 4: Effect 4.0.0 came out on October 1, 2026, and the 3.x line still receives fixes (according to the npm registry as of October 2026).",
+          ru: "Парадигма функционального программирования. Полноценное и строгое типизированное функциональное программирование, нацеленное на продакшен. Эффекты — это значения: Effect только описывает работу и ничего не делает, пока его не запустит рантайм, а возможные ошибки и нужные зависимости записаны в типе Effect<A, E, R>. Кроме того, в библиотеку входят конкурентность на файберах и Schema для проверки данных во время выполнения. Высокий порог входа, но другого рода, чем у fp-ts: осваивать нужно не классы типов, а модель эффектов и большой API. По README fp-ts, Effect можно считать преемником fp-ts v2. Текущая мажорная версия — 4: Effect 4.0.0 вышел 1 октября 2026 года, а ветка 3.x ещё получает исправления (по данным реестра npm на октябрь 2026 года).",
+          en: "The functional programming paradigm. Full-fledged and strict typed functional programming aimed at production. Effects are values: an Effect only describes the work and does nothing until the runtime runs it, and possible errors and required dependencies are recorded in the Effect<A, E, R> type. On top of that come fiber-based concurrency and Schema for validating data at runtime. A high barrier to entry, but of a different kind than with fp-ts: you learn the effect model and a large API rather than type classes. According to the fp-ts README, Effect can be regarded as the successor to fp-ts v2. The current major version is 4: Effect 4.0.0 came out on October 1, 2026, and the 3.x line still receives fixes (according to the npm registry as of October 2026).",
         },
       ],
     },
@@ -305,8 +305,8 @@ const lesson: Lesson = {
     },
     {
       type: 'text',
-      ru: "В TypeScript рядом с ними стоят fp-ts (полноценное и строгое, на классах типов) и Effect (полноценное, с эффектами и ошибками в типах).",
-      en: "In TypeScript they are joined by fp-ts (full-fledged and strict, built on type classes) and Effect (full-fledged, with effects and errors in the types).",
+      ru: "В TypeScript рядом с ними стоят fp-ts (полноценное и строгое, на классах типов) и Effect (полноценное и строгое, с эффектами и ошибками в типах).",
+      en: "In TypeScript they are joined by fp-ts (full-fledged and strict, built on type classes) and Effect (full-fledged and strict, with effects and errors in the types).",
     },
     {
       type: 'table',
@@ -363,7 +363,7 @@ const lesson: Lesson = {
           { ru: "3 из 5", en: "3 out of 5" },
           { ru: "2 из 5", en: "2 out of 5" },
           { ru: "2 из 5", en: "2 out of 5" },
-          { ru: "3 из 5", en: "3 out of 5" },
+          { ru: "2 из 5", en: "2 out of 5" },
           { ru: "2 из 5", en: "2 out of 5" },
         ],
         [
