@@ -590,8 +590,8 @@ clickElement (btnWrapper) (onUserButton ((slug) =>
   ],
   summary: [
     {
-      ru: "Каррированная базовая функция запросов хранит в замыканиях базовый URL, заголовки и путь, а из неё вызовами получаются специализированные функции вроде getAllUser и getAllBooks.",
-      en: "A curried base request function keeps the base URL, the headers and the path in closures, and specialized functions such as getAllUser and getAllBooks are built from it through calls.",
+      ru: "Каррированная базовая функция запросов baseFetch хранит в замыканиях базовый URL и путь, а из неё вызовами получаются специализированные функции вроде getAllUser и getAllBooks. Заголовки с токеном можно хранить в отдельном замыкании, как в xFetch, из которой получаются getAllUserX и getAllBooksX.",
+      en: "The curried base request function baseFetch keeps the base URL and the path in closures, and specialized functions such as getAllUser and getAllBooks are built from it through calls. Headers with a token can be kept in a separate closure, as in xFetch, from which getAllUserX and getAllBooksX are built.",
     },
     {
       ru: "Каррирование и pipe без промисов делают код на колбеках декларативным, но запах плохого кода не пропадает: ошибки в такой версии никак не обрабатываются.",
