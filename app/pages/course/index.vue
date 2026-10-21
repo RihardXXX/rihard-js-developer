@@ -108,7 +108,7 @@ onMounted(async () => {
       <ol class="toc__list">
         <!-- id="<slug>": without JS an old link /course/#slug still lands next to the lesson's link -->
         <li v-for="(lesson, i) in lessons" :id="lesson.slug" :key="lesson.slug" class="toc__item">
-          <!-- On interaction: 26 links on screen would otherwise fetch 26 lesson payloads at once. -->
+          <!-- On interaction: the links on screen would otherwise fetch all their lesson payloads at once. -->
           <NuxtLink :to="localePath(`/course/${lesson.slug}/`)" prefetch-on="interaction" class="toc__link">
             <span class="toc__num">{{ String(i + 1).padStart(2, '0') }}</span>
             {{ isEn ? lesson.title.en : lesson.title.ru }}
@@ -210,9 +210,6 @@ onMounted(async () => {
   display: grid;
   grid-template-columns: minmax(0, 1fr);
   gap: 4rem;
-}
-
-.intro {
   margin-bottom: 6.4rem;
 }
 </style>
