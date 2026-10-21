@@ -387,7 +387,7 @@ console.log(resultOver) // {x: [{y: 5, z: 3}, {y: 4, z: 5}]}`,
     {
       task: {
         ru: "В состоянии приложения лежат настройки пользователя и корзина. С помощью R.lensPath, R.view, R.set и R.over получите новое состояние, где тема оформления — dark, а количество первого товара в корзине на единицу больше. Соберите оба изменения в одну функцию update через pipe и убедитесь, что исходное состояние не изменилось.",
-        en: "The application state holds the user's settings and a cart. Using R.lensPath, R.view, R.set and R.over, get a new state where the theme is dark and the quantity of the first item in the cart is one more. Combine both changes into a single update function with pipe and make sure the original state has not changed.",
+        en: "The application state holds the user's settings and a cart. Using R.lensPath, R.view, R.set and R.over, get a new state where the theme is dark and the quantity of the first item in the cart has gone up by one. Combine both changes into a single update function with pipe and make sure the original state has not changed.",
       },
       starter: {
         ru: `// pipe берём из Ramda, как в уроке «Каррирование»
@@ -501,7 +501,7 @@ console.log('original: theme ' + R.view(themeLens, state) + ', quantity ' + R.vi
     {
       task: {
         ru: "В самописной линзе из урока set не может записать функцию как значение: setter принимает любую функцию за преобразование. Напишите линзу lensKey(key) для одного ключа объекта, у которой setter всегда принимает функцию, и функции view, over и set. set постройте через over, как в Ramda, и проверьте, что функция записывается как обычное значение, а исходный объект не меняется.",
-        en: "In the hand-written lens from the lesson, set cannot store a function as a value: the setter takes any function for a transformation. Write a lens lensKey(key) for a single object key whose setter always takes a function, plus view, over and set. Build set on top of over, as Ramda does, and check that a function is stored as a plain value and the original object does not change.",
+        en: "In the hand-written lens from the lesson, set cannot store a function as a value: the setter treats any function as a transformation. Write a lens lensKey(key) for a single object key whose setter always takes a function, plus view, over and set. Build set on top of over, as Ramda does, and check that a function is stored as a plain value and the original object does not change.",
       },
       starter: {
         ru: `// Lens s a = { getter :: s -> a, setter :: (a -> a) -> s -> s }
