@@ -36,14 +36,14 @@ const lesson: Lesson = {
 const sum  = (a) => (b) => (c) => a + b + c
 
 // функция вычисляется только когда получает все аргументы
-// иначе возвращает новая функция
+// иначе возвращает новую функцию
 const result = sum (1) (2) (1)
 
 console.log(result) // 4
 
 // Неполные вызовы каррированной функции
 
-// add : Number -> Number -> Number
+// add :: Number -> Number -> Number
 const add = (a) => (b) => a + b
 
 // в замыкании хранится 10 и ждёт второго аргумента
@@ -58,14 +58,14 @@ const resultAdded = add10(5) // 15`,
 const sum  = (a) => (b) => (c) => a + b + c
 
 // функция вычисляется только когда получает все аргументы
-// иначе возвращает новая функция
+// иначе возвращает новую функцию
 const result = sum (1) (2) (1)
 
 console.log(result) // 4
 
 // Неполные вызовы каррированной функции
 
-// add : Number -> Number -> Number
+// add :: Number -> Number -> Number
 const add = (a) => (b) => a + b
 
 // в замыкании хранится 10 и ждёт второго аргумента
@@ -83,18 +83,18 @@ const resultAdded = add10(5) // 15`,
     },
     {
       type: 'text',
-      ru: "Можно использовать автоматическое каррирование любой функции и вызывать её в любом порядке.",
-      en: "We can apply automatic currying to any function and call it in any order.",
+      ru: "Можно автоматически каррировать любую функцию с фиксированным числом параметров и передавать ей аргументы любыми группами: по одному или по несколько за вызов. Меняется только группировка, порядок аргументов остаётся прежним.",
+      en: "We can automatically curry any function with a fixed number of parameters and pass it the arguments in any grouping: one at a time or several per call. Only the grouping changes; the order of the arguments stays the same.",
     },
     {
       type: 'code',
       code: {
         ru: `// Например мы хотим каррировать функцию sum
-// sum :: Number -> Number -> Number -> Number
+// sum :: (Number, Number, Number) -> Number
 const sum  = (a, b, c) => a + b + c
 
 // функция которая каррирует любую функцию
-// curry :: (* -> *) -> * -> (* -> *)
+// curry :: (* -> a) -> (* -> a)
 const curry = (fn) => {
   // количество параметров функции
   const lengthFn = fn.length
@@ -102,7 +102,7 @@ const curry = (fn) => {
   // внутренняя функция, которая будет вызываться рекурсивно
   const curried = (...argsFirst) => {
     // если количество входящих аргументов больше или равно
-    // количество аргументов функции то мы немедленно вызываем её
+    // количеству параметров функции, то мы немедленно вызываем её
     if (argsFirst.length >= lengthFn) {
       return fn(...argsFirst)
     }
@@ -119,17 +119,17 @@ const curry = (fn) => {
 // каррируем нашу функцию sum
 const sumCurry = curry(sum)
 
-// теперь можем вызывать ее как угодно
+// теперь аргументы можно передавать любыми группами
 console.log( sumCurry (1) (1) (1) ) // 3
 console.log( sumCurry (1, 1) (1) ) // 3
 console.log( sumCurry (1) (1, 1) ) // 3
 console.log( sumCurry (1, 1, 1) ) // 3`,
         en: `// Например мы хотим каррировать функцию sum
-// sum :: Number -> Number -> Number -> Number
+// sum :: (Number, Number, Number) -> Number
 const sum  = (a, b, c) => a + b + c
 
 // функция которая каррирует любую функцию
-// curry :: (* -> *) -> * -> (* -> *)
+// curry :: (* -> a) -> (* -> a)
 const curry = (fn) => {
   // количество параметров функции
   const lengthFn = fn.length
@@ -137,7 +137,7 @@ const curry = (fn) => {
   // внутренняя функция, которая будет вызываться рекурсивно
   const curried = (...argsFirst) => {
     // если количество входящих аргументов больше или равно
-    // количество аргументов функции то мы немедленно вызываем её
+    // количеству параметров функции, то мы немедленно вызываем её
     if (argsFirst.length >= lengthFn) {
       return fn(...argsFirst)
     }
@@ -154,7 +154,7 @@ const curry = (fn) => {
 // каррируем нашу функцию sum
 const sumCurry = curry(sum)
 
-// теперь можем вызывать ее как угодно
+// теперь аргументы можно передавать любыми группами
 console.log( sumCurry (1) (1) (1) ) // 3
 console.log( sumCurry (1, 1) (1) ) // 3
 console.log( sumCurry (1) (1, 1) ) // 3
@@ -171,9 +171,9 @@ console.log( sumCurry (1, 1, 1) ) // 3`,
       code: {
         ru: `// Например в следующей композиции будут
 // =====================================
-// использоваться две функции каррированые
-// одна каррированая уже
-// а другая автоматически каррируем перед вызовом
+// использоваться две каррированные функции:
+// одна каррирована заранее,
+// а другую каррируем автоматически перед вызовом
 
 // pipe и curry берём из Ramda: в песочнице курса она доступна как R
 const { pipe, curry } = R
@@ -203,13 +203,13 @@ const map = (fn) => (arr) => arr.map(fn)
 // isStatus :: String -> String -> a -> Boolean
 const isStatus = (status) => (prop) => (user) => user[prop] === status
 
-// isMoreAge :: String -> String -> a -> Boolean
+// isMoreAge :: (Number, String, a) -> Boolean
 const isMoreAge = (age, prop, user) => user[prop] > age
 
 // давайте используя функцию выше мы автокаррируем её
 const isMoreAgeCurry = curry(isMoreAge)
 
-// вызовим дважды и создадим абстракцию с понятным названием
+// вызовем дважды и создадим абстракцию с понятным названием
 // предикат функция которая будет проверять на возраст
 const isMoreAge30 = isMoreAgeCurry (30) ('age')
 
@@ -258,9 +258,9 @@ const pipelineOnePass = pipe (
 )`,
         en: `// Например в следующей композиции будут
 // =====================================
-// использоваться две функции каррированые
-// одна каррированая уже
-// а другая автоматически каррируем перед вызовом
+// использоваться две каррированные функции:
+// одна каррирована заранее,
+// а другую каррируем автоматически перед вызовом
 
 // pipe и curry берём из Ramda: в песочнице курса она доступна как R
 const { pipe, curry } = R
@@ -290,13 +290,13 @@ const map = (fn) => (arr) => arr.map(fn)
 // isStatus :: String -> String -> a -> Boolean
 const isStatus = (status) => (prop) => (user) => user[prop] === status
 
-// isMoreAge :: String -> String -> a -> Boolean
+// isMoreAge :: (Number, String, a) -> Boolean
 const isMoreAge = (age, prop, user) => user[prop] > age
 
 // давайте используя функцию выше мы автокаррируем её
 const isMoreAgeCurry = curry(isMoreAge)
 
-// вызовим дважды и создадим абстракцию с понятным названием
+// вызовем дважды и создадим абстракцию с понятным названием
 // предикат функция которая будет проверять на возраст
 const isMoreAge30 = isMoreAgeCurry (30) ('age')
 
@@ -352,8 +352,8 @@ const pipelineOnePass = pipe (
     },
     {
       type: 'text',
-      ru: "Берётся базовая каррированная функция, а дальше при помощи вызовов создаются другие функции. Ну хватит болтать)) давайте сразу приступим к примерам.",
-      en: "We take a base curried function, and then we build other functions through calls. Enough talking)) let's get straight to the examples.",
+      ru: "Берётся базовая каррированная функция, а дальше при помощи вызовов создаются другие функции. Хватит теории — давайте сразу к примерам.",
+      en: "We take a base curried function, and then we build other functions through calls. Enough theory — let's get straight to the examples.",
     },
     {
       type: 'code',
@@ -385,7 +385,7 @@ const equalByMarried = equalBy ('married')
 // создадим еще один слой абстракции
 // проверка онлайн
 const isOnline = equalByStatus ('online')
-// проверка оффлайн
+// проверка офлайн
 const isOffline = equalByStatus ('offline')
 
 // проверка женат ли
@@ -398,7 +398,7 @@ const isNotMarried = equalByMarried (false)
 // not :: (a -> Boolean) -> a -> Boolean
 const not = (fn) => (...args) => !fn(...args)
 
-// человеко читаемое выражение не онлайн
+// человекочитаемое выражение «не онлайн»
 const offlineUserCheck = not (isOnline)
 const notMarriedCheck = not (isMarried)
 
@@ -422,7 +422,7 @@ const and = (valueFirst) => (valueSecond) => valueFirst && valueSecond
 // каждая функция делает одну логическую операцию
 // код говорит что делает а не как
 if (and (isOnlineUser) (isMarriedUser) ) {
-  // что то там делам ...
+  // что-то там делаем ...
 }`,
         en: `// Давайте возьмем каррированную функцию
 // и начнем создавать другие специализированные функции
@@ -451,7 +451,7 @@ const equalByMarried = equalBy ('married')
 // создадим еще один слой абстракции
 // проверка онлайн
 const isOnline = equalByStatus ('online')
-// проверка оффлайн
+// проверка офлайн
 const isOffline = equalByStatus ('offline')
 
 // проверка женат ли
@@ -464,7 +464,7 @@ const isNotMarried = equalByMarried (false)
 // not :: (a -> Boolean) -> a -> Boolean
 const not = (fn) => (...args) => !fn(...args)
 
-// человеко читаемое выражение не онлайн
+// человекочитаемое выражение «не онлайн»
 const offlineUserCheck = not (isOnline)
 const notMarriedCheck = not (isMarried)
 
@@ -488,7 +488,7 @@ const and = (valueFirst) => (valueSecond) => valueFirst && valueSecond
 // каждая функция делает одну логическую операцию
 // код говорит что делает а не как
 if (and (isOnlineUser) (isMarriedUser) ) {
-  // что то там делам ...
+  // что-то там делаем ...
 }`,
       },
     },
