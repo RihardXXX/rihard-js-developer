@@ -171,7 +171,20 @@
     "exampleLabel": "Example {n}, lesson “{lesson}”",
     "starterLabel": "Starter for exercise {n}, lesson “{lesson}”",
     "solutionLabel": "Solution to exercise {n}, lesson “{lesson}”",
-    "editorLabel": "Playground code editor"
+    "editorLabel": "Playground code editor",
+    "home": "Home",
+    "breadcrumbs": "Breadcrumbs",
+    "lessonNav": "Lesson navigation",
+    "prevLesson": "Previous lesson: {title}",
+    "read": "Completed",
+    "markRead": "Mark the lesson as completed",
+    "unmarkRead": "Unmark as completed",
+    "progressCount": "Completed {done} of {total}",
+    "progressContinue": "Continue: {title}",
+    "progressStart": "Start with the first lesson",
+    "progressReset": "Reset progress",
+    "progressResetConfirm": "Reset the completed lesson marks?",
+    "progressNote": "Progress is stored only in this browser."
   },
   "certificates": {
     "eyebrow": "Learning",
