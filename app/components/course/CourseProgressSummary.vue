@@ -25,36 +25,58 @@ const confirmReset = () => {
 </script>
 
 <template>
-  <div v-if="mounted" class="progress">
-    <div class="progress__head">
-      <p class="progress__count">{{ t('course.progressCount', { done, total: lessons.length }) }}</p>
-      <div class="progress__bar" aria-hidden="true">
-        <span class="progress__fill" :style="{ width: `${(done / lessons.length) * 100}%` }" />
+  <!-- The summary comes after mount; its room is in the HTML from the start, so the contents don't jump. -->
+  <div class="summary-slot">
+    <div v-if="mounted" class="progress">
+      <div class="progress__head">
+        <p class="progress__count">{{ t('course.progressCount', { done, total: lessons.length }) }}</p>
+        <div class="progress__bar" aria-hidden="true">
+          <span class="progress__fill" :style="{ width: `${(done / lessons.length) * 100}%` }" />
+        </div>
       </div>
+      <div class="progress__actions">
+        <NuxtLink
+          v-if="resumeLesson"
+          :to="localePath(`/course/${resumeLesson.slug}/`)"
+          prefetch-on="interaction"
+          class="progress__resume"
+        >
+          {{
+            started
+              ? t('course.progressContinue', { title: isEn ? resumeLesson.title.en : resumeLesson.title.ru })
+              : t('course.progressStart')
+          }}
+          <span aria-hidden="true">→</span>
+        </NuxtLink>
+        <button v-if="started" type="button" class="progress__reset" @click="confirmReset">
+          {{ t('course.progressReset') }}
+        </button>
+      </div>
+      <p class="progress__note">{{ t('course.progressNote') }}</p>
     </div>
-    <div class="progress__actions">
-      <NuxtLink
-        v-if="resumeLesson"
-        :to="localePath(`/course/${resumeLesson.slug}/`)"
-        prefetch-on="interaction"
-        class="progress__resume"
-      >
-        {{
-          started
-            ? t('course.progressContinue', { title: isEn ? resumeLesson.title.en : resumeLesson.title.ru })
-            : t('course.progressStart')
-        }}
-        <span aria-hidden="true">→</span>
-      </NuxtLink>
-      <button v-if="started" type="button" class="progress__reset" @click="confirmReset">
-        {{ t('course.progressReset') }}
-      </button>
-    </div>
-    <p class="progress__note">{{ t('course.progressNote') }}</p>
   </div>
 </template>
 
 <style scoped lang="scss">
+// as tall as the summary of a fresh reader; a shorter one stretches to fill it
+.summary-slot {
+  display: grid;
+  min-height: 12.9rem;
+
+  @media (pointer: coarse) {
+    min-height: 14.9rem;
+  }
+
+  // the bar and the note wrap
+  @include respond-to(mobile) {
+    min-height: 15.8rem;
+
+    @media (pointer: coarse) {
+      min-height: 17.8rem;
+    }
+  }
+}
+
 .progress {
   display: grid;
   gap: 1.2rem;
