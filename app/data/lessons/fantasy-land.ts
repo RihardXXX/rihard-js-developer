@@ -399,8 +399,8 @@ console.log(JSON.stringify(lengths.items))`,
     },
     {
       task: {
-        ru: "Напишите checkLaws(name, u, f, g): она проверяет для контейнера u оба закона функтора и печатает две строки — для тождества и для композиции. Контейнеры сравнивайте через JSON.stringify: он пропускает методы, поэтому сравниваются только данные. Проверьте функтор functor из урока и контейнер counted, который при каждом map увеличивает счётчик вызовов count. Почему counted — не функтор, хотя метод fantasy-land/map у него есть?",
-        en: "Write checkLaws(name, u, f, g): it checks both functor laws for the container u and prints two lines, one for identity and one for composition. Compare containers via JSON.stringify: it skips methods, so only the data is compared. Check the functor from the lesson and a counted container that increases its count of calls on every map. Why is counted not a functor even though it has a fantasy-land/map method?",
+        ru: "Напишите checkLaws(name, u, f, g): она проверяет для контейнера u оба закона функтора и печатает две строки — для тождества и для композиции, например «functor — тождество: true» и «functor — композиция: true». Контейнеры сравнивайте через JSON.stringify: он пропускает методы, поэтому сравниваются только данные. Проверьте функтор functor из урока и контейнер counted, который при каждом map увеличивает счётчик вызовов count. Почему counted — не функтор, хотя метод fantasy-land/map у него есть?",
+        en: "Write checkLaws(name, u, f, g): it checks both functor laws for the container u and prints two lines, one for identity and one for composition, for example \"functor — identity: true\" and \"functor — composition: true\". Compare containers via JSON.stringify: it skips methods, so only the data is compared. Check the functor from the lesson and a counted container that increases its count of calls on every map. Why is counted not a functor even though it has a fantasy-land/map method?",
       },
       starter: {
         ru: `const FANTASY_LAND_MAP = 'fantasy-land/map'
