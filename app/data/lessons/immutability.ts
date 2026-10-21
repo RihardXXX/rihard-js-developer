@@ -383,7 +383,7 @@ const renamed = R.assoc('title', 'Immutable data', post)
 const moved = R.assocPath(['author', 'city'], 'Kazan', post)
 
 // R.evolve: функции для нужных ключей, остальные ключи без изменений
-const viewed = R.evolve({ stats: { views: R.inc }, tags: R.append('fp') }, post)
+const viewed = R.evolve({ stats: { views: (n) => n + 1 }, tags: (tags) => [...tags, 'fp'] }, post)
 
 console.log(renamed.title) // Immutable data
 console.log(moved.author.city) // Kazan
@@ -412,7 +412,7 @@ const renamed = R.assoc('title', 'Immutable data', post)
 const moved = R.assocPath(['author', 'city'], 'Kazan', post)
 
 // R.evolve: functions for the keys you need, the other keys stay as they are
-const viewed = R.evolve({ stats: { views: R.inc }, tags: R.append('fp') }, post)
+const viewed = R.evolve({ stats: { views: (n) => n + 1 }, tags: (tags) => [...tags, 'fp'] }, post)
 
 console.log(renamed.title) // Immutable data
 console.log(moved.author.city) // Kazan
@@ -439,7 +439,7 @@ console.log(viewed.author === post.author) // true`,
     },
     {
       type: 'text',
-      ru: "Иммутабельность важна на границах — там, где данные видит кто-то ещё. Массив, который функция создала сама и ещё никому не отдала, можно спокойно наполнять через push: снаружи этого не видно, и функция остаётся чистой. Для больших коллекций, которые часто обновляются, есть библиотеки со структурным разделением: Immutable.js с постоянными (persistent) структурами данных и Immer, в котором пишут обычный «мутирующий» код для черновика, а получают новый объект.",
+      ru: "Иммутабельность важна на границах — там, где данные видит кто-то ещё. Массив, который функция создала сама и ещё никому не отдала, можно спокойно наполнять через push: снаружи этого не видно, и функция остаётся чистой. Для больших коллекций, которые часто обновляются, есть библиотеки со структурным разделением: Immutable.js с персистентными структурами данных и Immer, в котором пишут обычный «мутирующий» код для черновика, а получают новый объект.",
       en: "Immutability matters at the boundaries, where someone else can see the data. An array that a function created itself and has not handed to anyone yet can safely be filled with push: nobody outside can see it, and the function stays pure. For large, frequently updated collections there are libraries built on structural sharing: Immutable.js with persistent data structures, and Immer, where you write ordinary \"mutating\" code against a draft and get a new object back.",
     },
   ],
