@@ -171,8 +171,9 @@ const loadMonaco = () =>
     // CDN unreachable: the textarea stays the editor (the loader keeps its failure, no retry).
     .catch(() => {}))
 
+// Touch screens keep the textarea: Monaco is heavy there and edits poorly with a finger.
 const upgradeEditor = () => {
-  loadMonaco()
+  if (window.matchMedia('(pointer: fine)').matches) loadMonaco()
 }
 
 watch(theme, () => monacoEditorApi?.setTheme(monacoTheme()))
