@@ -129,55 +129,55 @@ const result = mapD (v => v * 2) (data)
 
 console.log (result) // [2, 4, 6, 8, 10]
 // ===================================`,
-        en: `// каррирование и данные последним аргументом нужны,
-// чтобы функции было удобно использовать в композиции
-// в бесточечном стиле, не называя данные:
+        en: `// currying and taking the data as the last argument
+// make these functions easy to use in composition
+// in point-free style, without naming the data:
 // pipe (mapD (f), filterD (g))
 
-// ==== реализация декларативная ====
+// ==== declarative implementation ====
 // mapD :: (a -> b) -> [a] -> [b]
 const mapD = (fn) => (arr) => arr.map(fn)
 // ===================================
 
-// ==== реализация императивная ====
-// без индекса итерации и контекста
+// ==== imperative implementation ====
+// without the iteration index and context
 // mapI :: (a -> b) -> [a] -> [b]
 const mapI = (fn) => (arr) => {
-  // массив результирующий
-  // который будем возвращать
+  // the resulting array
+  // that we will return
   let result = []
 
   for (const item of arr) {
-    // каждый элемент пропускаем через
-    // переданную функцию
-    result.push(fn(item)) // или result = [ ...result, fn (item) ]
+    // pass each element through
+    // the given function
+    result.push(fn(item)) // or result = [ ...result, fn (item) ]
   }
 
   return result
 }
  // ===================================
 
-// ==== реализация императивная ====
-// с индексом итерации и контекстом
+// ==== imperative implementation ====
+// with the iteration index and context
 // mapIq :: (a -> b) -> [a] -> [b]
 const mapIq = (fn) => (arr) => {
   let result = []
 
   for (let i = 0; i < arr.length; i++ ) {
-    result.push(fn(arr[i], i, arr)) // или result = [ ...result, fn (arr[i], i, arr) ]
+    result.push(fn(arr[i], i, arr)) // or result = [ ...result, fn (arr[i], i, arr) ]
   }
 
   return result
 }
 // ===================================
 
-// ==== реализация рекурсивная ====
-// через трамплин, чтобы стек не переполнился
-// надеюсь, вы прочитали раздел про рекурсию
+// ==== recursive implementation ====
+// through a trampoline, so the stack does not overflow
+// I hope you have read the lesson on recursion
 
 // trampoline :: ((...args -> *) -> (...args -> *))
-// вызывает функцию и, пока результат — функция (thunk),
-// вызывает его снова: шаги идут в цикле, стек не растёт
+// calls the function and, while the result is a function (a thunk),
+// calls it again: the steps run in a loop, the stack does not grow
 const trampoline = (fn) => (...args) => {
   let result = fn(...args)
 
@@ -188,23 +188,23 @@ const trampoline = (fn) => (...args) => {
   return result
 }
 
-// mapR возвращает либо готовый массив,
-// либо функцию без аргументов (thunk) со следующим шагом
+// mapR returns either the finished array
+// or a function with no arguments (a thunk) holding the next step
 const mapR = (fn) => (arr, i = 0, acc = []) => {
 
-  // базовый случай
-  // когда элементы закончились возвращаем аккумулятор
+  // base case
+  // when the elements run out, return the accumulator
   if (i === arr.length) {
     return acc
   }
 
-  // рекурсивный случай
-  // возвращаем функцию для трамплина
-  // в аккумулятор кладем результат который пропустили через функцию
-  // и переходим к следующему элементу
-  // индекс вместо arr.slice(1) и push вместо [...acc, x]:
-  // копирование массива на каждом шаге дало бы O(n²),
-  // а acc создаётся заново при каждом запуске и снаружи не виден
+  // recursive case
+  // return a function for the trampoline
+  // put the result of passing the element through the function into the accumulator
+  // and move on to the next element
+  // an index instead of arr.slice(1) and push instead of [...acc, x]:
+  // copying the array on every step would make it O(n²),
+  // and acc is created anew on every run and is not visible outside
   return () => {
     acc.push(fn (arr[i]))
     return mapR (fn) (arr, i + 1, acc)
@@ -212,11 +212,11 @@ const mapR = (fn) => (arr, i = 0, acc = []) => {
 }
 
 // mapTrampoline :: (a -> b) -> [a] -> [b]
-// снаружи передаём только массив: индекс и аккумулятор внутренние
+// from the outside we pass only the array: the index and the accumulator are internal
 const mapTrampoline = (fn) => (arr) => trampoline (mapR (fn)) (arr)
 // ===================================
 
-// ==== запуск ====
+// ==== run ====
 const data = [1, 2, 3, 4, 5]
 
 const result = mapD (v => v * 2) (data)
@@ -358,31 +358,31 @@ const result = filterD (v => v > 3) (data)
 
 console.log (result) // [4, 5]
 // ===================================`,
-        en: `// каррирование и данные последним аргументом нужны,
-// чтобы функции было удобно использовать в композиции
-// в бесточечном стиле, не называя данные:
+        en: `// currying and taking the data as the last argument
+// make these functions easy to use in composition
+// in point-free style, without naming the data:
 // pipe (mapD (f), filterD (g))
 
-// ==== реализация декларативная ====
+// ==== declarative implementation ====
 // filterD :: (a -> Boolean) -> [a] -> [a]
 const filterD = (fn) => (arr) => arr.filter(fn)
 // ===================================
 
-// ==== реализация императивная ====
-// без индекса итерации и контекста
+// ==== imperative implementation ====
+// without the iteration index and context
 // filterI :: (a -> Boolean) -> [a] -> [a]
 const filterI = (fn) => (arr) => {
-  // массив результирующий
-  // который будем возвращать
+  // the resulting array
+  // that we will return
   let result = []
 
   for (const item of arr) {
-    // каждый элемент пропускаем через
-    // функцию-предикат
-    // если она вернет true кладем элемент
-    // в результирующий массив
+    // pass each element through
+    // the predicate function
+    // if it returns true, put the element
+    // into the resulting array
     if (fn(item)) {
-      result.push(item) // или result = [ ...result, item ]
+      result.push(item) // or result = [ ...result, item ]
     }
   }
 
@@ -390,8 +390,8 @@ const filterI = (fn) => (arr) => {
 }
  // ===================================
 
-// ==== реализация императивная ====
-// с индексом итерации и контекстом
+// ==== imperative implementation ====
+// with the iteration index and context
 // filterIq :: (a -> Boolean) -> [a] -> [a]
 const filterIq = (fn) => (arr) => {
   let result = []
@@ -400,7 +400,7 @@ const filterIq = (fn) => (arr) => {
     const value = arr[i]
 
     if (fn(value, i, arr)) {
-      result.push(value) // или result = [ ...result, value ]
+      result.push(value) // or result = [ ...result, value ]
     }
 
   }
@@ -409,13 +409,13 @@ const filterIq = (fn) => (arr) => {
 }
 // ===================================
 
-// ==== реализация рекурсивная ====
-// через трамплин, чтобы стек не переполнился
-// надеюсь, вы прочитали раздел про рекурсию
+// ==== recursive implementation ====
+// through a trampoline, so the stack does not overflow
+// I hope you have read the lesson on recursion
 
 // trampoline :: ((...args -> *) -> (...args -> *))
-// вызывает функцию и, пока результат — функция (thunk),
-// вызывает его снова: шаги идут в цикле, стек не растёт
+// calls the function and, while the result is a function (a thunk),
+// calls it again: the steps run in a loop, the stack does not grow
 const trampoline = (fn) => (...args) => {
   let result = fn(...args)
 
@@ -426,42 +426,42 @@ const trampoline = (fn) => (...args) => {
   return result
 }
 
-// filterR возвращает либо готовый массив,
-// либо функцию без аргументов (thunk) со следующим шагом
+// filterR returns either the finished array
+// or a function with no arguments (a thunk) holding the next step
 const filterR = (fn) => (arr, i = 0, acc = []) => {
 
-  // базовый случай
-  // когда элементы закончились возвращаем аккумулятор
+  // base case
+  // when the elements run out, return the accumulator
   if (i === arr.length) {
     return acc
   }
 
-  // рекурсивный случай
-  // возвращаем функцию для трамплина
+  // recursive case
+  // return a function for the trampoline
   return () => {
-     // текущий элемент
+     // the current element
      const head = arr[i]
 
-     // в аккумулятор кладем элемент
-     // если функция-предикат вернула true
-     // иначе аккумулятор остаётся прежним
+     // put the element into the accumulator
+     // if the predicate function returned true,
+     // otherwise the accumulator stays the same
      if (fn (head)) {
        acc.push(head)
      }
 
-     // переходим к следующему элементу
-     // индекс и push вместо [head, ...tail] и [...acc, head]:
-     // копирование массива на каждом шаге дало бы O(n²)
+     // move on to the next element
+     // an index and push instead of [head, ...tail] and [...acc, head]:
+     // copying the array on every step would make it O(n²)
      return filterR (fn) (arr, i + 1, acc)
   }
 }
 
 // filterTrampoline :: (a -> Boolean) -> [a] -> [a]
-// снаружи передаём только массив: индекс и аккумулятор внутренние
+// from the outside we pass only the array: the index and the accumulator are internal
 const filterTrampoline = (fn) => (arr) => trampoline (filterR (fn)) (arr)
 // ===================================
 
-// ==== запуск ====
+// ==== run ====
 const data = [1, 2, 3, 4, 5]
 
 const result = filterD (v => v > 3) (data)
@@ -603,31 +603,31 @@ const result = reduceD ((a, b) => a + b) (0) (data)
 
 console.log (result) // 6
 // ===================================`,
-        en: `// каррирование и данные последним аргументом нужны,
-// чтобы функции было удобно использовать в композиции
-// в бесточечном стиле, не называя данные:
+        en: `// currying and taking the data as the last argument
+// make these functions easy to use in composition
+// in point-free style, without naming the data:
 // pipe (mapD (f), filterD (g))
 
-// ==== реализация декларативная ====
+// ==== declarative implementation ====
 // reduceD :: ((a, b) → a) → a → [b] → a
 const reduceD = (fn) => (init) => (arr) => arr.reduce(fn, init)
 // ===================================
 
-// ==== реализация императивная ====
-// без индекса итерации и контекста
+// ==== imperative implementation ====
+// without the iteration index and context
 // reduceI :: ((a, b) → a) → a → [b] → a
 const reduceI = (fn) => (init) => (arr) => {
 
-  // значение которое будем возвращать
-  // устанавливаем ему инициализационное значение
+  // the value we will return
+  // starts with the initial value
   let accumulator = init
 
   for (const item of arr) {
-    // вызываем функцию
-    // с первым аргументом аккумулятором
-    // вторым аргументом текущим элементом массива
-    // результат вызова кладем в аккумулятор
-    // чтобы при след вызове результат предыдущего сохранялся
+    // call the function
+    // with the accumulator as the first argument
+    // and the current array element as the second
+    // store the result in the accumulator
+    // so the next call builds on the previous result
     accumulator = fn (accumulator, item)
   }
 
@@ -635,8 +635,8 @@ const reduceI = (fn) => (init) => (arr) => {
 }
  // ===================================
 
-// ==== реализация императивная ====
-// с индексом итерации и контекстом
+// ==== imperative implementation ====
+// with the iteration index and context
 // reduceIq :: ((a, b, Number, [b]) → a) → a → [b] → a
 const reduceIq = (fn) => (init) => (arr) => {
 
@@ -650,13 +650,13 @@ const reduceIq = (fn) => (init) => (arr) => {
 }
 // ===================================
 
-// ==== реализация рекурсивная ====
-// через трамплин, чтобы стек не переполнился
-// надеюсь, вы прочитали раздел про рекурсию
+// ==== recursive implementation ====
+// through a trampoline, so the stack does not overflow
+// I hope you have read the lesson on recursion
 
 // trampoline :: ((...args -> *) -> (...args -> *))
-// вызывает функцию и, пока результат — функция (thunk),
-// вызывает его снова: шаги идут в цикле, стек не растёт
+// calls the function and, while the result is a function (a thunk),
+// calls it again: the steps run in a loop, the stack does not grow
 const trampoline = (fn) => (...args) => {
   let result = fn(...args)
 
@@ -667,41 +667,41 @@ const trampoline = (fn) => (...args) => {
   return result
 }
 
-// reduceR возвращает либо итоговое значение,
-// либо функцию без аргументов (thunk) со следующим шагом
+// reduceR returns either the final value
+// or a function with no arguments (a thunk) holding the next step
 const reduceR = (fn) => (init) => (arr, i = 0) => {
 
-  // базовый случай
-  // когда элементы закончились возвращаем аккумулятор
+  // base case
+  // when the elements run out, return the accumulator
   if (i === arr.length) {
     return init
   }
 
-  // рекурсивный случай
-  // возвращаем функцию для трамплина
+  // recursive case
+  // return a function for the trampoline
   return () => {
-     // аккумулятор который будем возвращать
-     // пропускаем через функцию
-     // старый аккумулятор и текущее значение
+     // the accumulator we will return:
+     // pass the old accumulator and the current value
+     // through the function
      const nextInit = fn (init, arr[i])
 
-     // вызываем заново функцию
-     // с той же функцией
-     // новым аккумулятором пропущенным через функцию
-     // и следующим индексом: индекс вместо [head, ...tail],
-     // чтобы не копировать массив на каждом шаге
+     // call the function again
+     // with the same function,
+     // the new accumulator
+     // and the next index: an index instead of [head, ...tail],
+     // so the array is not copied on every step
      return reduceR (fn) (nextInit) (arr, i + 1)
   }
 }
 
 // reduceTrampoline :: ((a, b) → a) → a → [b] → a
-// снаружи передаём только массив: индекс внутренний
-// ограничение трамплина: если итоговое значение само функция,
-// трамплин примет его за следующий шаг и вызовет
+// from the outside we pass only the array: the index is internal
+// a limitation of the trampoline: if the final value is itself a function,
+// the trampoline takes it for the next step and calls it
 const reduceTrampoline = (fn) => (init) => (arr) => trampoline (reduceR (fn) (init)) (arr)
 // ===================================
 
-// ==== запуск ====
+// ==== run ====
 const data = [1, 2, 3]
 
 const result = reduceD ((a, b) => a + b) (0) (data)
