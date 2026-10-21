@@ -612,8 +612,8 @@ console.log('with a cache, computations: ' + memoCalls)`,
     },
     {
       task: {
-        ru: "Функция priceWithTax берёт ставку налога в процентах из внешней переменной taxPercent, поэтому мемоизированная версия после смены ставки возвращает старые цены. Сделайте функцию чистой: ставка должна приходить аргументом. Мемоизируйте её через R.memoizeWith так, чтобы ставка входила в ключ, и выведите цены до и после смены ставки и число вычислений.",
-        en: "priceWithTax takes the tax rate in percent from the outside variable taxPercent, so the memoized version returns old prices after the rate changes. Make the function pure: the rate must come in as an argument. Memoize it with R.memoizeWith so that the rate is part of the key, and print the prices before and after the rate changes and the number of computations.",
+        ru: "Функция priceWithTax берёт ставку налога в процентах из внешней переменной taxPercent, поэтому мемоизированная версия после смены ставки возвращает старые цены. Сделайте функцию чистой: ставка должна приходить аргументом. Мемоизируйте её через R.memoizeWith так, чтобы ставка входила в ключ. Вызовите priceMemo для цены 100 дважды при ставке 20% и один раз при 10%, выведите все три цены, а затем число вычислений: его считает calls из заготовки.",
+        en: "priceWithTax takes the tax rate in percent from the outside variable taxPercent, so the memoized version returns old prices after the rate changes. Make the function pure: the rate must come in as an argument. Memoize it with R.memoizeWith so that the rate is part of the key. Call priceMemo for the price 100 twice at a 20% rate and once at 10%, print all three prices and then the number of computations, which the calls counter from the starter keeps.",
       },
       starter: {
         ru: `// memoize для функций одного аргумента
@@ -630,9 +630,16 @@ const memoize = (fn) => {
   }
 }
 
+// счётчик показывает, сколько раз функция действительно считала;
+// это побочный эффект, он здесь только для наглядности
+let calls = 0
+
 let taxPercent = 20
 // priceWithTax :: Number -> Number
-const priceWithTax = (price) => price + (price * taxPercent) / 100
+const priceWithTax = (price) => {
+  calls += 1
+  return price + (price * taxPercent) / 100
+}
 const priceMemo = memoize(priceWithTax)
 
 console.log(priceMemo(100))
@@ -655,9 +662,16 @@ const memoize = (fn) => {
   }
 }
 
+// the counter shows how many times the function actually computed;
+// it is a side effect, here only for illustration
+let calls = 0
+
 let taxPercent = 20
 // priceWithTax :: Number -> Number
-const priceWithTax = (price) => price + (price * taxPercent) / 100
+const priceWithTax = (price) => {
+  calls += 1
+  return price + (price * taxPercent) / 100
+}
 const priceMemo = memoize(priceWithTax)
 
 console.log(priceMemo(100))
@@ -668,8 +682,10 @@ console.log(priceMemo(100))
 // your code`,
       },
       solution: {
-        ru: `let calls = 0
-// ставка теперь аргумент: функция чистая
+        ru: `// счётчик показывает, сколько раз функция действительно считала;
+// это побочный эффект, он здесь только для наглядности
+let calls = 0
+// ставка теперь аргумент: результат зависит только от аргументов, как у чистой функции
 // priceWithTax :: (Number, Number) -> Number
 const priceWithTax = (percent, price) => {
   calls += 1
@@ -687,8 +703,10 @@ taxPercent = 10
 // ключ 10|100: считаем заново
 console.log(priceMemo(taxPercent, 100))
 console.log('вычислений: ' + calls)`,
-        en: `let calls = 0
-// the rate is an argument now: the function is pure
+        en: `// the counter shows how many times the function actually computed;
+// it is a side effect, here only for illustration
+let calls = 0
+// the rate is an argument now: the result depends only on the arguments, as with a pure function
 // priceWithTax :: (Number, Number) -> Number
 const priceWithTax = (percent, price) => {
   calls += 1
