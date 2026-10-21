@@ -3,6 +3,10 @@ import type { Lesson } from '~/data/course-types'
 const lesson: Lesson = {
   slug: 'neural-networks',
   title: { ru: "Нейронные сети и теория категорий", en: "Neural networks and category theory" },
+  goal: {
+    ru: "Понять, как нейросеть прямого распространения складывается из функций — нейрон, слой и сеть как композиция слоёв, — и какую часть этой картины описывает теория категорий.",
+    en: "Understand how a feedforward neural network is built from functions, with neurons, layers and the network as a composition of layers, and which part of this picture category theory describes.",
+  },
   blocks: [
     {
       type: 'text',
@@ -229,6 +233,360 @@ for (const x of [[0, 0], [0, 1], [1, 0], [1, 1]]) {
 // 0 XOR 1 = 1
 // 1 XOR 0 = 1
 // 1 XOR 1 = 0`,
+      },
+    },
+  ],
+  summary: [
+    {
+      ru: "Нейрон умножает каждый вход на свой вес, складывает результаты, прибавляет смещение и пропускает число через нелинейную функцию активации, например ReLU: max(0, z).",
+      en: "A neuron multiplies each input by its own weight, adds up the results, adds a bias and passes the number through a nonlinear activation function, for example ReLU: max(0, z).",
+    },
+    {
+      ru: "Слой — функция из вектора чисел в вектор чисел, а сеть прямого распространения — композиция функций-слоёв: f(x) = f3(f2(f1(x))).",
+      en: "A layer is a function from a vector of numbers to a vector of numbers, and a feedforward network is a composition of layer functions: f(x) = f3(f2(f1(x))).",
+    },
+    {
+      ru: "Без нелинейности в скрытых слоях композиция аффинных слоёв снова аффинна: сеть сводится к одному слою и не может, например, решить задачу XOR.",
+      en: "Without nonlinearity in the hidden layers, a composition of affine layers is affine again: the network collapses into a single layer and cannot, for example, solve the XOR task.",
+    },
+    {
+      ru: "Веса и смещения подбирает алгоритм обучения, после чего они фиксируются; обученная сеть с зафиксированными параметрами — чистая функция от входа.",
+      en: "Weights and biases are found by a training algorithm and then fixed; a trained network with fixed parameters is a pure function of its input.",
+    },
+    {
+      ru: "Теория категорий описывает, как слои стыкуются между собой, но не объясняет, почему сеть учится.",
+      en: "Category theory describes how layers fit together, but it does not explain why a network learns.",
+    },
+  ],
+  exercises: [
+    {
+      task: {
+        ru: "Возьмите скрытый слой hidden из урока и не меняйте его. Подберите веса и смещение выходного нейрона (активация identity) так, чтобы сеть вычисляла OR, а затем AND, и выведите таблицы истинности. Подсказка: сначала посчитайте, что hidden выдаёт на входах [0, 0], [0, 1], [1, 0] и [1, 1].",
+        en: "Take the hidden layer from the lesson and leave it unchanged. Pick the weights and bias of the output neuron (identity activation) so that the network computes OR and then AND, and print the truth tables. Hint: first work out what hidden outputs for the inputs [0, 0], [0, 1], [1, 0] and [1, 1].",
+      },
+      starter: {
+        ru: `// pipe :: ((a -> b), (b -> c), ..., (y -> z)) -> a -> z
+const pipe = (...fns) => (x) => fns.reduce((acc, fn) => fn(acc), x)
+
+// relu :: Number -> Number, то же, что max(0, z)
+const relu = (z) => (z > 0 ? z : 0)
+// identity :: a -> a
+const identity = (z) => z
+
+// weightedSum :: ([Number], [Number]) -> Number
+const weightedSum = (weights, inputs) =>
+  inputs.reduce((sum, x, i) => sum + x * weights[i], 0)
+
+// neuron :: ([Number], Number, (Number -> Number)) -> [Number] -> Number
+const neuron = (weights, bias, activation) => (inputs) =>
+  activation(weightedSum(weights, inputs) + bias)
+
+// layer :: [[Number] -> Number] -> [Number] -> [Number]
+const layer = (neurons) => (inputs) => neurons.map((n) => n(inputs))
+
+// скрытый слой из урока
+// hidden :: [Number] -> [Number]
+const hidden = layer([
+  neuron([1, 1], 0, relu),
+  neuron([1, 1], -1, relu),
+])
+
+// сеть: скрытый слой, затем один выходной нейрон
+// gate :: ([Number], Number) -> [Number] -> Number
+const gate = (weights, bias) =>
+  pipe(hidden, layer([neuron(weights, bias, identity)]), ([y]) => y)
+
+// ваш код: подберите веса и смещение
+const or = gate([0, 0], 0)
+const and = gate([0, 0], 0)
+
+const inputs = [[0, 0], [0, 1], [1, 0], [1, 1]]
+for (const [name, net] of [['OR', or], ['AND', and]]) {
+  for (const x of inputs) {
+    console.log(\`\${x[0]} \${name} \${x[1]} = \${net(x)}\`)
+  }
+}`,
+        en: `// pipe :: ((a -> b), (b -> c), ..., (y -> z)) -> a -> z
+const pipe = (...fns) => (x) => fns.reduce((acc, fn) => fn(acc), x)
+
+// relu :: Number -> Number, the same as max(0, z)
+const relu = (z) => (z > 0 ? z : 0)
+// identity :: a -> a
+const identity = (z) => z
+
+// weightedSum :: ([Number], [Number]) -> Number
+const weightedSum = (weights, inputs) =>
+  inputs.reduce((sum, x, i) => sum + x * weights[i], 0)
+
+// neuron :: ([Number], Number, (Number -> Number)) -> [Number] -> Number
+const neuron = (weights, bias, activation) => (inputs) =>
+  activation(weightedSum(weights, inputs) + bias)
+
+// layer :: [[Number] -> Number] -> [Number] -> [Number]
+const layer = (neurons) => (inputs) => neurons.map((n) => n(inputs))
+
+// the hidden layer from the lesson
+// hidden :: [Number] -> [Number]
+const hidden = layer([
+  neuron([1, 1], 0, relu),
+  neuron([1, 1], -1, relu),
+])
+
+// the network: the hidden layer, then one output neuron
+// gate :: ([Number], Number) -> [Number] -> Number
+const gate = (weights, bias) =>
+  pipe(hidden, layer([neuron(weights, bias, identity)]), ([y]) => y)
+
+// your code: pick the weights and the bias
+const or = gate([0, 0], 0)
+const and = gate([0, 0], 0)
+
+const inputs = [[0, 0], [0, 1], [1, 0], [1, 1]]
+for (const [name, net] of [['OR', or], ['AND', and]]) {
+  for (const x of inputs) {
+    console.log(\`\${x[0]} \${name} \${x[1]} = \${net(x)}\`)
+  }
+}`,
+      },
+      solution: {
+        ru: `// pipe :: ((a -> b), (b -> c), ..., (y -> z)) -> a -> z
+const pipe = (...fns) => (x) => fns.reduce((acc, fn) => fn(acc), x)
+
+// relu :: Number -> Number, то же, что max(0, z)
+const relu = (z) => (z > 0 ? z : 0)
+// identity :: a -> a
+const identity = (z) => z
+
+// weightedSum :: ([Number], [Number]) -> Number
+const weightedSum = (weights, inputs) =>
+  inputs.reduce((sum, x, i) => sum + x * weights[i], 0)
+
+// neuron :: ([Number], Number, (Number -> Number)) -> [Number] -> Number
+const neuron = (weights, bias, activation) => (inputs) =>
+  activation(weightedSum(weights, inputs) + bias)
+
+// layer :: [[Number] -> Number] -> [Number] -> [Number]
+const layer = (neurons) => (inputs) => neurons.map((n) => n(inputs))
+
+// скрытый слой из урока
+// hidden :: [Number] -> [Number]
+const hidden = layer([
+  neuron([1, 1], 0, relu),
+  neuron([1, 1], -1, relu),
+])
+
+// сеть: скрытый слой, затем один выходной нейрон
+// gate :: ([Number], Number) -> [Number] -> Number
+const gate = (weights, bias) =>
+  pipe(hidden, layer([neuron(weights, bias, identity)]), ([y]) => y)
+
+// hidden на входах [0, 0], [0, 1], [1, 0], [1, 1]
+// выдаёт [0, 0], [1, 0], [1, 0], [2, 1]
+
+// OR: первый выход минус второй даёт 0, 1, 1, 1
+const or = gate([1, -1], 0)
+// AND: второй выход как есть даёт 0, 0, 0, 1
+const and = gate([0, 1], 0)
+
+const inputs = [[0, 0], [0, 1], [1, 0], [1, 1]]
+for (const [name, net] of [['OR', or], ['AND', and]]) {
+  for (const x of inputs) {
+    console.log(\`\${x[0]} \${name} \${x[1]} = \${net(x)}\`)
+  }
+}`,
+        en: `// pipe :: ((a -> b), (b -> c), ..., (y -> z)) -> a -> z
+const pipe = (...fns) => (x) => fns.reduce((acc, fn) => fn(acc), x)
+
+// relu :: Number -> Number, the same as max(0, z)
+const relu = (z) => (z > 0 ? z : 0)
+// identity :: a -> a
+const identity = (z) => z
+
+// weightedSum :: ([Number], [Number]) -> Number
+const weightedSum = (weights, inputs) =>
+  inputs.reduce((sum, x, i) => sum + x * weights[i], 0)
+
+// neuron :: ([Number], Number, (Number -> Number)) -> [Number] -> Number
+const neuron = (weights, bias, activation) => (inputs) =>
+  activation(weightedSum(weights, inputs) + bias)
+
+// layer :: [[Number] -> Number] -> [Number] -> [Number]
+const layer = (neurons) => (inputs) => neurons.map((n) => n(inputs))
+
+// the hidden layer from the lesson
+// hidden :: [Number] -> [Number]
+const hidden = layer([
+  neuron([1, 1], 0, relu),
+  neuron([1, 1], -1, relu),
+])
+
+// the network: the hidden layer, then one output neuron
+// gate :: ([Number], Number) -> [Number] -> Number
+const gate = (weights, bias) =>
+  pipe(hidden, layer([neuron(weights, bias, identity)]), ([y]) => y)
+
+// for the inputs [0, 0], [0, 1], [1, 0], [1, 1]
+// hidden outputs [0, 0], [1, 0], [1, 0], [2, 1]
+
+// OR: the first output minus the second gives 0, 1, 1, 1
+const or = gate([1, -1], 0)
+// AND: the second output as is gives 0, 0, 0, 1
+const and = gate([0, 1], 0)
+
+const inputs = [[0, 0], [0, 1], [1, 0], [1, 1]]
+for (const [name, net] of [['OR', or], ['AND', and]]) {
+  for (const x of inputs) {
+    console.log(\`\${x[0]} \${name} \${x[1]} = \${net(x)}\`)
+  }
+}`,
+      },
+      expected: {
+        ru: "0 OR 0 = 0\n0 OR 1 = 1\n1 OR 0 = 1\n1 OR 1 = 1\n0 AND 0 = 0\n0 AND 1 = 0\n1 AND 0 = 0\n1 AND 1 = 1",
+        en: "0 OR 0 = 0\n0 OR 1 = 1\n1 OR 0 = 1\n1 OR 1 = 1\n0 AND 0 = 0\n0 AND 1 = 0\n1 AND 0 = 0\n1 AND 1 = 1",
+      },
+    },
+    {
+      task: {
+        ru: "Проверьте в коде, что без нелинейности два слоя сводятся к одному. Сеть deep состоит из двух слоёв с активацией identity. В скрытом слое два нейрона: с весами [1, 2] и смещением 1 и с весами [3, -1] и смещением 0. В выходном слое один нейрон с весами [2, 1] и смещением -4. Найдите веса и смещение одного нейрона single, который даёт тот же ответ, и сравните обе сети на входах [0, 0], [1, 0], [0, 1] и [2, 3]. Затем поставьте в скрытый слой relu вместо identity и сравните сети ещё раз на входе [0, 1].",
+        en: "Check in code that without nonlinearity two layers collapse into one. The deep network consists of two layers with identity activation. The hidden layer has two neurons: one with weights [1, 2] and bias 1, and one with weights [3, -1] and bias 0. The output layer has one neuron with weights [2, 1] and bias -4. Find the weights and bias of a single neuron that gives the same answer, and compare both networks on the inputs [0, 0], [1, 0], [0, 1] and [2, 3]. Then put relu instead of identity into the hidden layer and compare the networks again on the input [0, 1].",
+      },
+      starter: {
+        ru: `// pipe :: ((a -> b), (b -> c), ..., (y -> z)) -> a -> z
+const pipe = (...fns) => (x) => fns.reduce((acc, fn) => fn(acc), x)
+
+// relu :: Number -> Number, то же, что max(0, z)
+const relu = (z) => (z > 0 ? z : 0)
+// identity :: a -> a
+const identity = (z) => z
+
+// weightedSum :: ([Number], [Number]) -> Number
+const weightedSum = (weights, inputs) =>
+  inputs.reduce((sum, x, i) => sum + x * weights[i], 0)
+
+// neuron :: ([Number], Number, (Number -> Number)) -> [Number] -> Number
+const neuron = (weights, bias, activation) => (inputs) =>
+  activation(weightedSum(weights, inputs) + bias)
+
+// layer :: [[Number] -> Number] -> [Number] -> [Number]
+const layer = (neurons) => (inputs) => neurons.map((n) => n(inputs))
+
+// ваш код: сети deep и single и их сравнение`,
+        en: `// pipe :: ((a -> b), (b -> c), ..., (y -> z)) -> a -> z
+const pipe = (...fns) => (x) => fns.reduce((acc, fn) => fn(acc), x)
+
+// relu :: Number -> Number, the same as max(0, z)
+const relu = (z) => (z > 0 ? z : 0)
+// identity :: a -> a
+const identity = (z) => z
+
+// weightedSum :: ([Number], [Number]) -> Number
+const weightedSum = (weights, inputs) =>
+  inputs.reduce((sum, x, i) => sum + x * weights[i], 0)
+
+// neuron :: ([Number], Number, (Number -> Number)) -> [Number] -> Number
+const neuron = (weights, bias, activation) => (inputs) =>
+  activation(weightedSum(weights, inputs) + bias)
+
+// layer :: [[Number] -> Number] -> [Number] -> [Number]
+const layer = (neurons) => (inputs) => neurons.map((n) => n(inputs))
+
+// your code: the deep and single networks and their comparison`,
+      },
+      solution: {
+        ru: `// pipe :: ((a -> b), (b -> c), ..., (y -> z)) -> a -> z
+const pipe = (...fns) => (x) => fns.reduce((acc, fn) => fn(acc), x)
+
+// relu :: Number -> Number, то же, что max(0, z)
+const relu = (z) => (z > 0 ? z : 0)
+// identity :: a -> a
+const identity = (z) => z
+
+// weightedSum :: ([Number], [Number]) -> Number
+const weightedSum = (weights, inputs) =>
+  inputs.reduce((sum, x, i) => sum + x * weights[i], 0)
+
+// neuron :: ([Number], Number, (Number -> Number)) -> [Number] -> Number
+const neuron = (weights, bias, activation) => (inputs) =>
+  activation(weightedSum(weights, inputs) + bias)
+
+// layer :: [[Number] -> Number] -> [Number] -> [Number]
+const layer = (neurons) => (inputs) => neurons.map((n) => n(inputs))
+
+// два слоя; активацию скрытого слоя передаём параметром
+// deepWith :: (Number -> Number) -> [Number] -> Number
+const deepWith = (activation) => pipe(
+  layer([
+    neuron([1, 2], 1, activation),
+    neuron([3, -1], 0, activation),
+  ]),
+  layer([neuron([2, 1], -4, identity)]),
+  ([y]) => y,
+)
+
+// deep :: [Number] -> Number
+const deep = deepWith(identity)
+
+// подставляем скрытый слой в выходной нейрон:
+// 2 * (x1 + 2 * x2 + 1) + (3 * x1 - x2) - 4 = 5 * x1 + 3 * x2 - 2
+// single :: [Number] -> Number
+const single = pipe(layer([neuron([5, 3], -2, identity)]), ([y]) => y)
+
+for (const x of [[0, 0], [1, 0], [0, 1], [2, 3]]) {
+  console.log(\`[\${x}]: deep = \${deep(x)}, single = \${single(x)}\`)
+}
+
+// с relu второй скрытый нейрон на входе [0, 1] выдаёт не -1, а 0,
+// и ответы расходятся: формула одного нейрона больше не подходит
+console.log(\`с relu, [0,1]: deep = \${deepWith(relu)([0, 1])}, single = \${single([0, 1])}\`)`,
+        en: `// pipe :: ((a -> b), (b -> c), ..., (y -> z)) -> a -> z
+const pipe = (...fns) => (x) => fns.reduce((acc, fn) => fn(acc), x)
+
+// relu :: Number -> Number, the same as max(0, z)
+const relu = (z) => (z > 0 ? z : 0)
+// identity :: a -> a
+const identity = (z) => z
+
+// weightedSum :: ([Number], [Number]) -> Number
+const weightedSum = (weights, inputs) =>
+  inputs.reduce((sum, x, i) => sum + x * weights[i], 0)
+
+// neuron :: ([Number], Number, (Number -> Number)) -> [Number] -> Number
+const neuron = (weights, bias, activation) => (inputs) =>
+  activation(weightedSum(weights, inputs) + bias)
+
+// layer :: [[Number] -> Number] -> [Number] -> [Number]
+const layer = (neurons) => (inputs) => neurons.map((n) => n(inputs))
+
+// two layers; the hidden layer's activation is a parameter
+// deepWith :: (Number -> Number) -> [Number] -> Number
+const deepWith = (activation) => pipe(
+  layer([
+    neuron([1, 2], 1, activation),
+    neuron([3, -1], 0, activation),
+  ]),
+  layer([neuron([2, 1], -4, identity)]),
+  ([y]) => y,
+)
+
+// deep :: [Number] -> Number
+const deep = deepWith(identity)
+
+// substitute the hidden layer into the output neuron:
+// 2 * (x1 + 2 * x2 + 1) + (3 * x1 - x2) - 4 = 5 * x1 + 3 * x2 - 2
+// single :: [Number] -> Number
+const single = pipe(layer([neuron([5, 3], -2, identity)]), ([y]) => y)
+
+for (const x of [[0, 0], [1, 0], [0, 1], [2, 3]]) {
+  console.log(\`[\${x}]: deep = \${deep(x)}, single = \${single(x)}\`)
+}
+
+// with relu the second hidden neuron outputs 0 instead of -1 for the input [0, 1],
+// and the answers diverge: the single-neuron formula no longer fits
+console.log(\`with relu, [0,1]: deep = \${deepWith(relu)([0, 1])}, single = \${single([0, 1])}\`)`,
+      },
+      expected: {
+        ru: "[0,0]: deep = -2, single = -2\n[1,0]: deep = 3, single = 3\n[0,1]: deep = 1, single = 1\n[2,3]: deep = 17, single = 17\nс relu, [0,1]: deep = 2, single = 1",
+        en: "[0,0]: deep = -2, single = -2\n[1,0]: deep = 3, single = 3\n[0,1]: deep = 1, single = 1\n[2,3]: deep = 17, single = 17\nwith relu, [0,1]: deep = 2, single = 1",
       },
     },
   ],
