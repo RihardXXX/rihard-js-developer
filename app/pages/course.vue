@@ -21,6 +21,15 @@ useSeoMeta({
   title: () => t('course.title'),
   description: () => t('course.desc'),
 })
+
+// The resolver sets `provider` to the site identity (the Person from app.vue).
+useSchemaOrg([
+  defineCourse({
+    name: t('course.title'),
+    description: t('course.desc'),
+    inLanguage: lang === 'en' ? 'en-US' : 'ru-RU',
+  }),
+])
 </script>
 
 <template>
