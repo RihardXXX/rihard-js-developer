@@ -4,6 +4,7 @@ import notForWhom from './lessons/not-for-whom'
 import imperativeVsDeclarative from './lessons/imperative-vs-declarative'
 import functionalProgramming from './lessons/functional-programming'
 import pureFunctions from './lessons/pure-functions'
+import immutability from './lessons/immutability'
 import hindleyMilner from './lessons/hindley-milner-type-notation'
 import categoryTheory from './lessons/category-theory'
 import fantasyLand from './lessons/fantasy-land'
@@ -29,6 +30,7 @@ export const lessons: Lesson[] = [
   higherOrderFunctions,
   closures,
   pureFunctions,
+  immutability,
   hindleyMilner,
   composition,
   currying,
