@@ -207,6 +207,7 @@ onMounted(() => {
 })
 
 onBeforeUnmount(() => {
+  runId++
   runner.clear()
   editorInstance?.dispose()
   editorInstance = null
