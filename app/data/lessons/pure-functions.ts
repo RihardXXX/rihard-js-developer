@@ -6,8 +6,8 @@ const lesson: Lesson = {
   blocks: [
     {
       type: 'text',
-      ru: "Чистые функции крайне важны и обычно они идемпотентны, но не всегда. Если вам нужны сайд эффекты то группируйте их в отдельные функции и разделяйте от чистых функций. Любая программа особенно в вебе нуждается в сайд эффектах (изменение Dom дерева (tree), запросы к серверу (fetch), чтение из файла (readFile) и тп)",
-      en: "Pure functions are extremely important and are usually idempotent, but not always. If you need side effects, group them into separate functions and keep them apart from pure functions. Every program, especially on the web, needs side effects (mutating the DOM tree, requests to the server (fetch), reading from a file (readFile), and so on).",
+      ru: "Чистые функции крайне важны. При этом чистая функция не обязательно идемпотентна: x => x + 1 чистая, но, применив ее к собственному результату, мы получим новое значение. Если вам нужны сайд эффекты, то группируйте их в отдельные функции и отделяйте от чистых функций. Любая программа, особенно в вебе, нуждается в сайд эффектах (изменение DOM дерева (tree), запросы к серверу (fetch), чтение из файла (readFile) и т. п.)",
+      en: "Pure functions are extremely important. A pure function is not necessarily idempotent, though: x => x + 1 is pure, but applying it to its own result gives a new value. If you need side effects, group them into separate functions and keep them apart from pure functions. Every program, especially on the web, needs side effects (mutating the DOM tree, requests to the server (fetch), reading from a file (readFile), and so on).",
     },
     {
       type: 'code',
@@ -19,8 +19,8 @@ let user = { name: 'John', age: 25 }
 const changeAge = () => user.age = 30
 
 // мы мутируем внешнюю переменную и создаем сайд эффекты
-// программа будет везти себя непредсказуемо так как с этой
-// переменной могут работать несколько функций  и отловить ошибку будет сложнее
+// программа будет вести себя непредсказуемо, так как с этой
+// переменной могут работать несколько функций, и отловить ошибку будет сложнее
 changeAge()
 console.log(user) // { name: 'John', age: 30 }
 // ===============================`,
@@ -31,8 +31,8 @@ let user = { name: 'John', age: 25 }
 const changeAge = () => user.age = 30
 
 // мы мутируем внешнюю переменную и создаем сайд эффекты
-// программа будет везти себя непредсказуемо так как с этой
-// переменной могут работать несколько функций  и отловить ошибку будет сложнее
+// программа будет вести себя непредсказуемо, так как с этой
+// переменной могут работать несколько функций, и отловить ошибку будет сложнее
 changeAge()
 console.log(user) // { name: 'John', age: 30 }
 // ===============================`,
@@ -64,7 +64,7 @@ const useImmutableUser = (user) => {
   let userBase = structuredClone(user) // обязательно клонируем
 
   const changeAge = (newAge) => userBase = ({
-    ...userBase, // или structuredClone(userBase) или JSON.parse(JSON.stringify(user))
+    ...userBase, // или structuredClone(userBase) или JSON.parse(JSON.stringify(userBase))
     age: newAge
   })
 
@@ -105,7 +105,7 @@ const useImmutableUser = (user) => {
   let userBase = structuredClone(user) // обязательно клонируем
 
   const changeAge = (newAge) => userBase = ({
-    ...userBase, // или structuredClone(userBase) или JSON.parse(JSON.stringify(user))
+    ...userBase, // или structuredClone(userBase) или JSON.parse(JSON.stringify(userBase))
     age: newAge
   })
 
@@ -133,7 +133,7 @@ console.log(before) // { name: 'John', age: 25 } прежний объект н�
 let user = { name: 'John', age: 25 }
 
 // Чистая функция
-// changeAge :: Number -> Object -> Object
+// changeAge :: (Number, Object) -> Object
 const changeAge = (newAge, user) => ({
   ...user,
   age: newAge
@@ -159,7 +159,7 @@ console.log(changedUser) // { name: John, age: 30 } получили новог�
 let user = { name: 'John', age: 25 }
 
 // Чистая функция
-// changeAge :: Number -> Object -> Object
+// changeAge :: (Number, Object) -> Object
 const changeAge = (newAge, user) => ({
   ...user,
   age: newAge
