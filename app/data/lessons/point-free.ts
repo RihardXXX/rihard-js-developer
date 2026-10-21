@@ -5,7 +5,7 @@ const lesson: Lesson = {
   title: { ru: "Бесточечный стиль", en: "Point-free style" },
   description: {
     ru: "Бесточечный стиль в JavaScript: функции без упоминания аргументов через pipe, compose и каррированные функции Ramda, ловушка map(parseInt) и отладка через tap.",
-    en: "Point-free style in JavaScript: functions that never name their arguments, built with pipe, compose and curried Ramda functions; the map(parseInt) trap; tap.",
+    en: "Point-free style in JavaScript: functions without named arguments via pipe, compose and curried Ramda functions, the map(parseInt) trap and debugging with tap.",
   },
   goal: {
     ru: "Научиться записывать функции в бесточечном стиле через pipe, compose и каррированные функции, понять, почему ['1', '2', '3'].map(parseInt) даёт [1, NaN, NaN], отлаживать такие конвейеры через tap и видеть, когда явный аргумент читается лучше.",
@@ -217,7 +217,7 @@ const isAdultOnlineP = (user) => user.age >= 18 && user.status === 'online'
 console.log(users.filter(isAdultOnline).length) // 1
 console.log(users.filter(isAdultOnlineP).length) // 1
 
-// R.gt(18) читается как «больше 18», а значит age => 18 > age
+// R.gt(18) читается как «больше 18», а означает age => 18 > age
 // ages :: [Number]
 const ages = [10, 18, 20, 30]
 console.log(R.filter(R.gt(18), ages).join(', ')) // 10
@@ -495,8 +495,8 @@ console.log(availableTitles(products).join(', '))`,
     },
     {
       task: {
-        ru: "Функция sumCsv должна складывать числа из строки '10,20,30' и печатать 60, а печатает NaN. В заготовке есть tap и логгер log. Соберите отладочную версию sumCsvDebug: тот же конвейер с log после каждого шага. Найдите шаг, на котором портятся данные, объясните причину и исправьте sumCsv так, чтобы она осталась бесточечной.",
-        en: "sumCsv should add up the numbers in the string '10,20,30' and print 60, but it prints NaN. The starter has tap and a log helper. Build a debug version sumCsvDebug: the same pipeline with log after each step. Find the step where the data goes wrong, explain why, and fix sumCsv so that it stays point-free.",
+        ru: "Функция sumCsv должна складывать числа из строки '10,20,30' и печатать 60, а печатает NaN. В заготовке есть tap и логгер log. Соберите отладочную версию sumCsvDebug: тот же конвейер с log после каждого шага. Найдите шаг, на котором портятся данные, объясните причину и исправьте sumCsv так, чтобы она осталась бесточечной. Выведите результат sumCsvDebug('10,20,30'), затем исправленной sumCsv.",
+        en: "sumCsv should add up the numbers in the string '10,20,30' and print 60, but it prints NaN. The starter has tap and a log helper. Build a debug version sumCsvDebug: the same pipeline with log after each step. Find the step where the data goes wrong, explain why, and fix sumCsv so that it stays point-free. Print the result of sumCsvDebug('10,20,30'), then that of the fixed sumCsv.",
       },
       starter: {
         ru: `// tap :: (a -> *) -> a -> a
