@@ -30,6 +30,27 @@ useSchemaOrg([
     inLanguage: lang === 'en' ? 'en-US' : 'ru-RU',
   }),
 ])
+
+// A direct link to /course/#slug stops off the lesson: web fonts load during the smooth
+// scroll (main.scss) and move the lesson. Land on it once they are in, unless the reader
+// has already scrolled.
+onMounted(async () => {
+  let scrolled = false
+  const stop = () => {
+    scrolled = true
+  }
+  const events = ['wheel', 'touchstart', 'keydown', 'mousedown'] as const
+  events.forEach((name) => window.addEventListener(name, stop, { passive: true }))
+  await nextTick()
+  await document.fonts.ready
+  // An instant scroll from outside a frame loses to the router's smooth scroll still in flight.
+  await new Promise((resolve) => requestAnimationFrame(resolve))
+  events.forEach((name) => window.removeEventListener(name, stop))
+  // Read only now: a prerendered page hydrates on its payload path without the #hash, and the
+  // router puts it back after hydration. Fonts that were in by then didn't move the lesson.
+  const id = location.hash.slice(1)
+  if (id && !scrolled) document.getElementById(id)?.scrollIntoView({ behavior: 'instant' })
+})
 </script>
 
 <template>
