@@ -77,7 +77,12 @@ useSchemaOrg([
       </ol>
     </nav>
 
-    <CourseLesson :lesson="lesson" :index="number" />
+    <CourseLesson :lesson="lesson" :index="number">
+      <template #after-title>
+        <CourseReadBadge :slug="lesson.slug" class="lesson-read" />
+      </template>
+    </CourseLesson>
+    <CourseReadToggle :slug="lesson.slug" class="lesson-read-toggle" />
 
     <section class="lesson-playground">
       <h2 class="block-title">{{ t('course.playgroundTitle') }}</h2>
@@ -150,6 +155,14 @@ useSchemaOrg([
   font-size: 1.6rem;
   color: var(--text-muted);
   margin-bottom: 2rem;
+}
+
+.lesson-read {
+  margin: -0.8rem 0 2rem;
+}
+
+.lesson-read-toggle {
+  margin-top: 3.2rem;
 }
 
 .lesson-playground {

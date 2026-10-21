@@ -104,6 +104,7 @@ onMounted(async () => {
 
     <nav id="course-toc" class="toc" :aria-label="t('course.tocTitle')">
       <h2 class="block-title">{{ t('course.tocTitle') }}</h2>
+      <CourseProgressSummary :lessons="lessons" />
       <ol class="toc__list">
         <!-- id="<slug>": without JS an old link /course/#slug still lands next to the lesson's link -->
         <li v-for="(lesson, i) in lessons" :id="lesson.slug" :key="lesson.slug" class="toc__item">
@@ -111,6 +112,7 @@ onMounted(async () => {
           <NuxtLink :to="localePath(`/course/${lesson.slug}/`)" prefetch-on="interaction" class="toc__link">
             <span class="toc__num">{{ String(i + 1).padStart(2, '0') }}</span>
             {{ isEn ? lesson.title.en : lesson.title.ru }}
+            <CourseReadBadge :slug="lesson.slug" />
           </NuxtLink>
           <p class="toc__desc">{{ isEn ? lesson.description.en : lesson.description.ru }}</p>
         </li>
