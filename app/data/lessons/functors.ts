@@ -18,7 +18,7 @@ const lesson: Lesson = {
     {
       type: 'text',
       ru: "В уроке «Функции map, filter, reduce» map работал с массивами, а в уроке «Нотация типов Хиндли–Милнера» встречалась сигнатура map :: Functor f => (a -> b) -> f a -> f b. Вместо массива в ней стоит f — любой функтор. Разберёмся, что это за f и почему map можно доверять.",
-      en: "In the \"The map, filter, and reduce functions\" lesson map worked with arrays, and in the \"Hindley–Milner type notation\" lesson we came across the signature map :: Functor f => (a -> b) -> f a -> f b. Instead of an array it has f, which stands for any functor. Let's find out what this f is and why map can be trusted.",
+      en: "In the lesson \"The map, filter, and reduce functions\", map worked with arrays, and in the \"Hindley–Milner type notation\" lesson we came across the signature map :: Functor f => (a -> b) -> f a -> f b. Instead of an array it has f, which stands for any functor. Let's find out what this f is and why map can be trusted.",
     },
     {
       type: 'text',
@@ -389,7 +389,7 @@ console.log(R.equals(twoPasses, onePass)) // true`,
     {
       type: 'text',
       ru: "Посмотрите на журнал: результат одинаковый, а порядок вызовов разный. Два прохода вызывают сначала все getTotal, потом все format, а один проход их чередует. Для чистых функций порядок не важен — об этом урок «Чистые функции». Если же функции пишут в лог или меняют внешние данные, после такого рефакторинга эффекты пойдут в другом порядке.",
-      en: "Look at the journal: the result is the same, but the order of calls is different. Two passes call all the getTotal calls first and then all the format calls, while one pass interleaves them. For pure functions the order does not matter, as the \"Pure functions\" lesson explains. But if the functions write to a log or change outside data, after such a refactoring the effects will happen in a different order.",
+      en: "Look at the journal: the result is the same, but the order of calls is different. With two passes, every getTotal runs first and then every format, while one pass interleaves them. For pure functions the order does not matter, as the \"Pure functions\" lesson explains. But if the functions write to a log or change outside data, after such a refactoring the effects will happen in a different order.",
     },
     {
       type: 'text',
@@ -574,8 +574,8 @@ console.log(\`composition: \${same(mapTree((x) => double(inc(x)), tree), mapTree
     },
     {
       task: {
-        ru: "В заготовке список товаров проходит через три map подряд: взять цену, применить скидку 10 % и отформатировать строку. Счётчик passes считает, сколько раз обходили массив. Опираясь на закон композиции, получите тот же результат after за один проход: один вызов map с композицией трёх функций через R.pipe или R.compose. После рефакторинга счётчик должен показать 1, а результат совпасть с прежним.",
-        en: "In the starter a list of products goes through three maps in a row: take the price, apply a 10 % discount and format the string. The passes counter counts how many times the array was traversed. Relying on the composition law, get the same result after in a single pass: one call to map with the composition of the three functions via R.pipe or R.compose. After the refactoring the counter should show 1, and the result should match the previous one.",
+        ru: "В заготовке список товаров проходит через три map подряд: взять цену, применить скидку 10% и отформатировать строку. Счётчик passes считает, сколько раз обходили массив. Опираясь на закон композиции, получите тот же результат after за один проход: один вызов map с композицией трёх функций через R.pipe или R.compose. После рефакторинга счётчик должен показать 1, а результат совпасть с прежним.",
+        en: "In the starter a list of products goes through three maps in a row: take the price, apply a 10% discount and format the string. The passes counter counts how many times the array was traversed. Relying on the composition law, get the same result after in a single pass: one call to map with the composition of the three functions via R.pipe or R.compose. After the refactoring the counter should show 1, and the result should match the previous one.",
       },
       starter: {
         ru: `const products = [
@@ -594,7 +594,7 @@ const map = (fn) => (arr) => {
 
 // getPrice :: Object -> Number
 const getPrice = (product) => product.price
-// discount :: Number -> Number — скидка 10 %
+// discount :: Number -> Number — скидка 10%
 const discount = (price) => price * 0.9
 // format :: Number -> String
 const format = (price) => price.toFixed(2)
@@ -626,7 +626,7 @@ const map = (fn) => (arr) => {
 
 // getPrice :: Object -> Number
 const getPrice = (product) => product.price
-// discount :: Number -> Number, a 10 % discount
+// discount :: Number -> Number, a 10% discount
 const discount = (price) => price * 0.9
 // format :: Number -> String
 const format = (price) => price.toFixed(2)
@@ -660,7 +660,7 @@ const map = (fn) => (arr) => {
 
 // getPrice :: Object -> Number
 const getPrice = (product) => product.price
-// discount :: Number -> Number — скидка 10 %
+// discount :: Number -> Number — скидка 10%
 const discount = (price) => price * 0.9
 // format :: Number -> String
 const format = (price) => price.toFixed(2)
@@ -694,7 +694,7 @@ const map = (fn) => (arr) => {
 
 // getPrice :: Object -> Number
 const getPrice = (product) => product.price
-// discount :: Number -> Number, a 10 % discount
+// discount :: Number -> Number, a 10% discount
 const discount = (price) => price * 0.9
 // format :: Number -> String
 const format = (price) => price.toFixed(2)
