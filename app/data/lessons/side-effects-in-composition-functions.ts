@@ -245,8 +245,8 @@ pipe(
   exercises: [
     {
       task: {
-        ru: "Чтобы отладить конвейер total, в него вставили console.log прямо между шагами, и конвейер сломался: console.log возвращает undefined, и следующий шаг получает его вместо данных. Напишите tap и логгер с подписью tapLog :: String -> a -> a: он печатает строку «подпись: значение» (значение через JSON.stringify) и возвращает аргумент без изменений. Поставьте tapLog после каждого шага total вместо console.log.",
-        en: "To debug the total pipeline, someone put console.log straight between its steps, and the pipeline broke: console.log returns undefined, and the next step receives it instead of the data. Write tap and a labelled logger tapLog :: String -> a -> a that prints the line \"label: value\" (the value via JSON.stringify) and returns its argument unchanged. Put tapLog after each step of total instead of console.log.",
+        ru: "Чтобы отладить конвейер total, в него вставили console.log прямо между шагами, и конвейер сломался: console.log возвращает undefined, и следующий шаг получает его вместо данных. Напишите tap и логгер с подписью tapLog :: String -> a -> a: он печатает строку «подпись: значение» (значение через JSON.stringify) и возвращает аргумент без изменений. Поставьте tapLog после каждого шага total вместо console.log, с подписями «позиции», «сумма» и «со скидкой».",
+        en: "To debug the total pipeline, someone put console.log straight between its steps, and the pipeline broke: console.log returns undefined, and the next step receives it instead of the data. Write tap and a labelled logger tapLog :: String -> a -> a that prints the line \"label: value\" (the value via JSON.stringify) and returns its argument unchanged. Put tapLog after each step of total instead of console.log, with the labels \"items\", \"sum\" and \"discounted\".",
       },
       starter: {
         ru: `// pipe :: ((a -> b), (b -> c), ..., (y -> z)) -> a -> z
