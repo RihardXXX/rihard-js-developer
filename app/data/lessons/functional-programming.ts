@@ -28,8 +28,9 @@ const lesson: Lesson = {
 // 4. Получить его имя
 
 // Пример функционального кода
-// импорт готовых утилит с библиотеки
-import { pipe, prop, equals, filter, head, gt } from 'sanctuary';
+// готовые утилиты из библиотеки Sanctuary: в песочнице курса она подключена как S,
+// в своем проекте: import S from 'sanctuary'
+const { pipe, prop, equals, filter, head, gt, map, fromMaybe } = S
 
 // fetchAllUsers :: * -> Promise a
 const fetchAllUsers = () => new Promise(resolve => resolve([
@@ -79,17 +80,19 @@ const getName = prop('name')
 // в случае если с сервера прилетит, что попало и это будет настоящей защитой
 // а не псевдо как в typescript
 
-// searchOnlineUsers :: [a] -> a
+// searchOnlineUsers :: [a] -> String
 const searchOnlineUsers= pipe([
   filter(isStatusOnline), // получаем только пользователей онлайн
   filter(moreAge20), // получаем пользователей старше 20 лет
-  head, // получаем первого пользователя из списка
-  getName // получить имя этого пользователя
+  head, // получаем первого пользователя в Maybe: Just (пользователь) или Nothing, если список пуст
+  map(getName), // получаем имя этого пользователя внутри Maybe
+  fromMaybe('') // достаем имя из Maybe, для Nothing будет ''
 ])
 
 // start программы
-const onlineUsersByAge = await fetchAllUsers().then(searchOnlineUsers)
-console.log(onlineUsersByAge) // 'John'`,
+fetchAllUsers()
+  .then(searchOnlineUsers)
+  .then(name => console.log(name)) // 'John'`,
         en: `// ==== Внимание ===
 // Эти примеры Вам пока могут казаться крайне запутанными и непонятными
 // Не пугайтесь и читайте дальше
@@ -101,8 +104,9 @@ console.log(onlineUsersByAge) // 'John'`,
 // 4. Получить его имя
 
 // Пример функционального кода
-// импорт готовых утилит с библиотеки
-import { pipe, prop, equals, filter, head, gt } from 'sanctuary';
+// готовые утилиты из библиотеки Sanctuary: в песочнице курса она подключена как S,
+// в своем проекте: import S from 'sanctuary'
+const { pipe, prop, equals, filter, head, gt, map, fromMaybe } = S
 
 // fetchAllUsers :: * -> Promise a
 const fetchAllUsers = () => new Promise(resolve => resolve([
@@ -152,17 +156,19 @@ const getName = prop('name')
 // в случае если с сервера прилетит, что попало и это будет настоящей защитой
 // а не псевдо как в typescript
 
-// searchOnlineUsers :: [a] -> a
+// searchOnlineUsers :: [a] -> String
 const searchOnlineUsers= pipe([
   filter(isStatusOnline), // получаем только пользователей онлайн
   filter(moreAge20), // получаем пользователей старше 20 лет
-  head, // получаем первого пользователя из списка
-  getName // получить имя этого пользователя
+  head, // получаем первого пользователя в Maybe: Just (пользователь) или Nothing, если список пуст
+  map(getName), // получаем имя этого пользователя внутри Maybe
+  fromMaybe('') // достаем имя из Maybe, для Nothing будет ''
 ])
 
 // start программы
-const onlineUsersByAge = await fetchAllUsers().then(searchOnlineUsers)
-console.log(onlineUsersByAge) // 'John'`,
+fetchAllUsers()
+  .then(searchOnlineUsers)
+  .then(name => console.log(name)) // 'John'`,
       },
     },
   ],
