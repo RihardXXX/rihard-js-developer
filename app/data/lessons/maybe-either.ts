@@ -269,7 +269,7 @@ console.log(S.get(isString)('toString')(bob)) // Nothing`,
     },
     {
       type: 'text',
-      ru: "Тип, у которого есть chain и of и которые выполняют свои законы, называют монадой; of кладёт значение в контейнер, у Maybe это S.Just. Maybe — монада, та самая, в которую урок «Функциональное программирование» советовал обернуть данные, чтобы композиция не падала. На схеме из урока «Fantasy-land» Monad стоит под Applicative и Chain.",
+      ru: "Тип с методами chain и of, которые выполняют свои законы, называют монадой; of кладёт значение в контейнер, у Maybe это S.Just. Maybe — монада, та самая, в которую урок «Функциональное программирование» советовал обернуть данные, чтобы композиция не падала. На схеме из урока «Fantasy-land» Monad стоит под Applicative и Chain.",
       en: "A type that has chain and of, obeying their laws, is called a monad; of puts a value into the container, and for Maybe it is S.Just. Maybe is a monad, the very kind the \"Functional programming\" lesson suggested wrapping the data in so that the composition does not crash. On the diagram from the \"Fantasy-land\" lesson, Monad sits below Applicative and Chain.",
     },
     {
