@@ -16,6 +16,7 @@ import performance from './lessons/performance'
 import neuralNetworks from './lessons/neural-networks'
 import functionMapFilterReduce from './lessons/function-map-filter-reduce'
 import higherOrderFunctions from './lessons/first-class-and-higher-order-functions'
+import closures from './lessons/closures'
 import lenses from './lessons/lenses'
 import sideEffects from './lessons/side-effects-in-composition-functions'
 import selectingLibrary from './lessons/selecting-library'
@@ -26,6 +27,7 @@ export const lessons: Lesson[] = [
   imperativeVsDeclarative,
   functionalProgramming,
   higherOrderFunctions,
+  closures,
   pureFunctions,
   hindleyMilner,
   composition,
