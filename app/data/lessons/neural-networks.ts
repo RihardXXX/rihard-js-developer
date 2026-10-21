@@ -36,109 +36,179 @@ const lesson: Lesson = {
     },
     {
       type: 'code',
+      pseudo: true,
       code: {
-        ru: `// ==== Визуализация данных ====
+        ru: `// ==== Схема сети из примера ниже ====
 
--------------------
-|   Ваш вопрос     |
--------------------
-        ||
-        ▼
--------------------
-|  Слой математики |
--------------------
-        ||
-        ▼
--------------------
-|  Слой анализа    |
--------------------
-        ||
-        ▼
--------------------
-|  Слой вывода     |
--------------------
+           вход x: 2 числа
+                 |
+                 v
++-------------------------------------+
+| скрытый слой: 2 нейрона             |
+| нейрон = relu(сумма(вес * вход)     |
+|               + смещение)           |
++-------------------------------------+
+                 |  2 числа
+                 v
++-------------------------------------+
+| выходной слой: 1 нейрон             |
+| нейрон = сумма(вес * вход)          |
+|          + смещение                 |
++-------------------------------------+
+                 |
+                 v
+           выход y: 1 число
 
--------------------
+веса и смещения — обучаемые параметры
+сеть — композиция слоёв: y = output(hidden(x))`,
+        en: `// ==== Схема сети из примера ниже ====
 
-// можно представить и как композицию функций
+           вход x: 2 числа
+                 |
+                 v
++-------------------------------------+
+| скрытый слой: 2 нейрона             |
+| нейрон = relu(сумма(вес * вход)     |
+|               + смещение)           |
++-------------------------------------+
+                 |  2 числа
+                 v
++-------------------------------------+
+| выходной слой: 1 нейрон             |
+| нейрон = сумма(вес * вход)          |
+|          + смещение                 |
++-------------------------------------+
+                 |
+                 v
+           выход y: 1 число
 
-const mathModule = pipe (
-  Math.sin, // совокупность функций
-  Math.cos,
-  ...
-)
+веса и смещения — обучаемые параметры
+сеть — композиция слоёв: y = output(hidden(x))`,
+      },
+    },
+    {
+      type: 'code',
+      code: {
+        ru: `// ==== Та же сеть в коде ====
+// параметры уже подобраны: это решение задачи XOR из учебника
+// Goodfellow, Bengio, Courville «Deep Learning», раздел 6.1
+// там их задали вручную, в реальной сети их находит обучение
 
-// logicModule :: Number :: String
-const logicModule = (x) => x > 0 ? 'Положительное' : 'Отрицательное'
+// pipe :: ((a -> b), (b -> c), ..., (y -> z)) -> a -> z
+const pipe = (...fns) => (x) => fns.reduce((acc, fn) => fn(acc), x)
 
-// langModule :: Number -> String
-const langModule = (x) => \`Ответ: \${x}\`
+// функции активации
+// relu :: Number -> Number
+const relu = (z) => Math.max(0, z)
+// identity :: a -> a
+const identity = (z) => z
 
-// answer :: String -> String
-const getAnswer = pipe (
-  logicModule, // модуль логики
-  mathModule, // модуль математики
-  langModule, // модуль языковой
-)
+// взвешенная сумма: каждый вход умножаем на свой вес и складываем
+// weightedSum :: ([Number], [Number]) -> Number
+const weightedSum = (weights, inputs) =>
+  inputs.reduce((sum, x, i) => sum + x * weights[i], 0)
 
-// вопрос пользователя
-const question = prompt('Отвечу на вопросы по математике')
+// нейрон: взвешенная сумма входов плюс смещение,
+// результат проходит через функцию активации
+// веса, смещение и активация задаются при создании нейрона,
+// при вызове он получает только входы
+// neuron :: ([Number], Number, (Number -> Number)) -> [Number] -> Number
+const neuron = (weights, bias, activation) => (inputs) =>
+  activation(weightedSum(weights, inputs) + bias)
 
-// получаем ответ для пользователя
-const answer = getAnswer(question)
+// слой: несколько нейронов получают одни и те же входы,
+// на выходе по числу от каждого нейрона
+// layer :: [[Number] -> Number] -> [Number] -> [Number]
+const layer = (neurons) => (inputs) => neurons.map((n) => n(inputs))
 
-console.log (answer) // ответ на вопрос`,
-        en: `// ==== Визуализация данных ====
+// скрытый слой: 2 числа -> 2 числа, активация relu
+// hidden :: [Number] -> [Number]
+const hidden = layer([
+  neuron([1, 1], 0, relu),
+  neuron([1, 1], -1, relu),
+])
 
--------------------
-|   Ваш вопрос     |
--------------------
-        ||
-        ▼
--------------------
-|  Слой математики |
--------------------
-        ||
-        ▼
--------------------
-|  Слой анализа    |
--------------------
-        ||
-        ▼
--------------------
-|  Слой вывода     |
--------------------
+// выходной слой: 2 числа -> 1 число, без нелинейности, как в учебнике
+// output :: [Number] -> [Number]
+const output = layer([
+  neuron([1, -2], 0, identity),
+])
 
--------------------
+// сеть — композиция слоёв
+// network :: [Number] -> [Number]
+const network = pipe(hidden, output)
 
-// можно представить и как композицию функций
+// ответ сети одним числом
+// getAnswer :: [Number] -> Number
+const getAnswer = pipe(network, ([y]) => y)
 
-const mathModule = pipe (
-  Math.sin, // совокупность функций
-  Math.cos,
-  ...
-)
+for (const x of [[0, 0], [0, 1], [1, 0], [1, 1]]) {
+  console.log(\`\${x[0]} XOR \${x[1]} = \${getAnswer(x)}\`)
+}
+// 0 XOR 0 = 0
+// 0 XOR 1 = 1
+// 1 XOR 0 = 1
+// 1 XOR 1 = 0`,
+        en: `// ==== Та же сеть в коде ====
+// параметры уже подобраны: это решение задачи XOR из учебника
+// Goodfellow, Bengio, Courville «Deep Learning», раздел 6.1
+// там их задали вручную, в реальной сети их находит обучение
 
-// logicModule :: Number :: String
-const logicModule = (x) => x > 0 ? 'Положительное' : 'Отрицательное'
+// pipe :: ((a -> b), (b -> c), ..., (y -> z)) -> a -> z
+const pipe = (...fns) => (x) => fns.reduce((acc, fn) => fn(acc), x)
 
-// langModule :: Number -> String
-const langModule = (x) => \`Ответ: \${x}\`
+// функции активации
+// relu :: Number -> Number
+const relu = (z) => Math.max(0, z)
+// identity :: a -> a
+const identity = (z) => z
 
-// answer :: String -> String
-const getAnswer = pipe (
-  logicModule, // модуль логики
-  mathModule, // модуль математики
-  langModule, // модуль языковой
-)
+// взвешенная сумма: каждый вход умножаем на свой вес и складываем
+// weightedSum :: ([Number], [Number]) -> Number
+const weightedSum = (weights, inputs) =>
+  inputs.reduce((sum, x, i) => sum + x * weights[i], 0)
 
-// вопрос пользователя
-const question = prompt('Отвечу на вопросы по математике')
+// нейрон: взвешенная сумма входов плюс смещение,
+// результат проходит через функцию активации
+// веса, смещение и активация задаются при создании нейрона,
+// при вызове он получает только входы
+// neuron :: ([Number], Number, (Number -> Number)) -> [Number] -> Number
+const neuron = (weights, bias, activation) => (inputs) =>
+  activation(weightedSum(weights, inputs) + bias)
 
-// получаем ответ для пользователя
-const answer = getAnswer(question)
+// слой: несколько нейронов получают одни и те же входы,
+// на выходе по числу от каждого нейрона
+// layer :: [[Number] -> Number] -> [Number] -> [Number]
+const layer = (neurons) => (inputs) => neurons.map((n) => n(inputs))
 
-console.log (answer) // ответ на вопрос`,
+// скрытый слой: 2 числа -> 2 числа, активация relu
+// hidden :: [Number] -> [Number]
+const hidden = layer([
+  neuron([1, 1], 0, relu),
+  neuron([1, 1], -1, relu),
+])
+
+// выходной слой: 2 числа -> 1 число, без нелинейности, как в учебнике
+// output :: [Number] -> [Number]
+const output = layer([
+  neuron([1, -2], 0, identity),
+])
+
+// сеть — композиция слоёв
+// network :: [Number] -> [Number]
+const network = pipe(hidden, output)
+
+// ответ сети одним числом
+// getAnswer :: [Number] -> Number
+const getAnswer = pipe(network, ([y]) => y)
+
+for (const x of [[0, 0], [0, 1], [1, 0], [1, 1]]) {
+  console.log(\`\${x[0]} XOR \${x[1]} = \${getAnswer(x)}\`)
+}
+// 0 XOR 0 = 0
+// 0 XOR 1 = 1
+// 1 XOR 0 = 1
+// 1 XOR 1 = 0`,
       },
     },
   ],
