@@ -29,7 +29,9 @@ const i18n = { ru: readLocale('ru'), en: readLocale('en') }
 // ---------- эталоны ----------
 
 const INTRO = ['for-whom', 'not-for-whom']
-// Утверждённый порядок 26 уроков: номера 01–26 в оглавлении идут в этом порядке.
+// Утверждённый порядок 25 уроков: номера 01–25 в оглавлении идут в этом порядке.
+// Урок fp-in-typescript-and-effect (между neural-networks и selecting-library) ждёт тезисов владельца
+// и придёт отдельной задачей, она вернёт его в этот список.
 // Весь файл считает по этому списку: убрать урок из него — значит убрать его из приёмки.
 const LESSON_ORDER = [
   'imperative-vs-declarative',
@@ -56,7 +58,6 @@ const LESSON_ORDER = [
   'fantasy-land',
   'maybe-either',
   'neural-networks',
-  'fp-in-typescript-and-effect',
   'selecting-library',
 ]
 const TOTAL = LESSON_ORDER.length
@@ -220,7 +221,7 @@ const load = (file) => {
 }
 
 // Страницы уроков одной локали, которые есть в сборке. Если нет ни одной, проверять нечего: тест красный.
-// Какие из 26 страниц не собраны, говорит проверка наличия страниц.
+// Какие из страниц уроков не собраны, говорит проверка наличия страниц.
 const lessonPages = (prefix) => {
   readPublic('index.html')
   const found = LESSON_ORDER.flatMap((slug) => {
@@ -354,11 +355,11 @@ test('сборка на месте: .output/public существует', () => 
   assert.ok(existsSync(PUBLIC), `нет собранного сайта: ${PUBLIC} не найден, сначала соберите сайт (npm run generate)`)
 })
 
-test('данные курса: 26 уроков идут в утверждённом порядке', () => {
+test(`данные курса: ${TOTAL} уроков идут в утверждённом порядке`, () => {
   assert.deepEqual(
     lessons.map((l) => l.slug),
     LESSON_ORDER,
-    'порядок или состав нумерованных уроков не совпадает с утверждённым списком из 26 уроков',
+    'порядок или состав нумерованных уроков не совпадает с утверждённым списком уроков',
   )
 })
 
