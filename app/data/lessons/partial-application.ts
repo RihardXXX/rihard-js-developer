@@ -243,8 +243,8 @@ console.log(toEur(2, 7.5))`,
     },
     {
       task: {
-        ru: "Сравните частичное применение и каррирование на функции volume(length, width, height). Получите volumePartial через partial и volumeCurried через curry из Ramda. Посчитайте обеими функциями объём 2 × 3 × 4: передайте сначала 2, а остальные аргументы — так, как позволяет каждая из них. Затем выведите volumePartial(2)(3) и тип значения volumeCurried(2)(3) и объясните, почему результаты разные.",
-        en: "Compare partial application and currying on volume(length, width, height). Get volumePartial with partial and volumeCurried with curry from Ramda. Compute the volume 2 × 3 × 4 with both: pass 2 first and the remaining arguments the way each function allows. Then print volumePartial(2)(3) and the type of volumeCurried(2)(3), and explain why the results differ.",
+        ru: "Сравните частичное применение и каррирование на функции volume(length, width, height). Получите volumePartial через partial и volumeCurried через curry из Ramda. Выведите объём 2 × 3 × 4, посчитанный сначала volumePartial, затем volumeCurried: передайте первым 2, а остальные аргументы — так, как позволяет каждая из функций. Затем выведите volumePartial(2)(3) и тип значения volumeCurried(2)(3) и объясните, почему результаты разные.",
+        en: "Compare partial application and currying on volume(length, width, height). Get volumePartial with partial and volumeCurried with curry from Ramda. Print the volume 2 × 3 × 4 computed first with volumePartial and then with volumeCurried: pass 2 in the first call and the remaining arguments the way each function allows. Then print volumePartial(2)(3) and the type of volumeCurried(2)(3), and explain why the results differ.",
       },
       starter: {
         ru: `// partial из урока, записанный короче
