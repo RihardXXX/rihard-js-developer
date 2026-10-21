@@ -155,7 +155,22 @@
     "libExists": "Alias “{alias}” is taken",
     "libFailed": "Couldn’t load “{pkg}”",
     "removeLib": "Remove {alias}",
-    "docs": "docs"
+    "docs": "docs",
+    "goal": "Lesson goal",
+    "summary": "Key points",
+    "exercises": "Exercises",
+    "exercise": "Exercise {n}",
+    "starter": "Starter code",
+    "expected": "Expected output",
+    "showSolution": "Show solution",
+    "backToToc": "Back to contents",
+    "nextLesson": "Next lesson: {title}",
+    "openInPlayground": "Open in playground",
+    "backToExample": "Back to the example",
+    "exampleLabel": "Example {n}, lesson “{lesson}”",
+    "starterLabel": "Starter for exercise {n}, lesson “{lesson}”",
+    "solutionLabel": "Solution to exercise {n}, lesson “{lesson}”",
+    "editorLabel": "Playground code editor"
   },
   "certificates": {
     "eyebrow": "Learning",
