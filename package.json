@@ -13,7 +13,7 @@
     "typecheck": "nuxt typecheck",
     "predeploy": "nuxt generate",
     "deploy": "node scripts/deploy.mjs",
-    "deploy:app": "npm-run-all predeploy deploy"
+    "deploy:app": "npm run deploy"
   },
   "dependencies": {
     "@monaco-editor/loader": "^1.7.0",
