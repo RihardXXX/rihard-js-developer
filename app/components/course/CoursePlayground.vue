@@ -73,20 +73,26 @@ const quickAdd: { alias: string; pkg: string }[] = [
 
 // esm.sh runs UMD packages (lodash, ...) as CommonJS. With Monaco's AMD loader on the
 // page their UMD header finds `define.amd`, registers through define() and leaves
-// module.exports, our default export, empty. define is hidden while an import runs.
+// module.exports, our default export, empty. define.amd is hidden while an import runs;
+// define itself stays for Monaco's modules, which call it directly and load at any time.
+// Monaco's loader and the imports take turns, so loader.js never runs mid-import.
 let importing = 0
-let amdDefine: unknown
+let amd: unknown
+const imports = new Set<Promise<unknown>>()
 const importFromEsmSh = async (pkg: string): Promise<Record<string, unknown>> => {
-  const win = globalThis as { define?: unknown }
-  // Monaco's loader declares `var define`: the global can't be deleted, only overwritten.
-  if (importing++ === 0) {
-    amdDefine = win.define
-    if (amdDefine !== undefined) win.define = undefined
+  if (monaco) await monaco
+  const win = globalThis as { define?: { amd?: unknown } }
+  if (importing++ === 0 && win.define) {
+    amd = win.define.amd
+    win.define.amd = undefined
   }
+  const load = import(/* @vite-ignore */ `https://esm.sh/${pkg}`)
+  imports.add(load)
   try {
-    return (await import(/* @vite-ignore */ `https://esm.sh/${pkg}`)) as Record<string, unknown>
+    return (await load) as Record<string, unknown>
   } finally {
-    if (--importing === 0 && amdDefine !== undefined) win.define = amdDefine
+    imports.delete(load)
+    if (--importing === 0 && win.define) win.define.amd = amd
   }
 }
 
@@ -154,7 +160,8 @@ const monacoTheme = () => (theme.value === 'dark' ? 'vs-dark' : 'vs-light')
 // is the server-rendered textarea; Monaco then takes its place with its text, caret and focus.
 let monaco: Promise<void> | null = null
 const loadMonaco = () =>
-  (monaco ??= import('@monaco-editor/loader')
+  (monaco ??= Promise.allSettled(imports)
+    .then(() => import('@monaco-editor/loader'))
     .then(({ default: loader }) => loader.init())
     .then((m) => {
       monacoEditorApi = m.editor as unknown as MonacoEditorApi
