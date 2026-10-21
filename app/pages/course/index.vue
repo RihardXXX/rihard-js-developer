@@ -45,9 +45,23 @@ useSchemaOrg([
   }),
 ])
 
-// A direct link to /course/#slug stops off the lesson: web fonts load during the smooth
-// scroll (main.scss) and move the lesson. Land on it once they are in, unless the reader
-// has already scrolled.
+// The lessons used to live on this page: an old link /course/#slug opens the lesson's own page.
+// The router puts the #hash back only after hydration (see below), so it is watched, not read once;
+// replace: "Back" leads to where the reader came from, not to the contents.
+const route = useRoute()
+onMounted(() => {
+  watch(
+    () => route.hash.slice(1),
+    (id) => {
+      if (lessons.value.some((lesson) => lesson.slug === id)) navigateTo(localePath(`/course/${id}/`), { replace: true })
+    },
+    { immediate: true },
+  )
+})
+
+// A direct link to an intro section or the contents (/course/#for-whom) stops off it: web fonts
+// load during the smooth scroll (main.scss) and move it. Land on it once they are in, unless the
+// reader has already scrolled.
 onMounted(async () => {
   let scrolled = false
   const stop = () => {
@@ -61,7 +75,7 @@ onMounted(async () => {
   await new Promise((resolve) => requestAnimationFrame(resolve))
   events.forEach((name) => window.removeEventListener(name, stop))
   // Read only now: a prerendered page hydrates on its payload path without the #hash, and the
-  // router puts it back after hydration. Fonts that were in by then didn't move the lesson.
+  // router puts it back after hydration. Fonts that were in by then didn't move the target.
   const id = location.hash.slice(1)
   if (id && !scrolled) document.getElementById(id)?.scrollIntoView({ behavior: 'instant' })
 })
