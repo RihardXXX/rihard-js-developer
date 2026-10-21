@@ -336,8 +336,10 @@ sum ([], 16.5) // возвращает result 16.5
 // и на обратном пути досчитывать нечего
 // вызовов столько же, сколько у rateSum без аккумулятора, — пять
 // при proper tail calls движок не хранит кадры ожидающих вызовов,
-// и глубина стека не растёт; но в V8 и SpiderMonkey этого нет,
-// там стек растёт так же, как без хвостового вызова`,
+// и глубина стека не растёт; но они работают только в строгом режиме,
+// а из браузеров есть только в Safari: в V8 и SpiderMonkey их нет
+// этот пример написан без 'use strict', поэтому его стек растёт везде,
+// даже в Safari, так же, как без хвостового вызова`,
         en: `// === Tail recursion optimization ====
 // Let's rewrite the function so that the recursive call becomes a tail call
 const rateSum = (users, result = 0) => {
@@ -371,8 +373,10 @@ sum ([], 16.5) // returns result 16.5
 // and there is nothing left to compute on the way back
 // there are as many calls as in rateSum without the accumulator: five
 // with proper tail calls the engine keeps no frames of waiting calls,
-// and the stack depth does not grow; but V8 and SpiderMonkey don't have them,
-// so there the stack grows just as it does without a tail call`,
+// and the stack depth does not grow; but they only work in strict mode,
+// and among browsers only Safari has them: V8 and SpiderMonkey don't
+// this example is written without 'use strict', so its stack grows everywhere,
+// even in Safari, just as it does without a tail call`,
       },
     },
     {
@@ -458,8 +462,8 @@ sum ([], 16.5, (total) => console.log(total)) // вызовет callback с resu
 // Минусы этого подхода
 // Скорость выполнения (производительность) низкая
 // Если вам нужны длительные синхронные вычисления,
-// то лучше вынести их в веб-воркер, в отдельный поток,
-// при условии, что у процессора больше одного ядра`,
+// то лучше вынести их в веб-воркер, чтобы не блокировать основной поток;
+// на многоядерном процессоре расчёт к тому же пойдёт параллельно`,
         en: `// === 1. Asynchronous recursive call ====
 
 // note that the recursive case is wrapped in a timer
@@ -515,8 +519,8 @@ sum ([], 16.5, (total) => console.log(total)) // calls callback with result
 // Downsides of this approach
 // Execution speed (performance) is low
 // If you need long-running synchronous computations,
-// it's better to move them to a web worker, a separate thread,
-// provided that the CPU has more than one core`,
+// it's better to move them to a web worker so they don't block the main thread;
+// on a multi-core CPU the computation will also run in parallel`,
       },
     },
     {
