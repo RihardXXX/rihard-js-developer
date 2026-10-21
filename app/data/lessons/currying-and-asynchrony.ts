@@ -721,8 +721,8 @@ getBook(7).then((book) => console.log(book.title))`,
     },
     {
       task: {
-        ru: "В заготовке уже есть getUser и getBook из первого упражнения. Напишите pipeAsync — pipe, который сам дожидается промисов, — и соберите из него loadFavoriteBook :: Number -> Promise String: по id запросить пользователя, взять поле favoriteBook, запросить эту книгу и вернуть её название. Выведите название любимой книги пользователя 2, а затем попробуйте пользователя 5, которого нет в DB: ошибку перехватите в catch и выведите её сообщение.",
-        en: "The starter already has getUser and getBook from the first exercise. Write pipeAsync, a pipe that waits for promises by itself, and use it to build loadFavoriteBook :: Number -> Promise String: request the user by id, take the favoriteBook field, request that book and return its title. Print the title of user 2's favorite book, then try user 5, who is not in DB: handle the error with catch and print its message.",
+        ru: "В заготовке уже есть getUser и getBook из первого упражнения. Напишите pipeAsync — pipe, который сам дожидается промисов, — и соберите из него loadFavoriteBook :: Number -> Promise String: по id запросить пользователя, взять поле favoriteBook, запросить эту книгу и вернуть её название. Вывод уже есть в заготовке: showFavoriteBook выводит название любимой книги пользователя 2, затем пробует пользователя 5, которого нет в DB, и перехватывает ошибку в catch.",
+        en: "The starter already has getUser and getBook from the first exercise. Write pipeAsync, a pipe that waits for promises by itself, and use it to build loadFavoriteBook :: Number -> Promise String: request the user by id, take the favoriteBook field, request that book and return its title. The output is already in the starter: showFavoriteBook prints the title of user 2's favorite book, then tries user 5, who is not in DB, and handles the error with catch.",
       },
       starter: {
         ru: `// данные фейкового сервера: адрес -> ответ
@@ -747,7 +747,17 @@ const api = createRequest('https://example.com')
 const getUser = api('users')
 const getBook = api('books')
 
-// ваш код`,
+// ваш код: pipeAsync и loadFavoriteBook
+
+// ошибка любого шага попадает в catch
+// showFavoriteBook :: Number -> Promise Undefined
+const showFavoriteBook = (userId) =>
+  loadFavoriteBook(userId)
+    .then((title) => console.log(title))
+    .catch((error) => console.log(\`Запрос не удался: \${error.message}\`))
+
+// сначала пользователь 2, потом пользователь 5, которого нет
+showFavoriteBook(2).then(() => showFavoriteBook(5))`,
         en: `// fake server data: URL -> response
 const DB = {
   'https://example.com/users/1': { name: 'John', favoriteBook: 7 },
@@ -770,7 +780,17 @@ const api = createRequest('https://example.com')
 const getUser = api('users')
 const getBook = api('books')
 
-// your code`,
+// your code: pipeAsync and loadFavoriteBook
+
+// an error at any step ends up in catch
+// showFavoriteBook :: Number -> Promise Undefined
+const showFavoriteBook = (userId) =>
+  loadFavoriteBook(userId)
+    .then((title) => console.log(title))
+    .catch((error) => console.log(\`Request failed: \${error.message}\`))
+
+// user 2 first, then user 5, who does not exist
+showFavoriteBook(2).then(() => showFavoriteBook(5))`,
       },
       solution: {
         ru: `// данные фейкового сервера: адрес -> ответ
