@@ -6,6 +6,10 @@ const lesson: Lesson = {
     ru: "Функции map, filter, reduce",
     en: "The map, filter, and reduce functions",
   },
+  goal: {
+    ru: "Понять, что делают map, filter и reduce, и научиться реализовывать их самостоятельно: декларативно, императивно и рекурсивно через трамплин.",
+    en: "Understand what map, filter and reduce do, and learn to implement them yourself: declaratively, imperatively and recursively with a trampoline.",
+  },
   blocks: [
     {
       type: 'text',
@@ -708,6 +712,260 @@ const result = reduceD ((a, b) => a + b) (0) (data)
 
 console.log (result) // 6
 // ===================================`,
+      },
+    },
+  ],
+  summary: [
+    {
+      ru: "map возвращает новый объект того же типа данных, пропуская каждый элемент через переданную функцию.",
+      en: "map returns a new object of the same data type, passing each element through the given function.",
+    },
+    {
+      ru: "filter возвращает новый объект того же типа данных и оставляет только те элементы, для которых функция-предикат вернула true.",
+      en: "filter returns a new object of the same data type and keeps only the elements for which the predicate returned true.",
+    },
+    {
+      ru: "reduce принимает функцию и аккумулятор и может вернуть данные любого типа; с её помощью можно сымитировать и map, и filter.",
+      en: "reduce takes a function and an accumulator and can return any data type; with it you can emulate both map and filter.",
+    },
+    {
+      ru: "Каррирование и данные последним аргументом позволяют использовать эти функции в композиции в бесточечном стиле, не называя данные.",
+      en: "Currying and taking the data as the last argument let you use these functions in composition in point-free style, without naming the data.",
+    },
+    {
+      ru: "Рекурсивные версии работают через трамплин и идут по индексу: копирование массива на каждом шаге дало бы O(n²).",
+      en: "The recursive versions run through a trampoline and walk the array by index: copying the array on every step would make them O(n²).",
+    },
+  ],
+  exercises: [
+    {
+      task: {
+        ru: "В уроке сказано, что через reduce можно сымитировать map и filter. Напишите каррированные функции mapVia и filterVia с данными последним аргументом, внутри которых работает только reduce. Затем соберите из них через pipe функцию onlineNames, которая возвращает имена пользователей в сети.",
+        en: "The lesson says that reduce can emulate map and filter. Write curried functions mapVia and filterVia that take the data as the last argument and use only reduce inside. Then use pipe to build an onlineNames function from them that returns the names of the users who are online.",
+      },
+      starter: {
+        ru: `// pipe из урока «Композиция функций»
+const pipe = (...fns) => (x) => fns.reduce((v, f) => f(v), x)
+
+const users = [
+  { name: 'John', status: 'online', age: 28 },
+  { name: 'Angel', status: 'online', age: 35 },
+  { name: 'Michel', status: 'offline', age: 18 },
+  { name: 'Anna', status: 'offline', age: 20 },
+]
+
+// mapVia :: (a -> b) -> [a] -> [b]
+const mapVia = (fn) => (arr) => {
+  // ваш код
+}
+
+// filterVia :: (a -> Boolean) -> [a] -> [a]
+const filterVia = (fn) => (arr) => {
+  // ваш код
+}
+
+// onlineNames :: [Object] -> [String]
+const onlineNames = pipe(
+  // ваш код: filterVia и mapVia
+)
+
+console.log(onlineNames(users))
+console.log(mapVia((n) => n * 2)([1, 2, 3]))`,
+        en: `// pipe from the "Function composition" lesson
+const pipe = (...fns) => (x) => fns.reduce((v, f) => f(v), x)
+
+const users = [
+  { name: 'John', status: 'online', age: 28 },
+  { name: 'Angel', status: 'online', age: 35 },
+  { name: 'Michel', status: 'offline', age: 18 },
+  { name: 'Anna', status: 'offline', age: 20 },
+]
+
+// mapVia :: (a -> b) -> [a] -> [b]
+const mapVia = (fn) => (arr) => {
+  // your code
+}
+
+// filterVia :: (a -> Boolean) -> [a] -> [a]
+const filterVia = (fn) => (arr) => {
+  // your code
+}
+
+// onlineNames :: [Object] -> [String]
+const onlineNames = pipe(
+  // your code: filterVia and mapVia
+)
+
+console.log(onlineNames(users))
+console.log(mapVia((n) => n * 2)([1, 2, 3]))`,
+      },
+      solution: {
+        ru: `// pipe из урока «Композиция функций»
+const pipe = (...fns) => (x) => fns.reduce((v, f) => f(v), x)
+
+const users = [
+  { name: 'John', status: 'online', age: 28 },
+  { name: 'Angel', status: 'online', age: 35 },
+  { name: 'Michel', status: 'offline', age: 18 },
+  { name: 'Anna', status: 'offline', age: 20 },
+]
+
+// аккумулятор [] создаётся заново при каждом вызове и снаружи не виден,
+// поэтому push в него не меняет ничьих данных
+
+// mapVia :: (a -> b) -> [a] -> [b]
+// каждый элемент пропускаем через fn и кладём результат в аккумулятор
+const mapVia = (fn) => (arr) =>
+  arr.reduce((acc, item) => {
+    acc.push(fn(item))
+    return acc
+  }, [])
+
+// filterVia :: (a -> Boolean) -> [a] -> [a]
+// в аккумулятор попадают только элементы, для которых предикат вернул true
+const filterVia = (fn) => (arr) =>
+  arr.reduce((acc, item) => {
+    if (fn(item)) {
+      acc.push(item)
+    }
+    return acc
+  }, [])
+
+// onlineNames :: [Object] -> [String]
+// бесточечный стиль: данные не называем, они придут в pipe последними
+const onlineNames = pipe(
+  filterVia((user) => user.status === 'online'),
+  mapVia((user) => user.name),
+)
+
+console.log(onlineNames(users))
+console.log(mapVia((n) => n * 2)([1, 2, 3]))`,
+        en: `// pipe from the "Function composition" lesson
+const pipe = (...fns) => (x) => fns.reduce((v, f) => f(v), x)
+
+const users = [
+  { name: 'John', status: 'online', age: 28 },
+  { name: 'Angel', status: 'online', age: 35 },
+  { name: 'Michel', status: 'offline', age: 18 },
+  { name: 'Anna', status: 'offline', age: 20 },
+]
+
+// the [] accumulator is created anew on every call and is not visible outside,
+// so pushing into it changes nobody's data
+
+// mapVia :: (a -> b) -> [a] -> [b]
+// pass each element through fn and put the result into the accumulator
+const mapVia = (fn) => (arr) =>
+  arr.reduce((acc, item) => {
+    acc.push(fn(item))
+    return acc
+  }, [])
+
+// filterVia :: (a -> Boolean) -> [a] -> [a]
+// only the elements for which the predicate returned true get into the accumulator
+const filterVia = (fn) => (arr) =>
+  arr.reduce((acc, item) => {
+    if (fn(item)) {
+      acc.push(item)
+    }
+    return acc
+  }, [])
+
+// onlineNames :: [Object] -> [String]
+// point-free style: we don't name the data, it comes into pipe last
+const onlineNames = pipe(
+  filterVia((user) => user.status === 'online'),
+  mapVia((user) => user.name),
+)
+
+console.log(onlineNames(users))
+console.log(mapVia((n) => n * 2)([1, 2, 3]))`,
+      },
+      expected: {
+        ru: "[\n  \"John\",\n  \"Angel\"\n]\n[\n  2,\n  4,\n  6\n]",
+        en: "[\n  \"John\",\n  \"Angel\"\n]\n[\n  2,\n  4,\n  6\n]",
+      },
+    },
+    {
+      task: {
+        ru: "reduce может вернуть данные любого типа, например объект. Напишите каррированную функцию countBy: первым аргументом она принимает функцию, которая возвращает ключ элемента, вторым — массив, и через reduce возвращает объект, где у каждого ключа указано, у скольких элементов он получился. Посчитайте пользователей по статусу, а числа от 1 до 5 — по чётности.",
+        en: "reduce can return any data type, an object for example. Write a curried function countBy: its first argument is a function that returns an element's key, its second is an array, and it uses reduce to return an object that shows, for each key, how many elements produced it. Count the users by status, and the numbers from 1 to 5 by parity.",
+      },
+      starter: {
+        ru: `const users = [
+  { name: 'John', status: 'online', age: 28 },
+  { name: 'Angel', status: 'online', age: 35 },
+  { name: 'Michel', status: 'offline', age: 18 },
+  { name: 'Anna', status: 'offline', age: 20 },
+]
+
+// countBy :: (a -> String) -> [a] -> Object
+const countBy = (fn) => (arr) => {
+  // ваш код
+}
+
+console.log(countBy((user) => user.status)(users))
+console.log(countBy((n) => (n % 2 === 0 ? 'even' : 'odd'))([1, 2, 3, 4, 5]))`,
+        en: `const users = [
+  { name: 'John', status: 'online', age: 28 },
+  { name: 'Angel', status: 'online', age: 35 },
+  { name: 'Michel', status: 'offline', age: 18 },
+  { name: 'Anna', status: 'offline', age: 20 },
+]
+
+// countBy :: (a -> String) -> [a] -> Object
+const countBy = (fn) => (arr) => {
+  // your code
+}
+
+console.log(countBy((user) => user.status)(users))
+console.log(countBy((n) => (n % 2 === 0 ? 'even' : 'odd'))([1, 2, 3, 4, 5]))`,
+      },
+      solution: {
+        ru: `const users = [
+  { name: 'John', status: 'online', age: 28 },
+  { name: 'Angel', status: 'online', age: 35 },
+  { name: 'Michel', status: 'offline', age: 18 },
+  { name: 'Anna', status: 'offline', age: 20 },
+]
+
+// countBy :: (a -> String) -> [a] -> Object
+// аккумулятор — объект {}, он создаётся заново при каждом вызове
+const countBy = (fn) => (arr) =>
+  arr.reduce((acc, item) => {
+    // ключ текущего элемента
+    const key = fn(item)
+    // первый раз ключ получает 1, дальше счётчик растёт на единицу
+    acc[key] = (acc[key] ?? 0) + 1
+    return acc
+  }, {})
+
+console.log(countBy((user) => user.status)(users))
+console.log(countBy((n) => (n % 2 === 0 ? 'even' : 'odd'))([1, 2, 3, 4, 5]))`,
+        en: `const users = [
+  { name: 'John', status: 'online', age: 28 },
+  { name: 'Angel', status: 'online', age: 35 },
+  { name: 'Michel', status: 'offline', age: 18 },
+  { name: 'Anna', status: 'offline', age: 20 },
+]
+
+// countBy :: (a -> String) -> [a] -> Object
+// the accumulator is a {} object, created anew on every call
+const countBy = (fn) => (arr) =>
+  arr.reduce((acc, item) => {
+    // the key of the current element
+    const key = fn(item)
+    // a key gets 1 the first time, then its counter grows by one
+    acc[key] = (acc[key] ?? 0) + 1
+    return acc
+  }, {})
+
+console.log(countBy((user) => user.status)(users))
+console.log(countBy((n) => (n % 2 === 0 ? 'even' : 'odd'))([1, 2, 3, 4, 5]))`,
+      },
+      expected: {
+        ru: "{\n  \"online\": 2,\n  \"offline\": 2\n}\n{\n  \"odd\": 3,\n  \"even\": 2\n}",
+        en: "{\n  \"online\": 2,\n  \"offline\": 2\n}\n{\n  \"odd\": 3,\n  \"even\": 2\n}",
       },
     },
   ],
