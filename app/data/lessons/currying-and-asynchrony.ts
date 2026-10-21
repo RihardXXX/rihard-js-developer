@@ -21,6 +21,7 @@ const lesson: Lesson = {
     },
     {
       type: 'code',
+      noRun: 'network',
       code: {
         ru: `//  Давайте создадим базовую функцию для запросов
 // baseFetch :: String -> String -> a -> Promise
@@ -132,6 +133,7 @@ const getAllBooksX = useXFetch ('all-books')`,
     },
     {
       type: 'code',
+      noRun: 'dom',
       code: {
         ru: `//  код который "плохо пахнет"
 
@@ -265,6 +267,7 @@ document.getElementById('users-wrapper')
     },
     {
       type: 'code',
+      noRun: 'dom',
       code: {
         ru: `//  декларативный код
 // ==== ВНИМАНИЕ многие функции хелперы уже
@@ -438,6 +441,7 @@ clickElement (btnWrapper) (pipe(
     },
     {
       type: 'code',
+      noRun: 'dom',
       code: {
         ru: `//  А теперь возьмемся за дело
 // clickElement, btnWrapper, head, prop и textReview скопируйте из прошлого примера;

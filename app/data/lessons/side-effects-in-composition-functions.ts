@@ -127,6 +127,7 @@ console.log(resultMsg) // the product can be purchased`,
     },
     {
       type: 'code',
+      noRun: 'previous-block',
       code: {
         ru: `// Утилита которая вызовет функцию в аргументе
 // и прокинет аргумент дальше по композиции

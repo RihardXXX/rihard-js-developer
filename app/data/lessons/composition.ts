@@ -134,6 +134,7 @@ fetchAllUsers() // simulate a request
     },
     {
       type: 'code',
+      noRun: 'previous-block',
       code: {
         ru: `// === композиция из 3 функций в человекочитаемом формате ===
 // порядок сменился: слева направо

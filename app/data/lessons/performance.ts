@@ -174,6 +174,7 @@ console.log('Imperative code run time: ' + (endI - startI) + ' milliseconds. Res
     },
     {
       type: 'code',
+      noRun: 'previous-block',
       code: {
         ru: `// Утилита замера скорости
 // createNumberArray, sumN и sumD — из предыдущего блока,
