@@ -359,6 +359,7 @@ const clearAll = () => {
         spellcheck="false"
         autocapitalize="off"
         autocomplete="off"
+        autocorrect="off"
         wrap="off"
         @input="code = ($event.target as HTMLTextAreaElement).value"
         @focus="upgradeEditor"
