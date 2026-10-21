@@ -51,18 +51,20 @@ const map = (mappable) => (arr) => arr.map(mappable)
 
 // то же самое, но в более общем виде, принятом в теории категорий
 // и спецификации Fantasy-land; не пугайтесь, об этом поговорим позже
-// Спойлер: функтор — это любой тип, который реализовал интерфейс map,
+// Спойлер: функтор — это любой тип, который реализовал интерфейс map
+// и соблюдает его законы (о них — в уроке «Fantasy-land»),
 // поэтому эта же функция map работает не только с массивом, но и с любым значением, у которого есть метод map
 // читается так: для любого функтора f принимает функцию a -> b, затем f a и возвращает f b
 // map :: Functor f => (a -> b) -> f a -> f b
 
 // Как читать нотацию
-// a, b, c          переменные типа: любой тип, но одна буква везде означает один и тот же тип
+// a, b, c          переменные типа: любой тип, но одна буква в пределах одной сигнатуры означает один и тот же тип
 // a -> b -> c      каррированная функция: принимает a и возвращает функцию b -> c
 // (a, b) -> c      некаррированная функция двух аргументов
 // *                любой тип
 // a | b            значение типа a или типа b
 // () -> a          функция без аргументов
+// ...args          любое число аргументов
 // [a]              массив значений типа a
 // Maybe a          значение типа a или его отсутствие
 // Functor f =>     ограничение: f должен быть функтором
@@ -93,18 +95,20 @@ const map = (mappable) => (arr) => arr.map(mappable)
 
 // the same thing, but in the more general form used in category theory
 // and the Fantasy-land specification; don't worry, we will get to that later
-// Spoiler: a functor is any type that implements the map interface,
+// Spoiler: a functor is any type that implements the map interface
+// and obeys its laws (more on them in the "Fantasy-land" lesson),
 // so this same map function works not only with an array but with any value that has a map method
 // it reads like this: for any functor f, it takes a function a -> b, then f a, and returns f b
 // map :: Functor f => (a -> b) -> f a -> f b
 
 // How to read the notation
-// a, b, c          type variables: any type, but the same letter always means the same type
+// a, b, c          type variables: any type, but within a single signature, the same letter always means the same type
 // a -> b -> c      a curried function: takes a and returns a function b -> c
 // (a, b) -> c      an uncurried function of two arguments
 // *                any type
 // a | b            a value of type a or of type b
 // () -> a          a function with no arguments
+// ...args          any number of arguments
 // [a]              an array of values of type a
 // Maybe a          a value of type a, or its absence
 // Functor f =>     a constraint: f must be a functor
