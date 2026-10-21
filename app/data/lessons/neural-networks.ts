@@ -26,8 +26,8 @@ const lesson: Lesson = {
     },
     {
       type: 'text',
-      ru: "Нелинейность в скрытых слоях обязательна. Без функции активации каждый слой — линейная функция (точнее, аффинная: умножение на веса плюс смещение), а композиция линейных функций снова линейна. Сколько таких слоёв ни ставь, сеть сведётся к одному слою и не сможет, например, решить задачу XOR из примера ниже. Выходной слой при этом может быть и линейным, как в том же примере.",
-      en: "Nonlinearity in the hidden layers is essential. Without an activation function each layer is a linear function (more precisely, affine: multiplying by weights plus a bias), and a composition of linear functions is linear again. No matter how many such layers you stack, the network collapses into a single layer and cannot, for example, solve the XOR task from the example below. The output layer, however, may be linear, as in that same example.",
+      ru: "Нелинейность в скрытых слоях обязательна. Без функции активации каждый слой — линейная функция (точнее, аффинная: умножение на веса плюс смещение), а композиция аффинных функций снова аффинна. Сколько таких слоёв ни ставь, сеть сведётся к одному слою и не сможет, например, решить задачу XOR из примера ниже. Выходной слой при этом может быть и линейным, как в том же примере.",
+      en: "Nonlinearity in the hidden layers is essential. Without an activation function each layer is a linear function (more precisely, affine: multiplying by weights plus a bias), and a composition of affine functions is affine again. No matter how many such layers you stack, the network collapses into a single layer and cannot, for example, solve the XOR task from the example below. The output layer, however, may be linear, as in that same example.",
     },
     {
       type: 'text',
@@ -41,13 +41,13 @@ const lesson: Lesson = {
     },
     {
       type: 'text',
-      ru: "Теперь то же на языке категорий. Объекты — пространства векторов нужной длины (в примере ниже: 2 числа на входе, 2 в скрытом слое, 1 на выходе), морфизмы — слои, то есть функции между такими пространствами. Сеть прямого распространения — композиция морфизмов. По закону ассоциативности неважно, как группировать слои: pipe(pipe(a, b), c) и pipe(a, pipe(b, c)) — одна и та же функция. Тождественный морфизм — функция, которая возвращает вход без изменений: если добавить её в цепочку, сеть не изменится.",
-      en: "Now the same in the language of categories. The objects are spaces of vectors of a given length (in the example below: 2 numbers at the input, 2 in the hidden layer, 1 at the output), and the morphisms are layers, that is, functions between such spaces. A feedforward network is a composition of morphisms. By associativity it doesn't matter how you group the layers: pipe(pipe(a, b), c) and pipe(a, pipe(b, c)) are the same function. The identity morphism is a function that returns its input unchanged: add it to the chain and the network stays the same.",
+      ru: "Теперь то же на языке категорий. Объекты — пространства векторов нужной длины (в примере ниже: 2 числа на входе, 2 в скрытом слое, 1 на выходе), морфизмы — функции между такими пространствами; каждый слой — морфизм, и сеть целиком, композиция слоёв, — тоже морфизм. По закону ассоциативности неважно, как группировать слои: pipe(pipe(a, b), c) и pipe(a, pipe(b, c)) — одна и та же функция. Тождественный морфизм — функция, которая возвращает вход без изменений: если добавить её в цепочку, сеть не изменится.",
+      en: "Now the same in the language of categories. The objects are spaces of vectors of a given length (in the example below: 2 numbers at the input, 2 in the hidden layer, 1 at the output), and the morphisms are functions between such spaces; each layer is a morphism, and the whole network, being a composition of layers, is a morphism too. By associativity it doesn't matter how you group the layers: pipe(pipe(a, b), c) and pipe(a, pipe(b, c)) are the same function. The identity morphism is a function that returns its input unchanged: add it to the chain and the network stays the same.",
     },
     {
       type: 'text',
-      ru: "Важно не переоценивать эту связь: теория категорий здесь описывает, как слои стыкуются между собой, но не объясняет, почему сеть учится. Описать на этом языке и обучение тоже пытаются, но это уже исследовательская тема (например, статья «Backprop as Functor»), и в курсе мы её не трогаем.",
-      en: "It's important not to overstate this connection: here category theory describes how layers fit together, but it does not explain why a network learns. There are attempts to describe training in this language as well, but that is a research topic (for example, the paper \"Backprop as Functor\"), and this course does not cover it.",
+      ru: "Важно не переоценивать эту связь: теория категорий здесь описывает, как слои стыкуются между собой, но не объясняет, почему сеть учится. Описать на этом языке и обучение тоже пытаются, но это уже исследовательская тема (например, статья «Backprop as Functor», Fong, Spivak, Tuyéras, 2019), и в курсе мы её не трогаем.",
+      en: "It's important not to overstate this connection: here category theory describes how layers fit together, but it does not explain why a network learns. There are attempts to describe training in this language as well, but that is a research topic (for example, the paper \"Backprop as Functor\" by Fong, Spivak and Tuyéras, 2019), and this course does not cover it.",
     },
     {
       type: 'text',
