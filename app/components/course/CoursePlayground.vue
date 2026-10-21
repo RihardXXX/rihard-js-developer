@@ -201,6 +201,11 @@ const upgradeEditor = () => {
 
 watch(theme, () => monacoEditorApi?.setTheme(monacoTheme()))
 
+// What the reader typed before hydration is only in the DOM: take it, don't overwrite it.
+onMounted(() => {
+  if (textareaEl.value) code.value = textareaEl.value.value
+})
+
 onBeforeUnmount(() => {
   runner.clear()
   editorInstance?.dispose()
@@ -348,13 +353,14 @@ const clearAll = () => {
       <textarea
         v-if="!monacoReady"
         ref="textareaEl"
-        v-model="code"
+        :value="code"
         class="playground__textarea"
         :aria-label="t('course.editorLabel')"
         spellcheck="false"
         autocapitalize="off"
         autocomplete="off"
         wrap="off"
+        @input="code = ($event.target as HTMLTextAreaElement).value"
         @focus="upgradeEditor"
       />
     </div>
