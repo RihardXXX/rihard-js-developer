@@ -175,10 +175,15 @@ test('асинхронные строки одной микрозадачи св
 
 // ---------- форматирование значений ----------
 
-test('NaN и Infinity печатаются как есть, а не null', () => {
+test('NaN и Infinity печатаются как есть: не null и без кавычек', () => {
   const p = start()
   p.run('console.log(0 / 0, [NaN, -Infinity])')
-  assert.equal(p.last(), 'NaN\n[\n  "NaN",\n  "-Infinity"\n]')
+  assert.equal(p.last(), 'NaN\n[\n  NaN,\n  -Infinity\n]')
+})
+
+test('formatValue: Infinity внутри объекта без кавычек, строка "NaN" — в кавычках', () => {
+  assert.equal(formatValue({ a: Infinity }), '{\n  "a": Infinity\n}')
+  assert.equal(formatValue(['NaN', NaN]), '[\n  "NaN",\n  NaN\n]')
 })
 
 test('console.log(функция) даёт непустую строку', () => {
