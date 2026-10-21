@@ -37,7 +37,6 @@ const withProject = async (fn) => {
     await writeFile(nuxt, FAKE_NUXT)
     await chmod(nuxt, 0o755)
     await symlink(nuxt, join(bin, 'nuxt'))
-    await symlink(join(root, 'node_modules', 'npm-run-all', 'bin', 'npm-run-all', 'index.js'), join(bin, 'npm-run-all'))
     await writeFile(join(dir, 'scripts', 'deploy.mjs'), FAKE_DEPLOY)
     const log = join(dir, 'calls.log')
     await fn(dir, log)
