@@ -4,6 +4,8 @@ const { t } = useI18n()
 // Progress lives in this browser only: nothing in the prerendered HTML, so hydration matches.
 const mounted = useMounted()
 const { isRead, setRead, visit } = useCourseProgress()
+// The button's name is the same in both states: the state is aria-pressed and the box, the hint
+// (title) tells what a click does.
 const read = computed(() => isRead(props.slug))
 
 onMounted(() => visit(props.slug))
@@ -45,7 +47,7 @@ watch(
     type="button"
     class="read-toggle"
     :aria-pressed="read"
-    :title="read ? t('course.unmarkRead') : undefined"
+    :title="read ? t('course.unmarkRead') : t('course.markRead')"
     @click="toggle"
   >
     <span class="read-toggle__box" aria-hidden="true">
@@ -61,7 +63,7 @@ watch(
         <path d="M20 6 9 17l-5-5" />
       </svg>
     </span>
-    {{ read ? t('course.read') : t('course.markRead') }}
+    {{ t('course.read') }}
   </button>
 </template>
 
