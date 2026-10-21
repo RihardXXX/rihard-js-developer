@@ -211,7 +211,7 @@ const dataNumbers = createNumberArray (100000)
 
 // обертка для императивной функции
 // и декларативной функции
-// sumWrap :: ([Number] -> Number) -> [Number] -> (* -> Number)
+// sumWrap :: ([Number] -> Number) -> [Number] -> (() -> Number)
 const sumWrap = (fn) => (arr) => () => fn(arr)
 
 // императивная функция складывания
@@ -274,7 +274,7 @@ const dataNumbers = createNumberArray (100000)
 
 // a wrapper for the imperative function
 // and the declarative function
-// sumWrap :: ([Number] -> Number) -> [Number] -> (* -> Number)
+// sumWrap :: ([Number] -> Number) -> [Number] -> (() -> Number)
 const sumWrap = (fn) => (arr) => () => fn(arr)
 
 // imperative summing function
