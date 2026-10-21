@@ -9,7 +9,7 @@ export interface CourseTextBlock {
   en: string
 }
 
-/** subheading inside a lesson, rendered as h4 */
+/** subheading inside a lesson: h2 on a lesson page, h3 in an intro section */
 export interface CourseHeadingBlock {
   type: 'heading'
   ru: string
