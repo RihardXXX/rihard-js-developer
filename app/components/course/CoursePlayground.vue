@@ -71,6 +71,25 @@ const quickAdd: { alias: string; pkg: string }[] = [
   { alias: 'z', pkg: 'zod' },
 ]
 
+// esm.sh runs UMD packages (lodash, ...) as CommonJS. With Monaco's AMD loader on the
+// page their UMD header finds `define.amd`, registers through define() and leaves
+// module.exports, our default export, empty. define is hidden while an import runs.
+let importing = 0
+let amdDefine: unknown
+const importFromEsmSh = async (pkg: string): Promise<Record<string, unknown>> => {
+  const win = globalThis as { define?: unknown }
+  // Monaco's loader declares `var define`: the global can't be deleted, only overwritten.
+  if (importing++ === 0) {
+    amdDefine = win.define
+    if (amdDefine !== undefined) win.define = undefined
+  }
+  try {
+    return (await import(/* @vite-ignore */ `https://esm.sh/${pkg}`)) as Record<string, unknown>
+  } finally {
+    if (--importing === 0 && amdDefine !== undefined) win.define = amdDefine
+  }
+}
+
 const showAdd = ref(false)
 const newAlias = ref('')
 const newPkg = ref('')
@@ -88,10 +107,7 @@ const addLib = async (alias: string, pkg: string) => {
   loadingLib.value = true
   libError.value = ''
   try {
-    const mod = (await import(/* @vite-ignore */ `https://esm.sh/${pkg}`)) as Record<
-      string,
-      unknown
-    >
+    const mod = await importFromEsmSh(pkg)
     libs.value.push({ alias, pkg, mod: mod.default ?? mod, docs: docsUrl(pkg) })
     newAlias.value = ''
     newPkg.value = ''
