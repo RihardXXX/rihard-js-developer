@@ -59,7 +59,7 @@ Setoid   Semigroupoid  Semigroup   Foldable        Functor      Contravariant  F
                                                 \\ /         \\ /         \\
                                             Alternative    Monad     ChainRec
                                                                     (chainRec)`,
-        en: `// Вот как она выглядит
+        en: `// This is what it looks like
 
 Setoid   Semigroupoid  Semigroup   Foldable        Functor      Contravariant  Filterable
 (equals)    (compose)    (concat)   (reduce)         (map)        (contramap)    (filter)
@@ -163,65 +163,65 @@ var createObjectProto = function (obj) {
   // создаем экземпляр и возвращаем
   return new XXX()
 }`,
-        en: `// Сигнатура
+        en: `// Signature
 // fantasy-land/map :: Functor f => f a ~> (a -> b) -> f b
 
-// Создание функтора
-// ==== синтаксис es5 ======
+// Creating a functor
+// ==== es5 syntax ======
 
-// подготавливаем прототип для функции-конструктора
-// без наследования от Object.prototype, которое есть по умолчанию
+// prepare the prototype for the constructor function
+// without the inheritance from Object.prototype that is there by default
 var prototypeFunctor = Object.create(null)
 
-// Название строки функции и метода согласно спецификации
+// The method name as defined by the specification
 var FANTASY_LAND_MAP = 'fantasy-land/map'
 
-// создаем функцию-конструктор
+// create the constructor function
 function Functor(value) {
   this.value = value
 }
 
-// создаем правильные связи между прототипом и функцией-конструктором
+// wire up the prototype and the constructor function correctly
 Functor.prototype = prototypeFunctor
 prototypeFunctor.constructor = Functor
 
-//  а вот теперь самое главное: реализуем интерфейс функтора
+//  and now the most important part: implement the functor interface
 prototypeFunctor[FANTASY_LAND_MAP] = function (fn) {
   return new Functor(fn(this.value))
 }
 
-// Давайте разделим ключевую логику на части
+// Let's break the key logic into parts
 // return new Functor(fn(this.value))
-// 1. Текущее содержимое контейнера мы пропускаем через функцию
+// 1. We pass the current contents of the container through the function
 // fn(this.value)
-// 2. Возвращаем новый экземпляр типа функтор уже с новым значением
-// return new Functor(тут результат инструкции выше)
+// 2. We return a new functor instance that holds the new value
+// return new Functor(the result of the step above)
 
-// Пример
+// Example
 var functorObj = new Functor(5)
 
 var functorResult = functorObj[FANTASY_LAND_MAP](function (value) { return value * 2 })
 
-// отсутствуют мутации
-// реализован интерфейс спецификации
+// no mutations
+// the specification interface is implemented
 console.log(functorObj.value) // 5
 console.log(functorResult.value) // 10
 
 // =========================
 
-// Полифил
-// как устроен примерно внутри Object.create(objectProto)
-// (упрощенно: без второго аргумента и без поддержки null)
+// Polyfill
+// roughly how Object.create(objectProto) works inside
+// (simplified: no second argument and no support for null)
 var createObjectProto = function (obj) {
-  // для создания экземпляра формируем конструктор
+  // build a constructor to create the instance
   function XXX() {}
 
-  // устанавливаем правильные ссылки
+  // set up the correct links
   XXX.prototype = obj || Object.prototype
-  // constructor не переписываем: иначе мы изменили бы переданный obj,
-  // а без аргумента — общий для всех объектов Object.prototype
+  // we don't overwrite constructor: otherwise we would change the obj passed in,
+  // or, without an argument, Object.prototype, which all objects share
 
-  // создаем экземпляр и возвращаем
+  // create the instance and return it
   return new XXX()
 }`,
       },
@@ -266,9 +266,9 @@ console.log(objA.value) // 10
 console.log(objB.value) // 5
 
 // =========================`,
-        en: `// ==== синтаксис es6 ======
-// тут все гораздо проще
-// тут в прототипе мы также можем уничтожить дефолтное наследование Object.prototype
+        en: `// ==== es6 syntax ======
+// everything is much simpler here
+// here we can also remove the default inheritance from Object.prototype in the prototype
 const FANTASY_LAND_MAP = 'fantasy-land/map'
 
 class Functor {
@@ -276,26 +276,26 @@ class Functor {
     this.value = value
   }
 
-  // этот метод и так уже будет храниться по дефолту в прототипе
+  // this method is stored in the prototype by default anyway
   [FANTASY_LAND_MAP] (fn) {
     return new Functor(fn(this.value))
   }
 }
 
-// Пример, описанный выше, также сработает
+// The example described above will work as well
 const functorObj = new Functor(5)
 // =========================
 
 
-// ==== через чистые функции ======
-// Создание функтора без создания экземпляров
-// через чистые функции
+// ==== with pure functions ======
+// Creating a functor without creating instances
+// using pure functions
 const functor = value => ({
   value,
   [FANTASY_LAND_MAP]: (fn) => functor(fn(value))
 })
 
-// создали объект и вернули его
+// we created an object and returned it
 const objA = functor(10)
 const objB = objA[FANTASY_LAND_MAP](value => value - 5)
 
