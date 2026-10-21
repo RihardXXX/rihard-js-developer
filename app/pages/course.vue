@@ -10,10 +10,14 @@ const isEn = computed(() => locale.value !== 'ru')
 // the client imports the lesson module just when there is no payload (dev, network failure).
 // The key is fixed: switching the language mounts the other locale's page with its own payload.
 const lang = isEn.value ? 'en' : 'ru'
-const { data: course } = await useAsyncData(`course-${lang}`, async () => {
+const { data: course, error } = await useAsyncData(`course-${lang}`, async () => {
   const { introSections, lessons } = await import('~/data/course')
   return pickLocale({ introSections, lessons }, lang)
 })
+// Broken lesson data fails generate instead of shipping an empty course with 200.
+if (error.value) {
+  throw createError({ statusCode: 500, statusMessage: 'course data failed to load', fatal: true })
+}
 // i18n switches the locale before the new page's payload arrives; meanwhile this page shows its own texts.
 const sections = computed(() => fillLocale(course.value ?? { introSections: [], lessons: [] }, lang))
 const introSections = computed(() => sections.value.introSections)
