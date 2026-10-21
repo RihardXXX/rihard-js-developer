@@ -6,6 +6,10 @@ const lesson: Lesson = {
     ru: "Композиция функций",
     en: "Function composition",
   },
+  goal: {
+    ru: "Понять, что такое композиция функций, и научиться собирать функции в конвейер с помощью compose и pipe — для трёх функций и для любого их числа.",
+    en: "Understand what function composition is and learn to chain functions with compose and pipe, both for three functions and for any number of them.",
+  },
   blocks: [
     {
       type: 'text',
@@ -134,6 +138,7 @@ fetchAllUsers() // simulate a request
     },
     {
       type: 'code',
+      noRun: 'previous-block',
       code: {
         ru: `// === композиция из 3 функций в человекочитаемом формате ===
 // порядок сменился: слева направо
@@ -352,6 +357,198 @@ const pipe = (...fns) => (arg) => {
 }
 
 // ===============================`,
+      },
+    },
+  ],
+  summary: [
+    {
+      ru: "Композиция функций объединяет функции в новую функцию, которая вызывает их последовательно: результат одной функции передаётся следующей.",
+      en: "Function composition combines functions into a new function that calls them in sequence: the result of one function is passed to the next.",
+    },
+    {
+      ru: "Композиция функций — одно из фундаментальных понятий, на которых основана теория категорий.",
+      en: "Function composition is one of the fundamental concepts on which category theory is based.",
+    },
+    {
+      ru: "compose вызывает функции справа налево — с точки зрения математики это нормально, а pipe вызывает их слева направо: так код читателю часто удобнее.",
+      en: "compose calls the functions right to left, which is fine from a mathematical point of view, while pipe calls them left to right, which is often easier for the reader.",
+    },
+    {
+      ru: "pipe для любого числа функций можно написать императивно (циклом), декларативно (через reduce) и рекурсивно, а в реальных проектах используйте compose или pipe из готовых библиотек.",
+      en: "pipe for any number of functions can be written imperatively (with a loop), declaratively (with reduce) or recursively; in real projects, use compose or pipe from existing libraries.",
+    },
+  ],
+  exercises: [
+    {
+      task: {
+        ru: "В уроке compose написан только для трёх функций, а pipe — для любого их числа. Напишите compose для любого числа функций: он должен вызывать их справа налево. Проверьте, что compose(square, double, inc) и pipe(inc, double, square) дают одинаковый результат, а compose(inc, double, square) — другой. Подсказка: у массивов есть метод reduceRight — тот же reduce, только он проходит массив справа налево.",
+        en: "In the lesson, compose is written for exactly three functions, while pipe handles any number of them. Write compose for any number of functions: it should call them right to left. Check that compose(square, double, inc) and pipe(inc, double, square) give the same result, while compose(inc, double, square) gives a different one. Hint: arrays have a reduceRight method — the same as reduce, except that it walks the array from right to left.",
+      },
+      starter: {
+        ru: `// pipe — декларативный способ из урока
+// pipe :: ((a -> b), (b -> c), ..., (y -> z)) -> a -> z
+const pipe = (...fns) => (arg) => fns.reduce((init, fn) => fn(init), arg)
+
+// compose :: ((y -> z), ..., (b -> c), (a -> b)) -> a -> z
+const compose = (...fns) => (arg) => {
+  // ваш код
+}
+
+// inc :: Number -> Number
+const inc = (n) => n + 1
+// double :: Number -> Number
+const double = (n) => n * 2
+// square :: Number -> Number
+const square = (n) => n * n
+
+console.log(pipe(inc, double, square)(3))
+console.log(compose(square, double, inc)(3))
+console.log(compose(inc, double, square)(3))`,
+        en: `// pipe: the declarative approach from the lesson
+// pipe :: ((a -> b), (b -> c), ..., (y -> z)) -> a -> z
+const pipe = (...fns) => (arg) => fns.reduce((init, fn) => fn(init), arg)
+
+// compose :: ((y -> z), ..., (b -> c), (a -> b)) -> a -> z
+const compose = (...fns) => (arg) => {
+  // your code
+}
+
+// inc :: Number -> Number
+const inc = (n) => n + 1
+// double :: Number -> Number
+const double = (n) => n * 2
+// square :: Number -> Number
+const square = (n) => n * n
+
+console.log(pipe(inc, double, square)(3))
+console.log(compose(square, double, inc)(3))
+console.log(compose(inc, double, square)(3))`,
+      },
+      solution: {
+        ru: `// pipe — декларативный способ из урока
+// pipe :: ((a -> b), (b -> c), ..., (y -> z)) -> a -> z
+const pipe = (...fns) => (arg) => fns.reduce((init, fn) => fn(init), arg)
+
+// compose :: ((y -> z), ..., (b -> c), (a -> b)) -> a -> z
+// reduceRight начинает с последней функции, поэтому она вызывается первой
+const compose = (...fns) => (arg) => fns.reduceRight((init, fn) => fn(init), arg)
+
+// inc :: Number -> Number
+const inc = (n) => n + 1
+// double :: Number -> Number
+const double = (n) => n * 2
+// square :: Number -> Number
+const square = (n) => n * n
+
+// inc, затем double, затем square: (3 + 1) * 2 = 8, 8 * 8 = 64
+console.log(pipe(inc, double, square)(3))
+// тот же порядок вызовов, только записан справа налево
+console.log(compose(square, double, inc)(3))
+// square, затем double, затем inc: 3 * 3 = 9, 9 * 2 = 18, 18 + 1 = 19
+console.log(compose(inc, double, square)(3))`,
+        en: `// pipe: the declarative approach from the lesson
+// pipe :: ((a -> b), (b -> c), ..., (y -> z)) -> a -> z
+const pipe = (...fns) => (arg) => fns.reduce((init, fn) => fn(init), arg)
+
+// compose :: ((y -> z), ..., (b -> c), (a -> b)) -> a -> z
+// reduceRight starts with the last function, so it is called first
+const compose = (...fns) => (arg) => fns.reduceRight((init, fn) => fn(init), arg)
+
+// inc :: Number -> Number
+const inc = (n) => n + 1
+// double :: Number -> Number
+const double = (n) => n * 2
+// square :: Number -> Number
+const square = (n) => n * n
+
+// inc, then double, then square: (3 + 1) * 2 = 8, 8 * 8 = 64
+console.log(pipe(inc, double, square)(3))
+// the same order of calls, just written right to left
+console.log(compose(square, double, inc)(3))
+// square, then double, then inc: 3 * 3 = 9, 9 * 2 = 18, 18 + 1 = 19
+console.log(compose(inc, double, square)(3))`,
+      },
+      expected: {
+        ru: "64\n64\n19",
+        en: "64\n64\n19",
+      },
+    },
+    {
+      task: {
+        ru: "Соберите через pipe функцию slugify, которая превращает название урока в якорь для адреса, как у уроков этого курса: «Pure Functions» → pure-functions. Она убирает пробелы по краям, переводит строку в нижний регистр, разбивает на слова и соединяет их дефисом. Каждый шаг — отдельная функция одного аргумента. Подпишите шаги нотацией Хиндли–Милнера и проследите, что тип результата каждого шага совпадает с типом аргумента следующего.",
+        en: "Use pipe to build a slugify function that turns a lesson title into a URL anchor like the ones this course uses: \"Pure Functions\" → pure-functions. It trims the spaces at both ends, converts the string to lower case, splits it into words and joins them with hyphens. Make each step a separate function of one argument. Annotate the steps with Hindley–Milner notation and check that the result type of each step matches the argument type of the next one.",
+      },
+      starter: {
+        ru: `// pipe :: ((a -> b), (b -> c), ..., (y -> z)) -> a -> z
+const pipe = (...fns) => (arg) => fns.reduce((init, fn) => fn(init), arg)
+
+// slugify :: String -> String
+const slugify = pipe(
+  // ваш код
+)
+
+console.log(slugify('Pure Functions'))
+console.log(slugify('  Partial Application  '))
+console.log(slugify('Imperative vs Declarative'))`,
+        en: `// pipe :: ((a -> b), (b -> c), ..., (y -> z)) -> a -> z
+const pipe = (...fns) => (arg) => fns.reduce((init, fn) => fn(init), arg)
+
+// slugify :: String -> String
+const slugify = pipe(
+  // your code
+)
+
+console.log(slugify('Pure Functions'))
+console.log(slugify('  Partial Application  '))
+console.log(slugify('Imperative vs Declarative'))`,
+      },
+      solution: {
+        ru: `// pipe :: ((a -> b), (b -> c), ..., (y -> z)) -> a -> z
+const pipe = (...fns) => (arg) => fns.reduce((init, fn) => fn(init), arg)
+
+// trim :: String -> String
+const trim = (str) => str.trim()
+// toLower :: String -> String
+const toLower = (str) => str.toLowerCase()
+// words :: String -> [String]
+const words = (str) => str.split(' ')
+// joinWithDash :: [String] -> String
+const joinWithDash = (list) => list.join('-')
+
+// результат каждого шага — аргумент следующего:
+// trim и toLower отдают String, words принимает String и отдаёт [String],
+// joinWithDash принимает [String] и отдаёт String
+// slugify :: String -> String
+const slugify = pipe(trim, toLower, words, joinWithDash)
+
+console.log(slugify('Pure Functions'))
+console.log(slugify('  Partial Application  '))
+console.log(slugify('Imperative vs Declarative'))`,
+        en: `// pipe :: ((a -> b), (b -> c), ..., (y -> z)) -> a -> z
+const pipe = (...fns) => (arg) => fns.reduce((init, fn) => fn(init), arg)
+
+// trim :: String -> String
+const trim = (str) => str.trim()
+// toLower :: String -> String
+const toLower = (str) => str.toLowerCase()
+// words :: String -> [String]
+const words = (str) => str.split(' ')
+// joinWithDash :: [String] -> String
+const joinWithDash = (list) => list.join('-')
+
+// the result of each step is the argument of the next one:
+// trim and toLower return a String, words takes a String and returns [String],
+// joinWithDash takes [String] and returns a String
+// slugify :: String -> String
+const slugify = pipe(trim, toLower, words, joinWithDash)
+
+console.log(slugify('Pure Functions'))
+console.log(slugify('  Partial Application  '))
+console.log(slugify('Imperative vs Declarative'))`,
+      },
+      expected: {
+        ru: "pure-functions\npartial-application\nimperative-vs-declarative",
+        en: "pure-functions\npartial-application\nimperative-vs-declarative",
       },
     },
   ],

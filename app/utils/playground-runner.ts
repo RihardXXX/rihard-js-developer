@@ -29,13 +29,20 @@ const describe = (value: unknown): string | undefined => {
   return undefined
 }
 
+// Inside JSON a non-finite number becomes a marked string, and after stringify the
+// quoted mark turns back into the bare value: [NaN] prints as [NaN], not ["NaN"].
+const NUMBER_MARK = '\u0000number:'
+const MARKED_NUMBER = /"\\u0000number:(NaN|-?Infinity)"/g
+const replacer = (_key: string, value: unknown): unknown =>
+  typeof value === 'number' && !Number.isFinite(value) ? NUMBER_MARK + String(value) : (describe(value) ?? value)
+
 export const formatValue = (item: unknown): string => {
   if (typeof item === 'string') return item
   try {
     // `?? String(item)`: JSON.stringify gives undefined for undefined and symbols.
     return (
       describe(item) ??
-      JSON.stringify(item, (_key, value: unknown) => describe(value) ?? value, 2) ??
+      JSON.stringify(item, replacer, 2)?.replace(MARKED_NUMBER, '$1') ??
       String(item)
     )
   } catch {

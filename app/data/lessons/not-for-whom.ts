@@ -1,6 +1,6 @@
-import type { Lesson } from '~/data/course-types'
+import type { CourseSection } from '~/data/course-types'
 
-const lesson: Lesson = {
+const lesson: CourseSection = {
   slug: 'not-for-whom',
   title: { ru: "Кому этот курс не подойдет", en: "Who this course is not for" },
   blocks: [

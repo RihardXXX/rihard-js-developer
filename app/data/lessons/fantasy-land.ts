@@ -6,6 +6,10 @@ const lesson: Lesson = {
     ru: "Fantasy-land (Страна фантазий)",
     en: "Fantasy-land",
   },
+  goal: {
+    ru: "Понять, что такое спецификация Fantasy-land, и научиться реализовывать по ней функтор: метод fantasy-land/map и два закона, которые функтор должен соблюдать.",
+    en: "Understand what the Fantasy Land specification is and learn to implement a functor according to it: the fantasy-land/map method and the two laws a functor must obey.",
+  },
   blocks: [
     {
       type: 'text',
@@ -303,6 +307,228 @@ console.log(objA.value) // 10
 console.log(objB.value) // 5
 
 // =========================`,
+      },
+    },
+  ],
+  summary: [
+    {
+      ru: "Fantasy-land — спецификация: набор правил и публичных интерфейсов, описывающих абстракции из алгебры и теории категорий. Реализуя эти интерфейсы и законы, мы следуем спецификации.",
+      en: "Fantasy Land is a specification: a set of rules and public interfaces describing abstractions from algebra and category theory. By implementing these interfaces and laws, we follow the specification.",
+    },
+    {
+      ru: "Функтор реализует метод fantasy-land/map :: Functor f => f a ~> (a -> b) -> f b: пропускает содержимое контейнера через функцию и возвращает новый функтор с новым значением.",
+      en: "A functor implements the fantasy-land/map :: Functor f => f a ~> (a -> b) -> f b method: it passes the contents of the container through the function and returns a new functor that holds the new value.",
+    },
+    {
+      ru: "Кроме метода, функтор соблюдает два закона: тождество — u['fantasy-land/map'](a => a) эквивалентно u — и композицию — u['fantasy-land/map'](x => f(g(x))) эквивалентно u['fantasy-land/map'](g)['fantasy-land/map'](f).",
+      en: "Besides the method, a functor obeys two laws: identity, where u['fantasy-land/map'](a => a) is equivalent to u, and composition, where u['fantasy-land/map'](x => f(g(x))) is equivalent to u['fantasy-land/map'](g)['fantasy-land/map'](f).",
+    },
+    {
+      ru: "map не мутирует исходный функтор: у него остаётся прежнее значение.",
+      en: "map does not mutate the original functor: it keeps its previous value.",
+    },
+  ],
+  exercises: [
+    {
+      task: {
+        ru: "По образцу функтора на чистых функциях из урока реализуйте функтор list для массивов: list(items) возвращает объект с полем items и методом fantasy-land/map, который применяет функцию к каждому элементу и возвращает новый list. Примените к списку слов два map подряд: сначала переведите слова в верхний регистр, затем замените их длинами. Убедитесь, что исходный list не изменился.",
+        en: "Following the pure-function functor from the lesson, implement a list functor for arrays: list(items) returns an object with an items field and a fantasy-land/map method that applies the function to every element and returns a new list. Apply two maps in a row to a list of words: first convert the words to upper case, then replace them with their lengths. Make sure the original list has not changed.",
+      },
+      starter: {
+        ru: `const FANTASY_LAND_MAP = 'fantasy-land/map'
+
+// ваш код: list :: [a] -> List a
+
+const names = list(['map', 'filter', 'reduce'])
+const upper = names[FANTASY_LAND_MAP]((word) => word.toUpperCase())
+const lengths = upper[FANTASY_LAND_MAP]((word) => word.length)
+
+console.log(JSON.stringify(names.items))
+console.log(JSON.stringify(upper.items))
+console.log(JSON.stringify(lengths.items))`,
+        en: `const FANTASY_LAND_MAP = 'fantasy-land/map'
+
+// your code: list :: [a] -> List a
+
+const names = list(['map', 'filter', 'reduce'])
+const upper = names[FANTASY_LAND_MAP]((word) => word.toUpperCase())
+const lengths = upper[FANTASY_LAND_MAP]((word) => word.length)
+
+console.log(JSON.stringify(names.items))
+console.log(JSON.stringify(upper.items))
+console.log(JSON.stringify(lengths.items))`,
+      },
+      solution: {
+        ru: `const FANTASY_LAND_MAP = 'fantasy-land/map'
+
+// list :: [a] -> List a
+const list = (items) => ({
+  items,
+  // применяем функцию к каждому элементу и возвращаем новый list
+  [FANTASY_LAND_MAP]: (fn) => list(items.map(fn)),
+})
+
+const names = list(['map', 'filter', 'reduce'])
+const upper = names[FANTASY_LAND_MAP]((word) => word.toUpperCase())
+const lengths = upper[FANTASY_LAND_MAP]((word) => word.length)
+
+console.log(JSON.stringify(names.items)) // исходный list не изменился
+console.log(JSON.stringify(upper.items))
+console.log(JSON.stringify(lengths.items))`,
+        en: `const FANTASY_LAND_MAP = 'fantasy-land/map'
+
+// list :: [a] -> List a
+const list = (items) => ({
+  items,
+  // apply the function to every element and return a new list
+  [FANTASY_LAND_MAP]: (fn) => list(items.map(fn)),
+})
+
+const names = list(['map', 'filter', 'reduce'])
+const upper = names[FANTASY_LAND_MAP]((word) => word.toUpperCase())
+const lengths = upper[FANTASY_LAND_MAP]((word) => word.length)
+
+console.log(JSON.stringify(names.items)) // the original list has not changed
+console.log(JSON.stringify(upper.items))
+console.log(JSON.stringify(lengths.items))`,
+      },
+      expected: {
+        ru: "[\"map\",\"filter\",\"reduce\"]\n[\"MAP\",\"FILTER\",\"REDUCE\"]\n[3,6,6]",
+        en: "[\"map\",\"filter\",\"reduce\"]\n[\"MAP\",\"FILTER\",\"REDUCE\"]\n[3,6,6]",
+      },
+    },
+    {
+      task: {
+        ru: "Напишите checkLaws(name, u, f, g): она проверяет для контейнера u оба закона функтора и печатает две строки — для тождества и для композиции, например «functor — тождество: true» и «functor — композиция: true». Контейнеры сравнивайте через JSON.stringify: он пропускает методы, поэтому сравниваются только данные. Проверьте функтор functor из урока и контейнер counted, который при каждом map увеличивает счётчик вызовов count. Почему counted — не функтор, хотя метод fantasy-land/map у него есть?",
+        en: "Write checkLaws(name, u, f, g): it checks both functor laws for the container u and prints two lines, one for identity and one for composition, for example \"functor — identity: true\" and \"functor — composition: true\". Compare containers via JSON.stringify: it skips methods, so only the data is compared. Check the functor from the lesson and a counted container that increases its count of calls on every map. Why is counted not a functor even though it has a fantasy-land/map method?",
+      },
+      starter: {
+        ru: `const FANTASY_LAND_MAP = 'fantasy-land/map'
+
+// функтор из урока
+const functor = (value) => ({
+  value,
+  [FANTASY_LAND_MAP]: (fn) => functor(fn(value)),
+})
+
+// контейнер, который считает вызовы map
+const counted = (value, count = 0) => ({
+  value,
+  count,
+  [FANTASY_LAND_MAP]: (fn) => counted(fn(value), count + 1),
+})
+
+// JSON.stringify пропускает методы: сравниваем только данные
+const same = (a, b) => JSON.stringify(a) === JSON.stringify(b)
+
+// ваш код: checkLaws
+
+const double = (x) => x * 2
+const inc = (x) => x + 1
+
+checkLaws('functor', functor(5), double, inc)
+checkLaws('counted', counted(5), double, inc)`,
+        en: `const FANTASY_LAND_MAP = 'fantasy-land/map'
+
+// the functor from the lesson
+const functor = (value) => ({
+  value,
+  [FANTASY_LAND_MAP]: (fn) => functor(fn(value)),
+})
+
+// a container that counts the calls to map
+const counted = (value, count = 0) => ({
+  value,
+  count,
+  [FANTASY_LAND_MAP]: (fn) => counted(fn(value), count + 1),
+})
+
+// JSON.stringify skips methods: we compare only the data
+const same = (a, b) => JSON.stringify(a) === JSON.stringify(b)
+
+// your code: checkLaws
+
+const double = (x) => x * 2
+const inc = (x) => x + 1
+
+checkLaws('functor', functor(5), double, inc)
+checkLaws('counted', counted(5), double, inc)`,
+      },
+      solution: {
+        ru: `const FANTASY_LAND_MAP = 'fantasy-land/map'
+
+// функтор из урока
+const functor = (value) => ({
+  value,
+  [FANTASY_LAND_MAP]: (fn) => functor(fn(value)),
+})
+
+// контейнер, который считает вызовы map
+const counted = (value, count = 0) => ({
+  value,
+  count,
+  [FANTASY_LAND_MAP]: (fn) => counted(fn(value), count + 1),
+})
+
+// JSON.stringify пропускает методы: сравниваем только данные
+const same = (a, b) => JSON.stringify(a) === JSON.stringify(b)
+
+const checkLaws = (name, u, f, g) => {
+  const map = (container, fn) => container[FANTASY_LAND_MAP](fn)
+  // тождество: map(a => a) эквивалентно u
+  console.log(\`\${name} — тождество: \${same(map(u, (a) => a), u)}\`)
+  // композиция: map(x => f(g(x))) эквивалентно map(g), затем map(f)
+  console.log(\`\${name} — композиция: \${same(map(u, (x) => f(g(x))), map(map(u, g), f))}\`)
+}
+
+const double = (x) => x * 2
+const inc = (x) => x + 1
+
+checkLaws('functor', functor(5), double, inc)
+checkLaws('counted', counted(5), double, inc)
+
+// counted не функтор: map меняет не только значение, но и счётчик.
+// Поэтому map(a => a) даёт не тот же контейнер, что u,
+// а два map подряд дают другой count, чем один map с композицией`,
+        en: `const FANTASY_LAND_MAP = 'fantasy-land/map'
+
+// the functor from the lesson
+const functor = (value) => ({
+  value,
+  [FANTASY_LAND_MAP]: (fn) => functor(fn(value)),
+})
+
+// a container that counts the calls to map
+const counted = (value, count = 0) => ({
+  value,
+  count,
+  [FANTASY_LAND_MAP]: (fn) => counted(fn(value), count + 1),
+})
+
+// JSON.stringify skips methods: we compare only the data
+const same = (a, b) => JSON.stringify(a) === JSON.stringify(b)
+
+const checkLaws = (name, u, f, g) => {
+  const map = (container, fn) => container[FANTASY_LAND_MAP](fn)
+  // identity: map(a => a) is equivalent to u
+  console.log(\`\${name} — identity: \${same(map(u, (a) => a), u)}\`)
+  // composition: map(x => f(g(x))) is equivalent to map(g) followed by map(f)
+  console.log(\`\${name} — composition: \${same(map(u, (x) => f(g(x))), map(map(u, g), f))}\`)
+}
+
+const double = (x) => x * 2
+const inc = (x) => x + 1
+
+checkLaws('functor', functor(5), double, inc)
+checkLaws('counted', counted(5), double, inc)
+
+// counted is not a functor: map changes not only the value but also the count.
+// So map(a => a) does not give the same container as u,
+// and two maps in a row give a different count than one map with the composition`,
+      },
+      expected: {
+        ru: "functor — тождество: true\nfunctor — композиция: true\ncounted — тождество: false\ncounted — композиция: false",
+        en: "functor — identity: true\nfunctor — composition: true\ncounted — identity: false\ncounted — composition: false",
       },
     },
   ],

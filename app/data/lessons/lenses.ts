@@ -6,6 +6,10 @@ const lesson: Lesson = {
     ru: "Линзы",
     en: "Lenses",
   },
+  goal: {
+    ru: "Научиться читать и менять вложенные данные через линзы (view, set, over), не изменяя исходный объект, и понять, как устроена простая линза из пары функций getter и setter.",
+    en: "Learn to read and update nested data with lenses (view, set, over) without changing the original object, and understand how a simple lens built from a getter and a setter works.",
+  },
   blocks: [
     {
       type: 'text',
@@ -354,6 +358,270 @@ const resultOver = over (xLens) ( ((a) => (b) => a + b) (3) ) (data)
 console.log(resultView) // 2
 console.log(resultSet) // {x: [{y: 1, z: 3}, {y: 4, z: 5}]}
 console.log(resultOver) // {x: [{y: 5, z: 3}, {y: 4, z: 5}]}`,
+      },
+    },
+  ],
+  summary: [
+    {
+      ru: "Линзы — паттерн для работы с данными, который обеспечивает иммутабельность данных и чистоту функций.",
+      en: "Lenses are a pattern for working with data that keeps the data immutable and the functions pure.",
+    },
+    {
+      ru: "Иммутабельность означает, что данные после создания не меняются: вместо изменения создаётся новая копия с нужными правками.",
+      en: "Immutability means that data does not change after it is created: instead of modifying it, you create a new copy with the changes applied.",
+    },
+    {
+      ru: "view читает значение по пути линзы, set записывает новое значение и возвращает новый объект, over делает то же, что set, но принимает функцию от текущего значения. Исходные данные при этом не меняются.",
+      en: "view reads the value at the lens path, set writes a new value and returns a new object, and over works like set but takes a function of the current value. The original data stays unchanged.",
+    },
+    {
+      ru: "Простую линзу можно собрать из пары функций getter и setter, замкнутых на путь к данным; при копировании узла массив нужно копировать как массив.",
+      en: "A simple lens can be built from a pair of getter and setter functions closed over the path to the data; when a node is copied, an array has to be copied as an array.",
+    },
+    {
+      ru: "В продакшен-коде используйте готовые линзы, например из Ramda; в Sanctuary линз нет.",
+      en: "In production code, use ready-made lenses such as the ones in Ramda; Sanctuary has no lenses.",
+    },
+  ],
+  exercises: [
+    {
+      task: {
+        ru: "В состоянии приложения лежат настройки пользователя и корзина. С помощью R.lensPath, R.view, R.set и R.over получите новое состояние, где тема оформления — dark, а количество первого товара в корзине на единицу больше. Соберите оба изменения в одну функцию update через pipe и убедитесь, что исходное состояние не изменилось.",
+        en: "The application state holds the user's settings and a cart. Using R.lensPath, R.view, R.set and R.over, get a new state where the theme is dark and the quantity of the first item in the cart has gone up by one. Combine both changes into a single update function with pipe and make sure the original state has not changed.",
+      },
+      starter: {
+        ru: `// pipe берём из Ramda, как в уроке «Каррирование»
+const { pipe } = R
+
+const state = {
+  user: { name: 'Anna', settings: { theme: 'light', fontSize: 14 } },
+  cart: [
+    { title: 'Book', qty: 1 },
+    { title: 'Pen', qty: 3 },
+  ],
+}
+
+// ваш код: пути к теме оформления и к количеству первого товара
+const themeLens = R.lensPath([])
+const firstQtyLens = R.lensPath([])
+
+// ваш код: оба изменения через pipe, R.set и R.over
+// update :: Object -> Object
+const update = (s) => s
+
+const next = update(state)
+
+console.log('новое: тема ' + R.view(themeLens, next) + ', количество ' + R.view(firstQtyLens, next))
+console.log('исходное: тема ' + R.view(themeLens, state) + ', количество ' + R.view(firstQtyLens, state))`,
+        en: `// pipe comes from Ramda, as in the "Currying" lesson
+const { pipe } = R
+
+const state = {
+  user: { name: 'Anna', settings: { theme: 'light', fontSize: 14 } },
+  cart: [
+    { title: 'Book', qty: 1 },
+    { title: 'Pen', qty: 3 },
+  ],
+}
+
+// your code: the paths to the theme and to the quantity of the first item
+const themeLens = R.lensPath([])
+const firstQtyLens = R.lensPath([])
+
+// your code: both changes with pipe, R.set and R.over
+// update :: Object -> Object
+const update = (s) => s
+
+const next = update(state)
+
+console.log('new: theme ' + R.view(themeLens, next) + ', quantity ' + R.view(firstQtyLens, next))
+console.log('original: theme ' + R.view(themeLens, state) + ', quantity ' + R.view(firstQtyLens, state))`,
+      },
+      solution: {
+        ru: `// pipe берём из Ramda, как в уроке «Каррирование»
+const { pipe } = R
+
+const state = {
+  user: { name: 'Anna', settings: { theme: 'light', fontSize: 14 } },
+  cart: [
+    { title: 'Book', qty: 1 },
+    { title: 'Pen', qty: 3 },
+  ],
+}
+
+// линза к теме оформления
+const themeLens = R.lensPath(['user', 'settings', 'theme'])
+// линза к количеству первого товара: в пути может стоять индекс массива
+const firstQtyLens = R.lensPath(['cart', 0, 'qty'])
+
+// update :: Object -> Object
+// каждый шаг возвращает новый объект и передаёт его следующему
+const update = pipe(
+  (s) => R.set(themeLens, 'dark', s),
+  (s) => R.over(firstQtyLens, (qty) => qty + 1, s),
+)
+
+const next = update(state)
+
+console.log('новое: тема ' + R.view(themeLens, next) + ', количество ' + R.view(firstQtyLens, next))
+console.log('исходное: тема ' + R.view(themeLens, state) + ', количество ' + R.view(firstQtyLens, state))`,
+        en: `// pipe comes from Ramda, as in the "Currying" lesson
+const { pipe } = R
+
+const state = {
+  user: { name: 'Anna', settings: { theme: 'light', fontSize: 14 } },
+  cart: [
+    { title: 'Book', qty: 1 },
+    { title: 'Pen', qty: 3 },
+  ],
+}
+
+// a lens to the theme
+const themeLens = R.lensPath(['user', 'settings', 'theme'])
+// a lens to the quantity of the first item: a path can contain an array index
+const firstQtyLens = R.lensPath(['cart', 0, 'qty'])
+
+// update :: Object -> Object
+// each step returns a new object and passes it to the next one
+const update = pipe(
+  (s) => R.set(themeLens, 'dark', s),
+  (s) => R.over(firstQtyLens, (qty) => qty + 1, s),
+)
+
+const next = update(state)
+
+console.log('new: theme ' + R.view(themeLens, next) + ', quantity ' + R.view(firstQtyLens, next))
+console.log('original: theme ' + R.view(themeLens, state) + ', quantity ' + R.view(firstQtyLens, state))`,
+      },
+      expected: {
+        ru: "новое: тема dark, количество 2\nисходное: тема light, количество 1",
+        en: "new: theme dark, quantity 2\noriginal: theme light, quantity 1",
+      },
+    },
+    {
+      task: {
+        ru: "В самописной линзе из урока set не может записать функцию как значение: setter принимает любую функцию за преобразование. Напишите линзу lensKey(key) для одного ключа объекта, у которой setter всегда принимает функцию, и функции view, over и set. set постройте через over, как в Ramda, и проверьте, что функция записывается как обычное значение, а исходный объект не меняется.",
+        en: "In the hand-written lens from the lesson, set cannot store a function as a value: the setter treats any function as a transformation. Write a lens lensKey(key) for a single object key whose setter always takes a function, plus view, over and set. Build set on top of over, as Ramda does, and check that a function is stored as a plain value and the original object does not change.",
+      },
+      starter: {
+        ru: `// Lens s a = { getter :: s -> a, setter :: (a -> a) -> s -> s }
+// lensKey :: String -> Lens s a
+const lensKey = (key) => ({
+  getter: (data) => data[key],
+  // ваш код: setter возвращает копию data, где по ключу key лежит fn (data[key])
+  setter: (fn) => (data) => data,
+})
+
+// view :: Lens s a -> s -> a
+const view = (lens) => (data) => lens.getter(data)
+
+// over :: Lens s a -> (a -> a) -> s -> s
+const over = (lens) => (fn) => (data) => data // ваш код
+
+// set :: Lens s a -> a -> s -> s
+const set = (lens) => (v) => (data) => data // ваш код: через over
+
+const user = { name: 'Anna', greet: null }
+const nameLens = lensKey('name')
+const greetLens = lensKey('greet')
+
+console.log(view(nameLens)(set(nameLens)('Kate')(user)))
+console.log(typeof view(greetLens)(set(greetLens)((name) => 'Привет, ' + name)(user)))
+console.log(view(nameLens)(over(nameLens)((name) => name.toUpperCase())(user)))
+console.log(user)`,
+        en: `// Lens s a = { getter :: s -> a, setter :: (a -> a) -> s -> s }
+// lensKey :: String -> Lens s a
+const lensKey = (key) => ({
+  getter: (data) => data[key],
+  // your code: setter returns a copy of data with fn (data[key]) under the key
+  setter: (fn) => (data) => data,
+})
+
+// view :: Lens s a -> s -> a
+const view = (lens) => (data) => lens.getter(data)
+
+// over :: Lens s a -> (a -> a) -> s -> s
+const over = (lens) => (fn) => (data) => data // your code
+
+// set :: Lens s a -> a -> s -> s
+const set = (lens) => (v) => (data) => data // your code: on top of over
+
+const user = { name: 'Anna', greet: null }
+const nameLens = lensKey('name')
+const greetLens = lensKey('greet')
+
+console.log(view(nameLens)(set(nameLens)('Kate')(user)))
+console.log(typeof view(greetLens)(set(greetLens)((name) => 'Hello, ' + name)(user)))
+console.log(view(nameLens)(over(nameLens)((name) => name.toUpperCase())(user)))
+console.log(user)`,
+      },
+      solution: {
+        ru: `// Lens s a = { getter :: s -> a, setter :: (a -> a) -> s -> s }
+// lensKey :: String -> Lens s a
+const lensKey = (key) => ({
+  getter: (data) => data[key],
+  // setter всегда принимает функцию и не проверяет, что ему передали
+  setter: (fn) => (data) => {
+    const copy = { ...data }
+    copy[key] = fn(data[key])
+    return copy
+  },
+})
+
+// view :: Lens s a -> s -> a
+const view = (lens) => (data) => lens.getter(data)
+
+// over :: Lens s a -> (a -> a) -> s -> s
+const over = (lens) => (fn) => (data) => lens.setter(fn)(data)
+
+// set :: Lens s a -> a -> s -> s
+// значение заворачиваем в функцию, которая игнорирует текущее значение,
+// поэтому v может быть и функцией
+const set = (lens) => (v) => over(lens)(() => v)
+
+const user = { name: 'Anna', greet: null }
+const nameLens = lensKey('name')
+const greetLens = lensKey('greet')
+
+console.log(view(nameLens)(set(nameLens)('Kate')(user)))
+console.log(typeof view(greetLens)(set(greetLens)((name) => 'Привет, ' + name)(user)))
+console.log(view(nameLens)(over(nameLens)((name) => name.toUpperCase())(user)))
+console.log(user)`,
+        en: `// Lens s a = { getter :: s -> a, setter :: (a -> a) -> s -> s }
+// lensKey :: String -> Lens s a
+const lensKey = (key) => ({
+  getter: (data) => data[key],
+  // the setter always takes a function and does not check what it got
+  setter: (fn) => (data) => {
+    const copy = { ...data }
+    copy[key] = fn(data[key])
+    return copy
+  },
+})
+
+// view :: Lens s a -> s -> a
+const view = (lens) => (data) => lens.getter(data)
+
+// over :: Lens s a -> (a -> a) -> s -> s
+const over = (lens) => (fn) => (data) => lens.setter(fn)(data)
+
+// set :: Lens s a -> a -> s -> s
+// wrap the value in a function that ignores the current value,
+// so v can be a function too
+const set = (lens) => (v) => over(lens)(() => v)
+
+const user = { name: 'Anna', greet: null }
+const nameLens = lensKey('name')
+const greetLens = lensKey('greet')
+
+console.log(view(nameLens)(set(nameLens)('Kate')(user)))
+console.log(typeof view(greetLens)(set(greetLens)((name) => 'Hello, ' + name)(user)))
+console.log(view(nameLens)(over(nameLens)((name) => name.toUpperCase())(user)))
+console.log(user)`,
+      },
+      expected: {
+        ru: "Kate\nfunction\nANNA\n{\n  \"name\": \"Anna\",\n  \"greet\": null\n}",
+        en: "Kate\nfunction\nANNA\n{\n  \"name\": \"Anna\",\n  \"greet\": null\n}",
       },
     },
   ],

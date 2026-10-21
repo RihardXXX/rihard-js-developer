@@ -3,6 +3,10 @@ import type { Lesson } from '~/data/course-types'
 const lesson: Lesson = {
   slug: 'performance',
   title: { ru: "Производительность (Performance — Перфоманс)", en: "Performance" },
+  goal: {
+    ru: "Понять, откуда берётся разница в скорости между функциональным и императивным кодом, почему один замер ничего не доказывает и когда стоит переходить на низкоуровневые императивные инструменты.",
+    en: "Understand where the speed difference between functional and imperative code comes from, why a single measurement proves nothing, and when it is worth switching to low-level imperative tools.",
+  },
   blocks: [
     {
       type: 'text',
@@ -174,6 +178,7 @@ console.log('Imperative code run time: ' + (endI - startI) + ' milliseconds. Res
     },
     {
       type: 'code',
+      noRun: 'previous-block',
       code: {
         ru: `// Утилита замера скорости
 // createNumberArray, sumN и sumD — из предыдущего блока,
@@ -301,6 +306,386 @@ console.log (resultDeclarative) // 1.2971963320000012
 // on the engine, its version and the data: a microbenchmark is a guide, not a law
 // in absolute terms, in the measurement above it's about a millisecond per 100,000 elements:
 // noticeable in hot code that runs many times, but usually not elsewhere`,
+      },
+    },
+  ],
+  summary: [
+    {
+      ru: "В микробенчмарках императивный цикл бывает в разы быстрее, но в абсолютных числах разница обычно незначительна.",
+      en: "In microbenchmarks an imperative loop can be several times faster, but in absolute terms the difference is usually negligible.",
+    },
+    {
+      ru: "Каждая абстракция добавляет небольшой расход ресурсов: например, reduce на каждом элементе вызывает функцию-колбэк, а цикл for только сравнивает и складывает.",
+      en: "Every abstraction adds a small resource cost: for example, reduce calls a callback function for every element, while a for loop only compares and adds.",
+    },
+    {
+      ru: "По одному замеру выводы делать нельзя: функцию нужно вызвать много раз и усреднить время.",
+      en: "You can't draw conclusions from a single measurement: call the function many times and average the time.",
+    },
+    {
+      ru: "В 98% задач скорость приложения определяется скорее правильной логикой построения программы, чем лишней абстракцией.",
+      en: "In 98% of cases the speed of an application depends more on the correct logic of how the program is built than on an extra abstraction.",
+    },
+    {
+      ru: "К низкоуровневым императивным инструментам прибегают, когда скорость критична, элементов десятки и сотни тысяч, а вынести расчёт в отдельный поток нельзя.",
+      en: "Low-level imperative tools are for cases where speed is critical, there are tens or hundreds of thousands of elements, and the computation cannot be moved to a separate thread.",
+    },
+  ],
+  exercises: [
+    {
+      task: {
+        ru: "Не измеряя время, посмотрите, откуда берутся накладные расходы абстракций. В заготовке сумма квадратов чётных чисел от 1 до 1000 считается цепочкой filter, map и reduce, а обёртка counter считает вызовы колбэков. Посчитайте то же одним reduce, тоже через counter, и сравните результат и число вызовов.",
+        en: "Without measuring time, see where the overhead of abstractions comes from. In the starter, the sum of the squares of the even numbers from 1 to 1000 is computed with a chain of filter, map and reduce, and the counter wrapper counts the callback calls. Compute the same thing with a single reduce, also through counter, and compare the result and the number of calls.",
+      },
+      starter: {
+        ru: `// counter считает вызовы функций, обёрнутых через wrap
+// counter :: () -> Object
+const counter = () => {
+  let calls = 0
+  return {
+    wrap: (fn) => (...args) => {
+      calls += 1
+      return fn(...args)
+    },
+    calls: () => calls,
+  }
+}
+
+// createNumberArray из урока: числа от 1 до n
+// createNumberArray :: Number -> [Number]
+const createNumberArray = (n) => new Array(n).fill(1).map((_, i) => i + 1)
+
+const numbers = createNumberArray(1000)
+
+// цепочка: три прохода и два промежуточных массива
+const chain = counter()
+const chainResult = numbers
+  .filter(chain.wrap((n) => n % 2 === 0))
+  .map(chain.wrap((n) => n * n))
+  .reduce(chain.wrap((acc, n) => acc + n), 0)
+
+console.log('цепочка: ' + chainResult + ', вызовов: ' + chain.calls())
+
+// один проход
+const single = counter()
+// ваш код: та же сумма одним reduce, колбэк обёрнут в single.wrap
+const singleResult = 0
+
+console.log('один reduce: ' + singleResult + ', вызовов: ' + single.calls())`,
+        en: `// counter counts the calls of the functions wrapped with wrap
+// counter :: () -> Object
+const counter = () => {
+  let calls = 0
+  return {
+    wrap: (fn) => (...args) => {
+      calls += 1
+      return fn(...args)
+    },
+    calls: () => calls,
+  }
+}
+
+// createNumberArray from the lesson: the numbers from 1 to n
+// createNumberArray :: Number -> [Number]
+const createNumberArray = (n) => new Array(n).fill(1).map((_, i) => i + 1)
+
+const numbers = createNumberArray(1000)
+
+// the chain: three passes and two intermediate arrays
+const chain = counter()
+const chainResult = numbers
+  .filter(chain.wrap((n) => n % 2 === 0))
+  .map(chain.wrap((n) => n * n))
+  .reduce(chain.wrap((acc, n) => acc + n), 0)
+
+console.log('chain: ' + chainResult + ', calls: ' + chain.calls())
+
+// a single pass
+const single = counter()
+// your code: the same sum with a single reduce, its callback wrapped in single.wrap
+const singleResult = 0
+
+console.log('single reduce: ' + singleResult + ', calls: ' + single.calls())`,
+      },
+      solution: {
+        ru: `// counter считает вызовы функций, обёрнутых через wrap
+// counter :: () -> Object
+const counter = () => {
+  let calls = 0
+  return {
+    wrap: (fn) => (...args) => {
+      calls += 1
+      return fn(...args)
+    },
+    calls: () => calls,
+  }
+}
+
+// createNumberArray из урока: числа от 1 до n
+// createNumberArray :: Number -> [Number]
+const createNumberArray = (n) => new Array(n).fill(1).map((_, i) => i + 1)
+
+const numbers = createNumberArray(1000)
+
+// цепочка: три прохода и два промежуточных массива
+const chain = counter()
+const chainResult = numbers
+  .filter(chain.wrap((n) => n % 2 === 0))
+  .map(chain.wrap((n) => n * n))
+  .reduce(chain.wrap((acc, n) => acc + n), 0)
+
+console.log('цепочка: ' + chainResult + ', вызовов: ' + chain.calls())
+
+// один проход: проверка, квадрат и сложение в одном колбэке
+const single = counter()
+const singleResult = numbers.reduce(
+  single.wrap((acc, n) => (n % 2 === 0 ? acc + n * n : acc)),
+  0,
+)
+
+console.log('один reduce: ' + singleResult + ', вызовов: ' + single.calls())
+
+// результат тот же, вызовов вдвое меньше и нет промежуточных массивов,
+// зато цепочка читается проще; на 1000 элементах разница незаметна,
+// склеивать шаги в один reduce имеет смысл в горячем коде`,
+        en: `// counter counts the calls of the functions wrapped with wrap
+// counter :: () -> Object
+const counter = () => {
+  let calls = 0
+  return {
+    wrap: (fn) => (...args) => {
+      calls += 1
+      return fn(...args)
+    },
+    calls: () => calls,
+  }
+}
+
+// createNumberArray from the lesson: the numbers from 1 to n
+// createNumberArray :: Number -> [Number]
+const createNumberArray = (n) => new Array(n).fill(1).map((_, i) => i + 1)
+
+const numbers = createNumberArray(1000)
+
+// the chain: three passes and two intermediate arrays
+const chain = counter()
+const chainResult = numbers
+  .filter(chain.wrap((n) => n % 2 === 0))
+  .map(chain.wrap((n) => n * n))
+  .reduce(chain.wrap((acc, n) => acc + n), 0)
+
+console.log('chain: ' + chainResult + ', calls: ' + chain.calls())
+
+// a single pass: the check, the square and the addition in one callback
+const single = counter()
+const singleResult = numbers.reduce(
+  single.wrap((acc, n) => (n % 2 === 0 ? acc + n * n : acc)),
+  0,
+)
+
+console.log('single reduce: ' + singleResult + ', calls: ' + single.calls())
+
+// the result is the same, with half the calls and no intermediate arrays,
+// but the chain is easier to read; on 1000 elements the difference is invisible,
+// and merging the steps into one reduce makes sense in hot code`,
+      },
+      expected: {
+        ru: "цепочка: 167167000, вызовов: 2000\nодин reduce: 167167000, вызовов: 1000",
+        en: "chain: 167167000, calls: 2000\nsingle reduce: 167167000, calls: 1000",
+      },
+    },
+    {
+      task: {
+        ru: "В уроке сказано, что скорость чаще определяет логика программы, а не лишняя абстракция. В заготовке имя покупателя для каждого из 1000 заказов ищется через users.find: для каждого заказа массив пользователей перебирается заново. Перепишите так, чтобы пользователи один раз собирались через reduce в объект по id, а имя бралось из него. Сравните число вызовов колбэков и проверьте, что результат тот же.",
+        en: "The lesson says that speed depends more often on the program's logic than on an extra abstraction. In the starter, the customer name for each of 1000 orders is looked up with users.find, which scans the users array again for every order. Rewrite it so that the users are collected once with reduce into an object keyed by id, and the name is taken from that object. Compare the number of callback calls and check that the result is the same.",
+      },
+      starter: {
+        ru: `// counter считает вызовы функций, обёрнутых через wrap
+// counter :: () -> Object
+const counter = () => {
+  let calls = 0
+  return {
+    wrap: (fn) => (...args) => {
+      calls += 1
+      return fn(...args)
+    },
+    calls: () => calls,
+  }
+}
+
+// createNumberArray из урока: числа от 1 до n
+// createNumberArray :: Number -> [Number]
+const createNumberArray = (n) => new Array(n).fill(1).map((_, i) => i + 1)
+
+// 1000 пользователей и 1000 заказов: заказ 1 сделал пользователь 1000 и так далее
+const users = createNumberArray(1000).map((id) => ({ id, name: 'user' + id }))
+const orders = createNumberArray(1000).map((id) => ({ id, userId: 1001 - id }))
+
+// перебор: для каждого заказа find заново идёт по массиву пользователей
+const scan = counter()
+const withNamesScan = orders.map(
+  scan.wrap((order) => ({
+    ...order,
+    userName: users.find(scan.wrap((user) => user.id === order.userId)).name,
+  })),
+)
+
+console.log('перебор: ' + scan.calls() + ' вызовов')
+
+// индекс
+const index = counter()
+// ваш код: usersById через reduce, затем withNamesIndex через map,
+// колбэки обёрнуты в index.wrap
+const withNamesIndex = []
+
+console.log('индекс: ' + index.calls() + ' вызовов')
+console.log('результаты совпадают: ' + (JSON.stringify(withNamesScan) === JSON.stringify(withNamesIndex)))`,
+        en: `// counter counts the calls of the functions wrapped with wrap
+// counter :: () -> Object
+const counter = () => {
+  let calls = 0
+  return {
+    wrap: (fn) => (...args) => {
+      calls += 1
+      return fn(...args)
+    },
+    calls: () => calls,
+  }
+}
+
+// createNumberArray from the lesson: the numbers from 1 to n
+// createNumberArray :: Number -> [Number]
+const createNumberArray = (n) => new Array(n).fill(1).map((_, i) => i + 1)
+
+// 1000 users and 1000 orders: order 1 was placed by user 1000, and so on
+const users = createNumberArray(1000).map((id) => ({ id, name: 'user' + id }))
+const orders = createNumberArray(1000).map((id) => ({ id, userId: 1001 - id }))
+
+// scanning: for every order find walks the users array again
+const scan = counter()
+const withNamesScan = orders.map(
+  scan.wrap((order) => ({
+    ...order,
+    userName: users.find(scan.wrap((user) => user.id === order.userId)).name,
+  })),
+)
+
+console.log('scan: ' + scan.calls() + ' calls')
+
+// an index
+const index = counter()
+// your code: usersById with reduce, then withNamesIndex with map,
+// the callbacks wrapped in index.wrap
+const withNamesIndex = []
+
+console.log('index: ' + index.calls() + ' calls')
+console.log('same result: ' + (JSON.stringify(withNamesScan) === JSON.stringify(withNamesIndex)))`,
+      },
+      solution: {
+        ru: `// counter считает вызовы функций, обёрнутых через wrap
+// counter :: () -> Object
+const counter = () => {
+  let calls = 0
+  return {
+    wrap: (fn) => (...args) => {
+      calls += 1
+      return fn(...args)
+    },
+    calls: () => calls,
+  }
+}
+
+// createNumberArray из урока: числа от 1 до n
+// createNumberArray :: Number -> [Number]
+const createNumberArray = (n) => new Array(n).fill(1).map((_, i) => i + 1)
+
+// 1000 пользователей и 1000 заказов: заказ 1 сделал пользователь 1000 и так далее
+const users = createNumberArray(1000).map((id) => ({ id, name: 'user' + id }))
+const orders = createNumberArray(1000).map((id) => ({ id, userId: 1001 - id }))
+
+// перебор: для каждого заказа find заново идёт по массиву пользователей
+const scan = counter()
+const withNamesScan = orders.map(
+  scan.wrap((order) => ({
+    ...order,
+    userName: users.find(scan.wrap((user) => user.id === order.userId)).name,
+  })),
+)
+
+console.log('перебор: ' + scan.calls() + ' вызовов')
+
+// индекс: один проход reduce собирает объект, где ключ — id пользователя
+const index = counter()
+const usersById = users.reduce(
+  index.wrap((acc, user) => {
+    acc[user.id] = user
+    return acc
+  }),
+  {},
+)
+const withNamesIndex = orders.map(
+  index.wrap((order) => ({ ...order, userName: usersById[order.userId].name })),
+)
+
+console.log('индекс: ' + index.calls() + ' вызовов')
+console.log('результаты совпадают: ' + (JSON.stringify(withNamesScan) === JSON.stringify(withNamesIndex)))
+
+// оба варианта декларативные: разницу дала логика,
+// один проход вместо перебора на каждый заказ, а не отказ от абстракций`,
+        en: `// counter counts the calls of the functions wrapped with wrap
+// counter :: () -> Object
+const counter = () => {
+  let calls = 0
+  return {
+    wrap: (fn) => (...args) => {
+      calls += 1
+      return fn(...args)
+    },
+    calls: () => calls,
+  }
+}
+
+// createNumberArray from the lesson: the numbers from 1 to n
+// createNumberArray :: Number -> [Number]
+const createNumberArray = (n) => new Array(n).fill(1).map((_, i) => i + 1)
+
+// 1000 users and 1000 orders: order 1 was placed by user 1000, and so on
+const users = createNumberArray(1000).map((id) => ({ id, name: 'user' + id }))
+const orders = createNumberArray(1000).map((id) => ({ id, userId: 1001 - id }))
+
+// scanning: for every order find walks the users array again
+const scan = counter()
+const withNamesScan = orders.map(
+  scan.wrap((order) => ({
+    ...order,
+    userName: users.find(scan.wrap((user) => user.id === order.userId)).name,
+  })),
+)
+
+console.log('scan: ' + scan.calls() + ' calls')
+
+// an index: a single reduce pass builds an object keyed by user id
+const index = counter()
+const usersById = users.reduce(
+  index.wrap((acc, user) => {
+    acc[user.id] = user
+    return acc
+  }),
+  {},
+)
+const withNamesIndex = orders.map(
+  index.wrap((order) => ({ ...order, userName: usersById[order.userId].name })),
+)
+
+console.log('index: ' + index.calls() + ' calls')
+console.log('same result: ' + (JSON.stringify(withNamesScan) === JSON.stringify(withNamesIndex)))
+
+// both versions are declarative: the difference comes from the logic,
+// one pass instead of a scan for every order, not from dropping abstractions`,
+      },
+      expected: {
+        ru: "перебор: 501500 вызовов\nиндекс: 2000 вызовов\nрезультаты совпадают: true",
+        en: "scan: 501500 calls\nindex: 2000 calls\nsame result: true",
       },
     },
   ],

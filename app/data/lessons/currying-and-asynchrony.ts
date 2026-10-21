@@ -3,6 +3,10 @@ import type { Lesson } from '~/data/course-types'
 const lesson: Lesson = {
   slug: 'currying-and-asynchrony',
   title: { ru: "Каррирование и Асинхронность (Эволюция)", en: "Currying and asynchrony (evolution)" },
+  goal: {
+    ru: "Научиться применять каррирование в асинхронном коде: создавать специализированные функции запросов и собирать асинхронные шаги в конвейер, который сам дожидается промисов.",
+    en: "Learn to apply currying to asynchronous code: build specialized request functions and chain asynchronous steps into a pipeline that waits for promises by itself.",
+  },
   blocks: [
     {
       type: 'text',
@@ -10,17 +14,22 @@ const lesson: Lesson = {
       en: "Currying can be used effectively in asynchronous programming.",
     },
     {
-      type: 'text',
-      ru: "1. Создание специализированных функций",
-      en: "1. Creating specialized functions",
-    },
-    {
-      type: 'text',
-      ru: "2. Победим \"ад колбеков\" без промисов",
-      en: "2. We will defeat \"callback hell\" without promises",
+      type: 'list',
+      ordered: true,
+      items: [
+        {
+          ru: "Создание специализированных функций",
+          en: "Creating specialized functions",
+        },
+        {
+          ru: "Победим \"ад колбеков\" без промисов",
+          en: "We will defeat \"callback hell\" without promises",
+        },
+      ],
     },
     {
       type: 'code',
+      noRun: 'network',
       code: {
         ru: `//  Давайте создадим базовую функцию для запросов
 // baseFetch :: String -> String -> a -> Promise
@@ -132,6 +141,7 @@ const getAllBooksX = useXFetch ('all-books')`,
     },
     {
       type: 'code',
+      noRun: 'dom',
       code: {
         ru: `//  код который "плохо пахнет"
 
@@ -265,6 +275,7 @@ document.getElementById('users-wrapper')
     },
     {
       type: 'code',
+      noRun: 'dom',
       code: {
         ru: `//  декларативный код
 // ==== ВНИМАНИЕ многие функции хелперы уже
@@ -438,6 +449,7 @@ clickElement (btnWrapper) (pipe(
     },
     {
       type: 'code',
+      noRun: 'dom',
       code: {
         ru: `//  А теперь возьмемся за дело
 // clickElement, btnWrapper, head, prop и textReview скопируйте из прошлого примера;
@@ -573,6 +585,312 @@ clickElement (btnWrapper) (onUserButton ((slug) =>
   loadReviewText (slug)
     .catch ((error) => console.error('Failed to load the review:', error.message))
 ))`,
+      },
+    },
+  ],
+  summary: [
+    {
+      ru: "Каррированная базовая функция запросов baseFetch хранит в замыканиях базовый URL и путь, а из неё вызовами получаются специализированные функции вроде getAllUser и getAllBooks. Заголовки с токеном можно хранить в отдельном замыкании, как в xFetch, из которой получаются getAllUserX и getAllBooksX.",
+      en: "The curried base request function baseFetch keeps the base URL and the path in closures, and specialized functions such as getAllUser and getAllBooks are built from it through calls. Headers with a token can be kept in a separate closure, as in xFetch, from which getAllUserX and getAllBooksX are built.",
+    },
+    {
+      ru: "Каррирование и pipe без промисов делают код на колбеках декларативным, но запах плохого кода не пропадает: ошибки в такой версии никак не обрабатываются.",
+      en: "Currying and pipe without promises make callback-based code declarative, but the smell of bad code doesn't go away: errors aren't handled in that version at all.",
+    },
+    {
+      ru: "pipeAsync сам дожидается промисов: если шаг вернул промис, следующие шаги идут через then, и на выходе тоже промис.",
+      en: "pipeAsync waits for promises by itself: once a step returns a promise, the next steps go through then, and the result is a promise too.",
+    },
+    {
+      ru: "В конвейере на промисах ошибка любого шага — сеть, статус ответа, пустой список — попадает в один catch.",
+      en: "In a promise-based pipeline, an error at any step — the network, the response status, an empty list — ends up in a single catch.",
+    },
+  ],
+  exercises: [
+    {
+      task: {
+        ru: "В заготовке fakeFetch имитирует запрос: через 5 мс он отдаёт ответ из DB по адресу или отклоняет промис, если такого адреса нет. Напишите каррированную базовую функцию createRequest :: String -> String -> Number -> Promise Object, которая принимает базовый URL, ресурс и id. Зафиксируйте в ней базовый URL https://example.com и получите специализированные функции getUser и getBook. Выведите имя пользователя 1 и название книги 7.",
+        en: "In the starter, fakeFetch simulates a request: after 5 ms it returns the response stored in DB under the URL, or rejects the promise if there is no such URL. Write a curried base function createRequest :: String -> String -> Number -> Promise Object that takes a base URL, a resource and an id. Fix the base URL https://example.com in it and derive the specialized functions getUser and getBook. Print the name of user 1 and the title of book 7.",
+      },
+      starter: {
+        ru: `// данные фейкового сервера: адрес -> ответ
+const DB = {
+  'https://example.com/users/1': { name: 'John', favoriteBook: 7 },
+  'https://example.com/users/2': { name: 'Anna', favoriteBook: 3 },
+  'https://example.com/books/3': { title: 'Functional-Light JavaScript' },
+  'https://example.com/books/7': { title: 'Structure and Interpretation of Computer Programs' },
+}
+
+// имитация запроса: через 5 мс отдаёт ответ по адресу
+// или отклоняет промис, если адреса нет
+// fakeFetch :: String -> Promise Object
+const fakeFetch = (url) => new Promise((resolve, reject) => {
+  setTimeout(() => {
+    if (url in DB) resolve(DB[url])
+    else reject(new Error(\`404 \${url}\`))
+  }, 5)
+})
+
+// ваш код`,
+        en: `// fake server data: URL -> response
+const DB = {
+  'https://example.com/users/1': { name: 'John', favoriteBook: 7 },
+  'https://example.com/users/2': { name: 'Anna', favoriteBook: 3 },
+  'https://example.com/books/3': { title: 'Functional-Light JavaScript' },
+  'https://example.com/books/7': { title: 'Structure and Interpretation of Computer Programs' },
+}
+
+// simulated request: after 5 ms it returns the response for the URL
+// or rejects the promise if there is no such URL
+// fakeFetch :: String -> Promise Object
+const fakeFetch = (url) => new Promise((resolve, reject) => {
+  setTimeout(() => {
+    if (url in DB) resolve(DB[url])
+    else reject(new Error(\`404 \${url}\`))
+  }, 5)
+})
+
+// your code`,
+      },
+      solution: {
+        ru: `// данные фейкового сервера: адрес -> ответ
+const DB = {
+  'https://example.com/users/1': { name: 'John', favoriteBook: 7 },
+  'https://example.com/users/2': { name: 'Anna', favoriteBook: 3 },
+  'https://example.com/books/3': { title: 'Functional-Light JavaScript' },
+  'https://example.com/books/7': { title: 'Structure and Interpretation of Computer Programs' },
+}
+
+// имитация запроса: через 5 мс отдаёт ответ по адресу
+// или отклоняет промис, если адреса нет
+// fakeFetch :: String -> Promise Object
+const fakeFetch = (url) => new Promise((resolve, reject) => {
+  setTimeout(() => {
+    if (url in DB) resolve(DB[url])
+    else reject(new Error(\`404 \${url}\`))
+  }, 5)
+})
+
+// createRequest :: String -> String -> Number -> Promise Object
+const createRequest = (baseUrl) => (resource) => (id) => fakeFetch(\`\${baseUrl}/\${resource}/\${id}\`)
+
+// базовый URL сохранён в замыкании
+const api = createRequest('https://example.com')
+
+// специализированные функции: ресурс тоже зафиксирован, ждут только id
+const getUser = api('users')
+const getBook = api('books')
+
+getUser(1).then((user) => console.log(user.name))
+getBook(7).then((book) => console.log(book.title))`,
+        en: `// fake server data: URL -> response
+const DB = {
+  'https://example.com/users/1': { name: 'John', favoriteBook: 7 },
+  'https://example.com/users/2': { name: 'Anna', favoriteBook: 3 },
+  'https://example.com/books/3': { title: 'Functional-Light JavaScript' },
+  'https://example.com/books/7': { title: 'Structure and Interpretation of Computer Programs' },
+}
+
+// simulated request: after 5 ms it returns the response for the URL
+// or rejects the promise if there is no such URL
+// fakeFetch :: String -> Promise Object
+const fakeFetch = (url) => new Promise((resolve, reject) => {
+  setTimeout(() => {
+    if (url in DB) resolve(DB[url])
+    else reject(new Error(\`404 \${url}\`))
+  }, 5)
+})
+
+// createRequest :: String -> String -> Number -> Promise Object
+const createRequest = (baseUrl) => (resource) => (id) => fakeFetch(\`\${baseUrl}/\${resource}/\${id}\`)
+
+// the base URL is kept in the closure
+const api = createRequest('https://example.com')
+
+// specialized functions: the resource is fixed too, they wait only for an id
+const getUser = api('users')
+const getBook = api('books')
+
+getUser(1).then((user) => console.log(user.name))
+getBook(7).then((book) => console.log(book.title))`,
+      },
+      expected: {
+        ru: "John\nStructure and Interpretation of Computer Programs",
+        en: "John\nStructure and Interpretation of Computer Programs",
+      },
+    },
+    {
+      task: {
+        ru: "В заготовке уже есть getUser и getBook из первого упражнения. Напишите pipeAsync — pipe, который сам дожидается промисов, — и соберите из него loadFavoriteBook :: Number -> Promise String: по id запросить пользователя, взять поле favoriteBook, запросить эту книгу и вернуть её название. Вывод уже есть в заготовке: showFavoriteBook выводит название любимой книги пользователя 2, затем пробует пользователя 5, которого нет в DB, и перехватывает ошибку в catch.",
+        en: "The starter already has getUser and getBook from the first exercise. Write pipeAsync, a pipe that waits for promises by itself, and use it to build loadFavoriteBook :: Number -> Promise String: request the user by id, take the favoriteBook field, request that book and return its title. The output is already in the starter: showFavoriteBook prints the title of user 2's favorite book, then tries user 5, who is not in DB, and handles the error with catch.",
+      },
+      starter: {
+        ru: `// данные фейкового сервера: адрес -> ответ
+const DB = {
+  'https://example.com/users/1': { name: 'John', favoriteBook: 7 },
+  'https://example.com/users/2': { name: 'Anna', favoriteBook: 3 },
+  'https://example.com/books/3': { title: 'Functional-Light JavaScript' },
+  'https://example.com/books/7': { title: 'Structure and Interpretation of Computer Programs' },
+}
+
+// fakeFetch :: String -> Promise Object
+const fakeFetch = (url) => new Promise((resolve, reject) => {
+  setTimeout(() => {
+    if (url in DB) resolve(DB[url])
+    else reject(new Error(\`404 \${url}\`))
+  }, 5)
+})
+
+// createRequest :: String -> String -> Number -> Promise Object
+const createRequest = (baseUrl) => (resource) => (id) => fakeFetch(\`\${baseUrl}/\${resource}/\${id}\`)
+const api = createRequest('https://example.com')
+const getUser = api('users')
+const getBook = api('books')
+
+// ваш код: pipeAsync и loadFavoriteBook
+
+// ошибка любого шага попадает в catch
+// showFavoriteBook :: Number -> Promise Undefined
+const showFavoriteBook = (userId) =>
+  loadFavoriteBook(userId)
+    .then((title) => console.log(title))
+    .catch((error) => console.log(\`Запрос не удался: \${error.message}\`))
+
+// сначала пользователь 2, потом пользователь 5, которого нет
+showFavoriteBook(2).then(() => showFavoriteBook(5))`,
+        en: `// fake server data: URL -> response
+const DB = {
+  'https://example.com/users/1': { name: 'John', favoriteBook: 7 },
+  'https://example.com/users/2': { name: 'Anna', favoriteBook: 3 },
+  'https://example.com/books/3': { title: 'Functional-Light JavaScript' },
+  'https://example.com/books/7': { title: 'Structure and Interpretation of Computer Programs' },
+}
+
+// fakeFetch :: String -> Promise Object
+const fakeFetch = (url) => new Promise((resolve, reject) => {
+  setTimeout(() => {
+    if (url in DB) resolve(DB[url])
+    else reject(new Error(\`404 \${url}\`))
+  }, 5)
+})
+
+// createRequest :: String -> String -> Number -> Promise Object
+const createRequest = (baseUrl) => (resource) => (id) => fakeFetch(\`\${baseUrl}/\${resource}/\${id}\`)
+const api = createRequest('https://example.com')
+const getUser = api('users')
+const getBook = api('books')
+
+// your code: pipeAsync and loadFavoriteBook
+
+// an error at any step ends up in catch
+// showFavoriteBook :: Number -> Promise Undefined
+const showFavoriteBook = (userId) =>
+  loadFavoriteBook(userId)
+    .then((title) => console.log(title))
+    .catch((error) => console.log(\`Request failed: \${error.message}\`))
+
+// user 2 first, then user 5, who does not exist
+showFavoriteBook(2).then(() => showFavoriteBook(5))`,
+      },
+      solution: {
+        ru: `// данные фейкового сервера: адрес -> ответ
+const DB = {
+  'https://example.com/users/1': { name: 'John', favoriteBook: 7 },
+  'https://example.com/users/2': { name: 'Anna', favoriteBook: 3 },
+  'https://example.com/books/3': { title: 'Functional-Light JavaScript' },
+  'https://example.com/books/7': { title: 'Structure and Interpretation of Computer Programs' },
+}
+
+// fakeFetch :: String -> Promise Object
+const fakeFetch = (url) => new Promise((resolve, reject) => {
+  setTimeout(() => {
+    if (url in DB) resolve(DB[url])
+    else reject(new Error(\`404 \${url}\`))
+  }, 5)
+})
+
+// createRequest :: String -> String -> Number -> Promise Object
+const createRequest = (baseUrl) => (resource) => (id) => fakeFetch(\`\${baseUrl}/\${resource}/\${id}\`)
+const api = createRequest('https://example.com')
+const getUser = api('users')
+const getBook = api('books')
+
+// prop :: String -> a -> b
+const prop = (key) => (obj) => obj[key]
+
+// pipe, который сам дожидается промисов: если шаг вернул промис,
+// следующие шаги идут через then
+// pipeAsync :: ((a -> b), (b -> c), ..., (y -> z)) -> a -> z
+const pipeAsync = (...fns) => (x) => fns.reduce((v, f) => (v instanceof Promise ? v.then(f) : f(v)), x)
+
+// loadFavoriteBook :: Number -> Promise String
+const loadFavoriteBook = pipeAsync(
+  getUser, // запрос пользователя
+  prop('favoriteBook'), // id его любимой книги
+  getBook, // запрос книги
+  prop('title'), // её название
+)
+
+// ошибка любого шага попадает в catch
+// showFavoriteBook :: Number -> Promise Undefined
+const showFavoriteBook = (userId) =>
+  loadFavoriteBook(userId)
+    .then((title) => console.log(title))
+    .catch((error) => console.log(\`Запрос не удался: \${error.message}\`))
+
+// сначала пользователь 2, потом пользователь 5, которого нет
+showFavoriteBook(2).then(() => showFavoriteBook(5))`,
+        en: `// fake server data: URL -> response
+const DB = {
+  'https://example.com/users/1': { name: 'John', favoriteBook: 7 },
+  'https://example.com/users/2': { name: 'Anna', favoriteBook: 3 },
+  'https://example.com/books/3': { title: 'Functional-Light JavaScript' },
+  'https://example.com/books/7': { title: 'Structure and Interpretation of Computer Programs' },
+}
+
+// fakeFetch :: String -> Promise Object
+const fakeFetch = (url) => new Promise((resolve, reject) => {
+  setTimeout(() => {
+    if (url in DB) resolve(DB[url])
+    else reject(new Error(\`404 \${url}\`))
+  }, 5)
+})
+
+// createRequest :: String -> String -> Number -> Promise Object
+const createRequest = (baseUrl) => (resource) => (id) => fakeFetch(\`\${baseUrl}/\${resource}/\${id}\`)
+const api = createRequest('https://example.com')
+const getUser = api('users')
+const getBook = api('books')
+
+// prop :: String -> a -> b
+const prop = (key) => (obj) => obj[key]
+
+// a pipe that waits for promises by itself: once a step returns a promise,
+// the next steps go through then
+// pipeAsync :: ((a -> b), (b -> c), ..., (y -> z)) -> a -> z
+const pipeAsync = (...fns) => (x) => fns.reduce((v, f) => (v instanceof Promise ? v.then(f) : f(v)), x)
+
+// loadFavoriteBook :: Number -> Promise String
+const loadFavoriteBook = pipeAsync(
+  getUser, // request the user
+  prop('favoriteBook'), // the id of their favorite book
+  getBook, // request the book
+  prop('title'), // its title
+)
+
+// an error at any step ends up in catch
+// showFavoriteBook :: Number -> Promise Undefined
+const showFavoriteBook = (userId) =>
+  loadFavoriteBook(userId)
+    .then((title) => console.log(title))
+    .catch((error) => console.log(\`Request failed: \${error.message}\`))
+
+// user 2 first, then user 5, who does not exist
+showFavoriteBook(2).then(() => showFavoriteBook(5))`,
+      },
+      expected: {
+        ru: "Functional-Light JavaScript\nЗапрос не удался: 404 https://example.com/users/5",
+        en: "Functional-Light JavaScript\nRequest failed: 404 https://example.com/users/5",
       },
     },
   ],

@@ -1,7 +1,4 @@
 <script setup lang="ts">
-import loader from '@monaco-editor/loader'
-import * as R from 'ramda'
-import { create, env } from 'sanctuary'
 import { createPlaygroundRunner } from '~/utils/playground-runner'
 
 // Minimal structural types (monaco-editor itself is loaded at runtime via CDN).
@@ -9,11 +6,19 @@ interface MonacoEditorInstance {
   getValue(): string
   setValue(value: string): void
   onDidChangeModelContent(cb: () => void): void
+  getModel(): { getPositionAt(offset: number): unknown } | null
+  setPosition(position: unknown): void
+  focus(): void
   dispose(): void
 }
 interface MonacoEditorApi {
   create(el: HTMLElement, options: Record<string, unknown>): MonacoEditorInstance
   setTheme(name: string): void
+}
+// sanctuary ships without types
+interface SanctuaryModule {
+  create(options: { checkTypes: boolean; env: unknown }): unknown
+  env: unknown
 }
 
 interface Lib {
@@ -34,17 +39,30 @@ const DOCS: Record<string, string> = {
 const docsUrl = (pkg: string): string =>
   DOCS[pkg] ?? `https://www.npmjs.com/package/${pkg}`
 
-// checkTypes off in the browser: Sanctuary's type-checker pulls Node's `util`,
-// and we want fast, dependency-light evaluation.
-const S = create({ checkTypes: false, env })
-
 const { t } = useI18n()
 const { theme } = useTheme()
 
+// R and S arrive with the first run: ramda and sanctuary stay out of the page's JS.
 const libs = ref<Lib[]>([
-  { alias: 'R', pkg: 'ramda', mod: R, docs: docsUrl('ramda') },
-  { alias: 'S', pkg: 'sanctuary', mod: S, docs: docsUrl('sanctuary') },
+  { alias: 'R', pkg: 'ramda', mod: null, docs: docsUrl('ramda') },
+  { alias: 'S', pkg: 'sanctuary', mod: null, docs: docsUrl('sanctuary') },
 ])
+
+let baseLibs: Promise<void> | null = null
+const loadBaseLibs = () =>
+  (baseLibs ??= Promise.all([import('ramda'), import('sanctuary')]).then(
+    ([R, sanctuary]) => {
+      const { create, env } = (sanctuary as { default: SanctuaryModule }).default
+      // checkTypes off in the browser: Sanctuary's type-checker pulls Node's `util`,
+      // and we want fast, dependency-light evaluation.
+      const mods: Record<string, unknown> = { ramda: R, sanctuary: create({ checkTypes: false, env }) }
+      for (const lib of libs.value) if (lib.mod === null && lib.pkg in mods) lib.mod = mods[lib.pkg]
+    },
+    (e: unknown) => {
+      baseLibs = null
+      throw e
+    },
+  ))
 
 const quickAdd: { alias: string; pkg: string }[] = [
   { alias: '_', pkg: 'lodash' },
@@ -52,6 +70,31 @@ const quickAdd: { alias: string; pkg: string }[] = [
   { alias: 'rx', pkg: 'rxjs' },
   { alias: 'z', pkg: 'zod' },
 ]
+
+// esm.sh runs UMD packages (lodash, ...) as CommonJS. With Monaco's AMD loader on the
+// page their UMD header finds `define.amd`, registers through define() and leaves
+// module.exports, our default export, empty. define.amd is hidden while an import runs;
+// define itself stays for Monaco's modules, which call it directly and load at any time.
+// Monaco's loader and the imports take turns, so loader.js never runs mid-import.
+let importing = 0
+let amd: unknown
+const imports = new Set<Promise<unknown>>()
+const importFromEsmSh = async (pkg: string): Promise<Record<string, unknown>> => {
+  if (monaco) await monaco
+  const win = globalThis as { define?: { amd?: unknown } }
+  if (importing++ === 0 && win.define) {
+    amd = win.define.amd
+    win.define.amd = undefined
+  }
+  const load = import(/* @vite-ignore */ `https://esm.sh/${pkg}`)
+  imports.add(load)
+  try {
+    return (await load) as Record<string, unknown>
+  } finally {
+    imports.delete(load)
+    if (--importing === 0 && win.define) win.define.amd = amd
+  }
+}
 
 const showAdd = ref(false)
 const newAlias = ref('')
@@ -70,10 +113,7 @@ const addLib = async (alias: string, pkg: string) => {
   loadingLib.value = true
   libError.value = ''
   try {
-    const mod = (await import(/* @vite-ignore */ `https://esm.sh/${pkg}`)) as Record<
-      string,
-      unknown
-    >
+    const mod = await importFromEsmSh(pkg)
     libs.value.push({ alias, pkg, mod: mod.default ?? mod, docs: docsUrl(pkg) })
     newAlias.value = ''
     newPkg.value = ''
@@ -98,9 +138,15 @@ const inc = R.add(1)
 console.log(R.map(inc, [1, 2, 3]))  // [2, 3, 4]
 `
 
-const editorEl = ref<HTMLElement | null>(null)
+const rootEl = ref<HTMLElement | null>(null)
+const monacoEl = ref<HTMLElement | null>(null)
+const textareaEl = ref<HTMLTextAreaElement | null>(null)
 const output = ref('')
+// The editor's text: the textarea's model, then Monaco's once it is loaded.
 const code = ref(INITIAL_CODE)
+const monacoReady = ref(false)
+// id of the lesson block the current code was opened from: "Back to the example"
+const backId = ref<string | null>(null)
 const runner = createPlaygroundRunner((text) => {
   output.value = text
 })
@@ -110,49 +156,122 @@ let monacoEditorApi: MonacoEditorApi | null = null
 
 const monacoTheme = () => (theme.value === 'dark' ? 'vs-dark' : 'vs-light')
 
-onMounted(() => {
-  loader.init().then((monaco) => {
-    monacoEditorApi = monaco.editor as unknown as MonacoEditorApi
-    if (!editorEl.value) return
-    editorInstance = monacoEditorApi.create(editorEl.value, {
-      value: INITIAL_CODE,
-      language: 'javascript',
-      theme: monacoTheme(),
-      fontSize: 15,
-      minimap: { enabled: false },
-      automaticLayout: true,
-      scrollBeyondLastLine: false,
-      padding: { top: 14, bottom: 14 },
-      tabSize: 2,
+// Until the first use (focus or click in the editor, Run, Open in playground) the editor
+// is the server-rendered textarea; Monaco then takes its place with its text, caret and focus.
+let monaco: Promise<void> | null = null
+const loadMonaco = () =>
+  (monaco ??= Promise.allSettled(imports)
+    .then(() => import('@monaco-editor/loader'))
+    .then(({ default: loader }) => loader.init())
+    .then((m) => {
+      monacoEditorApi = m.editor as unknown as MonacoEditorApi
+      if (!monacoEl.value) return
+      const area = textareaEl.value
+      const focused = area !== null && document.activeElement === area
+      const editor = monacoEditorApi.create(monacoEl.value, {
+        value: code.value,
+        language: 'javascript',
+        theme: monacoTheme(),
+        ariaLabel: t('course.editorLabel'),
+        fontSize: 15,
+        minimap: { enabled: false },
+        automaticLayout: true,
+        scrollBeyondLastLine: false,
+        padding: { top: 14, bottom: 14 },
+        tabSize: 2,
+      })
+      editor.onDidChangeModelContent(() => {
+        code.value = editor.getValue()
+      })
+      editorInstance = editor
+      monacoReady.value = true
+      if (area && focused) {
+        const position = editor.getModel()?.getPositionAt(area.selectionStart)
+        if (position) editor.setPosition(position)
+        editor.focus()
+      }
     })
-    editorInstance.onDidChangeModelContent(() => {
-      code.value = editorInstance?.getValue() ?? ''
-    })
-  })
-})
+    // CDN unreachable: the textarea stays the editor (the loader keeps its failure, no retry).
+    .catch(() => {}))
+
+// Touch screens keep the textarea: Monaco is heavy there and edits poorly with a finger.
+const upgradeEditor = () => {
+  if (window.matchMedia('(pointer: fine)').matches) loadMonaco()
+}
 
 watch(theme, () => monacoEditorApi?.setTheme(monacoTheme()))
 
+// What the reader typed before hydration is only in the DOM: take it, don't overwrite it.
+onMounted(() => {
+  if (textareaEl.value) code.value = textareaEl.value.value
+})
+
 onBeforeUnmount(() => {
+  runId++
   runner.clear()
   editorInstance?.dispose()
   editorInstance = null
 })
 
-const run = () => runner.run(code.value, libs.value)
+// Bumped by Run, Reset, Clear and Open: a run still waiting for R and S is dropped
+// once something newer has happened.
+let runId = 0
+const run = async () => {
+  upgradeEditor()
+  const id = ++runId
+  try {
+    await loadBaseLibs()
+  } catch {
+    if (id !== runId) return
+    runner.clear()
+    output.value = t('course.libFailed', { pkg: 'ramda, sanctuary' })
+    return
+  }
+  if (id === runId) runner.run(code.value, libs.value)
+}
+
+const setCode = (value: string) => {
+  code.value = value
+  editorInstance?.setValue(value)
+}
+
+const focusEditor = () => {
+  if (editorInstance) return editorInstance.focus()
+  textareaEl.value?.setSelectionRange(0, 0)
+  textareaEl.value?.focus({ preventScroll: true })
+}
+
+// "Open in playground" from a lesson block: the code goes into the editor, the page
+// scrolls up here and the reader can type at once; a link leads back to the block.
+const { request } = usePlaygroundBridge()
+watch(request, async (opened) => {
+  if (!opened) return
+  runId++
+  setCode(opened.code)
+  backId.value = opened.fromId
+  upgradeEditor()
+  await nextTick()
+  focusEditor()
+  // Instant: Monaco arriving in the middle of a smooth scroll takes focus and stops it halfway.
+  rootEl.value?.scrollIntoView({ block: 'start', behavior: 'instant' })
+})
 
 const reset = () => {
-  editorInstance?.setValue(INITIAL_CODE)
+  runId++
+  setCode(INITIAL_CODE)
+  backId.value = null
   runner.clear()
 }
 const clearAll = () => {
-  editorInstance?.setValue('')
+  runId++
+  setCode('')
+  backId.value = null
   runner.clear()
 }
 </script>
 
 <template>
-  <div class="playground">
+  <div ref="rootEl" class="playground">
     <div class="libs">
       <span class="libs__label">{{ t('course.libraries') }}</span>
       <ul class="libs__list">
@@ -230,17 +349,37 @@ const clearAll = () => {
       </div>
     </div>
 
-    <div ref="editorEl" class="playground__editor" />
+    <div class="playground__editor">
+      <div ref="monacoEl" class="playground__monaco" />
+      <textarea
+        v-if="!monacoReady"
+        ref="textareaEl"
+        :value="code"
+        class="playground__textarea"
+        :aria-label="t('course.editorLabel')"
+        spellcheck="false"
+        autocapitalize="off"
+        autocomplete="off"
+        autocorrect="off"
+        wrap="off"
+        @input="code = ($event.target as HTMLTextAreaElement).value"
+        @focus="upgradeEditor"
+      />
+    </div>
+
+    <a v-if="backId" class="playground__back" :href="`#${backId}`">← {{ t('course.backToExample') }}</a>
 
     <div class="playground__output">
       <span class="playground__output-label">{{ t('course.output') }}</span>
-      <pre class="playground__pre">{{ output || '—' }}</pre>
+      <pre class="playground__pre" aria-live="polite">{{ output || '—' }}</pre>
     </div>
   </div>
 </template>
 
 <style scoped lang="scss">
 .playground {
+  // "Open in playground" scrolls here: the top stays below the fixed header
+  scroll-margin-top: $header-height;
   border: 1px solid var(--code-border);
   border-radius: 1.4rem;
   overflow: hidden;
@@ -456,8 +595,54 @@ const clearAll = () => {
   }
 
   &__editor {
+    position: relative;
     height: clamp(28rem, 42vh, 52rem);
     width: 100%;
+  }
+
+  &__monaco {
+    position: absolute;
+    inset: 0;
+  }
+
+  // Same box as Monaco, so nothing moves when Monaco replaces it; drawn above
+  // the Monaco container while that one is being created.
+  &__textarea {
+    position: relative;
+    display: block;
+    width: 100%;
+    height: 100%;
+    padding: 1.4rem;
+    border: 0;
+    resize: none;
+    overflow: auto;
+    white-space: pre;
+    tab-size: 2;
+    font-family: $mono-font;
+    font-size: 1.5rem;
+    line-height: 1.5;
+    color: var(--code-text);
+    background-color: var(--code-bg);
+
+    // iOS Safari zooms the page in on focus below 16px
+    @media (pointer: coarse) {
+      font-size: 1.6rem;
+    }
+
+    // .playground clips its overflow: keep the focus ring inside
+    &:focus-visible {
+      outline-offset: -2px;
+    }
+  }
+
+  &__back {
+    display: block;
+    padding: 1rem 1.4rem;
+    border-top: 1px solid var(--code-border);
+    background-color: var(--surface);
+    font-size: 1.4rem;
+    font-weight: 600;
+    color: var(--accent);
   }
 
   &__output {

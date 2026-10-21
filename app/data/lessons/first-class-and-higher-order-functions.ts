@@ -6,6 +6,10 @@ const lesson: Lesson = {
     ru: "Функции первого класса и высшего порядка",
     en: "First-class and higher-order functions",
   },
+  goal: {
+    ru: "Понять разницу между функциями первого класса — свойством языка — и функциями высшего порядка, которые принимают или возвращают функции, и научиться писать свои функции высшего порядка.",
+    en: "Understand the difference between first-class functions, a property of the language, and higher-order functions, which take or return functions, and learn to write your own higher-order functions.",
+  },
   blocks: [
     {
       type: 'text',
@@ -158,6 +162,155 @@ const templateDefault = MyComponent({
 
 console.log(templateMain)    // <div>main - XXXhelloXXX</div>
 console.log(templateDefault) // default - hello`,
+      },
+    },
+  ],
+  summary: [
+    {
+      ru: "Функции первого класса — свойство языка: в JavaScript функции такие же значения, как числа или строки. Функцию можно присвоить переменной, передать аргументом в другую функцию и вернуть из функции.",
+      en: "First-class functions are a property of the language: in JavaScript, functions are values just like numbers or strings. A function can be assigned to a variable, passed as an argument to another function, and returned from a function.",
+    },
+    {
+      ru: "Функция высшего порядка принимает другую функцию в качестве аргумента или возвращает функцию. map — функция высшего порядка, потому что принимает другую функцию.",
+      en: "A higher-order function takes another function as an argument or returns a function. map is a higher-order function because it takes another function.",
+    },
+    {
+      ru: "«Первого класса» — это не роль функции в вызове, а свойство языка. Именно благодаря ему в JavaScript можно писать функции высшего порядка.",
+      en: "\"First-class\" is not the role a function plays in a call but a property of the language. It is what makes higher-order functions possible in JavaScript.",
+    },
+    {
+      ru: "Компонент высшего порядка (HOC) в React — функция, которая принимает компонент и возвращает новый компонент. Во Vue слоты в render-функциях — это функции, которые получают данные и возвращают виртуальные узлы.",
+      en: "A higher-order component (HOC) in React is a function that takes a component and returns a new component. In Vue render functions, slots are functions that receive data and return virtual nodes.",
+    },
+  ],
+  exercises: [
+    {
+      task: {
+        ru: "Напишите функцию высшего порядка twice: она принимает функцию fn и возвращает новую функцию, которая применяет fn к значению дважды. Проверьте ее на add3 и double, а затем передайте в twice результат самой twice.",
+        en: "Write a higher-order function twice: it takes a function fn and returns a new function that applies fn to a value twice. Check it with add3 and double, then pass the result of twice back into twice.",
+      },
+      starter: {
+        ru: `// add3 :: Number -> Number
+const add3 = (x) => x + 3
+
+// double :: Number -> Number
+const double = (x) => x * 2
+
+// twice :: (a -> a) -> a -> a
+// ваш код
+
+console.log(twice(add3)(10))
+console.log(twice(double)(5))
+console.log(twice(twice(double))(3)) // twice вернула функцию, ее можно снова передать в twice`,
+        en: `// add3 :: Number -> Number
+const add3 = (x) => x + 3
+
+// double :: Number -> Number
+const double = (x) => x * 2
+
+// twice :: (a -> a) -> a -> a
+// your code
+
+console.log(twice(add3)(10))
+console.log(twice(double)(5))
+console.log(twice(twice(double))(3)) // twice returned a function, so it can be passed to twice again`,
+      },
+      solution: {
+        ru: `// add3 :: Number -> Number
+const add3 = (x) => x + 3
+
+// double :: Number -> Number
+const double = (x) => x * 2
+
+// twice :: (a -> a) -> a -> a
+// принимает функцию fn и возвращает новую функцию
+const twice = (fn) => (x) => fn(fn(x))
+
+console.log(twice(add3)(10))
+console.log(twice(double)(5))
+console.log(twice(twice(double))(3)) // twice вернула функцию, ее можно снова передать в twice`,
+        en: `// add3 :: Number -> Number
+const add3 = (x) => x + 3
+
+// double :: Number -> Number
+const double = (x) => x * 2
+
+// twice :: (a -> a) -> a -> a
+// takes the function fn and returns a new function
+const twice = (fn) => (x) => fn(fn(x))
+
+console.log(twice(add3)(10))
+console.log(twice(double)(5))
+console.log(twice(twice(double))(3)) // twice returned a function, so it can be passed to twice again`,
+      },
+      expected: { ru: "16\n20\n48", en: "16\n20\n48" },
+    },
+    {
+      task: {
+        ru: "Напишите функцию высшего порядка withLog: она принимает имя, затем функцию и возвращает новую функцию, которая возвращает тот же результат, что и исходная, и печатает строку вида «double(1) = 2». Передайте обернутую функцию в map, как multiply в уроке.",
+        en: "Write a higher-order function withLog: it takes a name, then a function, and returns a new function that returns the same result as the original one and prints a line like \"double(1) = 2\". Pass the wrapped function to map, as multiply is passed in the lesson.",
+      },
+      starter: {
+        ru: `// double :: Number -> Number
+const double = (x) => x * 2
+
+// withLog :: String -> (Number -> Number) -> Number -> Number
+// ваш код
+
+const loggedDouble = withLog('double')(double)
+
+const doubled = [1, 2, 3].map(loggedDouble)
+
+console.log(doubled)`,
+        en: `// double :: Number -> Number
+const double = (x) => x * 2
+
+// withLog :: String -> (Number -> Number) -> Number -> Number
+// your code
+
+const loggedDouble = withLog('double')(double)
+
+const doubled = [1, 2, 3].map(loggedDouble)
+
+console.log(doubled)`,
+      },
+      solution: {
+        ru: `// double :: Number -> Number
+const double = (x) => x * 2
+
+// withLog :: String -> (Number -> Number) -> Number -> Number
+// withLog(name) принимает функцию fn и возвращает новую: тот же результат плюс строка в консоли
+const withLog = (name) => (fn) => (x) => {
+  const value = fn(x)
+  console.log(\`\${name}(\${x}) = \${value}\`)
+  return value
+}
+
+const loggedDouble = withLog('double')(double)
+
+const doubled = [1, 2, 3].map(loggedDouble)
+
+console.log(doubled)`,
+        en: `// double :: Number -> Number
+const double = (x) => x * 2
+
+// withLog :: String -> (Number -> Number) -> Number -> Number
+// withLog(name) takes the function fn and returns a new one: the same result plus a line in the console
+const withLog = (name) => (fn) => (x) => {
+  const value = fn(x)
+  console.log(\`\${name}(\${x}) = \${value}\`)
+  return value
+}
+
+const loggedDouble = withLog('double')(double)
+
+const doubled = [1, 2, 3].map(loggedDouble)
+
+console.log(doubled)`,
+      },
+      expected: {
+        ru: "double(1) = 2\ndouble(2) = 4\ndouble(3) = 6\n[\n  2,\n  4,\n  6\n]",
+        en: "double(1) = 2\ndouble(2) = 4\ndouble(3) = 6\n[\n  2,\n  4,\n  6\n]",
       },
     },
   ],
