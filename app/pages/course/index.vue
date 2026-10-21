@@ -1,18 +1,26 @@
 <script setup lang="ts">
+import type { CourseSection, LessonEntry } from '~/data/course-types'
 import { fillLocale, pickLocale } from '~/utils/course-locale'
+
+interface CourseContents {
+  introSections: CourseSection[]
+  lessons: LessonEntry[]
+}
 
 const { t, locale, localeProperties } = useI18n()
 const localePath = useLocalePath()
 // Lesson content exists in RU and EN only; every non-Russian locale shows English.
 const isEn = computed(() => locale.value !== 'ru')
 
-// Lessons come in the page payload (/ru/course/_payload.json) with texts of its locale only;
-// the client imports the lesson module just when there is no payload (dev, network failure).
+// The intro and the contents come in the page payload (/ru/course/_payload.json) with texts of its
+// locale only; of the lessons just titles and descriptions, their texts live on the lesson pages.
+// The client imports the lesson module just when there is no payload (dev, network failure).
 // The key is fixed: switching the language mounts the other locale's page with its own payload.
 const lang = isEn.value ? 'en' : 'ru'
-const { data: course, error } = await useAsyncData(`course-${lang}`, async () => {
+const { data: course, error } = await useAsyncData(`course-${lang}`, async (): Promise<CourseContents> => {
   const { introSections, lessons } = await import('~/data/course')
-  return pickLocale({ introSections, lessons }, lang)
+  const entries = lessons.map(({ slug, title, description }): LessonEntry => ({ slug, title, description }))
+  return pickLocale({ introSections, lessons: entries }, lang)
 })
 // Broken lesson data fails generate instead of shipping an empty course with 200.
 if (error.value) {
@@ -83,24 +91,17 @@ onMounted(async () => {
     <nav id="course-toc" class="toc" :aria-label="t('course.tocTitle')">
       <h2 class="block-title">{{ t('course.tocTitle') }}</h2>
       <ol class="toc__list">
-        <li v-for="(lesson, i) in lessons" :key="lesson.slug" class="toc__item">
-          <a :href="`#${lesson.slug}`" class="toc__link">
+        <!-- id="<slug>": without JS an old link /course/#slug still lands next to the lesson's link -->
+        <li v-for="(lesson, i) in lessons" :id="lesson.slug" :key="lesson.slug" class="toc__item">
+          <!-- On interaction: 26 links on screen would otherwise fetch 26 lesson payloads at once. -->
+          <NuxtLink :to="localePath(`/course/${lesson.slug}/`)" prefetch-on="interaction" class="toc__link">
             <span class="toc__num">{{ String(i + 1).padStart(2, '0') }}</span>
             {{ isEn ? lesson.title.en : lesson.title.ru }}
-          </a>
+          </NuxtLink>
+          <p class="toc__desc">{{ isEn ? lesson.description.en : lesson.description.ru }}</p>
         </li>
       </ol>
     </nav>
-
-    <h2 class="block-title">{{ t('course.lessonsTitle') }}</h2>
-    <div class="lessons">
-      <CourseLesson
-        v-for="(lesson, i) in lessons"
-        :key="lesson.slug"
-        :lesson="lesson"
-        :index="i + 1"
-      />
-    </div>
   </AppSection>
 </template>
 
@@ -137,7 +138,6 @@ onMounted(async () => {
 
 .toc {
   scroll-margin-top: $header-height;
-  margin-bottom: 6.4rem;
   padding: 3.2rem;
   border: 1px solid var(--border);
   border-radius: 1.6rem;
@@ -147,20 +147,26 @@ onMounted(async () => {
     margin-top: 1.6rem;
     display: grid;
     grid-template-columns: repeat(2, 1fr);
-    gap: 0.4rem 2.4rem;
+    gap: 1.6rem 3.2rem;
 
     @include respond-to(tablet) {
       grid-template-columns: 1fr;
     }
   }
 
+  &__item {
+    // an old link /course/#slug lands below the fixed header
+    scroll-margin-top: $header-height;
+  }
+
   &__link {
     display: flex;
     align-items: baseline;
     gap: 1rem;
-    padding: 0.8rem 0;
-    font-size: 1.6rem;
-    color: var(--text-muted);
+    padding: 0.8rem 0 0.4rem;
+    font-size: 1.7rem;
+    font-weight: 600;
+    color: var(--text-color);
     transition: color $transition;
 
     &:hover {
@@ -169,14 +175,22 @@ onMounted(async () => {
   }
 
   &__num {
+    flex: 0 0 2.4rem;
     font-family: $mono-font;
     font-size: 1.3rem;
     color: var(--accent);
   }
+
+  // under the title, past the number
+  &__desc {
+    padding-left: 3.4rem;
+    font-size: 1.5rem;
+    line-height: 1.6;
+    color: var(--text-muted);
+  }
 }
 
-.intro,
-.lessons {
+.intro {
   display: grid;
   grid-template-columns: minmax(0, 1fr);
   gap: 4rem;
