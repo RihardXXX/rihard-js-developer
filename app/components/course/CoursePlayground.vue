@@ -622,6 +622,11 @@ const clearAll = () => {
     color: var(--code-text);
     background-color: var(--code-bg);
 
+    // iOS Safari zooms the page in on focus below 16px
+    @media (pointer: coarse) {
+      font-size: 1.6rem;
+    }
+
     // .playground clips its overflow: keep the focus ring inside
     &:focus-visible {
       outline-offset: -2px;
