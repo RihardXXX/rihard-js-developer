@@ -9,13 +9,13 @@ const lesson: Lesson = {
   blocks: [
     {
       type: 'text',
-      ru: "Спецификация Fantasy-land (Страна фантазий) — это набор правил и публичных интерфейсов, описывающих абстракции из теории категорий.",
-      en: "The Fantasy Land specification is a set of rules and public interfaces describing abstractions from category theory.",
+      ru: "Спецификация Fantasy-land (Страна фантазий) — это набор правил и публичных интерфейсов, описывающих абстракции из алгебры и теории категорий.",
+      en: "The Fantasy Land specification is a set of rules and public interfaces describing abstractions from algebra and category theory.",
     },
     {
       type: 'text',
-      ru: "Эти правила и законы опираются на алгебраические структуры данных.",
-      en: "These rules and laws rest on algebraic data structures.",
+      ru: "Эти правила и законы описывают алгебраические структуры.",
+      en: "These rules and laws describe algebraic structures.",
     },
     {
       type: 'text',
@@ -96,8 +96,8 @@ Setoid   Semigroupoid  Semigroup   Foldable        Functor      Contravariant  F
     },
     {
       type: 'text',
-      ru: "Давайте мы попробуем с вами создать Functor (функтор) согласно спецификации Fantasy-land (Страна фантазий).",
-      en: "Let's try to create a Functor according to the Fantasy Land specification.",
+      ru: "Давайте мы попробуем с вами создать Functor (функтор) согласно спецификации Fantasy-land (Страна фантазий). Кроме метода fantasy-land/map, функтор должен соблюдать два закона. Тождество: u['fantasy-land/map'](a => a) эквивалентно u. Композиция: u['fantasy-land/map'](x => f(g(x))) эквивалентно u['fantasy-land/map'](g)['fantasy-land/map'](f).",
+      en: "Let's try to create a Functor according to the Fantasy Land specification. Besides the fantasy-land/map method, a functor must obey two laws. Identity: u['fantasy-land/map'](a => a) is equivalent to u. Composition: u['fantasy-land/map'](x => f(g(x))) is equivalent to u['fantasy-land/map'](g)['fantasy-land/map'](f).",
     },
     {
       type: 'code',
@@ -108,30 +108,30 @@ Setoid   Semigroupoid  Semigroup   Foldable        Functor      Contravariant  F
 // Создание функтора
 // ==== синтаксис es5 ======
 
-// подготавливаем прототип для функции конструктора
-// удалив наследование Object.prototype дефолтная
+// подготавливаем прототип для функции-конструктора
+// без наследования от Object.prototype, которое есть по умолчанию
 var prototypeFunctor = Object.create(null)
 
 // Название строки функции и метода согласно спецификации
-const FANTASY_LAND_MAP = 'fantasy-land/map'
+var FANTASY_LAND_MAP = 'fantasy-land/map'
 
-// создаем функцию конструктор
+// создаем функцию-конструктор
 function Functor(value) {
   this.value = value
 }
 
-// создаем правильные связи между прототипом и функций конструктором
+// создаем правильные связи между прототипом и функцией-конструктором
 Functor.prototype = prototypeFunctor
 prototypeFunctor.constructor = Functor
 
-//  а вот теперь самое главное реализовываем интерфейс функтора
+//  а вот теперь самое главное: реализуем интерфейс функтора
 prototypeFunctor[FANTASY_LAND_MAP] = function (fn) {
   return new Functor(fn(this.value))
 }
 
 // Давайте разделим ключевую логику на части
 // return new Functor(fn(this.value))
-// 1. Текущей содержимое контейнера мы пропускаем через функцию
+// 1. Текущее содержимое контейнера мы пропускаем через функцию
 // fn(this.value)
 // 2. Возвращаем новый экземпляр типа функтор уже с новым значением
 // return new Functor(тут результат инструкции выше)
@@ -139,7 +139,7 @@ prototypeFunctor[FANTASY_LAND_MAP] = function (fn) {
 // Пример
 var functorObj = new Functor(5)
 
-var functorResult = functorObj[FANTASY_LAND_MAP](value => value * 2)
+var functorResult = functorObj[FANTASY_LAND_MAP](function (value) { return value * 2 })
 
 // отсутствуют мутации
 // реализован интерфейс спецификации
@@ -150,6 +150,7 @@ console.log(functorResult.value) // 10
 
 // Полифил
 // как устроен примерно внутри Object.create(objectProto)
+// (упрощенно: без второго аргумента и без поддержки null)
 var createObjectProto = function (obj) {
   // для создания экземпляра формируем конструктор
   function XXX() {}
@@ -168,30 +169,30 @@ var createObjectProto = function (obj) {
 // Создание функтора
 // ==== синтаксис es5 ======
 
-// подготавливаем прототип для функции конструктора
-// удалив наследование Object.prototype дефолтная
+// подготавливаем прототип для функции-конструктора
+// без наследования от Object.prototype, которое есть по умолчанию
 var prototypeFunctor = Object.create(null)
 
 // Название строки функции и метода согласно спецификации
-const FANTASY_LAND_MAP = 'fantasy-land/map'
+var FANTASY_LAND_MAP = 'fantasy-land/map'
 
-// создаем функцию конструктор
+// создаем функцию-конструктор
 function Functor(value) {
   this.value = value
 }
 
-// создаем правильные связи между прототипом и функций конструктором
+// создаем правильные связи между прототипом и функцией-конструктором
 Functor.prototype = prototypeFunctor
 prototypeFunctor.constructor = Functor
 
-//  а вот теперь самое главное реализовываем интерфейс функтора
+//  а вот теперь самое главное: реализуем интерфейс функтора
 prototypeFunctor[FANTASY_LAND_MAP] = function (fn) {
   return new Functor(fn(this.value))
 }
 
 // Давайте разделим ключевую логику на части
 // return new Functor(fn(this.value))
-// 1. Текущей содержимое контейнера мы пропускаем через функцию
+// 1. Текущее содержимое контейнера мы пропускаем через функцию
 // fn(this.value)
 // 2. Возвращаем новый экземпляр типа функтор уже с новым значением
 // return new Functor(тут результат инструкции выше)
@@ -199,7 +200,7 @@ prototypeFunctor[FANTASY_LAND_MAP] = function (fn) {
 // Пример
 var functorObj = new Functor(5)
 
-var functorResult = functorObj[FANTASY_LAND_MAP](value => value * 2)
+var functorResult = functorObj[FANTASY_LAND_MAP](function (value) { return value * 2 })
 
 // отсутствуют мутации
 // реализован интерфейс спецификации
@@ -210,6 +211,7 @@ console.log(functorResult.value) // 10
 
 // Полифил
 // как устроен примерно внутри Object.create(objectProto)
+// (упрощенно: без второго аргумента и без поддержки null)
 var createObjectProto = function (obj) {
   // для создания экземпляра формируем конструктор
   function XXX() {}
@@ -237,13 +239,13 @@ class Functor {
     this.value = value
   }
 
-  // этот метод и так уже будет хранится по дефолту в прототипе
+  // этот метод и так уже будет храниться по дефолту в прототипе
   [FANTASY_LAND_MAP] (fn) {
     return new Functor(fn(this.value))
   }
 }
 
-// Пример описанный выше также сработает
+// Пример, описанный выше, также сработает
 const functorObj = new Functor(5)
 // =========================
 
@@ -274,13 +276,13 @@ class Functor {
     this.value = value
   }
 
-  // этот метод и так уже будет хранится по дефолту в прототипе
+  // этот метод и так уже будет храниться по дефолту в прототипе
   [FANTASY_LAND_MAP] (fn) {
     return new Functor(fn(this.value))
   }
 }
 
-// Пример описанный выше также сработает
+// Пример, описанный выше, также сработает
 const functorObj = new Functor(5)
 // =========================
 
