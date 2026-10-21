@@ -1,8 +1,9 @@
 import { test } from 'node:test'
 import assert from 'node:assert/strict'
 import module, { createRequire } from 'node:module'
+import { readFileSync } from 'node:fs'
 import vm from 'node:vm'
-import { SANDBOX_GLOBALS } from '../app/utils/playground-runner.ts'
+import { SANDBOX_GLOBALS, createPlaygroundRunner } from '../app/utils/playground-runner.ts'
 
 // Уроки лежат в app/data/lessons/*.ts, в course.ts импорты без расширения: дописываем .ts.
 // Типы Node стирает сам.
@@ -10,16 +11,66 @@ module.registerHooks({
   resolve: (specifier, context, next) =>
     next(/^\.\.?\//.test(specifier) && !/\.\w+$/.test(specifier) ? `${specifier}.ts` : specifier, context),
 })
-const { lessons } = await import('../app/data/course.ts')
+// Данные берём пространством имён: пока в course.ts нет introSections, красным становится
+// проверка вводных разделов, а не весь файл.
+const course = await import('../app/data/course.ts')
+const { lessons } = course
+const introSections = course.introSections ?? []
+// Все разделы страницы: вводные без номера и нумерованные уроки.
+const sections = [...introSections, ...lessons]
 
-// Библиотеки песочницы берём из node_modules проекта, как их берёт CoursePlayground.client.vue
+// Библиотеки песочницы берём из node_modules проекта, как их берёт CoursePlayground.vue
 const require = createRequire(import.meta.url)
 const R = require('ramda')
 const sanctuary = require('sanctuary')
 const S = sanctuary.create({ checkTypes: false, env: sanctuary.env })
+const LIBS = [
+  { alias: 'R', mod: R },
+  { alias: 'S', mod: S },
+]
 
 const VARIANTS = ['ru', 'en']
 const CYRILLIC = /[А-Яа-яЁё]/
+const INTRO_SLUGS = ['for-whom', 'not-for-whom']
+// нумерованные уроки: всё, что не вводные разделы (порядок и число уроков здесь не закрепляем)
+const numbered = lessons.filter((lesson) => !INTRO_SLUGS.includes(lesson.slug))
+const BLOCK_TYPES = ['text', 'heading', 'list', 'table', 'code']
+// ключи course.* в ru.json и en.json, которые нужны навигации, упражнениям и кнопке «Открыть в песочнице»
+const NEW_KEYS = [
+  'goal',
+  'summary',
+  'exercises',
+  'exercise',
+  'starter',
+  'expected',
+  'showSolution',
+  'backToToc',
+  'nextLesson',
+  'openInPlayground',
+  'backToExample',
+  'exampleLabel',
+  'starterLabel',
+  'solutionLabel',
+  'editorLabel',
+]
+// Блоки, которые нельзя запустить в песочнице как есть: чего им не хватает.
+// needle — подстрока ru-варианта кода, по ней блок находится однозначно.
+const NO_RUN = [
+  { slug: 'composition', needle: 'человекочитаемом формате', reason: 'previous-block' },
+  { slug: 'currying-and-asynchrony', needle: 'базовую функцию для запросов', reason: 'network' },
+  { slug: 'currying-and-asynchrony', needle: 'плохо пахнет', reason: 'dom' },
+  { slug: 'currying-and-asynchrony', needle: 'декларативный код', reason: 'dom' },
+  { slug: 'currying-and-asynchrony', needle: 'возьмемся за дело', reason: 'dom' },
+  { slug: 'performance', needle: 'Утилита замера скорости', reason: 'previous-block' },
+  { slug: 'side-effects-in-composition-functions', needle: 'tapD', reason: 'previous-block' },
+]
+// Как выглядит текстовая имитация заголовка, таблицы и списка.
+const IMITATIONS = [
+  [/-{5,}/, 'ряд дефисов вместо подзаголовка или таблицы'],
+  [/^\|.*\|/, 'строка таблицы из «|»'],
+  [/(^|\s)1\. .+\s2\. /, 'список «1. … 2. …» в одном абзаце'],
+  [/^\d+\.\s/, 'абзац или пункт, начинающийся с «N. »'],
+]
 const SLUGS = [
   'for-whom',
   'not-for-whom',
@@ -130,32 +181,94 @@ const strip = (src) => scan(src).code.replace(/\s+/g, '')
 
 // ---------- помощники по данным курса ----------
 
-const codeBlocks = lessons.flatMap((lesson) =>
+const codeBlocks = sections.flatMap((lesson) =>
   lesson.blocks.flatMap((block, i) => (block.type === 'code' ? [{ lesson, block, i, id: `${lesson.slug}#${i}` }] : [])),
 )
+
+// Код упражнений: заготовка (если есть) и решение.
+const exercisesOf = (section) => (Array.isArray(section.exercises) ? section.exercises : [])
+const exerciseCode = sections.flatMap((section) =>
+  exercisesOf(section).flatMap((exercise, index) => {
+    const part = (name, noun, genitive) => ({
+      kind: name,
+      id: `${section.slug} упражнение ${index + 1} ${noun}`,
+      label: `${genitive} упражнения ${section.slug}#${index + 1}`,
+      code: exercise[name],
+    })
+    return [
+      ...(exercise.starter ? [part('starter', 'заготовка', 'заготовки')] : []),
+      part('solution', 'решение', 'решения'),
+    ]
+  }),
+)
+// Весь код курса, который читатель может скопировать: блоки уроков и код упражнений.
+const allCode = [
+  ...codeBlocks.map(({ id, block }) => ({ id, label: `блока ${id}`, code: block.code, pseudo: block.pseudo })),
+  ...exerciseCode,
+]
 
 // Блок урока, в ru-варианте которого есть needle; совпадение должно быть одно.
 // По индексу не ищем: при разделении блоков индексы сдвигаются.
 const findBlock = (slug, needle) => {
-  const lesson = lessons.find((l) => l.slug === slug)
+  const lesson = sections.find((l) => l.slug === slug)
   assert.ok(lesson, `в курсе нет урока ${slug}`)
   const found = lesson.blocks.filter((b) => b.type === 'code' && !b.pseudo && b.code.ru.includes(needle))
   assert.equal(found.length, 1, `в уроке ${slug} должен быть ровно один исполняемый блок с «${needle}», найдено ${found.length}`)
   return found[0]
 }
 
-// Все места с авторским текстом: заголовки, абзацы и комментарии в коде обоих языков.
-const prose = () =>
-  lessons.flatMap((lesson) => [
-    ...VARIANTS.map((v) => ({ where: `${lesson.slug} заголовок ${v}`, text: lesson.title[v] })),
-    ...lesson.blocks.flatMap((block, i) =>
-      block.type === 'text'
-        ? VARIANTS.map((v) => ({ where: `${lesson.slug}#${i} текст ${v}`, text: block[v] }))
-        : VARIANTS.flatMap((v) =>
-            scan(block.code[v]).comments.map((text) => ({ where: `${lesson.slug}#${i} комментарий ${v}`, text })),
-          ),
+// Тексты раздела, которые читает человек: заголовок, цель, «главное», абзацы, подзаголовки,
+// пункты списков, подпись и ячейки таблиц, условия и ожидаемый вывод упражнений, оба языка.
+// kind 'output' — вывод песочницы: в нём вполне может быть «1. » или «---», на имитации он не проверяется.
+const textFields = (section) => {
+  const at = (where, pair, kind = 'prose') =>
+    VARIANTS.map((v) => ({
+      where: `${section.slug}${where} ${v}`,
+      v,
+      kind,
+      text: typeof pair?.[v] === 'string' ? pair[v] : '',
+    }))
+  const blocks = section.blocks.flatMap((block, i) => {
+    const id = `#${i}`
+    if (block.type === 'text') return at(`${id} текст`, block)
+    if (block.type === 'heading') return at(`${id} подзаголовок`, block)
+    if (block.type === 'list') return (block.items ?? []).flatMap((item, k) => at(`${id} пункт ${k + 1}`, item))
+    if (block.type === 'table') {
+      return [
+        ...at(`${id} подпись таблицы`, block.caption),
+        ...(block.columns ?? []).flatMap((column, c) => at(`${id} столбец ${c + 1}`, column)),
+        ...(block.rows ?? []).flatMap((row, r) =>
+          row.flatMap((cell, c) => at(`${id} ячейка ${r + 1}.${c + 1}`, cell)),
+        ),
+      ]
+    }
+    return []
+  })
+  return [
+    ...at(' заголовок', section.title),
+    ...(section.goal ? at(' цель', section.goal) : []),
+    ...(Array.isArray(section.summary) ? section.summary : []).flatMap((item, k) => at(` главное ${k + 1}`, item)),
+    ...blocks,
+    ...exercisesOf(section).flatMap((exercise, k) => [
+      ...at(` упражнение ${k + 1} условие`, exercise.task),
+      ...at(` упражнение ${k + 1} ожидаемый вывод`, exercise.expected, 'output'),
+    ]),
+  ]
+}
+
+// Комментарии в коде блоков и упражнений обоих языков.
+const codeComments = () =>
+  [...codeBlocks.map(({ id, block }) => ({ id, code: block.code })), ...exerciseCode].flatMap(({ id, code }) =>
+    VARIANTS.flatMap((v) =>
+      scan(typeof code?.[v] === 'string' ? code[v] : '').comments.map((text) => ({
+        where: `${id} комментарий ${v}`,
+        text,
+      })),
     ),
-  ])
+  )
+
+// Все места с авторским текстом: тексты раздела и комментарии в коде.
+const prose = () => [...sections.flatMap(textFields), ...codeComments()]
 
 const unpairedClose = (text) => {
   let depth = 0
@@ -168,28 +281,144 @@ const unpairedClose = (text) => {
 
 const around = (text, at) => JSON.stringify(text.slice(Math.max(0, at - 25), at + 10))
 
-// ---------- якоря уроков ----------
+// ---------- вводные разделы и якоря ----------
+
+test('вводные разделы: «Для кого» и «Кому не подойдёт» вынесены в introSections', () => {
+  assert.ok(
+    Array.isArray(course.introSections),
+    'в course.ts нет introSections: «Для кого» и «Кому не подойдёт» остаются уроками 01 и 02',
+  )
+  assert.deepEqual(
+    course.introSections.map((s) => s.slug).sort(),
+    [...INTRO_SLUGS].sort(),
+    'вводными должны быть ровно for-whom и not-for-whom',
+  )
+})
+
+test('вводные разделы: нет цели, «главного» и упражнений', () => {
+  assert.ok(Array.isArray(course.introSections), 'в course.ts нет introSections')
+  const extra = course.introSections.flatMap((s) =>
+    ['goal', 'summary', 'exercises'].filter((field) => field in s).map((field) => `${s.slug}.${field}`),
+  )
+  assert.deepEqual(extra, [], 'у вводного раздела не должно быть цели, «главного» и упражнений: это не урок')
+})
+
+test('нумерованные уроки: вводных разделов среди них нет', () => {
+  const slugs = lessons.map((l) => l.slug).filter((slug) => INTRO_SLUGS.includes(slug))
+  assert.deepEqual(slugs, [], 'вводные разделы остались в lessons: читатель видит их под номерами 01 и 02')
+})
 
 test('уроки курса: все прежние slug-якоря на месте и не повторяются', () => {
-  const slugs = lessons.map((l) => l.slug)
+  const slugs = sections.map((l) => l.slug)
   const missing = SLUGS.filter((slug) => !slugs.includes(slug))
   assert.deepEqual(missing, [], 'ссылки вида /ru/course/#slug перестанут вести к уроку, если якорь пропал')
   assert.equal(new Set(slugs).size, slugs.length, `slug повторяется: ${slugs.join(', ')}`)
 })
 
+// ---------- типы блоков и их форма ----------
+
+test('блоки: только text, heading, list, table и code', () => {
+  const unknown = sections.flatMap((s) =>
+    s.blocks.flatMap((b, i) => (BLOCK_TYPES.includes(b.type) ? [] : [`${s.slug}#${i}: ${String(b.type)}`])),
+  )
+  assert.deepEqual(unknown, [], 'рендер урока не знает такого блока и не покажет его читателю')
+})
+
+test('подзаголовки: ru и en непустые', () => {
+  const bad = sections.flatMap((s) =>
+    s.blocks.flatMap((b, i) =>
+      b.type === 'heading' ? VARIANTS.filter((v) => !String(b[v] ?? '').trim()).map((v) => `${s.slug}#${i} ${v}`) : [],
+    ),
+  )
+  assert.deepEqual(bad, [], 'пустой подзаголовок выведет пустой h4')
+})
+
+test('списки: не меньше двух непустых пунктов на ru и en, признак ordered задан', () => {
+  const bad = sections.flatMap((s) =>
+    s.blocks.flatMap((b, i) => {
+      if (b.type !== 'list') return []
+      const problems = []
+      if (typeof b.ordered !== 'boolean') problems.push('ordered не boolean')
+      if (!Array.isArray(b.items) || b.items.length < 2) problems.push('меньше двух пунктов')
+      else {
+        for (const [k, item] of b.items.entries()) {
+          for (const v of VARIANTS) if (!String(item?.[v] ?? '').trim()) problems.push(`пункт ${k + 1} (${v}) пуст`)
+        }
+      }
+      return problems.map((p) => `${s.slug}#${i}: ${p}`)
+    }),
+  )
+  assert.deepEqual(bad, [], 'список из одного пункта или с пустым пунктом — не список')
+})
+
+test('таблицы: есть подпись, столбцы и строки, длина строки равна числу столбцов', () => {
+  const bad = sections.flatMap((s) =>
+    s.blocks.flatMap((b, i) => {
+      if (b.type !== 'table') return []
+      const problems = []
+      for (const v of VARIANTS) if (!String(b.caption?.[v] ?? '').trim()) problems.push(`подпись (${v}) пуста`)
+      if (!Array.isArray(b.columns) || b.columns.length < 1) problems.push('нет столбцов')
+      else {
+        for (const [c, column] of b.columns.entries()) {
+          for (const v of VARIANTS) if (!String(column?.[v] ?? '').trim()) problems.push(`заголовок столбца ${c + 1} (${v}) пуст`)
+        }
+      }
+      if (!Array.isArray(b.rows) || b.rows.length < 1) problems.push('нет строк')
+      else {
+        for (const [r, row] of b.rows.entries()) {
+          if (!Array.isArray(row) || row.length !== b.columns?.length) problems.push(`в строке ${r + 1} ячеек не столько, сколько столбцов`)
+        }
+      }
+      return problems.map((p) => `${s.slug}#${i}: ${p}`)
+    }),
+  )
+  assert.deepEqual(bad, [], 'таблица без подписи или с кривой строкой не соберётся в <table> с заголовками')
+})
+
+// ---------- заголовки, списки и таблицы — блоками, а не текстом ----------
+
+for (const section of sections) {
+  test(`урок ${section.slug}: нет имитаций заголовков, списков и таблиц в тексте`, () => {
+    const found = textFields(section)
+      .filter(({ kind }) => kind !== 'output')
+      .flatMap(({ where, text }) =>
+        IMITATIONS.filter(([pattern]) => pattern.test(text)).map(([, what]) => `${where}: ${what}`),
+      )
+    assert.deepEqual(found, [], 'читатель видит «1. …», «----» и «| … |» как текст, а не как заголовок, список или таблицу')
+  })
+}
+
+test('selecting-library: сравнительная таблица — блок table из 5 столбцов и 8 строк', () => {
+  const lesson = sections.find((s) => s.slug === 'selecting-library')
+  const tables = lesson.blocks.filter((b) => b.type === 'table')
+  assert.equal(tables.length, 1, `в уроке должна быть одна таблица, найдено ${tables.length}`)
+  assert.equal(tables[0].columns?.length, 5, 'столбцы: «Критерий», Vanilla JS, Lodash, Ramda, Sanctuary')
+  assert.equal(tables[0].rows?.length, 8, 'строки: от «Бюджет» до «Философия»')
+})
+
+test('selecting-library: сравнение библиотек не осталось абзацем', () => {
+  const lesson = sections.find((s) => s.slug === 'selecting-library')
+  const stillText = lesson.blocks.flatMap((b, i) =>
+    b.type === 'text'
+      ? VARIANTS.filter((v) => /Vanilla JS [—-] .+Lodash [—-] .+Ramda [—-] /.test(b[v])).map((v) => `#${i} ${v}`)
+      : [],
+  )
+  assert.deepEqual(stillText, [], 'таблица из 8 критериев на 4 библиотеки по-прежнему сплошной абзац')
+})
+
 // ---------- синтаксис блоков ----------
 
-for (const { id, block } of codeBlocks) {
-  if (block.pseudo) continue
+for (const { label, code, pseudo } of allCode) {
+  if (pseudo) continue
   for (const v of VARIANTS) {
-    test(`синтаксис блока ${id} ${v}`, () => {
+    test(`синтаксис ${label} ${v}`, () => {
       assert.doesNotThrow(
-        () => new vm.Script(block.code[v]),
-        `блок ${id} (${v}) не разбирается как скрипт: его нельзя скопировать и запустить`,
+        () => new vm.Script(code[v]),
+        `${label} (${v}) не разбирается как скрипт: его нельзя скопировать и запустить`,
       )
       assert.doesNotThrow(
-        () => new Function(...SANDBOX_GLOBALS, 'R', 'S', block.code[v]),
-        `блок ${id} (${v}) не разбирается в песочнице: имя конфликтует с ${[...SANDBOX_GLOBALS, 'R', 'S'].join(', ')}`,
+        () => new Function(...SANDBOX_GLOBALS, 'R', 'S', code[v]),
+        `${label} (${v}) не разбирается в песочнице: имя конфликтует с ${[...SANDBOX_GLOBALS, 'R', 'S'].join(', ')}`,
       )
     })
   }
@@ -210,23 +439,23 @@ test('блоки-иллюстрации: помечены именно схем�
 
 // ---------- паритет ru/en: код один, различаются комментарии и строки ----------
 
-for (const { id, block } of codeBlocks) {
-  if (block.pseudo) continue
+for (const { id, label, code, pseudo } of allCode) {
+  if (pseudo) continue
   test(`паритет кода ${id}: ru и en различаются только комментариями и строками`, () => {
-    assert.equal(strip(block.code.en), strip(block.code.ru), `код блока ${id} разошёлся между /ru/course/ и /course/`)
+    assert.equal(strip(code.en), strip(code.ru), `код ${label} разошёлся между /ru/course/ и /course/`)
   })
 }
 
 test('английский вариант кода: нет кириллицы', () => {
-  const bad = codeBlocks.filter(({ block }) => CYRILLIC.test(block.code.en)).map(({ id }) => id)
+  const bad = allCode.filter(({ code }) => CYRILLIC.test(code.en)).map(({ id }) => id)
   assert.deepEqual(bad, [], `читатель /course/ видит русский в коде: ${bad.join(', ')}`)
 })
 
 test('английские заголовки и тексты уроков: нет кириллицы', () => {
-  const bad = lessons.flatMap((lesson) => [
-    ...(CYRILLIC.test(lesson.title.en) ? [`${lesson.slug} заголовок`] : []),
-    ...lesson.blocks.flatMap((b, i) => (b.type === 'text' && CYRILLIC.test(b.en) ? [`${lesson.slug}#${i}`] : [])),
-  ])
+  const bad = sections
+    .flatMap(textFields)
+    .filter(({ v, text }) => v === 'en' && CYRILLIC.test(text))
+    .map(({ where }) => where)
   assert.deepEqual(bad, [], `читатель /course/ видит русский в тексте: ${bad.join(', ')}`)
 })
 
@@ -253,6 +482,241 @@ test('тон: нет эмодзи в текстах и комментариях'
     .map(({ where }) => where)
   assert.deepEqual(bad, [], 'в курсе остались эмодзи')
 })
+
+// ---------- цель, «главное» и упражнения у каждого урока ----------
+
+const fillError = (name, pair, max) =>
+  VARIANTS.flatMap((v) => {
+    const value = pair?.[v]
+    if (typeof value !== 'string' || !value.trim()) return [`${name} (${v}) пусто`]
+    return max && value.length > max ? [`${name} (${v}) длиннее ${max} знаков`] : []
+  })
+
+for (const lesson of numbered) {
+  test(`урок ${lesson.slug}: цель, главное, упражнения`, () => {
+    const problems = [...fillError('цель', lesson.goal, 300)]
+    if (!Array.isArray(lesson.summary) || lesson.summary.length < 2 || lesson.summary.length > 5) {
+      problems.push('«главное» должно быть из 2–5 пунктов')
+    } else {
+      lesson.summary.forEach((item, k) => problems.push(...fillError(`главное ${k + 1}`, item)))
+    }
+    if (!Array.isArray(lesson.exercises) || lesson.exercises.length < 1 || lesson.exercises.length > 2) {
+      problems.push('упражнений должно быть 1–2')
+    } else {
+      lesson.exercises.forEach((exercise, k) => {
+        const name = `упражнение ${k + 1}`
+        problems.push(...fillError(`${name}: условие`, exercise?.task))
+        problems.push(...fillError(`${name}: решение`, exercise?.solution))
+        problems.push(...fillError(`${name}: ожидаемый вывод`, exercise?.expected))
+        if (exercise?.starter !== undefined) problems.push(...fillError(`${name}: заготовка`, exercise.starter))
+      })
+    }
+    assert.deepEqual(problems, [], 'у урока нет полной цели, «главного» или упражнений с решением и ожидаемым выводом')
+  })
+}
+
+// ---------- исполнение кода в песочнице ----------
+
+const wait = (ms) => new Promise((resolve) => setTimeout(resolve, ms))
+const SETTLE_MS = 50
+const describeError = (error) => `${error?.name ?? 'Error'}: ${error?.message ?? String(error)}`
+
+// Отклонённый промис кода не должен ни упасть мимо теста, ни покраснить соседний: на время прогона
+// и ожидания SETTLE_MS обработчик необработанных отклонений наш, потом прежние возвращаются.
+const observe = async (run) => {
+  const rejections = []
+  const onRejection = (reason) => rejections.push(`необработанное отклонение: ${describeError(reason)}`)
+  const saved = process.listeners('unhandledRejection')
+  process.removeAllListeners('unhandledRejection')
+  process.on('unhandledRejection', onRejection)
+  try {
+    await run()
+    await wait(SETTLE_MS)
+  } finally {
+    process.off('unhandledRejection', onRejection)
+    for (const listener of saved) process.on('unhandledRejection', listener)
+  }
+  return rejections
+}
+
+// Исполняет код так, как его исполнит песочница: функция с параметрами SANDBOX_GLOBALS, R и S,
+// а остальное — безвредные глобалы браузера. Возвращает список проблем (пустой — код отработал чисто).
+const execute = async (code, extraGlobals = {}) => {
+  const problems = []
+  const timers = new Set()
+  const guarded = (callback) => (...args) => {
+    try {
+      callback(...args)
+    } catch (error) {
+      problems.push(`ошибка в колбэке: ${describeError(error)}`)
+    }
+  }
+  const track = (id) => {
+    timers.add(id)
+    return id
+  }
+  const ctx = vm.createContext({
+    console: { log() {}, error() {}, warn() {} },
+    setTimeout: (callback, ms, ...args) => track(setTimeout(guarded(callback), ms, ...args)),
+    setInterval: (callback, ms, ...args) => track(setInterval(guarded(callback), ms, ...args)),
+    clearTimeout,
+    clearInterval,
+    queueMicrotask: (callback) => queueMicrotask(guarded(callback)),
+    structuredClone,
+    performance,
+    R,
+    S,
+    ...extraGlobals,
+  })
+  const params = [...SANDBOX_GLOBALS, 'R', 'S'].join(', ')
+  const rejections = await observe(() => {
+    try {
+      vm.runInContext(`(function (${params}) {\n${code}\n})(${params})`, ctx, { timeout: 2000 })
+    } catch (error) {
+      problems.push(describeError(error))
+    }
+  })
+  for (const id of timers) {
+    clearTimeout(id)
+    clearInterval(id)
+  }
+  return [...problems, ...rejections]
+}
+
+// Решение упражнения через тот же раннер, что в песочнице: что увидит читатель в «Результате».
+const checkSolution = async (solution, expected) => {
+  let output = ''
+  const runner = createPlaygroundRunner((text) => {
+    output = text
+  })
+  const rejections = await observe(() => runner.run(solution, LIBS))
+  const printed = output
+  runner.clear()
+  const problems = [...rejections]
+  if (printed !== expected) problems.push(`печатает ${JSON.stringify(printed)}, а ожидается ${JSON.stringify(expected)}`)
+  if (printed.split('\n').some((line) => line.startsWith('Error:'))) problems.push('в выводе есть строка Error:')
+  return problems
+}
+
+test('прогон кода: безвредный код с R, S, таймерами и промисами проходит чисто', async () => {
+  const problems = await execute(`
+    console.log(R.add(1, 2), S.Just(1))
+    setTimeout(() => console.log('late'), 5)
+    const tick = setInterval(() => console.log('tick'), 5)
+    setTimeout(() => clearInterval(tick), 12)
+    clearTimeout(setTimeout(() => {}, 1))
+    queueMicrotask(() => structuredClone({ a: 1 }))
+    Promise.resolve(performance.now()).then(console.log)
+  `)
+  assert.deepEqual(problems, [], 'исправный код признан ошибочным: тест исполнения ломает зелёные блоки')
+})
+
+test('прогон кода: синхронное исключение замечается', async () => {
+  const problems = await execute("throw new Error('boom')")
+  assert.equal(problems.length, 1, 'исключение в блоке не замечено: сломанный пример прошёл бы тест')
+})
+
+test('прогон кода: ReferenceError на отсутствующем имени замечается', async () => {
+  const problems = await execute('fetchAllUsers()')
+  assert.equal(problems.length, 1, 'пример с именем из другого блока прошёл бы тест')
+})
+
+test('прогон кода: ошибка в колбэке таймера замечается', async () => {
+  const problems = await execute("setTimeout(() => { throw new Error('late boom') }, 0)")
+  assert.equal(problems.length, 1, 'ошибка в таймере не замечена: песочница показала бы её читателю строкой Error')
+})
+
+test('прогон кода: отклонённый промис замечается и не краснит соседний тест', async () => {
+  const problems = await execute("Promise.reject(new Error('rejected'))")
+  assert.equal(problems.length, 1, 'необработанное отклонение не замечено')
+})
+
+test('прогон кода: setInterval без clearInterval не переживает прогон', async () => {
+  const probe = { hits: 0 }
+  await execute('setInterval(() => probe.hits++, 5)', { probe })
+  const hits = probe.hits
+  await wait(30)
+  assert.equal(probe.hits, hits, 'интервал из прогнанного блока продолжает тикать и мешает следующим тестам')
+})
+
+test('проверка решения: верный вывод проходит', async () => {
+  assert.deepEqual(await checkSolution('console.log(R.add(1, 2))', '3'), [])
+})
+
+test('проверка решения: другой вывод замечается', async () => {
+  const problems = await checkSolution('console.log(R.add(1, 2))', '4')
+  assert.equal(problems.length, 1, 'решение с неверным ожидаемым выводом признано верным')
+})
+
+test('проверка решения: исключение в решении замечается', async () => {
+  const problems = await checkSolution("throw new Error('boom')", 'Error: boom')
+  assert.ok(problems.some((p) => /Error:/.test(p)), 'решение, которое падает, признано верным')
+})
+
+test('проверка решения: асинхронный вывод дожидается', async () => {
+  assert.deepEqual(await checkSolution("setTimeout(() => console.log('late'), 5)", 'late'), [])
+})
+
+for (const { id, block } of codeBlocks) {
+  if (block.pseudo || block.noRun) continue
+  for (const v of VARIANTS) {
+    test(`исполнение ${id} ${v}`, async () => {
+      const problems = await execute(block.code[v])
+      assert.equal(
+        problems.length,
+        0,
+        `блок ${id} (${v}) падает в песочнице: ${problems.join('; ')}. Если ему нужен DOM, сеть или имя из прошлого примера, пометьте его noRun, иначе читатель получит кнопку «Открыть в песочнице», которая приводит к ошибке`,
+      )
+    })
+  }
+}
+
+for (const { id, kind, label, code } of exerciseCode) {
+  if (kind !== 'solution') continue
+  for (const v of VARIANTS) {
+    test(`исполнение ${id} ${v}`, async () => {
+      const problems = await execute(code[v])
+      assert.equal(problems.length, 0, `${label} (${v}) падает в песочнице: ${problems.join('; ')}`)
+    })
+  }
+}
+
+// ---------- блоки, которые нельзя запустить как есть ----------
+
+test(`noRun: помечены ровно ${NO_RUN.length} блоков`, () => {
+  const marked = codeBlocks.filter(({ block }) => block.noRun).map(({ id }) => id)
+  assert.equal(marked.length, NO_RUN.length, `помечены блоки: ${marked.join(', ') || 'ни одного'}`)
+})
+
+for (const { slug, needle, reason } of NO_RUN) {
+  test(`noRun: ${slug} «${needle}» помечен причиной ${reason}`, () => {
+    assert.equal(
+      findBlock(slug, needle).noRun,
+      reason,
+      'без пометки у блока будет кнопка «Открыть в песочнице», а запуск закончится ошибкой',
+    )
+  })
+
+  for (const v of VARIANTS) {
+    test(`noRun: ${slug} «${needle}» (${v}) действительно не исполняется в песочнице`, async () => {
+      const problems = await execute(findBlock(slug, needle).code[v])
+      assert.ok(problems.length > 0, 'блок исполняется без ошибок: пометка noRun устарела, кнопку «Открыть в песочнице» надо вернуть')
+    })
+  }
+}
+
+// ---------- решения упражнений выводят то, что в данных ----------
+
+for (const section of sections) {
+  exercisesOf(section).forEach((exercise, index) => {
+    for (const v of VARIANTS) {
+      test(`упражнение ${section.slug}#${index + 1} ${v}: решение выводит ожидаемое`, async () => {
+        const problems = await checkSolution(exercise.solution[v], exercise.expected[v])
+        assert.deepEqual(problems, [], 'читатель сверит свой вывод с ожидаемым и решит, что ошибается курс или он сам')
+      })
+    }
+  })
+}
 
 // ---------- токенизатор: юнит-кейсы ----------
 
@@ -516,4 +980,41 @@ probe('neural-networks: сеть решает XOR', 'neural-networks', 'getAnswe
 
 probe('currying-and-asynchrony: блок исполняется и делает 2 запроса', 'currying-and-asynchrony', 'getAllBooks', (s) => {
   assert.equal(s.fetchCalls.length, 2, 'getAllUser() и getAllBooks() должны вызвать fetch по разу')
+})
+
+// ---------- ключи i18n ----------
+
+const readLocale = (name) => JSON.parse(readFileSync(new URL(`../i18n/locales/${name}.json`, import.meta.url), 'utf8'))
+const locales = { ru: readLocale('ru'), en: readLocale('en') }
+const keysOf = (tree, prefix = '') =>
+  Object.entries(tree).flatMap(([key, value]) =>
+    typeof value === 'object' && value !== null ? keysOf(value, `${prefix}${key}.`) : [`${prefix}${key}`],
+  )
+
+test('ключи i18n: ru.json и en.json совпадают на всех уровнях', () => {
+  const ru = keysOf(locales.ru)
+  const en = keysOf(locales.en)
+  assert.deepEqual(
+    { onlyRu: ru.filter((key) => !en.includes(key)), onlyEn: en.filter((key) => !ru.includes(key)) },
+    { onlyRu: [], onlyEn: [] },
+    'ключ есть только в одной локали: на другой языке читатель увидит имя ключа вместо текста',
+  )
+})
+
+test('ключи i18n: ключи course.* для навигации, упражнений и песочницы есть в ru.json и en.json', () => {
+  const missing = VARIANTS.flatMap((v) =>
+    NEW_KEYS.filter((key) => typeof locales[v].course?.[key] !== 'string').map((key) => `${v}: course.${key}`),
+  )
+  assert.deepEqual(missing, [], 'без этих ключей кнопки, подписи и ссылки курса выведут имена ключей')
+})
+
+test('ключи i18n: новые строки course.* не пустые и без «|» и «@» (спецсимволов vue-i18n)', () => {
+  const bad = VARIANTS.flatMap((v) =>
+    NEW_KEYS.flatMap((key) => {
+      const value = locales[v].course?.[key]
+      if (typeof value !== 'string') return []
+      return !value.trim() || /[|@]/.test(value) ? [`${v}: course.${key}`] : []
+    }),
+  )
+  assert.deepEqual(bad, [], 'vue-i18n разберёт «|» как множественное число, а «@» как ссылку на другой ключ')
 })
