@@ -60,16 +60,16 @@ pipeline(5) // ['5 X'] результат
 // concatX :: Number -> String — морфизм f :: a -> b
 // toArray :: String -> [String] — морфизм g :: b -> c
 // pipeline = compose(toArray, concatX) :: Number -> [String] — композиция g . f :: a -> c`,
-        en: `//  Пример
+        en: `//  Example
 // f :: a -> b
 // g :: b -> c
 // g . f :: a -> c
 
-// a, b, c — это объекты (типы)
-// f, g — морфизмы (стрелки), то есть функции
-// g . f — композиция: сначала f, затем g
+// a, b, c are objects (types)
+// f, g are morphisms (arrows), that is, functions
+// g . f is composition: first f, then g
 
-// Практический пример
+// A practical example
 
 // concatX :: Number -> String
 const concatX = num => \`\${num} X\`
@@ -81,20 +81,20 @@ const toArray = word => [word]
 const compose = (f2, f1) => (...args) => f2(f1(...args))
 
 const pipeline = compose(
-  toArray, // строку превращаем в массив
-  concatX // добавляем X и превращаем в строку
+  toArray, // turn the string into an array
+  concatX // append X and turn it into a string
   )
 
 // start
-pipeline(5) // ['5 X'] результат
+pipeline(5) // ['5 X'] is the result
 
-// Что же тут произошло
-// входной аргумент 5 — это "a", тип Number
-// конкатенировали букву X и получили '5 X' — это "b", тип String
-// добавили в массив и получили ['5 X'] — это "c", тип Array
-// concatX :: Number -> String — морфизм f :: a -> b
-// toArray :: String -> [String] — морфизм g :: b -> c
-// pipeline = compose(toArray, concatX) :: Number -> [String] — композиция g . f :: a -> c`,
+// So what happened here
+// the input argument 5 is "a", of type Number
+// we concatenated the letter X and got '5 X', which is "b", of type String
+// we put it into an array and got ['5 X'], which is "c", of type Array
+// concatX :: Number -> String is the morphism f :: a -> b
+// toArray :: String -> [String] is the morphism g :: b -> c
+// pipeline = compose(toArray, concatX) :: Number -> [String] is the composition g . f :: a -> c`,
       },
     },
     {
@@ -137,32 +137,32 @@ const pipeline = композицияПроцессов(
 
 // start
 pipeline(лёд) // пар результат`,
-        en: `//  Пример
-твердое -> жидкое -> газообразное
-лёд -> вода -> пар
+        en: `//  Example
+solid -> liquid -> gas
+ice -> water -> steam
 
-лёд, вода, пар // это объекты
--> // морфизмы: процессы над ними (нагрев и т. п.)
-превратитьВПар . превратитьВВоду :: лёд -> пар // композиция процессов
+ice, water, steam // these are objects
+-> // morphisms: processes applied to them (heating and so on)
+turnIntoSteam . turnIntoWater :: ice -> steam // composition of processes
 
-// Практический пример
+// A practical example
 
-// превратитьВВоду :: лёд -> вода
-const превратитьВВоду = лёд => (держим в комнатной температуре, вода)
+// turnIntoWater :: ice -> water
+const turnIntoWater = ice => (keep at room temperature, water)
 
-// превратитьВПар:: вода -> пар
-const превратитьВПар = вода=> (производим сильный нагрев, пар)
+// turnIntoSteam:: water -> steam
+const turnIntoSteam = water=> (apply strong heat, steam)
 
-// композицияПроцессов :: (b -> c, a -> b) -> a -> c
-const композицияПроцессов = (f2, f1) => (...args) => f2(f1(...args))
+// composeProcesses :: (b -> c, a -> b) -> a -> c
+const composeProcesses = (f2, f1) => (...args) => f2(f1(...args))
 
-const pipeline = композицияПроцессов(
-  превратитьВПар,
-  превратитьВВоду
+const pipeline = composeProcesses(
+  turnIntoSteam,
+  turnIntoWater
   )
 
 // start
-pipeline(лёд) // пар результат`,
+pipeline(ice) // steam is the result`,
       },
     },
   ],
