@@ -40,27 +40,27 @@ console.log(result) // 4, 5
 // isGt3 :: Number -> Boolean
 const isGt3 = number => number > 3
 
-const declarativeResult = numbers.filter(isGt3) // мы не вникаем в реализацию а просто читаем название
+const declarativeResult = numbers.filter(isGt3) // мы не вникаем в реализацию, а просто читаем название
 
 console.log(declarativeResult) // 4, 5 тот же результат более декларативен
 // =========
 
-// Мы можем повысить слои абстракции (и тут Остапа понесло))) )
+// Мы можем пойти дальше и повысить уровень абстракции
 // =========
-// не пугайтесь если сразу непонятно, поймете дальше
+// не пугайтесь, если сразу непонятно, поймете дальше
 
-// filter :: (* -> Boolean) -> [a] -> [a]
+// filter :: (a -> Boolean, [a]) -> [a]
 const filter = (predicat, arr) => arr.filter(predicat)
 
-// filterBy :: (* -> Boolean) -> [a] -> [a]
+// filterBy :: (a -> Boolean) -> [a] -> [a]
 const filterBy = (predicat) => (arr) => filter(predicat, arr)
 
-// gt :: Number -> (Number -> Boolean) -> Boolean
+// gt :: Number -> Number -> Boolean
 const gt = pointer => number => number > pointer
 
 // теперь мы создаем любые функции предикаты
 // для фильтрации
-// gt2 :: Number -> (Number -> Boolean)
+// gt2 :: Number -> Boolean
 const gt2 = gt(2) // предикат для фильтрации чисел больше 2
 const gt3 = gt(3) // предикат для фильтрации чисел больше 3
 
@@ -70,12 +70,12 @@ const arr = [1, 2, 3, 4, 5]
 const more2 = filterBy (gt2) (arr) // получаем числа больше 2
 const more3 = filterBy (gt3) (arr) // получаем числа больше 3
 
-// мы можем также главную функцию фильтрации подготовить для конвееров
+// мы можем также главную функцию фильтрации подготовить для конвейеров
 // не вызывая сразу ее
 // filterByGt2 :: [a] -> [a]
 const filterByGt2 = filterBy (gt2) // ожидает массива
 
-// filterByGt2 (arr) из названия мы уже понимаем что идет фильтрация чисел больше 2
+// filterByGt2 (arr) из названия мы уже понимаем, что идет фильтрация чисел больше 2
 const resultGt2 = filterByGt2 (arr) // получаем готовый результат числа больше 2
 // ======`,
         en: `// например получить все числа больше 3 из текущего массива
@@ -101,27 +101,27 @@ console.log(result) // 4, 5
 // isGt3 :: Number -> Boolean
 const isGt3 = number => number > 3
 
-const declarativeResult = numbers.filter(isGt3) // мы не вникаем в реализацию а просто читаем название
+const declarativeResult = numbers.filter(isGt3) // мы не вникаем в реализацию, а просто читаем название
 
 console.log(declarativeResult) // 4, 5 тот же результат более декларативен
 // =========
 
-// Мы можем повысить слои абстракции (и тут Остапа понесло))) )
+// Мы можем пойти дальше и повысить уровень абстракции
 // =========
-// не пугайтесь если сразу непонятно, поймете дальше
+// не пугайтесь, если сразу непонятно, поймете дальше
 
-// filter :: (* -> Boolean) -> [a] -> [a]
+// filter :: (a -> Boolean, [a]) -> [a]
 const filter = (predicat, arr) => arr.filter(predicat)
 
-// filterBy :: (* -> Boolean) -> [a] -> [a]
+// filterBy :: (a -> Boolean) -> [a] -> [a]
 const filterBy = (predicat) => (arr) => filter(predicat, arr)
 
-// gt :: Number -> (Number -> Boolean) -> Boolean
+// gt :: Number -> Number -> Boolean
 const gt = pointer => number => number > pointer
 
 // теперь мы создаем любые функции предикаты
 // для фильтрации
-// gt2 :: Number -> (Number -> Boolean)
+// gt2 :: Number -> Boolean
 const gt2 = gt(2) // предикат для фильтрации чисел больше 2
 const gt3 = gt(3) // предикат для фильтрации чисел больше 3
 
@@ -131,12 +131,12 @@ const arr = [1, 2, 3, 4, 5]
 const more2 = filterBy (gt2) (arr) // получаем числа больше 2
 const more3 = filterBy (gt3) (arr) // получаем числа больше 3
 
-// мы можем также главную функцию фильтрации подготовить для конвееров
+// мы можем также главную функцию фильтрации подготовить для конвейеров
 // не вызывая сразу ее
 // filterByGt2 :: [a] -> [a]
 const filterByGt2 = filterBy (gt2) // ожидает массива
 
-// filterByGt2 (arr) из названия мы уже понимаем что идет фильтрация чисел больше 2
+// filterByGt2 (arr) из названия мы уже понимаем, что идет фильтрация чисел больше 2
 const resultGt2 = filterByGt2 (arr) // получаем готовый результат числа больше 2
 // ======`,
       },
