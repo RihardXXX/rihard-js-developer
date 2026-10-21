@@ -9,8 +9,8 @@ const lesson: Lesson = {
   blocks: [
     {
       type: 'text',
-      ru: "Композиция функций — это способность функций вызываться последовательно, где результат одной функции передаётся следующей.",
-      en: "Function composition is the ability of functions to be called in sequence, where the result of one function is passed to the next.",
+      ru: "Композиция функций — это объединение функций в новую функцию, которая вызывает их последовательно: результат одной функции передаётся следующей.",
+      en: "Function composition combines functions into a new function that calls them in sequence: the result of one function is passed to the next.",
     },
     {
       type: 'text',
@@ -21,14 +21,14 @@ const lesson: Lesson = {
       type: 'code',
       code: {
         ru: `// === композиция из 3 функций ===
-// compose :: (c -> z) -> (b -> c) -> (a -> b) -> a -> z
+// compose :: ((c -> z), (b -> c), (a -> b)) -> a -> z
 const compose = (f3, f2, f1) => (...args) => f3(f2(f1(...args)))
 
 // использование функции
 // наша цель
 // 1. Получить пользователей со статусом онлайн
 // 2. Их имена
-// 3. Вывезти список имен в лог
+// 3. Вывести список имён в лог
 
 // fetchAllUsers :: * -> Promise a
 const fetchAllUsers = () => new Promise(resolve => resolve([
@@ -53,12 +53,12 @@ fetchAllUsers() // имитируем запрос
   .then( // дожидаемся ответа
     compose( // результат бросаем в композицию функций
         console.log, // логируем результаты
-        (usersActive) => usersActive.map(user => user.name), /// собираем имена
+        (usersActive) => usersActive.map(user => user.name), // собираем имена
         (data) => data.filter(user => user.status === 'online'), // фильтруем по статусу
       )
     )
 
-// таже самая композиция только в рамках типа Array
+// та же самая композиция, только в рамках типа Array
 // не совсем классический функциональный подход
 fetchAllUsers() // имитируем запрос
   .then( // дожидаемся ответа
@@ -71,14 +71,14 @@ fetchAllUsers() // имитируем запрос
 
 // ===============================`,
         en: `// === композиция из 3 функций ===
-// compose :: (c -> z) -> (b -> c) -> (a -> b) -> a -> z
+// compose :: ((c -> z), (b -> c), (a -> b)) -> a -> z
 const compose = (f3, f2, f1) => (...args) => f3(f2(f1(...args)))
 
 // использование функции
 // наша цель
 // 1. Получить пользователей со статусом онлайн
 // 2. Их имена
-// 3. Вывезти список имен в лог
+// 3. Вывести список имён в лог
 
 // fetchAllUsers :: * -> Promise a
 const fetchAllUsers = () => new Promise(resolve => resolve([
@@ -103,12 +103,12 @@ fetchAllUsers() // имитируем запрос
   .then( // дожидаемся ответа
     compose( // результат бросаем в композицию функций
         console.log, // логируем результаты
-        (usersActive) => usersActive.map(user => user.name), /// собираем имена
+        (usersActive) => usersActive.map(user => user.name), // собираем имена
         (data) => data.filter(user => user.status === 'online'), // фильтруем по статусу
       )
     )
 
-// таже самая композиция только в рамках типа Array
+// та же самая композиция, только в рамках типа Array
 // не совсем классический функциональный подход
 fetchAllUsers() // имитируем запрос
   .then( // дожидаемся ответа
@@ -135,18 +135,18 @@ fetchAllUsers() // имитируем запрос
     {
       type: 'code',
       code: {
-        ru: `// === композиция из 3 функций в человеко читаемом формате ===
-// порядок сменился на слева на право
-// pipe ::  (a -> b) -> (b -> c) -> (c -> z) -> a -> z
+        ru: `// === композиция из 3 функций в человекочитаемом формате ===
+// порядок сменился: слева направо
+// pipe :: ((a -> b), (b -> c), (c -> z)) -> a -> z
 const pipe = (f1, f2, f3) => (...args) => f3(f2(f1(...args)))
 
-// Теперь композицию удобнее читать слева на право
+// Теперь композицию удобнее читать слева направо
 
 fetchAllUsers() // имитируем запрос
   .then( // дожидаемся ответа
     pipe( // результат бросаем в композицию функций
         (data) => data.filter(user => user.status === 'online'), // фильтруем по статусу
-        (usersActive) => usersActive.map(user => user.name), /// собираем имена
+        (usersActive) => usersActive.map(user => user.name), // собираем имена
         console.log, // логируем результаты
       )
     )
@@ -160,18 +160,18 @@ fetchAllUsers() // имитируем запрос
 // 1 -> 2 -> 3
 
 // ===============================`,
-        en: `// === композиция из 3 функций в человеко читаемом формате ===
-// порядок сменился на слева на право
-// pipe ::  (a -> b) -> (b -> c) -> (c -> z) -> a -> z
+        en: `// === композиция из 3 функций в человекочитаемом формате ===
+// порядок сменился: слева направо
+// pipe :: ((a -> b), (b -> c), (c -> z)) -> a -> z
 const pipe = (f1, f2, f3) => (...args) => f3(f2(f1(...args)))
 
-// Теперь композицию удобнее читать слева на право
+// Теперь композицию удобнее читать слева направо
 
 fetchAllUsers() // имитируем запрос
   .then( // дожидаемся ответа
     pipe( // результат бросаем в композицию функций
         (data) => data.filter(user => user.status === 'online'), // фильтруем по статусу
-        (usersActive) => usersActive.map(user => user.name), /// собираем имена
+        (usersActive) => usersActive.map(user => user.name), // собираем имена
         console.log, // логируем результаты
       )
     )
@@ -194,8 +194,8 @@ fetchAllUsers() // имитируем запрос
     },
     {
       type: 'text',
-      ru: "В реальных проектах используйте compose или pipe из готовых библиотек. Мы попробуем создать compose несколькими способами (императивно) (декларативно) (рекурсивно).",
-      en: "In real projects, use compose or pipe from existing libraries. We will try to build compose in several ways: (imperatively) (declaratively) (recursively).",
+      ru: "В реальных проектах используйте compose или pipe из готовых библиотек. Мы попробуем создать pipe несколькими способами: императивно, декларативно и рекурсивно.",
+      en: "In real projects, use compose or pipe from existing libraries. We will try to build pipe in several ways: imperatively, declaratively and recursively.",
     },
     {
       type: 'code',
@@ -203,11 +203,11 @@ fetchAllUsers() // имитируем запрос
         ru: `// === композиция функций в нестрого заданном количестве функций ===
 
 // === Способ императивный ===
-// порядок сменился на слева на право
-// pipe ::  (a -> b) -> ..., -> a -> z
+// порядок сменился: слева направо
+// pipe :: ((a -> b), (b -> c), ..., (y -> z)) -> a -> z
 const pipe = (...fns) => (...args) => {
 
-  // дробим массив функций на голову и хвост ))
+  // дробим массив функций на голову и хвост
   const [ head, ...tail ] = fns
 
   // переменная с результатом выполнения
@@ -228,11 +228,11 @@ const pipe = (...fns) => (...args) => {
         en: `// === композиция функций в нестрого заданном количестве функций ===
 
 // === Способ императивный ===
-// порядок сменился на слева на право
-// pipe ::  (a -> b) -> ..., -> a -> z
+// порядок сменился: слева направо
+// pipe :: ((a -> b), (b -> c), ..., (y -> z)) -> a -> z
 const pipe = (...fns) => (...args) => {
 
-  // дробим массив функций на голову и хвост ))
+  // дробим массив функций на голову и хвост
   const [ head, ...tail ] = fns
 
   // переменная с результатом выполнения
@@ -263,14 +263,14 @@ const pipe = (...fns) => (...args) => {
         ru: `// === композиция функций в нестрого заданном количестве функций ===
 
 // === Способ декларативный ===
-// порядок сменился на слева на право
-// pipe ::  (a -> b) -> ..., -> a -> z
+// порядок сменился: слева направо
+// pipe :: ((a -> b), (b -> c), ..., (y -> z)) -> a -> z
 const pipe = (...fns) => (arg) => fns.reduce(
-    (init, fn) => fn(init), // акумм значение или инит бросаем в функцию
+    (init, fn) => fn(init), // накопленное значение (на первом шаге — arg) передаём в функцию
     arg // аргумент первого вызова
   )
 
-// на первый взгляд в этой функции все топчик))
+// на первый взгляд с этой функцией всё в порядке
 // и с точки зрения функционального подхода аргумент лучше и правильнее когда один
 // но может быть ситуация когда при первом запуске аргументов 2 и более
 const pipeMultiArgs = (...fns) => (...args) => fns.reduce(
@@ -282,14 +282,14 @@ const pipeMultiArgs = (...fns) => (...args) => fns.reduce(
         en: `// === композиция функций в нестрого заданном количестве функций ===
 
 // === Способ декларативный ===
-// порядок сменился на слева на право
-// pipe ::  (a -> b) -> ..., -> a -> z
+// порядок сменился: слева направо
+// pipe :: ((a -> b), (b -> c), ..., (y -> z)) -> a -> z
 const pipe = (...fns) => (arg) => fns.reduce(
-    (init, fn) => fn(init), // акумм значение или инит бросаем в функцию
+    (init, fn) => fn(init), // накопленное значение (на первом шаге — arg) передаём в функцию
     arg // аргумент первого вызова
   )
 
-// на первый взгляд в этой функции все топчик))
+// на первый взгляд с этой функцией всё в порядке
 // и с точки зрения функционального подхода аргумент лучше и правильнее когда один
 // но может быть ситуация когда при первом запуске аргументов 2 и более
 const pipeMultiArgs = (...fns) => (...args) => fns.reduce(
@@ -302,8 +302,8 @@ const pipeMultiArgs = (...fns) => (...args) => fns.reduce(
     },
     {
       type: 'text',
-      ru: "Мы также можем реализовать композицию функций рекурсивно. Сразу сделаем оптимизацию хвостовой рекурсии и сократим количество вызовов вдвое.",
-      en: "We can also implement function composition recursively. We'll apply tail-call optimization right away and cut the number of calls in half.",
+      ru: "Мы также можем реализовать композицию функций рекурсивно. Вызов pipe(...tail)(head(arg)) стоит в хвостовой позиции, но число вызовов от этого не уменьшается. При proper tail calls (ES2015) хвостовой вызов не увеличивает глубину стека, но из браузерных движков это есть только в JavaScriptCore (Safari): в V8 (Chrome, Node.js) это было за флагом и удалено, в SpiderMonkey (Firefox) этого нет. Поэтому для глубокой рекурсии в JS нужен трамплин — о нём в уроке «Рекурсия». Для pipe из нескольких функций глубина стека не проблема.",
+      en: "We can also implement function composition recursively. The call pipe(...tail)(head(arg)) is in tail position, but that does not reduce the number of calls. With proper tail calls (ES2015) a tail call does not grow the stack, but among browser engines only JavaScriptCore (Safari) implements them: V8 (Chrome, Node.js) had them behind a flag and removed them, and SpiderMonkey (Firefox) does not have them. That is why deep recursion in JS needs a trampoline — more on it in the \"Recursion\" lesson. For a pipe of a few functions, stack depth is not a problem.",
     },
     {
       type: 'code',
@@ -311,8 +311,8 @@ const pipeMultiArgs = (...fns) => (...args) => fns.reduce(
         ru: `// === композиция функций в нестрого заданном количестве функций ===
 
 // === Способ рекурсивный ===
-// порядок сменился на слева на право
-// pipe ::  (a -> b) -> ..., -> a -> z
+// порядок сменился: слева направо
+// pipe :: ((a -> b), (b -> c), ..., (y -> z)) -> a -> z
 const pipe = (...fns) => (arg) => {
 
   // базовый случай — одна функция осталась
@@ -333,8 +333,8 @@ const pipe = (...fns) => (arg) => {
         en: `// === композиция функций в нестрого заданном количестве функций ===
 
 // === Способ рекурсивный ===
-// порядок сменился на слева на право
-// pipe ::  (a -> b) -> ..., -> a -> z
+// порядок сменился: слева направо
+// pipe :: ((a -> b), (b -> c), ..., (y -> z)) -> a -> z
 const pipe = (...fns) => (arg) => {
 
   // базовый случай — одна функция осталась
