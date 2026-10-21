@@ -76,53 +76,53 @@ const sumPartial = partial (sum)
 // теперь мы можем вызывать возвращенную функцию
 console.log ( sumPartial (1) (1, 1) ) // 3
 console.log ( sumPartial (1, 1) (1) ) // 3`,
-        en: `//  пример функции с частичным применением
+        en: `//  example of functions with partial application
 // partialSumA :: Number -> (Number, Number) -> Number
 const partialSumA = (a) => (b, c) => a + b + c
 // partialSumB :: (Number, Number) -> Number -> Number
 const partialSumB = (a, b) => (c) => a + b + c
 
-// давайте теперь вызовем эти функции
+// now let's call these functions
 console.log ( partialSumA (1) (1, 1) ) // 3
 console.log ( partialSumB (1, 1) (1) ) // 3
 
-// А давайте напишем функцию, которая применяет
-// частичное применение к любой обычной функции
+// Now let's write a function that applies
+// partial application to any regular function
 
 // partial :: ((a, b, c, ..., n) -> x) -> (a, b, c, ...) -> ((d, e, f, ..., n) -> x)
 const partial = (fn) => {
 
-  // количество параметров у исходной функции
+  // number of parameters of the original function
   const lengthArgs = fn.length
 
-  // возвращаемая функция
+  // the returned function
   const innerPartial = (...firstArgs) => {
-    // если количество входящих аргументов
-    // больше или равно количеству параметров fn,
-    // значит, её можно вызвать сразу
+    // if the number of incoming arguments
+    // is greater than or equal to the number of fn's parameters,
+    // we can call it right away
     if (firstArgs.length >= lengthArgs) {
       return fn (...firstArgs)
     }
 
-    // иначе мы вторым вызовом
-    // запускаем функцию в любом случае
+    // otherwise the second call
+    // runs the function no matter what
     return (...secondArgs) => fn (...firstArgs, ...secondArgs)
   }
 
   return innerPartial
 }
 
-// можем применить нашу функцию
-// которая применяет частичное применение
-// к любой функции
+// we can use our function
+// that applies partial application
+// to any function
 
 // sum :: (Number, Number, Number) -> Number
 const sum = (a, b, c) => a + b + c
 
-// получаем функцию, которой аргументы можно передать в два вызова
+// we get a function whose arguments can be passed in two calls
 const sumPartial = partial (sum)
 
-// теперь мы можем вызывать возвращенную функцию
+// now we can call the returned function
 console.log ( sumPartial (1) (1, 1) ) // 3
 console.log ( sumPartial (1, 1) (1) ) // 3`,
       },
