@@ -14,6 +14,7 @@ import composition from './lessons/composition'
 import currying from './lessons/currying'
 import curryingAndAsynchrony from './lessons/currying-and-asynchrony'
 import partialApplication from './lessons/partial-application'
+import pointFree from './lessons/point-free'
 import recursion from './lessons/recursion'
 import performance from './lessons/performance'
 import neuralNetworks from './lessons/neural-networks'
@@ -37,6 +38,7 @@ export const lessons: Lesson[] = [
   composition,
   currying,
   partialApplication,
+  pointFree,
   curryingAndAsynchrony,
   recursion,
   functionMapFilterReduce,
