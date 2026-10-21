@@ -18,14 +18,18 @@ const lesson: Lesson = {
       en: "In real-world cases, side effects within function composition can be useful to us mainly in two situations:",
     },
     {
-      type: 'text',
-      ru: "1. Отладка композиции и её логирование, в случае ошибок или вообще, чтобы понимать поток выполнения и изменения входных данных в композиции функции.",
-      en: "1. Debugging the composition and logging it, in case of errors or simply to understand the execution flow and how the input data changes within the function composition.",
-    },
-    {
-      type: 'text',
-      ru: "2. Создание побочного эффекта в рамках программы согласно её логике и продолжение выполнения композиции функций.",
-      en: "2. Creating a side effect within the program according to its logic and continuing the execution of the function composition.",
+      type: 'list',
+      ordered: true,
+      items: [
+        {
+          ru: "Отладка композиции и её логирование, в случае ошибок или вообще, чтобы понимать поток выполнения и изменения входных данных в композиции функции.",
+          en: "Debugging the composition and logging it, in case of errors or simply to understand the execution flow and how the input data changes within the function composition.",
+        },
+        {
+          ru: "Создание побочного эффекта в рамках программы согласно её логике и продолжение выполнения композиции функций.",
+          en: "Creating a side effect within the program according to its logic and continuing the execution of the function composition.",
+        },
+      ],
     },
     {
       type: 'text',
