@@ -3,13 +3,13 @@ import type { Lesson } from '~/data/course-types'
 const lesson: Lesson = {
   slug: 'side-effects-in-composition-functions',
   title: {
-    ru: "Side effects (сайд-побочные эффекты) в композиции функций",
+    ru: "Side effects (побочные эффекты) в композиции функций",
     en: "Side effects in function composition",
   },
   blocks: [
     {
       type: 'text',
-      ru: "Исходя из принципов функционального программирования можно подумать, что создавать сайд-побочные эффекты в композиции функций нельзя. Но на самом деле любая программа и в особенности веб разработка в любом случае создаст какой-нибудь побочный эффект (операции с DOM, операции ввода и вывода, логирование и тому подобное ...).",
+      ru: "Исходя из принципов функционального программирования можно подумать, что создавать побочные эффекты в композиции функций нельзя. Но на самом деле любая программа и в особенности веб разработка в любом случае создаст какой-нибудь побочный эффект (операции с DOM, операции ввода и вывода, логирование и тому подобное ...).",
       en: "Based on the principles of functional programming, one might think that creating side effects within function composition is forbidden. But in reality, any program, and especially web development, will create some side effect no matter what (DOM operations, input/output operations, logging, and so on ...).",
     },
     {
@@ -50,7 +50,7 @@ const dataUser = {
   money: 10000,
 }
 
-// товар с ценной 8 000$
+// товар с ценой 8 000$
 const product = {
   name: 'car',
   model: 'toyota',
@@ -89,7 +89,7 @@ const dataUser = {
   money: 10000,
 }
 
-// товар с ценной 8 000$
+// товар с ценой 8 000$
 const product = {
   name: 'car',
   model: 'toyota',
@@ -141,7 +141,7 @@ const tapD = (fn) => (arg) => {
     fn (arg)
   }
 
-  // не забываем дальше прокинут аргумент
+  // не забываем дальше прокинуть аргумент
   // для вызова в композиции функций
   return arg
 }
@@ -160,7 +160,7 @@ const log = console.log
 // создаем логгер
 const logger = tap (log)
 
-// 😎 вводим логгер в цепочку вызовов функций
+// вводим логгер в цепочку вызовов функций
 // сразу запустим цепочку
 pipe(
   prop ('money'),
@@ -183,7 +183,7 @@ const tapD = (fn) => (arg) => {
     fn (arg)
   }
 
-  // не забываем дальше прокинут аргумент
+  // не забываем дальше прокинуть аргумент
   // для вызова в композиции функций
   return arg
 }
@@ -202,7 +202,7 @@ const log = console.log
 // создаем логгер
 const logger = tap (log)
 
-// 😎 вводим логгер в цепочку вызовов функций
+// вводим логгер в цепочку вызовов функций
 // сразу запустим цепочку
 pipe(
   prop ('money'),
