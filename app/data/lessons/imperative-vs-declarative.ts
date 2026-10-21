@@ -49,7 +49,7 @@ console.log(declarativeResult) // 4, 5 тот же результат более
 // =========
 // не пугайтесь, если сразу непонятно, поймете дальше
 
-// filter :: (a -> Boolean, [a]) -> [a]
+// filter :: ((a -> Boolean), [a]) -> [a]
 const filter = (predicat, arr) => arr.filter(predicat)
 
 // filterBy :: (a -> Boolean) -> [a] -> [a]
@@ -110,7 +110,7 @@ console.log(declarativeResult) // 4, 5: the same result, but more declarative
 // =========
 // don't worry if it isn't clear right away, it will be later
 
-// filter :: (a -> Boolean, [a]) -> [a]
+// filter :: ((a -> Boolean), [a]) -> [a]
 const filter = (predicat, arr) => arr.filter(predicat)
 
 // filterBy :: (a -> Boolean) -> [a] -> [a]

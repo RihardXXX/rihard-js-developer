@@ -131,7 +131,7 @@ console.log(resultMsg) // the product can be purchased`,
         ru: `// Утилита которая вызовет функцию в аргументе
 // и прокинет аргумент дальше по композиции
 // ===============================
-// tapD :: (a → *) → a → a
+// tapD :: (a -> *) -> a -> a
 const tapD = (fn) => (arg) => {
 
   // делаем проверку
@@ -147,7 +147,7 @@ const tapD = (fn) => (arg) => {
 }
 
 // можно сократить в одну строку
-// tap :: (a → *) → a → a
+// tap :: (a -> *) -> a -> a
 const tap = (fn) => (arg) => (fn (arg), arg)
 
 // а теперь давайте подготовим утилиту
@@ -173,7 +173,7 @@ pipe(
         en: `// A utility that calls the function it was given
 // and passes the argument further down the composition
 // ===============================
-// tapD :: (a → *) → a → a
+// tapD :: (a -> *) -> a -> a
 const tapD = (fn) => (arg) => {
 
   // check that the first argument
@@ -189,7 +189,7 @@ const tapD = (fn) => (arg) => {
 }
 
 // it can be shortened to one line
-// tap :: (a → *) → a → a
+// tap :: (a -> *) -> a -> a
 const tap = (fn) => (arg) => (fn (arg), arg)
 
 // now let's prepare a utility

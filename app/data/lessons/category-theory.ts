@@ -42,7 +42,7 @@ const concatX = num => \`\${num} X\`
 // toArray:: a -> [a]
 const toArray = word => [word]
 
-// compose :: (b -> c, a -> b) -> a -> c
+// compose :: ((b -> c), (a -> b)) -> a -> c
 const compose = (f2, f1) => (...args) => f2(f1(...args))
 
 const pipeline = compose(
@@ -77,7 +77,7 @@ const concatX = num => \`\${num} X\`
 // toArray:: a -> [a]
 const toArray = word => [word]
 
-// compose :: (b -> c, a -> b) -> a -> c
+// compose :: ((b -> c), (a -> b)) -> a -> c
 const compose = (f2, f1) => (...args) => f2(f1(...args))
 
 const pipeline = compose(
@@ -127,7 +127,7 @@ const превратитьВВоду = лёд => (держим в комнатн
 // превратитьВПар:: вода -> пар
 const превратитьВПар = вода=> (производим сильный нагрев, пар)
 
-// композицияПроцессов :: (b -> c, a -> b) -> a -> c
+// композицияПроцессов :: ((b -> c), (a -> b)) -> a -> c
 const композицияПроцессов = (f2, f1) => (...args) => f2(f1(...args))
 
 const pipeline = композицияПроцессов(
@@ -153,7 +153,7 @@ const turnIntoWater = ice => (keep at room temperature, water)
 // turnIntoSteam:: water -> steam
 const turnIntoSteam = water=> (apply strong heat, steam)
 
-// composeProcesses :: (b -> c, a -> b) -> a -> c
+// composeProcesses :: ((b -> c), (a -> b)) -> a -> c
 const composeProcesses = (f2, f1) => (...args) => f2(f1(...args))
 
 const pipeline = composeProcesses(

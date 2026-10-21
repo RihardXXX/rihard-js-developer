@@ -69,7 +69,7 @@ fetchAllUsers().then(getAgeAverage)
 // но про это мы поговорим еще позже
 
 // а теперь то же самое сделаем с помощью рекурсии
-// recurAgeAverage :: [a] -> Number -> Number -> Number
+// recurAgeAverage :: ([a], Number, Number) -> Number
 const recurAgeAverage = (
     users, // массив данных пользователей
     sumAges = 0, // сумма возрастов пользователей
@@ -149,7 +149,7 @@ fetchAllUsers().then(getAgeAverage)
 // but we'll talk about that later
 
 // now let's do the same thing with recursion
-// recurAgeAverage :: [a] -> Number -> Number -> Number
+// recurAgeAverage :: ([a], Number, Number) -> Number
 const recurAgeAverage = (
     users, // array of user data
     sumAges = 0, // sum of the users' ages
@@ -406,7 +406,7 @@ sum ([], 16.5) // returns result 16.5
         ru: `// === 1. Асинхронный вызов рекурсии ====
 
 // обратите внимание, что рекурсивный случай оборачивается в таймер
-// sum :: [a] -> Number -> (Number -> *)
+// sumD :: ([a], Number, (Number -> *)) -> Undefined
 const sumD = (users, result = 0, callback) => {
 
   // базовый случай условие выхода
@@ -463,7 +463,7 @@ sum ([], 16.5, (total) => console.log(total)) // вызовет callback с resu
         en: `// === 1. Asynchronous recursive call ====
 
 // note that the recursive case is wrapped in a timer
-// sum :: [a] -> Number -> (Number -> *)
+// sumD :: ([a], Number, (Number -> *)) -> Undefined
 const sumD = (users, result = 0, callback) => {
 
   // base case, the exit condition:
@@ -586,7 +586,7 @@ const trampoline = (fn) => (...args) => {
 }
 
 // давайте сократим запись
-// sumD :: [a] -> Number -> Number
+// sumD :: ([a], Number) -> (Number | (() -> *))
 const sumD = (users, result = 0) => {
 
   // если массив пустой то возвращаем результат
@@ -600,7 +600,7 @@ const sumD = (users, result = 0) => {
 }
 
 // давайте перепишем в одну строку функцию
-// sum :: [a] -> Number -> Number
+// sum :: ([a], Number) -> (Number | (() -> *))
 const sum = (users, result = 0) =>
       !users.length
        ? result
@@ -637,7 +637,7 @@ const trampoline = (fn) => (...args) => {
 }
 
 // let's shorten the notation
-// sumD :: [a] -> Number -> Number
+// sumD :: ([a], Number) -> (Number | (() -> *))
 const sumD = (users, result = 0) => {
 
   // if the array is empty, return the result
@@ -651,7 +651,7 @@ const sumD = (users, result = 0) => {
 }
 
 // let's rewrite the function as a one-liner
-// sum :: [a] -> Number -> Number
+// sum :: ([a], Number) -> (Number | (() -> *))
 const sum = (users, result = 0) =>
       !users.length
        ? result

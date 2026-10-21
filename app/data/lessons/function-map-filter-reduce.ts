@@ -504,13 +504,13 @@ console.log (result) // [4, 5]
 // pipe (mapD (f), filterD (g))
 
 // ==== реализация декларативная ====
-// reduceD :: ((a, b) → a) → a → [b] → a
+// reduceD :: ((a, b) -> a) -> a -> [b] -> a
 const reduceD = (fn) => (init) => (arr) => arr.reduce(fn, init)
 // ===================================
 
 // ==== реализация императивная ====
 // без индекса итерации и контекста
-// reduceI :: ((a, b) → a) → a → [b] → a
+// reduceI :: ((a, b) -> a) -> a -> [b] -> a
 const reduceI = (fn) => (init) => (arr) => {
 
   // значение которое будем возвращать
@@ -532,7 +532,7 @@ const reduceI = (fn) => (init) => (arr) => {
 
 // ==== реализация императивная ====
 // с индексом итерации и контекстом
-// reduceIq :: ((a, b, Number, [b]) → a) → a → [b] → a
+// reduceIq :: ((a, b, Number, [b]) -> a) -> a -> [b] -> a
 const reduceIq = (fn) => (init) => (arr) => {
 
   let accumulator = init
@@ -589,7 +589,7 @@ const reduceR = (fn) => (init) => (arr, i = 0) => {
   }
 }
 
-// reduceTrampoline :: ((a, b) → a) → a → [b] → a
+// reduceTrampoline :: ((a, b) -> a) -> a -> [b] -> a
 // снаружи передаём только массив: индекс внутренний
 // ограничение трамплина: если итоговое значение само функция,
 // трамплин примет его за следующий шаг и вызовет
@@ -609,13 +609,13 @@ console.log (result) // 6
 // pipe (mapD (f), filterD (g))
 
 // ==== declarative implementation ====
-// reduceD :: ((a, b) → a) → a → [b] → a
+// reduceD :: ((a, b) -> a) -> a -> [b] -> a
 const reduceD = (fn) => (init) => (arr) => arr.reduce(fn, init)
 // ===================================
 
 // ==== imperative implementation ====
 // without the iteration index and context
-// reduceI :: ((a, b) → a) → a → [b] → a
+// reduceI :: ((a, b) -> a) -> a -> [b] -> a
 const reduceI = (fn) => (init) => (arr) => {
 
   // the value we will return
@@ -637,7 +637,7 @@ const reduceI = (fn) => (init) => (arr) => {
 
 // ==== imperative implementation ====
 // with the iteration index and context
-// reduceIq :: ((a, b, Number, [b]) → a) → a → [b] → a
+// reduceIq :: ((a, b, Number, [b]) -> a) -> a -> [b] -> a
 const reduceIq = (fn) => (init) => (arr) => {
 
   let accumulator = init
@@ -694,7 +694,7 @@ const reduceR = (fn) => (init) => (arr, i = 0) => {
   }
 }
 
-// reduceTrampoline :: ((a, b) → a) → a → [b] → a
+// reduceTrampoline :: ((a, b) -> a) -> a -> [b] -> a
 // from the outside we pass only the array: the index is internal
 // a limitation of the trampoline: if the final value is itself a function,
 // the trampoline takes it for the next step and calls it

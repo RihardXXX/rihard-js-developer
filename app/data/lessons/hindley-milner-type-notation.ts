@@ -61,6 +61,8 @@ const map = (mappable) => (arr) => arr.map(mappable)
 // a -> b -> c      каррированная функция: принимает a и возвращает функцию b -> c
 // (a, b) -> c      некаррированная функция двух аргументов
 // *                любой тип
+// a | b            значение типа a или типа b
+// () -> a          функция без аргументов
 // [a]              массив значений типа a
 // Maybe a          значение типа a или его отсутствие
 // Functor f =>     ограничение: f должен быть функтором
@@ -101,6 +103,8 @@ const map = (mappable) => (arr) => arr.map(mappable)
 // a -> b -> c      a curried function: takes a and returns a function b -> c
 // (a, b) -> c      an uncurried function of two arguments
 // *                any type
+// a | b            a value of type a or of type b
+// () -> a          a function with no arguments
 // [a]              an array of values of type a
 // Maybe a          a value of type a, or its absence
 // Functor f =>     a constraint: f must be a functor
