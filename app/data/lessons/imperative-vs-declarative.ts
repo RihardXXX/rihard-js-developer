@@ -40,9 +40,9 @@ console.log(result) // 4, 5
 // isGt3 :: Number -> Boolean
 const isGt3 = number => number > 3
 
-const result = numbers.filter(isGt3) // мы не вникаем в реализацию а просто читаем название
+const declarativeResult = numbers.filter(isGt3) // мы не вникаем в реализацию а просто читаем название
 
-console.log(result) // 4, 5 тот же результат более декларативен
+console.log(declarativeResult) // 4, 5 тот же результат более декларативен
 // =========
 
 // Мы можем повысить слои абстракции (и тут Остапа понесло))) )
@@ -76,7 +76,7 @@ const more3 = filterBy (gt3) (arr) // получаем числа больше 3
 const filterByGt2 = filterBy (gt2) // ожидает массива
 
 // filterByGt2 (arr) из названия мы уже понимаем что идет фильтрация чисел больше 2
-const result = filterByGt2 (arr) // получаем готовый результат числа больше 2
+const resultGt2 = filterByGt2 (arr) // получаем готовый результат числа больше 2
 // ======`,
         en: `// например получить все числа больше 3 из текущего массива
 
@@ -101,9 +101,9 @@ console.log(result) // 4, 5
 // isGt3 :: Number -> Boolean
 const isGt3 = number => number > 3
 
-const result = numbers.filter(isGt3) // мы не вникаем в реализацию а просто читаем название
+const declarativeResult = numbers.filter(isGt3) // мы не вникаем в реализацию а просто читаем название
 
-console.log(result) // 4, 5 тот же результат более декларативен
+console.log(declarativeResult) // 4, 5 тот же результат более декларативен
 // =========
 
 // Мы можем повысить слои абстракции (и тут Остапа понесло))) )
@@ -137,7 +137,7 @@ const more3 = filterBy (gt3) (arr) // получаем числа больше 3
 const filterByGt2 = filterBy (gt2) // ожидает массива
 
 // filterByGt2 (arr) из названия мы уже понимаем что идет фильтрация чисел больше 2
-const result = filterByGt2 (arr) // получаем готовый результат числа больше 2
+const resultGt2 = filterByGt2 (arr) // получаем готовый результат числа больше 2
 // ======`,
       },
     },
