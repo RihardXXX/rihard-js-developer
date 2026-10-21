@@ -3,6 +3,10 @@ import type { Lesson } from '~/data/course-types'
 const lesson: Lesson = {
   slug: 'currying-and-asynchrony',
   title: { ru: "Каррирование и Асинхронность (Эволюция)", en: "Currying and asynchrony (evolution)" },
+  description: {
+    ru: "Каррирование в асинхронном JavaScript: специализированные функции запросов и pipeAsync, который сам дожидается промисов и собирает ошибки в один catch.",
+    en: "Currying in asynchronous JavaScript: specialized request functions and a pipeAsync that waits for promises by itself and sends every error to a single catch.",
+  },
   goal: {
     ru: "Научиться применять каррирование в асинхронном коде: создавать специализированные функции запросов и собирать асинхронные шаги в конвейер, который сам дожидается промисов.",
     en: "Learn to apply currying to asynchronous code: build specialized request functions and chain asynchronous steps into a pipeline that waits for promises by itself.",

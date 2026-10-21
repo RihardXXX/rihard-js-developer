@@ -6,6 +6,10 @@ const lesson: Lesson = {
     ru: "Каррирование",
     en: "Currying",
   },
+  description: {
+    ru: "Каррированная функция в JavaScript ждёт все аргументы: как каррировать вручную и через curry, встраивать в композицию и получать специализированные функции.",
+    en: "How a curried JavaScript function waits for all of its arguments, how to curry by hand and with curry, use it in composition and build specialized functions.",
+  },
   goal: {
     ru: "Понять, как каррированная функция откладывает вычисление до получения всех аргументов, и научиться каррировать функции вручную и через curry, чтобы встраивать их в композицию и создавать специализированные функции.",
     en: "Understand how a curried function postpones evaluation until it has all of its arguments, and learn to curry functions by hand and with curry to use them in composition and build specialized functions.",

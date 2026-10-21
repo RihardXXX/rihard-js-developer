@@ -3,6 +3,10 @@ import type { Lesson } from '~/data/course-types'
 const lesson: Lesson = {
   slug: 'pure-functions',
   title: { ru: "Чистые функции", en: "Pure functions" },
+  description: {
+    ru: "Как отличить чистую функцию от нечистой в JavaScript и вместо мутации внешних данных возвращать новый объект через spread или structuredClone.",
+    en: "How to tell a pure function from an impure one in JavaScript and return a new object with spread or structuredClone instead of mutating outside data.",
+  },
   goal: {
     ru: "Научиться отличать чистые функции от нечистых и переписывать нечистые так, чтобы они не мутировали внешние данные, а возвращали новое значение.",
     en: "Learn to tell pure functions from impure ones and to rewrite impure ones so that they return a new value instead of mutating outside data.",

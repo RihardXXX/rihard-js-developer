@@ -6,6 +6,10 @@ const lesson: Lesson = {
     ru: "Нотация типов Хиндли–Милнера",
     en: "Hindley–Milner type notation",
   },
+  description: {
+    ru: "Сигнатуры Хиндли–Милнера в JavaScript: как читать a -> b -> c и (a, b) -> c, переменные типа, [a] и Maybe a и как написать функцию по её сигнатуре.",
+    en: "Hindley–Milner signatures in JavaScript: how to read a -> b -> c and (a, b) -> c, type variables, [a] and Maybe a, and write a function from its signature.",
+  },
   goal: {
     ru: "Научиться читать сигнатуры в нотации Хиндли–Милнера — какие аргументы принимает функция, что возвращает и каррирована ли она — и писать функцию по ее сигнатуре.",
     en: "Learn to read Hindley–Milner signatures — which arguments a function takes, what it returns and whether it is curried — and to write a function from its signature.",
