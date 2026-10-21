@@ -275,8 +275,74 @@ console.log(isLongText('pipe compose curry tap lens')) // 5 words`,
     },
     {
       task: {
-        ru: "Проверьте на тех же морфизмах оба закона категории. Напишите тождественный морфизм id :: a -> a и функцию sameOn, которая считает две функции равными, если они дают одинаковый результат на всех строках из списка inputs. Сравните compose(id, countWords) и compose(countWords, id) с countWords, где countWords = compose(count, words), а затем compose(isLong, compose(count, words)) с compose(compose(isLong, count), words). Выведите по строке на каждую проверку.",
-        en: "Check both category laws on the same morphisms. Write the identity morphism id :: a -> a and a function sameOn that treats two functions as equal if they give the same result on every string in the inputs list. Compare compose(id, countWords) and compose(countWords, id) with countWords, where countWords = compose(count, words), and then compose(isLong, compose(count, words)) with compose(compose(isLong, count), words). Print one line per check.",
+        ru: "Проверьте на тех же морфизмах оба закона категории. Напишите тождественный морфизм id :: a -> a и функцию sameOn, которая считает две функции равными, если они дают одинаковый результат на всех строках из списка inputs. Проверки в заготовке сравнивают compose(id, countWords) и compose(countWords, id) с countWords, а затем compose(isLong, compose(count, words)) с compose(compose(isLong, count), words) и выводят по строке на каждую.",
+        en: "Check both category laws on the same morphisms. Write the identity morphism id :: a -> a and a function sameOn that treats two functions as equal if they give the same result on every string in the inputs list. The checks in the starter compare compose(id, countWords) and compose(countWords, id) with countWords, and then compose(isLong, compose(count, words)) with compose(compose(isLong, count), words), printing one line per check.",
+      },
+      starter: {
+        ru: `// compose :: ((b -> c), (a -> b)) -> a -> c
+const compose = (f2, f1) => (...args) => f2(f1(...args))
+
+// words :: String -> [String]
+const words = (text) => text.split(' ')
+// count :: [a] -> Number
+const count = (list) => list.length
+// isLong :: Number -> Boolean
+const isLong = (n) => n > 3
+
+// тождественный морфизм
+// id :: a -> a
+// ваш код
+
+// входы, на которых сравниваем функции
+const inputs = ['map filter reduce', 'pipe compose curry tap lens', 'functor']
+
+// две функции равны, если на всех входах дают одно и то же
+// sameOn :: ((a -> b), (a -> b)) -> Boolean
+// ваш код
+
+// countWords :: String -> Number
+const countWords = compose(count, words)
+
+// тождество: композиция с id ничего не меняет
+console.log(\`id . countWords = countWords: \${sameOn(compose(id, countWords), countWords)}\`)
+console.log(\`countWords . id = countWords: \${sameOn(compose(countWords, id), countWords)}\`)
+
+// ассоциативность: неважно, как расставить скобки
+const left = compose(isLong, compose(count, words))
+const right = compose(compose(isLong, count), words)
+console.log(\`isLong . (count . words) = (isLong . count) . words: \${sameOn(left, right)}\`)`,
+        en: `// compose :: ((b -> c), (a -> b)) -> a -> c
+const compose = (f2, f1) => (...args) => f2(f1(...args))
+
+// words :: String -> [String]
+const words = (text) => text.split(' ')
+// count :: [a] -> Number
+const count = (list) => list.length
+// isLong :: Number -> Boolean
+const isLong = (n) => n > 3
+
+// the identity morphism
+// id :: a -> a
+// your code
+
+// the inputs on which we compare functions
+const inputs = ['map filter reduce', 'pipe compose curry tap lens', 'functor']
+
+// two functions are equal if they give the same result on every input
+// sameOn :: ((a -> b), (a -> b)) -> Boolean
+// your code
+
+// countWords :: String -> Number
+const countWords = compose(count, words)
+
+// identity: composing with id changes nothing
+console.log(\`id . countWords = countWords: \${sameOn(compose(id, countWords), countWords)}\`)
+console.log(\`countWords . id = countWords: \${sameOn(compose(countWords, id), countWords)}\`)
+
+// associativity: it does not matter where the parentheses go
+const left = compose(isLong, compose(count, words))
+const right = compose(compose(isLong, count), words)
+console.log(\`isLong . (count . words) = (isLong . count) . words: \${sameOn(left, right)}\`)`,
       },
       solution: {
         ru: `// compose :: ((b -> c), (a -> b)) -> a -> c
