@@ -356,7 +356,7 @@ const clearAll = () => {
 
     <div class="playground__output">
       <span class="playground__output-label">{{ t('course.output') }}</span>
-      <pre class="playground__pre">{{ output || '—' }}</pre>
+      <pre class="playground__pre" aria-live="polite">{{ output || '—' }}</pre>
     </div>
   </div>
 </template>
