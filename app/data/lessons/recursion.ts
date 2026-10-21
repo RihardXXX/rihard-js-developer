@@ -112,12 +112,12 @@ const recurAgeAverageF = (users, sumAges = 0, quantityUsers = users.length) =>
   console.log (averageAge) // логируем результат 25.25
 }
 )()`,
-        en: `// наша цель получить средний возраст пользователей
+        en: `// our goal is to get the average age of the users
 
 // ================================
-// декларативный стиль без рекурсии
+// declarative style without recursion
 
-// список пользователей
+// list of users
 const fetchAllUsers = () => new Promise(resolve => resolve([
   { name: 'John', status: 'online', age: 28 },
   { name: 'Angel', status: 'online', age: 35 },
@@ -125,7 +125,7 @@ const fetchAllUsers = () => new Promise(resolve => resolve([
   { name: 'Anna', status: 'offline', age: 20 },
 ]))
 
-// pipe из урока «Композиция функций»: передаёт результат каждой функции следующей
+// pipe from the "Function composition" lesson: passes each function's result to the next one
 const pipe = (...fns) => (x) => fns.reduce((v, f) => f(v), x)
 
 // getAgeAverage :: [a] -> Number
@@ -133,48 +133,48 @@ const getAgeAverage = (users) => pipe (
   (users) => [
     users.reduce ((init, { age }) => init + age, 0),
     users.length
-    ], // получаем общий возраст и количество пользователей
-  ([allAges, quantity]) => Math.round (allAges / quantity), // вычисляем средний возраст
-  console.log // логируем результат
+    ], // get the total age and the number of users
+  ([allAges, quantity]) => Math.round (allAges / quantity), // compute the average age
+  console.log // log the result
 ) (users)
 
 fetchAllUsers().then(getAgeAverage)
 // ================================
 
-// Рекурсивный пример
+// Recursive example
 // ================================
-// эта рекурсивная функция написана с хвостовым вызовом:
-// сумма копится в аргументах, и в базовом случае функция
-// сразу возвращает результат, без вычислений на обратном пути
-// но про это мы поговорим еще позже
+// this recursive function is written with a tail call:
+// the sum accumulates in the arguments, and in the base case the function
+// returns the result right away, with no computation on the way back
+// but we'll talk about that later
 
-// а теперь то же самое сделаем с помощью рекурсии
+// now let's do the same thing with recursion
 // recurAgeAverage :: [a] -> Number -> Number -> Number
 const recurAgeAverage = (
-    users, // массив данных пользователей
-    sumAges = 0, // сумма возрастов пользователей
-    quantityUsers = users.length // первичное количество пользователей
+    users, // array of user data
+    sumAges = 0, // sum of the users' ages
+    quantityUsers = users.length // initial number of users
   ) => {
 
-  // базовый случай, условие выхода
-  // когда массив уже пуст
+  // base case, the exit condition:
+  // the array is already empty
   if (!users.length) {
-    // сумму всех лет пользователей делим на количество пользователей
-    // чтобы посчитать средний возраст пользователей
+    // divide the sum of all ages by the number of users
+    // to get the average age of the users
     return sumAges / quantityUsers
   }
 
-  // рекурсивный случай, чтобы вызывать самого себя
-  // пока в массиве есть элементы
+  // recursive case: the function calls itself
+  // while the array still has elements
   return recurAgeAverage (
-      users.slice(1), // возвращаем массив без первого элемента
-      sumAges = sumAges + users[0]?.age, // собираем возраст каждого пользователя
-      quantityUsers // передаем ранее сохраненное значение количество пользователей
+      users.slice(1), // the array without its first element
+      sumAges = sumAges + users[0]?.age, // add up each user's age
+      quantityUsers // pass along the previously saved number of users
     )
 }
 // ================================
 
-// Давайте нашу функцию перепишем в одну строку и вызовем
+// Let's rewrite our function as a one-liner and call it
 const recurAgeAverageF = (users, sumAges = 0, quantityUsers = users.length) =>
                           !users.length
                               ? sumAges / quantityUsers
@@ -184,12 +184,12 @@ const recurAgeAverageF = (users, sumAges = 0, quantityUsers = users.length) =>
                                   quantityUsers
                                 )
 
-// точка с запятой перед скобкой обязательна: без неё JS склеит
-// эту скобку с выражением выше и попробует вызвать его результат
+// the semicolon before the parenthesis is required: without it JS joins
+// this parenthesis to the expression above and tries to call its result
 ;( async () => {
-  const users = await fetchAllUsers () // получаем список пользователей
-  const averageAge = recurAgeAverageF (users) // получаем средний возраст рекурсивно
-  console.log (averageAge) // логируем результат 25.25
+  const users = await fetchAllUsers () // get the list of users
+  const averageAge = recurAgeAverageF (users) // get the average age recursively
+  console.log (averageAge) // log the result: 25.25
 }
 )()`,
       },
@@ -245,8 +245,8 @@ rateSum ([3, 5]) // возвращает 3 + 5
 rateSum ([4, 3, 5]) // возвращает 4 + 8
 rateSum ([4.5, 4, 3, 5]) // возвращает 4.5 + 12
 // итоговый результат 16.5`,
-        en: `// Наша цель собрать общий рейтинг пользователей
-// То есть сумму рейтингов
+        en: `// Our goal is to get the total rating of the users,
+// that is, the sum of their ratings
 
 const users = [
   { name: 'John', rating: 4.5 },
@@ -257,37 +257,37 @@ const users = [
 
 // sumRating :: [a] -> Number
 const sumRating = (users) => {
-  // базовый случай, условие выхода когда массив пуст
+  // base case, the exit condition: the array is empty
   if (!users.length) {
     return 0
   }
 
-  // рекурсивный случай
-  // рейтинг первого элемента складывается
-  // с вызовом самой же функции для массива без этого элемента
+  // recursive case:
+  // the rating of the first element is added
+  // to the call of the same function on the array without that element
   return users[0].rating + sumRating (users.slice(1))
 }
 
-// давайте сократим синтаксис
+// let's shorten the syntax
 const rateSum = (users) =>
                       !users.length
                         ? 0
                         :  users[0] + rateSum (users.slice(1))
 
-// визуализируем вызовы
-// и для понимания представим массив чисел вместо ключа rating
-rateSum ([4.5, 4, 3, 5]) // возвращает 4.5 + rateSum ([4, 3, 5])
-rateSum ([4, 3, 5]) // возвращает 4 + rateSum ([3, 5])
-rateSum ([3, 5]) // возвращает 3 + rateSum ([5])
-rateSum ([5]) // возвращает 5 + rateSum ([])
-rateSum ([]) // возвращает 0 достигли базового случая
+// let's visualize the calls
+// to keep it simple, use an array of numbers instead of the rating key
+rateSum ([4.5, 4, 3, 5]) // returns 4.5 + rateSum ([4, 3, 5])
+rateSum ([4, 3, 5]) // returns 4 + rateSum ([3, 5])
+rateSum ([3, 5]) // returns 3 + rateSum ([5])
+rateSum ([5]) // returns 5 + rateSum ([])
+rateSum ([]) // returns 0: we reached the base case
 
-// и тут самое главное идут возвраты от вызовов в стеке
-rateSum ([5]) // возвращает 5 + 0
-rateSum ([3, 5]) // возвращает 3 + 5
-rateSum ([4, 3, 5]) // возвращает 4 + 8
-rateSum ([4.5, 4, 3, 5]) // возвращает 4.5 + 12
-// итоговый результат 16.5`,
+// and here comes the key part: the calls on the stack return one by one
+rateSum ([5]) // returns 5 + 0
+rateSum ([3, 5]) // returns 3 + 5
+rateSum ([4, 3, 5]) // returns 4 + 8
+rateSum ([4.5, 4, 3, 5]) // returns 4.5 + 12
+// final result: 16.5`,
       },
     },
     {
@@ -338,41 +338,41 @@ sum ([], 16.5) // возвращает result 16.5
 // при proper tail calls движок не хранит кадры ожидающих вызовов,
 // и глубина стека не растёт; но в V8 и SpiderMonkey этого нет,
 // там стек растёт так же, как без хвостового вызова`,
-        en: `// === Оптимизация хвостовой рекурсии ====
-// Перепишем функцию так, чтобы рекурсивный вызов стал хвостовым
+        en: `// === Tail recursion optimization ====
+// Let's rewrite the function so that the recursive call becomes a tail call
 const rateSum = (users, result = 0) => {
-  // базовый случай условие выхода когда массив пуст
-  // возвращаем второй аргумент где аккумулируем
-  // результаты всех вызовов
+  // base case, the exit condition: the array is empty
+  // return the second argument, where we accumulate
+  // the results of all the calls
   if (!users.length) {
     return result
   }
 
-  // рекурсивный случай пока в массиве элементы
-  // при каждом вызове результат складываем во второй аргумент
-  // и вызываем дальше, а в базовом случае возвращаем результат
-  // вызов стоит в хвостовой позиции: после него функции больше нечего делать
+  // recursive case, while the array has elements:
+  // on each call we add to the result in the second argument
+  // and keep calling, and in the base case we return the result
+  // the call is in tail position: after it the function has nothing left to do
   return rateSum (users.slice(1), result = result + users[0])
 }
 
-// давайте все перепишем в одну строку
+// let's rewrite it all as a one-liner
 const sum = (users, result = 0) => !users.length
                                 ? result
                                 : sum (users.slice(1), result = result + users[0])
 
-// визуализируем вызовы
-// и для понимания представим массив чисел вместо ключа rating
-sum ([4.5, 4, 3, 5], 0) // возвращает sum ([4, 3, 5], 0 + 4.5)
-sum ([4, 3, 5], 4.5) // возвращает sum ([3, 5], 4.5 + 4)
-sum ([3, 5], 8.5) // возвращает sum ([5], 8.5 + 3)
-sum ([5], 11.5) // возвращает sum ([], 11.5 + 5)
-sum ([], 16.5) // возвращает result 16.5
-// дальше вызовы прекращаются: результат уже в аккумуляторе,
-// и на обратном пути досчитывать нечего
-// вызовов столько же, сколько у rateSum без аккумулятора, — пять
-// при proper tail calls движок не хранит кадры ожидающих вызовов,
-// и глубина стека не растёт; но в V8 и SpiderMonkey этого нет,
-// там стек растёт так же, как без хвостового вызова`,
+// let's visualize the calls
+// to keep it simple, use an array of numbers instead of the rating key
+sum ([4.5, 4, 3, 5], 0) // returns sum ([4, 3, 5], 0 + 4.5)
+sum ([4, 3, 5], 4.5) // returns sum ([3, 5], 4.5 + 4)
+sum ([3, 5], 8.5) // returns sum ([5], 8.5 + 3)
+sum ([5], 11.5) // returns sum ([], 11.5 + 5)
+sum ([], 16.5) // returns result 16.5
+// the calls stop here: the result is already in the accumulator,
+// and there is nothing left to compute on the way back
+// there are as many calls as in rateSum without the accumulator: five
+// with proper tail calls the engine keeps no frames of waiting calls,
+// and the stack depth does not grow; but V8 and SpiderMonkey don't have them,
+// so there the stack grows just as it does without a tail call`,
       },
     },
     {
@@ -460,28 +460,28 @@ sum ([], 16.5, (total) => console.log(total)) // вызовет callback с resu
 // Если вам нужны длительные синхронные вычисления,
 // то лучше вынести их в веб-воркер, в отдельный поток,
 // при условии, что у процессора больше одного ядра`,
-        en: `// === 1. Асинхронный вызов рекурсии ====
+        en: `// === 1. Asynchronous recursive call ====
 
-// обратите внимание, что рекурсивный случай оборачивается в таймер
+// note that the recursive case is wrapped in a timer
 // sum :: [a] -> Number -> (Number -> *)
 const sumD = (users, result = 0, callback) => {
 
-  // базовый случай условие выхода
-  // когда массив уже пустой то результат пробрасываем в колбек
+  // base case, the exit condition:
+  // once the array is empty, pass the result to the callback
   if (!users.length) {
     callback (result)
     return
   }
 
-  // рекурсивный случай вызываем асинхронно
-  // через таймер чтобы стек не переполнялся
+  // the recursive case is called asynchronously,
+  // through a timer, so that the stack does not overflow
   setTimeout (
     () => sumD (users.slice(1), result = result + users[0], callback),
     0
   )
 }
 
-// давайте сократим запись
+// let's shorten it
 const sum = (users, result = 0, callback) =>
   !users.length
     ? callback (result)
@@ -490,33 +490,33 @@ const sum = (users, result = 0, callback) =>
         0
       )
 
-// попробуем вызвать
+// let's try calling it
 sum ([4.5, 4, 3, 5], 0, (total) => console.log(total)) // 16.5
 
-// визуализируем вызовы
-sum ([4.5, 4, 3, 5], 0, (total) => console.log(total)) // запланирует через таймер sum ([4, 3, 5], 0 + 4.5, callback)
-// стек вызовов свободен: между шагами выполняются микрозадачи (промисы) и другие макрозадачи
-// отсутствует блокировка потока
-// отсутствует переполнение стека
-sum ([4, 3, 5], 4.5, (total) => console.log(total)) // запланирует через таймер sum ([3, 5], 4.5 + 4, callback)
-// стек вызовов свободен: между шагами выполняются микрозадачи (промисы) и другие макрозадачи
-// отсутствует блокировка потока
-// отсутствует переполнение стека
-sum ([3, 5], 8.5, (total) => console.log(total)) // запланирует через таймер sum ([5], 8.5 + 3, callback)
-// стек вызовов свободен: между шагами выполняются микрозадачи (промисы) и другие макрозадачи
-// отсутствует блокировка потока
-// отсутствует переполнение стека
-sum ([5], 11.5, (total) => console.log(total)) // запланирует через таймер sum ([], 11.5 + 5, callback)
-// стек вызовов свободен: между шагами выполняются микрозадачи (промисы) и другие макрозадачи
-// отсутствует блокировка потока
-// отсутствует переполнение стека
-sum ([], 16.5, (total) => console.log(total)) // вызовет callback с result
+// let's visualize the calls
+sum ([4.5, 4, 3, 5], 0, (total) => console.log(total)) // schedules sum ([4, 3, 5], 0 + 4.5, callback) via a timer
+// the call stack is free: microtasks (promises) and other macrotasks run between the steps
+// the thread is not blocked
+// the stack does not overflow
+sum ([4, 3, 5], 4.5, (total) => console.log(total)) // schedules sum ([3, 5], 4.5 + 4, callback) via a timer
+// the call stack is free: microtasks (promises) and other macrotasks run between the steps
+// the thread is not blocked
+// the stack does not overflow
+sum ([3, 5], 8.5, (total) => console.log(total)) // schedules sum ([5], 8.5 + 3, callback) via a timer
+// the call stack is free: microtasks (promises) and other macrotasks run between the steps
+// the thread is not blocked
+// the stack does not overflow
+sum ([5], 11.5, (total) => console.log(total)) // schedules sum ([], 11.5 + 5, callback) via a timer
+// the call stack is free: microtasks (promises) and other macrotasks run between the steps
+// the thread is not blocked
+// the stack does not overflow
+sum ([], 16.5, (total) => console.log(total)) // calls callback with result
 
-// Минусы этого подхода
-// Скорость выполнения (производительность) низкая
-// Если вам нужны длительные синхронные вычисления,
-// то лучше вынести их в веб-воркер, в отдельный поток,
-// при условии, что у процессора больше одного ядра`,
+// Downsides of this approach
+// Execution speed (performance) is low
+// If you need long-running synchronous computations,
+// it's better to move them to a web worker, a separate thread,
+// provided that the CPU has more than one core`,
       },
     },
     {
@@ -613,56 +613,56 @@ const sumTrampoline = trampoline (sum)
 
 // теперь на самом деле в цикле будут запускаться функции
 console.log (sumTrampoline ([4.5, 4, 3, 5], 0)) // 16.5`,
-        en: `// === Рекурсия через трамплин ====
+        en: `// === Recursion via a trampoline ====
 
-// обратите внимание: первым вызовом передаём функцию,
-// а вторым — её аргументы, и тогда запускается вычисление
+// note: the first call takes the function,
+// and the second takes its arguments, which starts the computation
 // trampoline :: ((...args -> *) -> (...args -> *))
 const trampoline = (fn) => (...args) => {
-  // запускаем функцию с переданными аргументами
+  // run the function with the given arguments
   let result = fn(...args)
 
-  // крутим цикл, пока функция
-  // возвращает другую функцию
+  // keep looping while the function
+  // returns another function
   while (typeof result == 'function') {
-    // результат вызова сохраняем в переменную
-    // и проверяем что оно вернуло
-    // result() *** запомните эту метку, дальше покажем, что это за функция
+    // store the result of the call in the variable
+    // and check what it returned
+    // result() *** remember this mark, we'll show later what this function is
     result = result()
   }
 
-  // как только результат вызова функции
-  // не функция то возвращаем его
+  // as soon as the result of the call
+  // is not a function, return it
   return result
 }
 
-// давайте сократим запись
+// let's shorten the notation
 // sumD :: [a] -> Number -> Number
 const sumD = (users, result = 0) => {
 
-  // если массив пустой то возвращаем результат
+  // if the array is empty, return the result
   if (!users.length) {
     return result
   }
 
-  // внимание: тут обязательно возвращаем функцию без аргументов (thunk)
-  // метка *** именно её трамплин вызывает внутри цикла
+  // note: here we must return a function with no arguments (a thunk)
+  // mark *** this is the function the trampoline calls inside the loop
   return () => sumD (users.slice(1), result = result + users[0])
 }
 
-// давайте перепишем в одну строку функцию
+// let's rewrite the function as a one-liner
 // sum :: [a] -> Number -> Number
 const sum = (users, result = 0) =>
       !users.length
        ? result
        : () => sum (users.slice(1), result = result + users[0])
 
-// протестируем код
+// let's test the code
 
-// пропускаем нашу функцию через трамплин
+// pass our function through the trampoline
 const sumTrampoline = trampoline (sum)
 
-// теперь на самом деле в цикле будут запускаться функции
+// now the functions will actually run in a loop
 console.log (sumTrampoline ([4.5, 4, 3, 5], 0)) // 16.5`,
       },
     },
@@ -709,44 +709,44 @@ return result // 16.5
   () => sum ([], 16.5), // result = result() внутри цикла
   16.5 // цикл завершается return result
 ]`,
-        en: `// давайте теперь визуализируем вызовы
-// логика внутри трамплина для sumTrampoline ([4.5, 4, 3, 5], 0)
+        en: `// now let's visualize the calls
+// the logic inside the trampoline for sumTrampoline ([4.5, 4, 3, 5], 0)
 
-//  === первый вызов, до цикла =====
+//  === first call, before the loop =====
 let result = sum ([4.5, 4, 3, 5], 0)
-// вернет в result () => sum ([4, 3, 5], 0 + 4.5)
+// puts () => sum ([4, 3, 5], 0 + 4.5) into result
 // =======================
 
-//  === цикл while: каждая итерация вызывает одну функцию =====
-result = result () // вызывает sum ([4, 3, 5], 4.5)
-// вернет в result () => sum ([3, 5], 4.5 + 4)
+//  === while loop: each iteration calls one function =====
+result = result () // calls sum ([4, 3, 5], 4.5)
+// puts () => sum ([3, 5], 4.5 + 4) into result
 
-result = result () // вызывает sum ([3, 5], 8.5)
-// вернет в result () => sum ([5], 8.5 + 3)
+result = result () // calls sum ([3, 5], 8.5)
+// puts () => sum ([5], 8.5 + 3) into result
 
-result = result () // вызывает sum ([5], 11.5)
-// вернет в result () => sum ([], 11.5 + 5)
+result = result () // calls sum ([5], 11.5)
+// puts () => sum ([], 11.5 + 5) into result
 
-result = result () // вызывает sum ([], 16.5)
-// вернет в result 16.5, это уже не функция, и цикл завершается
+result = result () // calls sum ([], 16.5)
+// puts 16.5 into result: it is no longer a function, so the loop ends
 // =======================
 
-//  === выход из трамплина =====
+//  === leaving the trampoline =====
 return result // 16.5
 // =======================
 
 
-// визуализация через схему
-// это как связный список функций, который заранее не готов,
-// а формируется в процессе: следующий элемент появляется,
-// когда вызывают предыдущий
+// visualized as a diagram
+// it's like a linked list of functions that isn't built in advance
+// but grows as we go: the next element appears
+// when the previous one is called
 [
-  sum ([4.5, 4, 3, 5], 0), // первый вызов let result = fn(...args)
-  () => sum ([4, 3, 5], 4.5), // result = result() внутри цикла
-  () => sum ([3, 5], 8.5), // result = result() внутри цикла
-  () => sum ([5], 11.5), // result = result() внутри цикла
-  () => sum ([], 16.5), // result = result() внутри цикла
-  16.5 // цикл завершается return result
+  sum ([4.5, 4, 3, 5], 0), // first call: let result = fn(...args)
+  () => sum ([4, 3, 5], 4.5), // result = result() inside the loop
+  () => sum ([3, 5], 8.5), // result = result() inside the loop
+  () => sum ([5], 11.5), // result = result() inside the loop
+  () => sum ([], 16.5), // result = result() inside the loop
+  16.5 // the loop ends: return result
 ]`,
       },
     },
