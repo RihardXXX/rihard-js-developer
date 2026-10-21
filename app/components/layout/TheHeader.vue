@@ -1,6 +1,8 @@
 <script setup lang="ts">
 const { t } = useI18n()
 const localePath = useLocalePath()
+const route = useRoute()
+const getRouteBaseName = useRouteBaseName()
 const { y } = useWindowScroll()
 
 const scrolled = computed(() => y.value > 24)
@@ -15,6 +17,10 @@ const nav = [
   { id: 'course', key: 'nav.course' },
   { id: 'contact', key: 'nav.contact' },
 ] as const
+
+// Sections live on the home page; elsewhere (the course) the links go back to it.
+const isHome = computed(() => getRouteBaseName(route) === 'index')
+const navHref = (id: string) => (isHome.value ? `#${id}` : `${localePath('/')}#${id}`)
 
 const close = () => {
   menuOpen.value = false
@@ -32,7 +38,7 @@ const close = () => {
       <nav class="nav" :class="{ 'nav--open': menuOpen }" :aria-label="t('nav.label')">
         <ul class="nav__list">
           <li v-for="item in nav" :key="item.id">
-            <a class="nav__link" :href="`#${item.id}`" @click="close">{{ t(item.key) }}</a>
+            <a class="nav__link" :href="navHref(item.id)" @click="close">{{ t(item.key) }}</a>
           </li>
         </ul>
       </nav>

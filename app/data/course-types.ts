@@ -6,8 +6,10 @@ export interface CourseTextBlock {
 
 export interface CourseCodeBlock {
   type: 'code'
-  /** JavaScript snippet, language-agnostic (not translated) */
-  code: string
+  /** illustration, not runnable JS; the syntax test skips it */
+  pseudo?: true
+  /** JavaScript snippet per locale: same code, only comments and explanatory strings differ */
+  code: { ru: string; en: string }
 }
 
 export type CourseBlock = CourseTextBlock | CourseCodeBlock
