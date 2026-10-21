@@ -99,7 +99,6 @@ onMounted(async () => {
         :key="lesson.slug"
         :lesson="lesson"
         :index="i + 1"
-        :next="lessons[i + 1]"
       />
     </div>
   </AppSection>
