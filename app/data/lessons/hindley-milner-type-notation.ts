@@ -141,14 +141,14 @@ const map = (mappable) => (arr) => arr.map(mappable)
   exercises: [
     {
       task: {
-        ru: "Напишите функции по сигнатурам из заготовки. between принимает нижнюю границу, верхнюю границу и число и отвечает, лежит ли число между ними включительно. countBy принимает предикат и массив и возвращает, сколько элементов подходят под предикат. По сигнатуре between видно, что between(18)(65) — уже предикат Number -> Boolean.",
-        en: "Write the functions from the signatures in the starter. between takes a lower bound, an upper bound and a number, and tells whether the number lies between them, inclusive. countBy takes a predicate and an array and returns how many elements match the predicate. The signature of between shows that between(18)(65) is already a Number -> Boolean predicate.",
+        ru: "Напишите функции по сигнатурам из заготовки. between принимает нижнюю границу, верхнюю границу и число и отвечает, лежит ли число между ними включительно. countWhere принимает предикат и массив и возвращает, сколько элементов подходят под предикат. По сигнатуре between видно, что between(18)(65) — уже предикат Number -> Boolean.",
+        en: "Write the functions from the signatures in the starter. between takes a lower bound, an upper bound and a number, and tells whether the number lies between them, inclusive. countWhere takes a predicate and an array and returns how many elements match the predicate. The signature of between shows that between(18)(65) is already a Number -> Boolean predicate.",
       },
       starter: {
         ru: `// between :: Number -> Number -> Number -> Boolean
 // ваш код
 
-// countBy :: (a -> Boolean) -> [a] -> Number
+// countWhere :: (a -> Boolean) -> [a] -> Number
 // ваш код
 
 const ages = [12, 17, 25, 33, 41, 70]
@@ -156,12 +156,12 @@ const ages = [12, 17, 25, 33, 41, 70]
 // isWorkingAge :: Number -> Boolean
 const isWorkingAge = between(18)(65)
 
-console.log(countBy(isWorkingAge)(ages))
+console.log(countWhere(isWorkingAge)(ages))
 console.log(typeof isWorkingAge)`,
         en: `// between :: Number -> Number -> Number -> Boolean
 // your code
 
-// countBy :: (a -> Boolean) -> [a] -> Number
+// countWhere :: (a -> Boolean) -> [a] -> Number
 // your code
 
 const ages = [12, 17, 25, 33, 41, 70]
@@ -169,15 +169,15 @@ const ages = [12, 17, 25, 33, 41, 70]
 // isWorkingAge :: Number -> Boolean
 const isWorkingAge = between(18)(65)
 
-console.log(countBy(isWorkingAge)(ages))
+console.log(countWhere(isWorkingAge)(ages))
 console.log(typeof isWorkingAge)`,
       },
       solution: {
         ru: `// between :: Number -> Number -> Number -> Boolean
 const between = (min) => (max) => (x) => x >= min && x <= max
 
-// countBy :: (a -> Boolean) -> [a] -> Number
-const countBy = (predicate) => (arr) => arr.filter(predicate).length
+// countWhere :: (a -> Boolean) -> [a] -> Number
+const countWhere = (predicate) => (arr) => arr.filter(predicate).length
 
 const ages = [12, 17, 25, 33, 41, 70]
 
@@ -185,13 +185,13 @@ const ages = [12, 17, 25, 33, 41, 70]
 // два аргумента из трех переданы: осталась функция Number -> Boolean
 const isWorkingAge = between(18)(65)
 
-console.log(countBy(isWorkingAge)(ages))
+console.log(countWhere(isWorkingAge)(ages))
 console.log(typeof isWorkingAge)`,
         en: `// between :: Number -> Number -> Number -> Boolean
 const between = (min) => (max) => (x) => x >= min && x <= max
 
-// countBy :: (a -> Boolean) -> [a] -> Number
-const countBy = (predicate) => (arr) => arr.filter(predicate).length
+// countWhere :: (a -> Boolean) -> [a] -> Number
+const countWhere = (predicate) => (arr) => arr.filter(predicate).length
 
 const ages = [12, 17, 25, 33, 41, 70]
 
@@ -199,7 +199,7 @@ const ages = [12, 17, 25, 33, 41, 70]
 // two of the three arguments are passed: what is left is a function Number -> Boolean
 const isWorkingAge = between(18)(65)
 
-console.log(countBy(isWorkingAge)(ages))
+console.log(countWhere(isWorkingAge)(ages))
 console.log(typeof isWorkingAge)`,
       },
       expected: { ru: "3\nfunction", en: "3\nfunction" },
