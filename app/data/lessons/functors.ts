@@ -7,8 +7,8 @@ const lesson: Lesson = {
     en: "Functors and their laws",
   },
   description: {
-    ru: "Функтор в JavaScript: контейнер с map, сохраняющим структуру. Массив, Maybe-подобный контейнер и промис, законы тождества и композиции в коде.",
-    en: "Functors in JavaScript: a container whose map keeps the structure. Arrays, a Maybe-like container and promises, the identity and composition laws in code.",
+    ru: "Функтор в JavaScript: контейнер с map, сохраняющим структуру. Массив и Maybe-подобный контейнер, законы функтора и почему промис нарушает закон композиции.",
+    en: "Functors in JavaScript: a container whose map keeps the structure. Arrays and a Maybe-like container, the functor laws and why a promise breaks composition.",
   },
   goal: {
     ru: "Понять, что такое функтор — контейнер с map, который меняет значения и сохраняет структуру, — научиться проверять законы тождества и композиции в коде и опираться на них при рефакторинге.",
