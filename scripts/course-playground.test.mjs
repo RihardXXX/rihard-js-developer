@@ -3,7 +3,7 @@ import assert from 'node:assert/strict'
 import { createRequire } from 'node:module'
 import { createPlaygroundRunner, formatValue } from '../app/utils/playground-runner.ts'
 
-// Библиотеки песочницы берём из node_modules проекта, как их берёт CoursePlayground.client.vue
+// Библиотеки песочницы берём из node_modules проекта, как их берёт CoursePlayground.vue
 const require = createRequire(import.meta.url)
 const R = require('ramda')
 const sanctuary = require('sanctuary')
