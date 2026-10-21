@@ -116,6 +116,13 @@ const exampleLabel = (i: number) =>
         </details>
       </div>
     </template>
+
+    <div v-if="!intro" class="lesson__nav">
+      <a href="#course-toc" class="lesson__link"><span aria-hidden="true">↑</span> {{ t('course.backToToc') }}</a>
+      <a v-if="next" :href="`#${next.slug}`" class="lesson__link lesson__link--next">
+        {{ t('course.nextLesson', { title: tr(next.title) }) }} <span aria-hidden="true">→</span>
+      </a>
+    </div>
   </section>
 </template>
 
@@ -242,6 +249,29 @@ const exampleLabel = (i: number) =>
 
     td {
       color: var(--text-muted);
+    }
+  }
+
+  &__nav {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 1.2rem 2.4rem;
+    margin-top: 3.2rem;
+  }
+
+  &__link {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: var(--text-muted);
+    transition: color $transition;
+
+    &:hover {
+      color: var(--accent);
+    }
+
+    &--next {
+      color: var(--accent);
     }
   }
 }
