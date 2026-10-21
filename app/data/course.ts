@@ -9,6 +9,7 @@ import hindleyMilner from './lessons/hindley-milner-type-notation'
 import categoryTheory from './lessons/category-theory'
 import functors from './lessons/functors'
 import fantasyLand from './lessons/fantasy-land'
+import maybeEither from './lessons/maybe-either'
 import composition from './lessons/composition'
 import currying from './lessons/currying'
 import curryingAndAsynchrony from './lessons/currying-and-asynchrony'
@@ -45,6 +46,7 @@ export const lessons: Lesson[] = [
   categoryTheory,
   functors,
   fantasyLand,
+  maybeEither,
   neuralNetworks,
   selectingLibrary,
 ]
