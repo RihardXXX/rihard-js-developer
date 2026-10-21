@@ -7,6 +7,7 @@ import pureFunctions from './lessons/pure-functions'
 import immutability from './lessons/immutability'
 import hindleyMilner from './lessons/hindley-milner-type-notation'
 import categoryTheory from './lessons/category-theory'
+import functors from './lessons/functors'
 import fantasyLand from './lessons/fantasy-land'
 import composition from './lessons/composition'
 import currying from './lessons/currying'
@@ -42,6 +43,7 @@ export const lessons: Lesson[] = [
   lenses,
   sideEffects,
   categoryTheory,
+  functors,
   fantasyLand,
   neuralNetworks,
   selectingLibrary,
