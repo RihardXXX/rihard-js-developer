@@ -139,7 +139,8 @@ export default defineNuxtConfig({
           tagPosition: 'head',
         },
         {
-          // Send Russian readers from / to /ru/ before Nuxt starts (detectBrowserLanguage rule), else Vue hydrates /ru/ over the English HTML of /.
+          // Send Russian readers from / to /ru/ before Nuxt starts, else Vue hydrates /ru/ over the English HTML of /.
+          // Repeats i18n.locales and detectBrowserLanguage above: change together (task 9 acceptance tests 13, 17).
           innerHTML:
             "(()=>{try{if(location.pathname!=='/')return;var m=document.cookie.match(/(?:^|;\\s*)i18n_locale=([^;]*)/),l=m&&(m[1]==='en'||m[1]==='ru')?m[1]:'';for(var a=navigator.languages||[],i=0;!l&&i<a.length;i++){var p=a[i].split('-')[0].toLowerCase();if(p==='en'||p==='ru')l=p}if(l==='ru')location.replace('/ru/'+location.search+location.hash)}catch(e){}})()",
           tagPosition: 'head',

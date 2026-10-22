@@ -77,7 +77,8 @@ const runRedirect = (script, { pathname = '/', search = '', hash = '', cookie = 
     search,
     hash,
     replace: (url) => calls.push(String(url)),
-    assign: (url) => calls.push(String(url)),
+    // assign оставляет / в истории: «Назад» вернёт на / и скрипт снова уведёт на /ru/ (критерий 15)
+    assign: (url) => calls.push(`assign:${url}`),
   }
   Object.assign(sandbox, { document, navigator, location, localStorage: {}, matchMedia: () => ({ matches: false }) })
   let thrown = null
@@ -227,6 +228,14 @@ describe('12. разбор cookie', () => {
   test('cookie с похожим именем (i18n_locale2=ru) не считается', () => {
     const { calls } = runRedirect(redirectScript(indexHtml), { cookie: `${COOKIE}2=ru`, languages: ['en-US'] })
     assert.deepEqual(calls, [], 'чужая cookie i18n_locale2 увела читателя на /ru/')
+  })
+  test('cookie с похожим именем (x_i18n_locale=ru) не считается', () => {
+    const { calls } = runRedirect(redirectScript(indexHtml), { cookie: `x_${COOKIE}=ru`, languages: ['en-US'] })
+    assert.deepEqual(calls, [], 'чужая cookie x_i18n_locale увела читателя на /ru/')
+  })
+  test('нужная cookie после похожей (x_i18n_locale=en; i18n_locale=ru) читается', () => {
+    const { calls } = runRedirect(redirectScript(indexHtml), { cookie: `x_${COOKIE}=en; ${COOKIE}=ru`, languages: ['ru-RU'] })
+    assert.deepEqual(calls, ['/ru/'], 'чужая cookie x_i18n_locale перебила выбор читателя')
   })
   test('нужная cookie в середине строки (a=1; i18n_locale=ru; b=2) читается', () => {
     const { calls } = runRedirect(redirectScript(indexHtml), { cookie: `a=1; ${COOKIE}=ru; b=2`, languages: ['en-US'] })
