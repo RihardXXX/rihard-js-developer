@@ -3,8 +3,8 @@ import type { Lesson } from '~/data/course-types'
 const lesson: Lesson = {
   slug: 'selecting-library',
   title: {
-    ru: "Vanilla JS, Lodash, Ramda, Sanctuary -> что выбрать",
-    en: "Vanilla JS, Lodash, Ramda, Sanctuary -> which one to choose",
+    ru: "Как выбрать библиотеку для ФП",
+    en: "How to choose an FP library",
   },
   description: {
     ru: "Как выбрать библиотеку для ФП в JavaScript и TypeScript: Vanilla JS, Lodash, Ramda, Sanctuary, fp-ts или Effect — по бюджету, этапу, команде и качеству.",
@@ -284,8 +284,8 @@ const lesson: Lesson = {
           en: "Product quality. The product quality is, as a rule, high: possible errors and required dependencies show up in the Effect<A, E, R> type, and retries, timeouts, cancellation and concurrency are built into the library.",
         },
         {
-          ru: "Перфоманс. Будет ниже ванилы при аналогичном коде: программы выполняет собственный рантайм Effect на файберах. Неиспользуемые модули отсекаются при сборке (tree shaking), а в версии 4 рантайм переписан и бандл заметно уменьшен.",
-          en: "Performance. It will be lower than vanilla given equivalent code: programs are run by Effect's own fiber-based runtime. Unused modules are dropped at build time (tree shaking), and version 4 rewrote the runtime and noticeably reduced the bundle size.",
+          ru: "Перфоманс. Будет ниже ванилы при аналогичном коде: программы выполняет собственный рантайм Effect на файберах. Неиспользуемые модули отсекаются при сборке (tree shaking), а в версии 4 рантайм переписан, чтобы расходовать меньше памяти и работать быстрее.",
+          en: "Performance. It will be lower than vanilla given equivalent code: programs are run by Effect's own fiber-based runtime. Unused modules are dropped at build time (tree shaking), and version 4 rewrote the runtime to use less memory and run faster.",
         },
         {
           ru: "Парадигма функционального программирования. Полноценное и строгое типизированное функциональное программирование, нацеленное на продакшен. Эффекты — это значения: Effect только описывает работу и ничего не делает, пока его не запустит рантайм, а возможные ошибки и нужные зависимости записаны в типе Effect<A, E, R>. Кроме того, в библиотеку входят конкурентность на файберах и Schema для проверки данных во время выполнения. Высокий порог входа, но другого рода, чем у fp-ts: осваивать нужно не классы типов, а модель эффектов и большой API. По README fp-ts, Effect можно считать преемником fp-ts v2. Текущая мажорная версия — 4: Effect 4.0.0 вышел 1 октября 2026 года, а ветка 3.x ещё получает исправления (по данным реестра npm на октябрь 2026 года).",
