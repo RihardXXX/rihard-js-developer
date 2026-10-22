@@ -826,8 +826,9 @@ const TS_LESSON = 'fp-in-typescript-and-effect'
 const IMPORT_LINE = /^\s*import\b/
 const EFFECT_IMPORT = /^import\s+\{[^}]*\}\s+from\s+(['"])effect\1;?\s*$/
 // Имена API Effect 3: в уроке про Effect 4 их быть не должно. Ищем в коде без комментариев и строк.
+// Either — подстрокой: в Effect 4 нет ни одного имени с Either, а в Effect 3 есть decodeUnknownEither и подобные.
 const V3_NAMES = [
-  ['Either', /\bEither\b/],
+  ['Either', /Either/],
   ['fromNullable', /\bfromNullable\b/],
   ['catchAll', /\bcatchAll\b/],
   ['Effect.either', /\bEffect\.either\b/],
@@ -839,7 +840,18 @@ const V3_NAMES = [
 
 // Что не так с TS-блоком (пустой список — всё так): типы стираются без ошибки (режим strip, то есть
 // только стираемый синтаксис, как у `node block.ts`), импорт одной строкой только из 'effect',
-// без export, а то, что осталось после удаления import, разбирается как скрипт (так ловится и await верхнего уровня).
+// без export и без await верхнего уровня, а то, что осталось после удаления import, разбирается как скрипт.
+// await вне фигурных скобок — верхний уровень: скрипт не всегда падает на нём, `await (x)` для него вызов функции await.
+const topLevelAwait = (code) => {
+  let depth = 0
+  for (const [token] of code.matchAll(/[{}]|(?<![\w$.])await(?![\w$])/g)) {
+    if (token === '{') depth++
+    else if (token === '}') depth--
+    else if (depth === 0) return true
+  }
+  return false
+}
+
 const tsProblems = (code) => {
   let js
   try {
@@ -856,6 +868,7 @@ const tsProblems = (code) => {
     .filter((line) => !IMPORT_LINE.test(line))
     .join('\n')
   if (/(^|[^\w$.])export\b/.test(scan(body).code)) problems.push('есть export')
+  if (topLevelAwait(scan(body).code)) problems.push('есть await верхнего уровня')
   try {
     new vm.Script(body)
   } catch (error) {
@@ -932,6 +945,11 @@ test('tsProblems: export замечается', () => {
 
 test('tsProblems: await верхнего уровня замечается', () => {
   assert.ok(tsProblems('await Promise.resolve(1)\n').length > 0, 'блок с await верхнего уровня не запустить как скрипт')
+  assert.ok(tsProblems('console.log(await (Promise.resolve(1)))\n').length > 0, 'await со скобкой скрипт принял бы за вызов функции')
+})
+
+test('tsProblems: await внутри async-функции проходит', () => {
+  assert.deepEqual(tsProblems('const f = async () => {\n  await Promise.resolve(1)\n}\nf()\n'), [])
 })
 
 test('tsProblems: код Effect 4 с типами, generator и TaggedError проходит', () => {
@@ -959,8 +977,9 @@ test('v3Names: остальные имена Effect 3 находятся', () =>
     'Context.GenericTag("A")',
     'class A extends Effect.Service<A>()("A", {}) {}',
     'Schema.decodeUnknown(User)(raw)',
+    'Schema.decodeUnknownEither(User)(raw)',
   ].map((code) => v3Names(code).length)
-  assert.deepEqual(found, [1, 1, 1, 1, 1, 1, 1], 'имя из Effect 3 прошло бы в урок про Effect 4')
+  assert.deepEqual(found, [1, 1, 1, 1, 1, 1, 1, 1], 'имя из Effect 3 прошло бы в урок про Effect 4')
 })
 
 test('v3Names: имена Effect 4 не принимаются за Effect 3', () => {
@@ -991,9 +1010,9 @@ const lessonProse = (lesson) => [
     .map((item) => ({ ...item, v: item.where.endsWith(' ru') ? 'ru' : 'en' })),
 ]
 
-// Всё, что читает человек в уроке, вместе с кодом блоков и упражнений.
+// Всё, что читает человек в уроке, вместе с кодом блоков и упражнений (комментарии — в составе кода, один раз).
 const lessonEverything = (lesson, v) => [
-  ...lessonProse(lesson).filter((item) => item.v === v).map(({ text }) => text),
+  ...textFields(lesson).filter((item) => item.kind !== 'output' && item.v === v).map(({ text }) => text),
   ...lesson.blocks.flatMap((b) => (b.type === 'code' ? [b.code[v]] : [])),
   ...exercisesOf(lesson).flatMap((e) => [e.starter?.[v], e.solution?.[v]].filter((code) => typeof code === 'string')),
 ]
