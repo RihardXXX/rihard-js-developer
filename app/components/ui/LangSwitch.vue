@@ -3,6 +3,7 @@ import type { LocaleObject } from '@nuxtjs/i18n'
 
 const { locale, locales } = useI18n()
 const switchLocalePath = useSwitchLocalePath()
+const localePath = useLocalePath()
 
 const open = ref(false)
 const root = ref<HTMLElement | null>(null)
@@ -42,7 +43,7 @@ onClickOutside(root, close)
       <ul v-show="open" class="lang__menu" role="listbox">
         <li v-for="l in options" :key="l.code" role="option" :aria-selected="l.code === locale">
           <NuxtLink
-            :to="switchLocalePath(l.code)"
+            :to="switchLocalePath(l.code) || localePath('/', l.code)"
             class="lang__item"
             :class="{ 'lang__item--active': l.code === locale }"
             :hreflang="l.code"

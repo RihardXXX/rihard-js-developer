@@ -210,5 +210,13 @@
     "socials": "Socials",
     "language": "Language",
     "built": "built with Nuxt"
+  },
+  "error": {
+    "notFoundTitle": "Page not found",
+    "notFoundText": "There is no page at this address. The link may be broken or the page has moved.",
+    "failedTitle": "Something went wrong",
+    "failedText": "The page failed to load. Try reloading it or go back home.",
+    "home": "Back home",
+    "course": "Course contents"
   }
 }
