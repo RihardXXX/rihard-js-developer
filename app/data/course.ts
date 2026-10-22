@@ -20,6 +20,7 @@ import performance from './lessons/performance'
 import memoization from './lessons/memoization'
 import transducers from './lessons/transducers'
 import neuralNetworks from './lessons/neural-networks'
+import fpInTypeScript from './lessons/fp-in-typescript-and-effect'
 import functionMapFilterReduce from './lessons/function-map-filter-reduce'
 import higherOrderFunctions from './lessons/first-class-and-higher-order-functions'
 import closures from './lessons/closures'
@@ -54,5 +55,6 @@ export const lessons: Lesson[] = [
   fantasyLand,
   maybeEither,
   neuralNetworks,
+  fpInTypeScript,
   selectingLibrary,
 ]
