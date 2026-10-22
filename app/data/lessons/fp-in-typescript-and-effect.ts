@@ -17,8 +17,8 @@ const lesson: Lesson = {
   blocks: [
     {
       type: 'text',
-      ru: "Этот урок — мост от курса к продакшен-коду. Сквозной пример из урока «Функциональное программирование» — взять пользователей онлайн старше 20 лет и получить имя первого — здесь переписан на TypeScript с библиотекой Effect 4. Задача та же и ответ тот же, John, а по шагам видно, что добавляет каждый слой: типы, Option вместо Maybe, проверку входящих данных и ошибки в типе программы.",
-      en: "This lesson is a bridge from the course to production code. The running example from the \"Functional programming\" lesson (take the users who are online and older than 20 and get the name of the first one) is rewritten here in TypeScript with the Effect 4 library. The task and the answer stay the same, John, and step by step you can see what each layer adds: types, Option instead of Maybe, checking the incoming data, and errors in the type of the program.",
+      ru: "Этот урок — мост от курса к продакшен-коду. Сквозной пример из урока «Функциональное программирование» — взять пользователей онлайн старше 20 лет и получить имя первого — здесь переписан на TypeScript с библиотекой Effect 4. Задача та же, и ответ тот же — John, а по шагам видно, что добавляет каждый слой: типы, Option вместо Maybe, проверку входящих данных и ошибки в типе программы.",
+      en: "This lesson is a bridge from the course to production code. The running example from the \"Functional programming\" lesson (take the users who are online and older than 20 and get the name of the first one) is rewritten here in TypeScript with the Effect 4 library. The task and the answer stay the same (John), and step by step you can see what each layer adds: types, Option instead of Maybe, checking the incoming data, and errors in the type of the program.",
     },
     {
       type: 'text',
@@ -54,6 +54,7 @@ interface User {
 // Хиндли–Милнер: head :: [a] -> Maybe a
 // TypeScript:    <A>(self: ReadonlyArray<A>) => Option<A>
 // <A> — параметр типа, та же переменная a, только с большой буквы
+// Option.Option<A> — тип Option из модуля Option
 const head = <A>(self: ReadonlyArray<A>): Option.Option<A> =>
   self.length > 0 ? Option.some(self[0]) : Option.none()
 
@@ -81,6 +82,7 @@ interface User {
 // Hindley–Milner: head :: [a] -> Maybe a
 // TypeScript:     <A>(self: ReadonlyArray<A>) => Option<A>
 // <A> is a type parameter, the same variable a, only capitalized
+// Option.Option<A> is the Option type from the Option module
 const head = <A>(self: ReadonlyArray<A>): Option.Option<A> =>
   self.length > 0 ? Option.some(self[0]) : Option.none()
 
@@ -92,7 +94,8 @@ console.log(Option.isSome(head(users))) // true
 console.log(Option.isNone(head([]))) // true
 
 // head(42) will not compile: a number is not an array
-// { name: 'Bob', status: 'away', age: 30 } neither: 'away' is not a Status`,
+// { name: 'Bob', status: 'away', age: 30 } won't compile either:
+// 'away' is not a Status`,
       },
     },
     {
@@ -176,7 +179,7 @@ console.log(searchOnlineUser([]) === '') // true`,
     {
       type: 'text',
       ru: "Ответ тот же — John. Одно отличие легко пропустить: Option.getOrElse принимает функцию, которая вернёт запасное значение, а S.fromMaybe — само значение. Остальное соответствует почти один к одному, как показывает таблица. В Effect 3 модуль Result назывался Either, с вариантами Right и Left, поэтому в статьях и примерах, написанных до версии 4, встречается Either.",
-      en: "The answer is the same, John. One difference is easy to miss: Option.getOrElse takes a function that returns the fallback, while S.fromMaybe takes the value itself. The rest maps almost one to one, as the table shows. In Effect 3 the Result module was called Either, with the variants Right and Left, so articles and examples written before version 4 use Either.",
+      en: "The answer is the same: John. One difference is easy to miss: Option.getOrElse takes a function that returns the fallback, while S.fromMaybe takes the value itself. The rest maps almost one to one, as the table shows. In Effect 3 the Result module was called Either, with the variants Right and Left, so articles and examples written before version 4 use Either.",
     },
     {
       type: 'table',
@@ -241,8 +244,8 @@ console.log(searchOnlineUser([]) === '') // true`,
     },
     {
       type: 'text',
-      ru: "В уроке «Каррирование и Асинхронность (Эволюция)» запросы были промисами, а ошибка любого шага попадала в один catch. Промис начинает работу в момент создания, и по его типу не видно, что попадёт в catch. Effect устроен иначе: это ленивое описание работы, значение, которое можно хранить, передавать и собирать из частей. Ничего не выполняется, пока описание не передадут в Effect.runPromise или Effect.runSync. У типа Effect<A, E, R> три параметра: A — тип результата, E — ошибки, которые могут случиться, R — сервисы, нужные для запуска. Возможная ошибка видна в сигнатуре так же, как возможное отсутствие значения видно в Maybe a.",
-      en: "In the \"Currying and asynchrony (evolution)\" lesson the requests were promises, and an error at any step ended up in a single catch. A promise starts working the moment it is created, and its type does not show what may end up in catch. Effect works differently: it is a lazy description of the work, a value that can be stored, passed around and assembled from parts. Nothing runs until the description is passed to Effect.runPromise or Effect.runSync. The Effect<A, E, R> type has three parameters: A is the type of the result, E is the errors that may happen, R is the services needed to run it. A possible error is visible in the signature just as a possible missing value is visible in Maybe a.",
+      ru: "В уроке «Каррирование и Асинхронность (Эволюция)» запросы были промисами, а ошибка любого шага попадала в один catch. Промис начинает работу в момент создания, и по его типу не видно, что попадёт в catch. Effect устроен иначе: это ленивое описание работы, значение, которое можно хранить, передавать и собирать из частей. Ничего не выполняется, пока описание не передадут в Effect.runPromise или Effect.runSync. У типа Effect<A, E, R> три параметра: A — тип результата, E — ошибки, которые могут случиться, R — сервисы, нужные для запуска. Если ошибок или сервисов нет, на их месте стоит never — тип без единого значения; незаписанные E и R тоже равны never, поэтому Effect<string> — это Effect<string, never, never>. Возможная ошибка видна в сигнатуре так же, как возможное отсутствие значения видно в Maybe a.",
+      en: "In the \"Currying and asynchrony (evolution)\" lesson the requests were promises, and an error at any step ended up in a single catch. A promise starts working the moment it is created, and its type does not show what may end up in catch. Effect works differently: it is a lazy description of the work, a value that can be stored, passed around and assembled from parts. Nothing runs until the description is passed to Effect.runPromise or Effect.runSync. The Effect<A, E, R> type has three parameters: A is the type of the result, E is the errors that may happen, R is the services needed to run it. When there are no errors or services, their place is taken by never, a type with no values; omitted E and R are never as well, so Effect<string> is Effect<string, never, never>. A possible error is visible in the signature just as a possible missing value is visible in Maybe a.",
     },
     {
       type: 'heading',
@@ -251,8 +254,8 @@ console.log(searchOnlineUser([]) === '') // true`,
     },
     {
       type: 'text',
-      ru: "Типы TypeScript проверяются только при компиляции, а ответ сервера приходит во время выполнения, и его они не проверят. Об этом предупреждал комментарий в примере урока «Функциональное программирование». Schema описывает данные один раз, и из этого описания получаются и тип, и проверка во время выполнения. Schema.decodeUnknownResult возвращает Result: Success с проверенными данными или Failure с описанием того, что не так.",
-      en: "TypeScript types are checked only at compile time, while a server response arrives at run time, and the types will not check it. The comment in the example from the \"Functional programming\" lesson warned about this. Schema describes the data once, and that description gives both the type and a check at run time. Schema.decodeUnknownResult returns a Result: Success with the checked data or Failure describing what is wrong.",
+      ru: "Типы TypeScript проверяются только при компиляции, а ответ сервера приходит во время выполнения, и его они не проверят. Об этом предупреждал комментарий в примере урока «Функциональное программирование». Schema описывает данные один раз, и из этого описания получаются и тип, и проверка во время выполнения. Schema.decodeUnknownResult(схема) даёт функцию проверки, а она возвращает Result: Success с проверенными данными или Failure с описанием того, что не так.",
+      en: "TypeScript types are checked only at compile time, while a server response arrives at run time, and the types will not check it. The comment in the example from the \"Functional programming\" lesson warned about this. Schema describes the data once, and that description gives both the type and a check at run time. Schema.decodeUnknownResult(schema) gives a checking function, and it returns a Result: Success with the checked data or Failure describing what is wrong.",
     },
     {
       type: 'code',
@@ -491,7 +494,7 @@ Effect.runPromise(safe).then(console.log) // 'John'`,
     {
       type: 'heading',
       ru: "Версии, fp-ts и что дальше",
-      en: "Versions, fp-ts and what next",
+      en: "Versions, fp-ts and what's next",
     },
     {
       type: 'text',
@@ -643,8 +646,8 @@ console.log(\`right after new Promise: \${calls}\`)`,
     },
     {
       task: {
-        ru: "Ошибки с тегом без библиотеки. Результат — объект { _tag: 'Success', value } или { _tag: 'Failure', error }, и у каждой ошибки тоже есть поле _tag. Напишите findOnline(id): если пользователя с таким id нет, верните Failure с ошибкой { _tag: 'UserNotFound', id }, если он не в сети — Failure с { _tag: 'UserOffline', id }, иначе Success с его именем. Затем напишите catchTag(tag, handler): функцию от результата, которая превращает Failure с ошибкой этого тега в Success со значением handler(error), а любой другой результат возвращает без изменений. Так работает Effect.catchTag: обработанная ошибка исчезает, остальные проходят дальше.",
-        en: "Tagged errors without a library. A result is an object { _tag: 'Success', value } or { _tag: 'Failure', error }, and every error has a _tag field too. Write findOnline(id): if there is no user with that id, return a Failure with the error { _tag: 'UserNotFound', id }; if the user is offline, a Failure with { _tag: 'UserOffline', id }; otherwise a Success with the user's name. Then write catchTag(tag, handler): a function of a result that turns a Failure with an error of that tag into a Success with the value handler(error) and returns any other result unchanged. This is how Effect.catchTag works: the handled error disappears, the others pass through.",
+        ru: "Ошибки с тегом без библиотеки. Результат — объект { _tag: 'Success', value } или { _tag: 'Failure', error }, и у каждой ошибки тоже есть поле _tag. Напишите findOnline(id): если пользователя с таким id нет, верните Failure с ошибкой { _tag: 'UserNotFound', id }; если он не в сети — Failure с { _tag: 'UserOffline', id }; иначе Success с его именем. Затем напишите catchTag(tag, handler): функцию от результата, которая превращает Failure с ошибкой этого тега в Success со значением handler(error), а любой другой результат возвращает без изменений. Так работает Effect.catchTag: обработанная ошибка исчезает, остальные проходят дальше. Только в Effect обработчик возвращает эффект, например Effect.succeed('гость'), а здесь для простоты — само значение.",
+        en: "Tagged errors without a library. A result is an object { _tag: 'Success', value } or { _tag: 'Failure', error }, and every error has a _tag field too. Write findOnline(id): if there is no user with that id, return a Failure with the error { _tag: 'UserNotFound', id }; if the user is offline, a Failure with { _tag: 'UserOffline', id }; otherwise a Success with the user's name. Then write catchTag(tag, handler): a function of a result that turns a Failure with an error of that tag into a Success with the value handler(error) and returns any other result unchanged. This is how Effect.catchTag works: the handled error disappears, the others pass through. In Effect, though, the handler returns an effect, for example Effect.succeed('guest'); here it returns the value itself for simplicity.",
       },
       starter: {
         ru: `const succeed = (value) => ({ _tag: 'Success', value })
