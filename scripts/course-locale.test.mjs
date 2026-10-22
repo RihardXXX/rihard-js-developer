@@ -29,6 +29,7 @@ const SAMPLE = [
         rows: [[{ ru: 'Бюджет', en: 'Budget' }, { ru: 'мал', en: 'small' }]],
       },
       { type: 'code', code: { ru: '// код', en: '// code' } },
+      { type: 'code', lang: 'ts', code: { ru: 'const a: number = 1 // тип', en: 'const a: number = 1 // type' } },
       { type: 'code', pseudo: true, code: { ru: 'a -> b', en: 'a -> b' } },
       { type: 'code', noRun: 'dom', code: { ru: 'document // дом', en: 'document // dom' } },
     ],
