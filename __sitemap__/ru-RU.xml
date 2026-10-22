@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="UTF-8"?><?xml-stylesheet type="text/xsl" href="/__sitemap__/style.xsl"?>
+<urlset xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:video="http://www.google.com/schemas/sitemap-video/1.1" xmlns:xhtml="http://www.w3.org/1999/xhtml" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1" xmlns:news="http://www.google.com/schemas/sitemap-news/0.9" xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd http://www.google.com/schemas/sitemap-image/1.1 http://www.google.com/schemas/sitemap-image/1.1/sitemap-image.xsd" xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+    <url>
+        <loc>https://rihard-developer.ru/ru/</loc>
+        <xhtml:link rel="alternate" hreflang="en-US" href="https://rihard-developer.ru/" />
+        <xhtml:link rel="alternate" hreflang="ru-RU" href="https://rihard-developer.ru/ru/" />
+        <xhtml:link rel="alternate" hreflang="x-default" href="https://rihard-developer.ru/" />
+    </url>
+    <url>
+        <loc>https://rihard-developer.ru/ru/course/</loc>
+        <xhtml:link rel="alternate" hreflang="en-US" href="https://rihard-developer.ru/course/" />
+        <xhtml:link rel="alternate" hreflang="ru-RU" href="https://rihard-developer.ru/ru/course/" />
+        <xhtml:link rel="alternate" hreflang="x-default" href="https://rihard-developer.ru/course/" />
+    </url>
+    <url>
+        <loc>https://rihard-developer.ru/ru/course/category-theory/</loc>
+        <xhtml:link rel="alternate" href="https://rihard-developer.ru/ru/course/category-theory/" hreflang="ru-RU" />
+        <xhtml:link rel="alternate" href="https://rihard-developer.ru/course/category-theory/" hreflang="x-default" />
+        <xhtml:link rel="alternate" href="https://rihard-developer.ru/course/category-theory/" hreflang="en-US" />
+    </url>
+    <url>
+        <loc>https://rihard-developer.ru/ru/course/closures/</loc>
+        <xhtml:link rel="alternate" href="https://rihard-developer.ru/ru/course/closures/" hreflang="ru-RU" />
+        <xhtml:link rel="alternate" href="https://rihard-developer.ru/course/closures/" hreflang="x-default" />
+        <xhtml:link rel="alternate" href="https://rihard-developer.ru/course/closures/" hreflang="en-US" />
+    </url>
+    <url>
+        <loc>https://rihard-developer.ru/ru/course/composition/</loc>
+        <xhtml:link rel="alternate" href="https://rihard-developer.ru/ru/course/composition/" hreflang="ru-RU" />
+        <xhtml:link rel="alternate" href="https://rihard-developer.ru/course/composition/" hreflang="x-default" />
+        <xhtml:link rel="alternate" href="https://rihard-developer.ru/course/composition/" hreflang="en-US" />
+    </url>
+    <url>
+        <loc>https://rihard-developer.ru/ru/course/currying-and-asynchrony/</loc>
+        <xhtml:link rel="alternate" href="https://rihard-developer.ru/ru/course/currying-and-asynchrony/" hreflang="ru-RU" />
+        <xhtml:link rel="alternate" href="https://rihard-developer.ru/course/currying-and-asynchrony/" hreflang="x-default" />
+        <xhtml:link rel="alternate" href="https://rihard-developer.ru/course/currying-and-asynchrony/" hreflang="en-US" />
+    </url>
+    <url>
+        <loc>https://rihard-developer.ru/ru/course/currying/</loc>
+        <xhtml:link rel="alternate" href="https://rihard-developer.ru/ru/course/currying/" hreflang="ru-RU" />
+        <xhtml:link rel="alternate" href="https://rihard-developer.ru/course/currying/" hreflang="x-default" />
+        <xhtml:link rel="alternate" href="https://rihard-developer.ru/course/currying/" hreflang="en-US" />
+    </url>
+    <url>
+        <loc>https://rihard-developer.ru/ru/course/fantasy-land/</loc>
+        <xhtml:link rel="alternate" href="https://rihard-developer.ru/ru/course/fantasy-land/" hreflang="ru-RU" />
+        <xhtml:link rel="alternate" href="https://rihard-developer.ru/course/fantasy-land/" hreflang="x-default" />
+        <xhtml:link rel="alternate" href="https://rihard-developer.ru/course/fantasy-land/" hreflang="en-US" />
+    </url>
+    <url>
+        <loc>https://rihard-developer.ru/ru/course/first-class-and-higher-order-functions/</loc>
+        <xhtml:link rel="alternate" href="https://rihard-developer.ru/ru/course/first-class-and-higher-order-functions/" hreflang="ru-RU" />
+        <xhtml:link rel="alternate" href="https://rihard-developer.ru/course/first-class-and-higher-order-functions/" hreflang="x-default" />
+        <xhtml:link rel="alternate" href="https://rihard-developer.ru/course/first-class-and-higher-order-functions/" hreflang="en-US" />
+    </url>
+    <url>
+        <loc>https://rihard-developer.ru/ru/course/fp-in-typescript-and-effect/</loc>
+        <xhtml:link rel="alternate" href="https://rihard-developer.ru/ru/course/fp-in-typescript-and-effect/" hreflang="ru-RU" />
+        <xhtml:link rel="alternate" href="https://rihard-developer.ru/course/fp-in-typescript-and-effect/" hreflang="x-default" />
+        <xhtml:link rel="alternate" href="https://rihard-developer.ru/course/fp-in-typescript-and-effect/" hreflang="en-US" />
+    </url>
+    <url>
+        <loc>https://rihard-developer.ru/ru/course/function-map-filter-reduce/</loc>
+        <xhtml:link rel="alternate" href="https://rihard-developer.ru/ru/course/function-map-filter-reduce/" hreflang="ru-RU" />
+        <xhtml:link rel="alternate" href="https://rihard-developer.ru/course/function-map-filter-reduce/" hreflang="x-default" />
+        <xhtml:link rel="alternate" href="https://rihard-developer.ru/course/function-map-filter-reduce/" hreflang="en-US" />
+    </url>
+    <url>
+        <loc>https://rihard-developer.ru/ru/course/functional-programming/</loc>
+        <xhtml:link rel="alternate" href="https://rihard-developer.ru/ru/course/functional-programming/" hreflang="ru-RU" />
+        <xhtml:link rel="alternate" href="https://rihard-developer.ru/course/functional-programming/" hreflang="x-default" />
+        <xhtml:link rel="alternate" href="https://rihard-developer.ru/course/functional-programming/" hreflang="en-US" />
+    </url>
+    <url>
+        <loc>https://rihard-developer.ru/ru/course/functors/</loc>
+        <xhtml:link rel="alternate" href="https://rihard-developer.ru/ru/course/functors/" hreflang="ru-RU" />
+        <xhtml:link rel="alternate" href="https://rihard-developer.ru/course/functors/" hreflang="x-default" />
+        <xhtml:link rel="alternate" href="https://rihard-developer.ru/course/functors/" hreflang="en-US" />
+    </url>
+    <url>
+        <loc>https://rihard-developer.ru/ru/course/hindley-milner-type-notation/</loc>
+        <xhtml:link rel="alternate" href="https://rihard-developer.ru/ru/course/hindley-milner-type-notation/" hreflang="ru-RU" />
+        <xhtml:link rel="alternate" href="https://rihard-developer.ru/course/hindley-milner-type-notation/" hreflang="x-default" />
+        <xhtml:link rel="alternate" href="https://rihard-developer.ru/course/hindley-milner-type-notation/" hreflang="en-US" />
+    </url>
+    <url>
+        <loc>https://rihard-developer.ru/ru/course/immutability/</loc>
+        <xhtml:link rel="alternate" href="https://rihard-developer.ru/ru/course/immutability/" hreflang="ru-RU" />
+        <xhtml:link rel="alternate" href="https://rihard-developer.ru/course/immutability/" hreflang="x-default" />
+        <xhtml:link rel="alternate" href="https://rihard-developer.ru/course/immutability/" hreflang="en-US" />
+    </url>
+    <url>
+        <loc>https://rihard-developer.ru/ru/course/imperative-vs-declarative/</loc>
+        <xhtml:link rel="alternate" href="https://rihard-developer.ru/ru/course/imperative-vs-declarative/" hreflang="ru-RU" />
+        <xhtml:link rel="alternate" href="https://rihard-developer.ru/course/imperative-vs-declarative/" hreflang="x-default" />
+        <xhtml:link rel="alternate" href="https://rihard-developer.ru/course/imperative-vs-declarative/" hreflang="en-US" />
+    </url>
+    <url>
+        <loc>https://rihard-developer.ru/ru/course/lenses/</loc>
+        <xhtml:link rel="alternate" href="https://rihard-developer.ru/ru/course/lenses/" hreflang="ru-RU" />
+        <xhtml:link rel="alternate" href="https://rihard-developer.ru/course/lenses/" hreflang="x-default" />
+        <xhtml:link rel="alternate" href="https://rihard-developer.ru/course/lenses/" hreflang="en-US" />
+    </url>
+    <url>
+        <loc>https://rihard-developer.ru/ru/course/maybe-either/</loc>
+        <xhtml:link rel="alternate" href="https://rihard-developer.ru/ru/course/maybe-either/" hreflang="ru-RU" />
+        <xhtml:link rel="alternate" href="https://rihard-developer.ru/course/maybe-either/" hreflang="x-default" />
+        <xhtml:link rel="alternate" href="https://rihard-developer.ru/course/maybe-either/" hreflang="en-US" />
+    </url>
+    <url>
+        <loc>https://rihard-developer.ru/ru/course/memoization/</loc>
+        <xhtml:link rel="alternate" href="https://rihard-developer.ru/ru/course/memoization/" hreflang="ru-RU" />
+        <xhtml:link rel="alternate" href="https://rihard-developer.ru/course/memoization/" hreflang="x-default" />
+        <xhtml:link rel="alternate" href="https://rihard-developer.ru/course/memoization/" hreflang="en-US" />
+    </url>
+    <url>
+        <loc>https://rihard-developer.ru/ru/course/neural-networks/</loc>
+        <xhtml:link rel="alternate" href="https://rihard-developer.ru/ru/course/neural-networks/" hreflang="ru-RU" />
+        <xhtml:link rel="alternate" href="https://rihard-developer.ru/course/neural-networks/" hreflang="x-default" />
+        <xhtml:link rel="alternate" href="https://rihard-developer.ru/course/neural-networks/" hreflang="en-US" />
+    </url>
+    <url>
+        <loc>https://rihard-developer.ru/ru/course/partial-application/</loc>
+        <xhtml:link rel="alternate" href="https://rihard-developer.ru/ru/course/partial-application/" hreflang="ru-RU" />
+        <xhtml:link rel="alternate" href="https://rihard-developer.ru/course/partial-application/" hreflang="x-default" />
+        <xhtml:link rel="alternate" href="https://rihard-developer.ru/course/partial-application/" hreflang="en-US" />
+    </url>
+    <url>
+        <loc>https://rihard-developer.ru/ru/course/performance/</loc>
+        <xhtml:link rel="alternate" href="https://rihard-developer.ru/ru/course/performance/" hreflang="ru-RU" />
+        <xhtml:link rel="alternate" href="https://rihard-developer.ru/course/performance/" hreflang="x-default" />
+        <xhtml:link rel="alternate" href="https://rihard-developer.ru/course/performance/" hreflang="en-US" />
+    </url>
+    <url>
+        <loc>https://rihard-developer.ru/ru/course/point-free/</loc>
+        <xhtml:link rel="alternate" href="https://rihard-developer.ru/ru/course/point-free/" hreflang="ru-RU" />
+        <xhtml:link rel="alternate" href="https://rihard-developer.ru/course/point-free/" hreflang="x-default" />
+        <xhtml:link rel="alternate" href="https://rihard-developer.ru/course/point-free/" hreflang="en-US" />
+    </url>
+    <url>
+        <loc>https://rihard-developer.ru/ru/course/pure-functions/</loc>
+        <xhtml:link rel="alternate" href="https://rihard-developer.ru/ru/course/pure-functions/" hreflang="ru-RU" />
+        <xhtml:link rel="alternate" href="https://rihard-developer.ru/course/pure-functions/" hreflang="x-default" />
+        <xhtml:link rel="alternate" href="https://rihard-developer.ru/course/pure-functions/" hreflang="en-US" />
+    </url>
+    <url>
+        <loc>https://rihard-developer.ru/ru/course/recursion/</loc>
+        <xhtml:link rel="alternate" href="https://rihard-developer.ru/ru/course/recursion/" hreflang="ru-RU" />
+        <xhtml:link rel="alternate" href="https://rihard-developer.ru/course/recursion/" hreflang="x-default" />
+        <xhtml:link rel="alternate" href="https://rihard-developer.ru/course/recursion/" hreflang="en-US" />
+    </url>
+    <url>
+        <loc>https://rihard-developer.ru/ru/course/selecting-library/</loc>
+        <xhtml:link rel="alternate" href="https://rihard-developer.ru/ru/course/selecting-library/" hreflang="ru-RU" />
+        <xhtml:link rel="alternate" href="https://rihard-developer.ru/course/selecting-library/" hreflang="x-default" />
+        <xhtml:link rel="alternate" href="https://rihard-developer.ru/course/selecting-library/" hreflang="en-US" />
+    </url>
+    <url>
+        <loc>https://rihard-developer.ru/ru/course/side-effects-in-composition-functions/</loc>
+        <xhtml:link rel="alternate" href="https://rihard-developer.ru/ru/course/side-effects-in-composition-functions/" hreflang="ru-RU" />
+        <xhtml:link rel="alternate" href="https://rihard-developer.ru/course/side-effects-in-composition-functions/" hreflang="x-default" />
+        <xhtml:link rel="alternate" href="https://rihard-developer.ru/course/side-effects-in-composition-functions/" hreflang="en-US" />
+    </url>
+    <url>
+        <loc>https://rihard-developer.ru/ru/course/transducers/</loc>
+        <xhtml:link rel="alternate" href="https://rihard-developer.ru/ru/course/transducers/" hreflang="ru-RU" />
+        <xhtml:link rel="alternate" href="https://rihard-developer.ru/course/transducers/" hreflang="x-default" />
+        <xhtml:link rel="alternate" href="https://rihard-developer.ru/course/transducers/" hreflang="en-US" />
+    </url>
+</urlset>
+<!-- XML Sitemap generated by @nuxtjs/sitemap v8.0.15 at 2026-10-22T15:58:45.539Z -->
