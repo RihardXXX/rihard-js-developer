@@ -39,8 +39,9 @@ const exampleLabel = (i: number) =>
         :id="`${lesson.slug}-code-${codeNumber(i)}`"
         :code="isEn ? block.code.en : block.code.ru"
         :label="exampleLabel(i)"
-        :playground="!block.pseudo && !block.noRun"
+        :playground="!block.pseudo && !block.noRun && !block.lang"
         :pseudo="block.pseudo"
+        :lang="block.lang"
       />
       <component :is="intro ? 'h3' : 'h2'" v-else-if="block.type === 'heading'" class="lesson__heading">
         {{ tr(block) }}
