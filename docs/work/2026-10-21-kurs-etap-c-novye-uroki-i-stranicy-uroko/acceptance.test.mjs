@@ -29,9 +29,8 @@ const i18n = { ru: readLocale('ru'), en: readLocale('en') }
 // ---------- эталоны ----------
 
 const INTRO = ['for-whom', 'not-for-whom']
-// Утверждённый порядок 25 уроков: номера 01–25 в оглавлении идут в этом порядке.
-// Урок fp-in-typescript-and-effect (между neural-networks и selecting-library) ждёт тезисов владельца
-// и придёт отдельной задачей, она вернёт его в этот список.
+// Утверждённый порядок 26 уроков: номера 01–26 в оглавлении идут в этом порядке.
+// Урок fp-in-typescript-and-effect стоит между neural-networks и selecting-library, «Что выбрать» — 26-й.
 // Весь файл считает по этому списку: убрать урок из него — значит убрать его из приёмки.
 const LESSON_ORDER = [
   'imperative-vs-declarative',
@@ -58,6 +57,7 @@ const LESSON_ORDER = [
   'fantasy-land',
   'maybe-either',
   'neural-networks',
+  'fp-in-typescript-and-effect',
   'selecting-library',
 ]
 const TOTAL = LESSON_ORDER.length
