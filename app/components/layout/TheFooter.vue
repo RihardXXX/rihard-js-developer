@@ -3,6 +3,7 @@ import type { LocaleObject } from '@nuxtjs/i18n'
 
 const { t, locale, locales } = useI18n()
 const switchLocalePath = useSwitchLocalePath()
+const localePath = useLocalePath()
 const year = 2026
 
 // A plain, always-rendered link per locale. The header's LangSwitch hides its
@@ -41,7 +42,7 @@ const socials = [
         <NuxtLink
           v-for="l in localeLinks"
           :key="l.code"
-          :to="switchLocalePath(l.code)"
+          :to="switchLocalePath(l.code) || localePath('/', l.code)"
           class="footer__lang"
           :class="{ 'footer__lang--active': l.code === locale }"
           :hreflang="l.code"
