@@ -41,7 +41,9 @@ export interface CourseCodeBlock {
   pseudo?: true
   /** needs the DOM, the network or names from a previous example: no "Open in playground" */
   noRun?: CourseNoRunReason
-  /** JavaScript snippet per locale: same code, only comments and explanatory strings differ */
+  /** TypeScript: highlighted, never run, no "Open in playground" */
+  lang?: 'ts'
+  /** code snippet per locale: same code, only comments and explanatory strings differ */
   code: { ru: string; en: string }
 }
 

@@ -1,8 +1,10 @@
 <script setup lang="ts">
 import hljs from 'highlight.js/lib/core'
 import javascript from 'highlight.js/lib/languages/javascript'
+import typescript from 'highlight.js/lib/languages/typescript'
 
 hljs.registerLanguage('javascript', javascript)
+hljs.registerLanguage('typescript', typescript)
 
 const props = defineProps<{
   code: string
@@ -12,13 +14,15 @@ const props = defineProps<{
   /** show "Open in playground" */
   playground: boolean
   pseudo?: boolean
+  lang?: 'ts'
 }>()
 const { t } = useI18n()
 const { open } = usePlaygroundBridge()
 
+const language = computed(() => (props.lang === 'ts' ? 'typescript' : 'javascript'))
 // Pseudocode is a scheme, not JavaScript: it is shown as plain text.
 const highlighted = computed(() =>
-  props.pseudo ? '' : hljs.highlight(props.code, { language: 'javascript' }).value,
+  props.pseudo ? '' : hljs.highlight(props.code, { language: language.value }).value,
 )
 
 const copyState = ref<'idle' | 'copied' | 'failed'>('idle')
@@ -45,6 +49,7 @@ const copyText = computed(() =>
   <div :id="id" class="cb">
     <!-- Names start with the visible text and end with the example's label: 44 "Copy" buttons stay distinct. -->
     <div class="cb__bar">
+      <span v-if="lang === 'ts'" class="cb__lang">TypeScript</span>
       <button
         v-if="playground"
         class="cb__open"
@@ -68,7 +73,7 @@ const copyText = computed(() =>
       tabindex="0"
       role="group"
       :aria-label="label"
-    ><code v-if="pseudo">{{ code }}</code><code v-else class="hljs language-javascript" v-html="highlighted" /></pre>
+    ><code v-if="pseudo">{{ code }}</code><code v-else :class="['hljs', `language-${language}`]" v-html="highlighted" /></pre>
     <span class="cb__status" role="status" aria-live="polite">{{ copyState === 'idle' ? '' : copyText }}</span>
   </div>
 </template>
@@ -87,6 +92,14 @@ const copyText = computed(() =>
     justify-content: flex-end;
     gap: 0.8rem;
     margin-bottom: 0.8rem;
+  }
+
+  &__lang {
+    align-self: center;
+    margin-right: auto;
+    font-family: $mono-font;
+    font-size: 1.2rem;
+    color: var(--text-muted);
   }
 
   &__open,

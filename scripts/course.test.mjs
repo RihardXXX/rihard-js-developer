@@ -214,7 +214,7 @@ const exerciseCode = sections.flatMap((section) =>
 )
 // Весь код курса, который читатель может скопировать: блоки уроков и код упражнений.
 const allCode = [
-  ...codeBlocks.map(({ id, block }) => ({ id, label: `блока ${id}`, code: block.code, pseudo: block.pseudo })),
+  ...codeBlocks.map(({ id, block }) => ({ id, label: `блока ${id}`, code: block.code, pseudo: block.pseudo, lang: block.lang })),
   ...exerciseCode,
 ]
 
@@ -447,8 +447,8 @@ test('selecting-library: сравнение библиотек не остало
 
 // ---------- синтаксис блоков ----------
 
-for (const { label, code, pseudo } of allCode) {
-  if (pseudo) continue
+for (const { label, code, pseudo, lang } of allCode) {
+  if (pseudo || lang === 'ts') continue
   for (const v of VARIANTS) {
     test(`синтаксис ${label} ${v}`, () => {
       assert.doesNotThrow(
@@ -709,7 +709,7 @@ test('проверка решения: асинхронный вывод дож�
 })
 
 for (const { id, block } of codeBlocks) {
-  if (block.pseudo || block.noRun) continue
+  if (block.pseudo || block.noRun || block.lang === 'ts') continue
   for (const v of VARIANTS) {
     test(`исполнение ${id} ${v}`, async () => {
       const problems = await execute(block.code[v])
@@ -819,6 +819,264 @@ test('токенизатор: strip различает разный код, в �
   assert.notEqual(strip('a + b'), strip('a - b'))
   assert.notEqual(strip('`x ${a}`'), strip('`x ${b}`'))
 })
+
+// ---------- TS-блоки: TypeScript читают с подсветкой, но не запускают ----------
+
+const TS_LESSON = 'fp-in-typescript-and-effect'
+const IMPORT_LINE = /^\s*import\b/
+const EFFECT_IMPORT = /^import\s+\{[^}]*\}\s+from\s+(['"])effect\1;?\s*$/
+// Имена API Effect 3: в уроке про Effect 4 их быть не должно. Ищем в коде без комментариев и строк.
+// Either — подстрокой: в Effect 4 нет ни одного имени с Either, а в Effect 3 есть decodeUnknownEither и подобные.
+const V3_NAMES = [
+  ['Either', /Either/],
+  ['fromNullable', /\bfromNullable\b/],
+  ['catchAll', /\bcatchAll\b/],
+  ['Effect.either', /\bEffect\.either\b/],
+  ['Context.Tag', /\bContext\.Tag\b/],
+  ['GenericTag', /\bGenericTag\b/],
+  ['Effect.Service', /\bEffect\.Service\b/],
+  ['decodeUnknown(', /\bdecodeUnknown\(/],
+]
+
+// Что не так с TS-блоком (пустой список — всё так): типы стираются без ошибки (режим strip, то есть
+// только стираемый синтаксис, как у `node block.ts`), импорт одной строкой только из 'effect',
+// без export и без await верхнего уровня, а то, что осталось после удаления import, разбирается как скрипт.
+// await вне фигурных скобок — верхний уровень: скрипт не всегда падает на нём, `await (x)` для него вызов функции await.
+const topLevelAwait = (code) => {
+  let depth = 0
+  for (const [token] of code.matchAll(/[{}]|(?<![\w$.])await(?![\w$])/g)) {
+    if (token === '{') depth++
+    else if (token === '}') depth--
+    else if (depth === 0) return true
+  }
+  return false
+}
+
+const tsProblems = (code) => {
+  let js
+  try {
+    js = module.stripTypeScriptTypes(code)
+  } catch (error) {
+    return [`типы не стираются: ${error.code ?? error.name}`]
+  }
+  const problems = code
+    .split('\n')
+    .filter((line) => IMPORT_LINE.test(line) && !EFFECT_IMPORT.test(line))
+    .map((line) => `импорт не одной строкой из 'effect': ${line.trim()}`)
+  const body = js
+    .split('\n')
+    .filter((line) => !IMPORT_LINE.test(line))
+    .join('\n')
+  if (/(^|[^\w$.])export\b/.test(scan(body).code)) problems.push('есть export')
+  if (topLevelAwait(scan(body).code)) problems.push('есть await верхнего уровня')
+  try {
+    new vm.Script(body)
+  } catch (error) {
+    problems.push(`после стирания типов не разбирается: ${error.message}`)
+  }
+  return problems
+}
+
+const v3Names = (code) => {
+  const bare = scan(code).code
+  return V3_NAMES.filter(([, pattern]) => pattern.test(bare)).map(([name]) => name)
+}
+
+const tsBlocks = codeBlocks.filter(({ block }) => block.lang !== undefined)
+
+test('TS-блоки: lang бывает только "ts" и только в уроке про Effect', () => {
+  const bad = tsBlocks.filter(({ block, lesson }) => block.lang !== 'ts' || lesson.slug !== TS_LESSON).map(({ id }) => id)
+  assert.deepEqual(
+    bad,
+    [],
+    'TypeScript-блок вне урока про Effect или с другим lang: без решения владельца код курса остаётся JavaScript',
+  )
+})
+
+test(`TS-блоки: в уроке ${TS_LESSON} от 3 до 5 блоков lang "ts"`, () => {
+  const lesson = sections.find((s) => s.slug === TS_LESSON)
+  assert.ok(lesson, `урока ${TS_LESSON} нет в курсе`)
+  const count = lesson.blocks.filter((b) => b.type === 'code' && b.lang === 'ts').length
+  assert.ok(count >= 3 && count <= 5, `в уроке ${count} TS-блоков, по правилам курса нужно от 3 до 5`)
+})
+
+test('TS-блоки: не помечены pseudo и noRun', () => {
+  const bad = tsBlocks.filter(({ block }) => block.pseudo || block.noRun).map(({ id }) => id)
+  assert.deepEqual(bad, [], 'TS-блок не должен занимать место в утверждённых списках pseudo и noRun: он не запускается по своему lang')
+})
+
+test('TS-блоки: у упражнений нет lang, они на чистом JavaScript', () => {
+  const bad = sections.flatMap((s) => exercisesOf(s).flatMap((e, k) => ('lang' in e ? [`${s.slug}#${k + 1}`] : [])))
+  assert.deepEqual(bad, [], 'упражнение с TypeScript не откроется в песочнице: кнопка запуска приведёт к ошибке')
+})
+
+for (const { id, block } of tsBlocks) {
+  for (const v of VARIANTS) {
+    test(`TS-блок ${id} ${v}: типы стираются, импорт только из 'effect', код разбирается`, () => {
+      assert.deepEqual(tsProblems(block.code[v]), [], `TS-блок ${id} (${v}) нельзя скопировать и запустить как TypeScript`)
+    })
+
+    test(`TS-блок ${id} ${v}: нет имён Effect 3`, () => {
+      assert.deepEqual(v3Names(block.code[v]), [], `TS-блок ${id} (${v}) показывает API Effect 3, а урок написан про Effect 4`)
+    })
+  }
+}
+
+test('tsProblems: строка import из "effect" принимается', () => {
+  assert.deepEqual(tsProblems('import { Effect, pipe } from "effect"\nconst a: number = 1\n'), [])
+  assert.deepEqual(tsProblems("import { Effect } from 'effect'\nEffect.succeed(1)\n"), [])
+})
+
+test('tsProblems: ошибка синтаксиса TypeScript замечается', () => {
+  assert.ok(tsProblems('const a: = 1\n').length > 0, 'сломанный TS-блок прошёл бы тест')
+})
+
+test('tsProblems: импорт не из "effect" замечается', () => {
+  assert.ok(tsProblems("import { pipe } from 'fp-ts/function'\npipe(1)\n").length > 0, 'блок с fp-ts прошёл бы тест')
+})
+
+test('tsProblems: импорт в несколько строк замечается', () => {
+  assert.ok(tsProblems("import {\n  Effect,\n} from 'effect'\nEffect.succeed(1)\n").length > 0, 'читатель не скопирует такой импорт одной строкой')
+})
+
+test('tsProblems: export замечается', () => {
+  assert.ok(tsProblems('export const a = 1\n').length > 0, 'блок с export не запустить как скрипт')
+})
+
+test('tsProblems: await верхнего уровня замечается', () => {
+  assert.ok(tsProblems('await Promise.resolve(1)\n').length > 0, 'блок с await верхнего уровня не запустить как скрипт')
+  assert.ok(tsProblems('console.log(await (Promise.resolve(1)))\n').length > 0, 'await со скобкой скрипт принял бы за вызов функции')
+})
+
+test('tsProblems: await внутри async-функции проходит', () => {
+  assert.deepEqual(tsProblems('const f = async () => {\n  await Promise.resolve(1)\n}\nf()\n'), [])
+})
+
+test('tsProblems: код Effect 4 с типами, generator и TaggedError проходит', () => {
+  const code = [
+    "import { Data, Effect } from 'effect'",
+    "class Oops extends Data.TaggedError('Oops')<{ readonly why: string }> {}",
+    'const program: Effect.Effect<number, Oops> = Effect.gen(function* () {',
+    '  return (yield* Effect.succeed(1)) as number',
+    '})',
+    'Effect.runPromise(program).then(console.log)',
+  ].join('\n')
+  assert.deepEqual(tsProblems(code), [])
+})
+
+test('v3Names: Effect.catchAll находится', () => {
+  assert.ok(v3Names('Effect.catchAll(f)').includes('catchAll'), 'замена Effect.catch на Effect.catchAll не покраснит тест')
+})
+
+test('v3Names: остальные имена Effect 3 находятся', () => {
+  const found = [
+    'Either.right(1)',
+    'Option.fromNullable(x)',
+    'Effect.either(e)',
+    'class A extends Context.Tag("A")<A, {}>() {}',
+    'Context.GenericTag("A")',
+    'class A extends Effect.Service<A>()("A", {}) {}',
+    'Schema.decodeUnknown(User)(raw)',
+    'Schema.decodeUnknownEither(User)(raw)',
+  ].map((code) => v3Names(code).length)
+  assert.deepEqual(found, [1, 1, 1, 1, 1, 1, 1, 1], 'имя из Effect 3 прошло бы в урок про Effect 4')
+})
+
+test('v3Names: имена Effect 4 не принимаются за Effect 3', () => {
+  assert.deepEqual(v3Names('Effect.catch(f)'), [])
+  assert.deepEqual(v3Names('Schema.decodeUnknownEffect(User)'), [])
+  assert.deepEqual(v3Names('Option.fromNullishOr(x)'), [])
+  assert.deepEqual(v3Names('Effect.result(e)'), [])
+})
+
+test('v3Names: имя в комментарии и в строке не считается', () => {
+  assert.deepEqual(v3Names('// бывший Either\nconst a = 1'), [])
+  assert.deepEqual(v3Names("const s = 'catchAll'"), [])
+})
+
+// ---------- урок fp-in-typescript-and-effect: голос, ссылки, факты ----------
+
+const fpLesson = () => {
+  const lesson = sections.find((s) => s.slug === TS_LESSON)
+  assert.ok(lesson, `урока ${TS_LESSON} нет в курсе`)
+  return lesson
+}
+
+// Тексты и комментарии кода урока, без ожидаемого вывода.
+const lessonProse = (lesson) => [
+  ...textFields(lesson).filter(({ kind }) => kind !== 'output'),
+  ...codeComments()
+    .filter(({ where }) => where.startsWith(lesson.slug))
+    .map((item) => ({ ...item, v: item.where.endsWith(' ru') ? 'ru' : 'en' })),
+]
+
+// Всё, что читает человек в уроке, вместе с кодом блоков и упражнений (комментарии — в составе кода, один раз).
+const lessonEverything = (lesson, v) => [
+  ...textFields(lesson).filter((item) => item.kind !== 'output' && item.v === v).map(({ text }) => text),
+  ...lesson.blocks.flatMap((b) => (b.type === 'code' ? [b.code[v]] : [])),
+  ...exercisesOf(lesson).flatMap((e) => [e.starter?.[v], e.solution?.[v]].filter((code) => typeof code === 'string')),
+]
+
+for (const v of VARIANTS) {
+  test(`урок ${TS_LESSON}: описание ${v} от 110 до 160 знаков`, () => {
+    const value = fpLesson().description?.[v]
+    assert.equal(typeof value, 'string', `у урока нет описания (${v})`)
+    assert.ok(value.length >= 110 && value.length <= 160, `описание (${v}) ${value.length} знаков, нужно 110–160`)
+  })
+
+  test(`урок ${TS_LESSON}: в описании ${v} есть JavaScript и Effect`, () => {
+    const value = String(fpLesson().description?.[v] ?? '')
+    assert.ok(value.includes('JavaScript') && value.includes('Effect'), `в описании (${v}) должны быть слова JavaScript и Effect: «${value}»`)
+  })
+}
+
+test(`урок ${TS_LESSON}: в ru нет первого лица`, () => {
+  const first = /(?<!\p{L})(я|мне|меня|мой|моя|моё|мои|моих)(?!\p{L})/iu
+  const bad = lessonProse(fpLesson())
+    .filter(({ v, text }) => v === 'ru' && first.test(text))
+    .map(({ where, text }) => `${where}: ${around(text, text.search(first))}`)
+  assert.deepEqual(bad, [], 'в уроке под именем автора голос от первого лица: решено писать нейтрально')
+})
+
+test(`урок ${TS_LESSON}: в en нет I, my, me`, () => {
+  const bad = lessonProse(fpLesson())
+    .filter(({ v, text }) => v === 'en' && (/\bI\b/.test(text) || /\b(my|me)\b/i.test(text)))
+    .map(({ where }) => where)
+  assert.deepEqual(bad, [], 'в английском тексте урока голос от первого лица: решено писать нейтрально')
+})
+
+test(`урок ${TS_LESSON}: нет http и www в текстах и коде`, () => {
+  const lesson = fpLesson()
+  const bad = VARIANTS.flatMap((v) => lessonEverything(lesson, v).filter((text) => /https?:\/\/|www\./i.test(text)).map((text) => `${v}: ${text.slice(0, 40)}`))
+  assert.deepEqual(bad, [], 'в уроке есть ссылка: по решению ссылок нет, адрес effect.website только текстом')
+})
+
+for (const v of VARIANTS) {
+  test(`урок ${TS_LESSON}: effect.website встречается не больше одного раза (${v})`, () => {
+    const lesson = fpLesson()
+    const count = lessonEverything(lesson, v).reduce((sum, text) => sum + (text.match(/effect\.website/g) ?? []).length, 0)
+    assert.ok(count <= 1, `effect.website встречается ${count} раз (${v}), по решению не больше одного`)
+  })
+}
+
+const FACTS = {
+  ru: ['4.0.0', '1 октября 2026 года', 'по данным реестра npm на октябрь 2026 года', '2.16.11', '18 августа 2025 года'],
+  en: ['4.0.0', 'October 1, 2026', 'according to the npm registry as of October 2026', '2.16.11', 'August 18, 2025'],
+}
+
+for (const v of VARIANTS) {
+  test(`урок ${TS_LESSON} и selecting-library: версии и даты совпадают (${v})`, () => {
+    const lessons2 = [fpLesson(), sections.find((s) => s.slug === 'selecting-library')]
+    const missing = lessons2.flatMap((lesson) => {
+      const text = textFields(lesson)
+        .filter((item) => item.v === v)
+        .map((item) => item.text)
+        .join('\n')
+      return FACTS[v].filter((fact) => !text.includes(fact)).map((fact) => `${lesson.slug}: «${fact}»`)
+    })
+    assert.deepEqual(missing, [], `версии и даты в двух уроках разошлись (${v}): читатель увидит разные сведения об Effect и fp-ts`)
+  })
+}
 
 // ---------- пробы исполнения: примеры дают то, что обещают комментарии ----------
 
